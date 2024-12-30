@@ -20,4 +20,3 @@ export default {
     terser(), // Minifica el archivo final
   ],
 };
-
