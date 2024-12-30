@@ -1,4 +1,6 @@
 import html from './index.html';
+console.log('Contenido del HTML:', html);
+
 import './style.css';
 
 export function initBarraLateral() {
