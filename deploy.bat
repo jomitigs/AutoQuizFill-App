@@ -6,7 +6,7 @@ REM Agregar todos los cambios
 git add .
 
 REM Hacer commit con un mensaje automático
-git commit -m "Actualización automática del script"
+git commit -m "Actualizacion automatica"
 
 REM Subir los cambios al repositorio remoto
 git push origin main
