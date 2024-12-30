@@ -1,5 +1,5 @@
-import html from './sidebar.html';
-import './styles.css';
+import html from './index.html';
+import './style.css';
 
 export function initBarraLateral() {
   // Obtén la referencia a los elementos existentes en el DOM
