@@ -94,3 +94,9 @@ export function barraLateral_AutoQuizFillApp() {
 
   return barraLateral;
 }
+
+  // Exponer la función al objeto global
+  window.AutoQuizFillApp = {
+    barraLateral_AutoQuizFillApp
+  };
+  
