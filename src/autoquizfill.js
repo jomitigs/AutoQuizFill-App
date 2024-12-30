@@ -3,11 +3,11 @@ export function barraLateral_AutoQuizFillApp() {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.type = 'text/css';
-    link.href = 'https://raw.githubusercontent.com/jomitigs/repositorio/main/src/barralateral/styles.css'; // URL pública
+    link.href = 'https://raw.githubusercontent.com/jomitigs/AutoQuizFill-App/main/src/barralateral/styles.css'; // URL pública
     document.head.appendChild(link);
   
     // Cargar el archivo HTML
-    fetch('https://raw.githubusercontent.com/tuusuario/repositorio/main/src/barralateral/sidebar.html') // URL pública
+    fetch('https://raw.githubusercontent.com/jomitigs/AutoQuizFill-App/main/src/barralateral/sidebar.html') // URL pública
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error al cargar el archivo HTML: ' + response.status);
