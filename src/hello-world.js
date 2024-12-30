@@ -1,4 +1,4 @@
-function barraLateral_AutoQuizFillApp() {
+export function barraLateral_AutoQuizFillApp() {
   // Crear la barra lateral
   const barraLateral = document.createElement('div');
   barraLateral.id = 'barra-lateral-autoquizfillapp'; // ID único
