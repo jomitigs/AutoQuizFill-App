@@ -4,6 +4,9 @@ console.log('Contenido del HTML:', html);
 import './style.css';
 
 export function initBarraLateral() {
+   // Inserta el contenido HTML en el <body> (u otro contenedor que prefieras)
+   document.body.insertAdjacentHTML('beforeend', html);
+   
   // Obtén la referencia a los elementos existentes en el DOM
   const barraLateral = document.getElementById('barra-lateral-autoquizfillapp');
   const botonMostrarOcultar = document.getElementById('boton-mostrar-ocultar-autoquizfillapp');
