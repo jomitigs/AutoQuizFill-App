@@ -1,0 +1,1 @@
+function e(){const e=document.createElement("link");e.rel="stylesheet",e.href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap",document.head.appendChild(e)}export{e as addHead};

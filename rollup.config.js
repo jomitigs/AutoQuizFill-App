@@ -9,18 +9,19 @@ export default {
   },
   output: {
     dir: 'dist', // Directorio de salida
-    format: 'iife', // Formato de salida
-    entryFileNames: '[name].bundle.js', // Genera archivos como add-head.bundle.js y barralateral.bundle.js
+    format: 'esm', // Usa ESM (módulos ECMAScript) para múltiples entradas
+    entryFileNames: '[name].bundle.js', // Nombra los archivos generados
   },
   plugins: [
     html({
-      include: '**/*.html', // Incluye todos los archivos HTML si es necesario
+      include: '**/*.html',
     }),
     postcss({
-      extensions: ['.css'], // Procesa archivos CSS
-      inject: true, // Inserta CSS en línea en el archivo final
+      extensions: ['.css'],
+      inject: true,
     }),
-    terser(), // Minifica los archivos finales
+    terser(),
   ],
 };
+
 
