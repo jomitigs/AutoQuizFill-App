@@ -17,6 +17,6 @@ export default {
       extensions: ['.css'], // Procesa archivos CSS
       inject: true, // Inserta CSS en línea en el archivo final
     }),
-    terser(), // Minifica el archivo final
+    // terser(), // Minifica el archivo final
   ],
 };
