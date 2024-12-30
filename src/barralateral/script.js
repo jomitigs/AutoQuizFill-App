@@ -9,11 +9,8 @@ export function initBarraLateral() {
   console.log('initBarraLateral: Iniciando barra lateral...');
   
   // 1. Insertar el contenido HTML en el DOM
-  const scriptElement = document.querySelector('script[src="dist/autoquizfill.bundle.js"]');
-  if (scriptElement) {
-    scriptElement.insertAdjacentHTML('beforebegin', htmlQueQuieras);
-  }
-  
+  console.log('initBarraLateral: Insertando HTML en el DOM...');
+  document.body.insertAdjacentHTML('beforeend', html);
 
   // 2. Buscar los elementos en el DOM que acabamos de inyectar
   console.log('initBarraLateral: Buscando elementos con getElementById...');
