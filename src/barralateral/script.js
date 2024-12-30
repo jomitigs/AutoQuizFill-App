@@ -1,77 +1,92 @@
+// Importar el archivo HTML como cadena
 import html from './index.html';
-console.log('Contenido del HTML:', html);
 
+// Importar el CSS (PostCSS lo inyectará en el bundle)
 import './style.css';
 
+// Función para inicializar la barra lateral
 export function initBarraLateral() {
-   // Inserta el contenido HTML en el <body> (u otro contenedor que prefieras)
-   document.body.insertAdjacentHTML('beforeend', html);
-   
-  // Obtén la referencia a los elementos existentes en el DOM
+  console.log('initBarraLateral: Iniciando barra lateral...');
+  
+  // 1. Insertar el contenido HTML en el DOM
+  console.log('initBarraLateral: Insertando HTML en el DOM...');
+  document.body.insertAdjacentHTML('beforeend', html);
+
+  // 2. Buscar los elementos en el DOM que acabamos de inyectar
+  console.log('initBarraLateral: Buscando elementos con getElementById...');
   const barraLateral = document.getElementById('barra-lateral-autoquizfillapp');
   const botonMostrarOcultar = document.getElementById('boton-mostrar-ocultar-autoquizfillapp');
 
-  // Verifica que los elementos existan antes de continuar
+  // 3. Verificar que existan
   if (!barraLateral || !botonMostrarOcultar) {
-      console.error('Error: No se encontraron los elementos necesarios en el DOM.');
-      return;
+    console.error('initBarraLateral: Error: No se encontraron los elementos necesarios en el DOM.');
+    return;
+  } else {
+    console.log('initBarraLateral: Elementos encontrados correctamente');
   }
 
   // Define los íconos para el botón
-  const iconFlecha = '<i class="fa-solid fa-angles-right"></i>'; // Flecha hacia la derecha
-  const iconFlechaRotada = '<i class="fa-solid fa-angles-right fa-rotate-180"></i>'; // Flecha rotada hacia la izquierda
-  botonMostrarOcultar.innerHTML = iconFlechaRotada; // Inicializa el botón con la flecha rotada
+  const iconFlecha = '<i class="fa-solid fa-angles-right"></i>'; 
+  const iconFlechaRotada = '<i class="fa-solid fa-angles-right fa-rotate-180"></i>'; 
+  botonMostrarOcultar.innerHTML = iconFlechaRotada;
 
   // Función para reposicionar el botón en función del ancho de la barra lateral
   function reposicionarBoton() {
-      const barraWidth = barraLateral.getBoundingClientRect().width; // Obtiene el ancho de la barra lateral
-      botonMostrarOcultar.style.left = `calc(${barraWidth}px + 10px)`; // Posiciona el botón a la derecha de la barra lateral
+    const barraWidth = barraLateral.getBoundingClientRect().width;
+    botonMostrarOcultar.style.left = `calc(${barraWidth}px + 10px)`;
+    console.log(`reposicionarBoton: Botón posicionado a ${botonMostrarOcultar.style.left}`);
   }
 
   // Función para ajustar el contenido de la página según el ancho de la barra lateral
   function ajustarContenidoPagina() {
-      const barraWidth = barraLateral.getBoundingClientRect().width; // Obtiene el ancho de la barra lateral
-      const contenido = document.querySelector('body'); // Selecciona el cuerpo de la página
-      contenido.style.marginLeft = `${barraWidth}px`; // Ajusta el margen izquierdo para no superponer la barra lateral
-      contenido.style.width = `calc(100% - ${barraWidth}px)`; // Ajusta el ancho del contenido para ocupar el espacio restante
+    const barraWidth = barraLateral.getBoundingClientRect().width;
+    const contenido = document.querySelector('body');
+    contenido.style.marginLeft = `${barraWidth}px`;
+    contenido.style.width = `calc(100% - ${barraWidth}px)`;
+    console.log(`ajustarContenidoPagina: Ajustando margenLeft a ${barraWidth}px y ancho a calc(100% - ${barraWidth}px)`);
   }
 
   // Observador de cambios en el tamaño de la barra lateral
   const resizeObserver = new ResizeObserver(() => {
-      reposicionarBoton(); // Reposiciona el botón si cambia el tamaño de la barra lateral
-      ajustarContenidoPagina(); // Ajusta el contenido de la página si cambia el tamaño de la barra lateral
+    console.log('resizeObserver: Cambio de tamaño detectado');
+    reposicionarBoton();
+    ajustarContenidoPagina();
   });
-
-  resizeObserver.observe(barraLateral); // Activa el observador sobre la barra lateral
+  resizeObserver.observe(barraLateral);
 
   // Variable para rastrear si la barra lateral está visible o no
   let isBarraVisible = false;
 
   // Evento al hacer clic en el botón de mostrar/ocultar
   botonMostrarOcultar.addEventListener('click', () => {
-      if (isBarraVisible) { // Si la barra lateral está visible
-          barraLateral.style.display = 'none'; // Oculta la barra lateral
-          botonMostrarOcultar.innerHTML = iconFlecha; // Cambia el icono del botón
-          botonMostrarOcultar.style.left = '10px'; // Reposiciona el botón
-          document.querySelector('body').style.marginLeft = '0'; // Restaura el margen del cuerpo
-          document.querySelector('body').style.width = '100%'; // Restaura el ancho del cuerpo
-          isBarraVisible = false; // Actualiza el estado
-      } else { // Si la barra lateral no está visible
-          barraLateral.style.display = 'flex'; // Muestra la barra lateral
-          botonMostrarOcultar.innerHTML = iconFlechaRotada; // Cambia el icono del botón
-          reposicionarBoton(); // Reposiciona el botón
-          ajustarContenidoPagina(); // Ajusta el contenido de la página
-          isBarraVisible = true; // Actualiza el estado
-      }
+    console.log('botonMostrarOcultar: click detectado');
+    if (isBarraVisible) {
+      console.log('botonMostrarOcultar: Ocultando barra lateral');
+      barraLateral.style.display = 'none';
+      botonMostrarOcultar.innerHTML = iconFlecha;
+      botonMostrarOcultar.style.left = '10px';
+      document.body.style.marginLeft = '0';
+      document.body.style.width = '100%';
+      isBarraVisible = false;
+    } else {
+      console.log('botonMostrarOcultar: Mostrando barra lateral');
+      barraLateral.style.display = 'flex';
+      botonMostrarOcultar.innerHTML = iconFlechaRotada;
+      reposicionarBoton();
+      ajustarContenidoPagina();
+      isBarraVisible = true;
+    }
   });
 
   // Ajusta el contenido de la página inicialmente
+  console.log('initBarraLateral: Ajuste inicial del contenido');
   ajustarContenidoPagina();
 
-  return barraLateral; // Devuelve la barra lateral para que pueda ser manipulada desde fuera de esta función
+  // Retorna la barra lateral por si necesitas manipularla externamente
+  return barraLateral;
 }
 
-// Exponer la función al objeto global para Tampermonkey
+// Exponer la función al objeto global (ej. Tampermonkey)
 window.AutoQuizFillApp = {
   initBarraLateral,
 };
