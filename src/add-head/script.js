@@ -14,3 +14,7 @@ export function addHead() {
     document.head.appendChild(link);
   }
   
+  window.addHead = {
+    addHead,
+  };
+  
