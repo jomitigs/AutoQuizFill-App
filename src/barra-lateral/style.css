@@ -1,11 +1,4 @@
-/* Importa la fuente Poppins desde Google Fonts */
-/* Asegúrate de incluir esta línea en la sección <head> de tu HTML */
-/* <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"> */
-
-/* 
-  Estilos para la barra lateral de AutoQuizFillApp
-  Aplica la fuente Poppins a todos los elementos dentro de la barra lateral
-*/
+/* Estilos para la barra lateral de AutoQuizFillApp */
 #barra-lateral-autoquizfillapp {
   width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */
   min-width: 350px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */
@@ -26,16 +19,12 @@
   font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */
 }
 
-/* 
-  Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge)
-*/
+/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */
 #barra-lateral-autoquizfillapp::-webkit-scrollbar {
   display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */
 }
 
-/* 
-  Estilos para el botón de mostrar/ocultar la barra lateral
-*/
+/* Estilos para el botón de mostrar/ocultar la barra lateral */
 #boton-mostrar-ocultar-autoquizfillapp {
   position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */
   top: 20px;
@@ -55,10 +44,7 @@
   font-size: 18px; /* Aumenta el tamaño de la fuente del icono */
 }
 
-/* 
-  Estilos para los iconos de FontAwesome
-  Asegura que los iconos utilicen la fuente correcta
-*/
+/* Estilos para los iconos de FontAwesome */
 .fa-solid {
   font-family: 'FontAwesome', sans-serif; /* Define la fuente para los iconos de FontAwesome */
 }
