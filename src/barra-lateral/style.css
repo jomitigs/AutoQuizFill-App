@@ -45,6 +45,6 @@
 }
 
 /* Estilos para los iconos de FontAwesome */
-.fa-solid {
-  font-family: 'FontAwesome', sans-serif; /* Define la fuente para los iconos de FontAwesome */
+.fa-classic, .fa-regular, .fa-solid, .far, .fas {
+  font-family: "Font Awesome 6 Free";
 }
