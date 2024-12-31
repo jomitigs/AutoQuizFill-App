@@ -5,24 +5,31 @@
  * Puedes importar y llamar a esta función en tu código para cargar las fuentes necesarias.
  */
 export function addHead() {
-    // Crear el elemento <link> para la fuente Poppins
-    const poppinsLink = document.createElement('link');
-    poppinsLink.rel = 'stylesheet';
-    poppinsLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
-    
-    // Insertar el <link> de Poppins en el <head>
-    document.head.appendChild(poppinsLink);
-    console.log('addHead: Fuente Poppins inyectada en <head>');
+    // URLs de las fuentes
+    const poppinsHref = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
+    const fontAwesomeHref = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
 
-    // Crear el elemento <link> para Font Awesome
-    const fontAwesomeLink = document.createElement('link');
-    fontAwesomeLink.rel = 'stylesheet';
-    fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+    // Función para crear y añadir un <link> al <head> si no existe
+    const appendLink = (href) => {
+        if (!document.querySelector(`link[href="${href}"]`)) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href;
+            document.head.appendChild(link);
+            console.log(`addHead: Estilo de ${href} inyectado en <head>`);
+        } else {
+            console.log(`addHead: Estilo de ${href} ya existe en <head>`);
+        }
+    };
 
-    // Insertar el <link> de Font Awesome en el <head>
-    document.head.appendChild(fontAwesomeLink);
-    console.log('addHead: Font Awesome inyectado en <head>');
+    // Añadir la fuente Poppins
+    appendLink(poppinsHref);
+
+    // Añadir Font Awesome
+    appendLink(fontAwesomeHref);
 }
 
-// Exponer la función directamente en el objeto global `window`
-window.addHead = addHead;
+// Exponer la función directamente en el objeto global `window` si está disponible
+if (typeof window !== 'undefined') {
+    window.addHead = addHead;
+}
