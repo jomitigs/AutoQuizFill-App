@@ -68,3 +68,14 @@
     line-height: normal;     /* O el valor que prefieras */
     color: inherit;          /* O el color que prefieras */
 }
+
+/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */
+#barra-lateral-autoquizfillapp p {
+  margin-top: 0;           /* Restablece el margen superior */
+  margin-bottom: 0;        /* Restablece el margen inferior */
+  /* Puedes añadir más propiedades para personalizar según tus necesidades */
+  /* Por ejemplo: */
+  /* font-size: 1rem; */
+  /* color: #000; */
+}
+
