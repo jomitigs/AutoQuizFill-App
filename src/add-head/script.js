@@ -9,12 +9,13 @@ export function addHead() {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
-  
+    
     // Inserta el <link> en el <head>
     document.head.appendChild(link);
+  
+    console.log('addHead: Fuente Poppins inyectada en <head>');
   }
   
-  window.addHead = {
-    addHead,
-  };
+  // Expón la función directamente en el objeto global `window`
+  window.addHead = addHead;
   
