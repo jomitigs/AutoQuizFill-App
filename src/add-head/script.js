@@ -17,7 +17,7 @@ export function addHead() {
     // Crear el elemento <link> para Font Awesome
     const fontAwesomeLink = document.createElement('link');
     fontAwesomeLink.rel = 'stylesheet';
-    fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+    fontAwesomeLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
     fontAwesomeLink.integrity = 'sha512-p1UgS4mFjv7KxPqXe8cqkJ4LJrj+lPAZlBj5fz2jFnr6Yv+dZQl0k50K5xJdHjyTF3u4jC0aCjXh6zWriY9aUg=='; // Asegura la integridad del recurso
     fontAwesomeLink.crossOrigin = 'anonymous';
     fontAwesomeLink.referrerPolicy = 'no-referrer'; // Opcional, mejora la privacidad
