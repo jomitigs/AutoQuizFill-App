@@ -2,26 +2,41 @@ import html from 'rollup-plugin-html';
 import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
 
-export default {
-  input: {
-    'add-head': 'src/add-head/script.js',
-    'barralateral': 'src/barralateral/script.js',
+export default [
+  {
+    input: 'src/add-head/script.js',
+    output: {
+      file: 'dist/add-head.bundle.js',
+      format: 'iife',
+      name: 'AddHead',
+    },
+    plugins: [
+      html({
+        include: '**/*.html', // Permite importar archivos HTML
+      }),
+      postcss({
+        extensions: ['.css'], // Procesa archivos CSS
+        inject: true,         // Inserta CSS en línea
+      }),
+      terser(),
+    ],
   },
-  output: {
-    dir: 'dist', // Directorio de salida
-    format: 'esm', // Usa ESM (módulos ECMAScript) para múltiples entradas
-    entryFileNames: '[name].bundle.js', // Nombra los archivos generados
+  {
+    input: 'src/barralateral/script.js',
+    output: {
+      file: 'dist/barralateral.bundle.js',
+      format: 'iife',
+      name: 'BarraLateral',
+    },
+    plugins: [
+      html({
+        include: '**/*.html', // Permite importar archivos HTML
+      }),
+      postcss({
+        extensions: ['.css'], // Procesa archivos CSS
+        inject: true,         // Inserta CSS en línea
+      }),
+      terser(),
+    ],
   },
-  plugins: [
-    html({
-      include: '**/*.html',
-    }),
-    postcss({
-      extensions: ['.css'],
-      inject: true,
-    }),
-    terser(),
-  ],
-};
-
-
+];
