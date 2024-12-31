@@ -48,3 +48,23 @@
 .fa-classic, .fa-regular, .fa-solid, .far, .fas {
   font-family: "Font Awesome 6 Free";
 }
+
+/* Sobrescribir estilos para la barra lateral */
+#barra-lateral-autoquizfillapp h1,
+#barra-lateral-autoquizfillapp .h1,
+#barra-lateral-autoquizfillapp h2,
+#barra-lateral-autoquizfillapp .h2,
+#barra-lateral-autoquizfillapp h3,
+#barra-lateral-autoquizfillapp .h3,
+#barra-lateral-autoquizfillapp h4,
+#barra-lateral-autoquizfillapp .h4,
+#barra-lateral-autoquizfillapp h5,
+#barra-lateral-autoquizfillapp .h5,
+#barra-lateral-autoquizfillapp h6,
+#barra-lateral-autoquizfillapp .h6 {
+    font-size: inherit;      /* O el valor que prefieras */
+    margin-bottom: inherit;  /* O el valor que prefieras */
+    font-weight: normal;     /* O el valor que prefieras */
+    line-height: normal;     /* O el valor que prefieras */
+    color: inherit;          /* O el color que prefieras */
+}
