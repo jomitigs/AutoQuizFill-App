@@ -79,3 +79,12 @@
   /* color: #000; */
 }
 
+/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */
+#barra-lateral-autoquizfillapp,
+#barra-lateral-autoquizfillapp *,
+#barra-lateral-autoquizfillapp *::before,
+#barra-lateral-autoquizfillapp *::after {
+    box-sizing: content-box; /* O el valor que prefieras */
+    /* Restablece o define otras propiedades del selector universal si es necesario */
+}
+
