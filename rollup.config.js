@@ -1,3 +1,5 @@
+// rollup.config.js
+
 import html from 'rollup-plugin-html';
 import postcss from 'rollup-plugin-postcss';
 import terser from '@rollup/plugin-terser';
@@ -8,7 +10,7 @@ export default [
     output: {
       file: 'dist/add-head.bundle.js',
       format: 'iife',
-      name: 'AddHead',
+      name: 'AddHeadBundle', // Nombre global (opcional)
     },
     plugins: [
       html({
@@ -18,15 +20,15 @@ export default [
         extensions: ['.css'], // Procesa archivos CSS
         inject: true,         // Inserta CSS en línea
       }),
-      terser(),
+      terser(), // Minifica el archivo final
     ],
   },
   {
-    input: 'src/barralateral/script.js',
+    input: 'src/barra-lateral/script.js',
     output: {
-      file: 'dist/barralateral.bundle.js',
+      file: 'dist/barra-lateral.bundle.js',
       format: 'iife',
-      name: 'BarraLateral',
+      name: 'BarraLateralBundle', // Nombre global (opcional)
     },
     plugins: [
       html({
@@ -36,7 +38,7 @@ export default [
         extensions: ['.css'], // Procesa archivos CSS
         inject: true,         // Inserta CSS en línea
       }),
-      terser(),
+      terser(), // Minifica el archivo final
     ],
   },
 ];
