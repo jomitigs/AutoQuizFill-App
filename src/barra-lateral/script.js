@@ -61,6 +61,29 @@ export function initBarraLateral() { // Exporta la función initBarraLateral
     console.log(`ajustarContenidoPagina: Ajustando margenLeft a ${barraWidth}px y ancho a calc(100% - ${barraWidth}px)`); // Log de los ajustes
   }
 
+  // Función para alternar la visibilidad de la barra lateral
+  function alternarBarraLateral() { // Define la función alternarBarraLateral
+    console.log('alternarBarraLateral: Alternando visibilidad de la barra lateral'); // Log de alternancia
+    if (isBarraVisible) { // Si la barra está visible
+      console.log('alternarBarraLateral: Ocultando barra lateral'); // Log de ocultar
+      barraLateral.style.display = 'none'; // Oculta la barra lateral
+      botonMostrarOcultar.innerHTML = iconFlecha; // Cambia el icono del botón
+      botonMostrarOcultar.style.left = '10px'; // Reposiciona el botón
+      document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
+      document.body.style.width = '100%'; // Resetea el ancho del body
+      isBarraVisible = false; // Actualiza el estado de visibilidad
+      localStorage.setItem('barraLateralVisible', 'false'); // Guarda el estado en localStorage
+    } else { // Si la barra no está visible
+      console.log('alternarBarraLateral: Mostrando barra lateral'); // Log de mostrar
+      barraLateral.style.display = 'flex'; // Muestra la barra lateral
+      botonMostrarOcultar.innerHTML = iconFlechaRotada; // Cambia el icono del botón
+      reposicionarBoton(); // Reposiciona el botón
+      ajustarContenidoPagina(); // Ajusta el contenido de la página
+      isBarraVisible = true; // Actualiza el estado de visibilidad
+      localStorage.setItem('barraLateralVisible', 'true'); // Guarda el estado en localStorage
+    }
+  }
+
   // Observador de cambios en el tamaño de la barra lateral
   const resizeObserver = new ResizeObserver(() => { // Crea un nuevo ResizeObserver
     console.log('resizeObserver: Cambio de tamaño detectado'); // Log de cambio de tamaño
@@ -72,23 +95,15 @@ export function initBarraLateral() { // Exporta la función initBarraLateral
   // Evento al hacer clic en el botón de mostrar/ocultar
   botonMostrarOcultar.addEventListener('click', () => { // Añade un listener de click al botón
     console.log('botonMostrarOcultar: click detectado'); // Log del click
-    if (isBarraVisible) { // Si la barra está visible
-      console.log('botonMostrarOcultar: Ocultando barra lateral'); // Log de ocultar
-      barraLateral.style.display = 'none'; // Oculta la barra lateral
-      botonMostrarOcultar.innerHTML = iconFlecha; // Cambia el icono del botón
-      botonMostrarOcultar.style.left = '10px'; // Reposiciona el botón
-      document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
-      document.body.style.width = '100%'; // Resetea el ancho del body
-      isBarraVisible = false; // Actualiza el estado de visibilidad
-      localStorage.setItem('barraLateralVisible', 'false'); // Guarda el estado en localStorage
-    } else { // Si la barra no está visible
-      console.log('botonMostrarOcultar: Mostrando barra lateral'); // Log de mostrar
-      barraLateral.style.display = 'flex'; // Muestra la barra lateral
-      botonMostrarOcultar.innerHTML = iconFlechaRotada; // Cambia el icono del botón
-      reposicionarBoton(); // Reposiciona el botón
-      ajustarContenidoPagina(); // Ajusta el contenido de la página
-      isBarraVisible = true; // Actualiza el estado de visibilidad
-      localStorage.setItem('barraLateralVisible', 'true'); // Guarda el estado en localStorage
+    alternarBarraLateral(); // Llama a la función para alternar la barra lateral
+  });
+
+  // Evento para detectar la combinación de teclas Ctrl + Q
+  document.addEventListener('keydown', (event) => { // Añade un listener de keydown al documento
+    if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) { // Verifica si se presionan Ctrl + Q
+      event.preventDefault(); // Previene la acción por defecto (si aplica)
+      console.log('keydown: Ctrl + Q detectado'); // Log de detección de atajo
+      alternarBarraLateral(); // Llama a la función para alternar la barra lateral
     }
   });
 
