@@ -37,8 +37,6 @@ export function agregarHead() {
 }
 
 // Exponer la función al objeto global (ej. Tampermonkey)
-window.Head = { // Asigna el objeto AutoQuizFillApp al window global
+window.addHead = { // Asigna el objeto AutoQuizFillApp al window global
     agregarHead, // Exponiendo la función initBarraLateral
   };
-
-  console.log("window.Head ha sido creado correctamente.");

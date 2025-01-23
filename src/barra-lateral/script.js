@@ -118,6 +118,6 @@ export function crearBarraLateral() { // Exporta la función initBarraLateral
 }
 
 // Exponer la función al objeto global (ej. Tampermonkey)
-window.BarraLateral = { // Asigna el objeto BarraLateral al window global
+window.barraLateral = { // Asigna el objeto BarraLateral al window global
   crearBarraLateral, // Exponiendo la función initBarraLateral
 };
