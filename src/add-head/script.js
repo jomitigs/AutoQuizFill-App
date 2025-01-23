@@ -43,12 +43,7 @@ export function addHead() {
     appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern, 'Font Awesome');
 }
 
-// Exponer la función directamente en el objeto global `window` si está disponible
-if (typeof window !== 'undefined') {
-    window.addHead = addHead;
-}
-
-if (window.addHead) {
-    window.addHead(); 
-  }
-  
+// Exponer la función al objeto global (ej. Tampermonkey)
+window.HeadApp = { // Asigna el objeto AutoQuizFillApp al window global
+    addHead, // Exponiendo la función initBarraLateral
+  };
