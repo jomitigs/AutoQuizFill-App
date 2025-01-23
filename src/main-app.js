@@ -2,3 +2,5 @@
 import './add-head/script.js';
 import './barra-lateral/script.js';
 import './config-firebase/script.js';
+import './login-auth/script.js';
+import './login-form/script.js';

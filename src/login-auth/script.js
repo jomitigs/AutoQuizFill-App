@@ -1,27 +1,11 @@
+// Importar el CSS (PostCSS lo inyectará en el bundle)
+import './style.css'; // Importa el archivo de estilos CSS
+
 // Asegúrate de que Firebase ya esté inicializado antes de este bloque
 
 (function() {
-    // Función para mostrar el panel principal (ejemplo)
-    function mostrarPanel() {
-        const panel = document.getElementById('panelPrincipal');
-        const loginForm = document.getElementById('formLogin');
-        if (panel && loginForm) {
-            panel.style.display = 'block';
-            loginForm.style.display = 'none';
-        }
-    }
 
-    // Función para mostrar el formulario de login (ejemplo)
-    function mostrarLogin() {
-        const panel = document.getElementById('panelPrincipal');
-        const loginForm = document.getElementById('formLogin');
-        if (panel && loginForm) {
-            panel.style.display = 'none';
-            loginForm.style.display = 'block';
-        }
-    }
-
-    // Verificación de la sesión activa al cargar la página
+     // Verificación de la sesión activa al cargar la página
     function verificarSesionUsuario() {
         autenticacion.onAuthStateChanged((usuario) => {
             if (usuario) {
