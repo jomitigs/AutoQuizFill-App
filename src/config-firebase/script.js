@@ -1,9 +1,9 @@
 // src/config-firebase/script.js
 
-// Importa Firebase
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
+// Importa solo las funciones necesarias de Firebase
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
 
 // =====================
 // Configuración de Firebase
@@ -18,17 +18,15 @@ const configuracionFirebaseAutoQuiz = {
     appId: "1:782692660220:web:8258d30da03e338f4c3879"
 };
 
-// Inicializa Firebase si no ha sido inicializado previamente
-if (!firebase.apps.length) {
-    firebase.initializeApp(configuracionFirebaseAutoQuiz);
-} else {
-    firebase.app(); // Usa la instancia ya inicializada
-}
+// Inicializa Firebase
+const app = initializeApp(configuracionFirebaseAutoQuiz);
 
 // Inicializa servicios de Firebase
-const autenticacion = firebase.auth();
-const database = firebase.database();
+const autenticacion = getAuth(app);
+const database = getDatabase(app);
 
 // Exponer las variables en el objeto global `window`
 window.autenticacion = autenticacion;
 window.database = database;
+
+export { autenticacion, database };
