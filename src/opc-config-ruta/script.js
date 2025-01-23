@@ -11,7 +11,7 @@ import { database } from '../config-firebase/script.js';
 export function opcionConfigRuta_html() {
     return `
     <div class="contenido-configruta">
-        <h3 class="title-optionmenu">Configuración de Ruta</h3>
+        <h3 id="titulo-configruta">Configuración de Ruta</h3>
 
     <!-- Contenedor Principal -->
         <div id="ultima-ruta-configruta" class="estilo-configruta-title no-seleccionado">
@@ -63,9 +63,8 @@ function comprobarRutaCiclo_ConfigRuta() {
         mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
         mensaje.style.color = 'red';
         mensaje.style.fontWeight = '500';
-        mensaje.style.fontSize = '1em';
-        mensaje.style.fontStyle = 'italic';
-        mensaje.style.textAlign = 'center';
+        mensaje.style.fontSize = '0.9em';
+        mensaje.style.textAlign = 'left';
         mensaje.style.marginBottom = '10px';
         mensaje.id = 'mensaje-ruta-invalida';
 
