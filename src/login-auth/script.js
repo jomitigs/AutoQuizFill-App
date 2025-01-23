@@ -1,3 +1,7 @@
+/* 
+  Este script maneja la autenticación (inicio/cierre de sesión), 
+  verifica el estado del usuario y controla la UI para AutoQuizFill.
+*/
 import './style.css';
 import {
   signInWithEmailAndPassword,
@@ -5,6 +9,9 @@ import {
   signOut
 } from 'firebase/auth';
 import { autenticacion } from '../config-firebase/script.js';
+import { panel_AutoFillQuizApp } from '../main-panel/script.js';
+import { menu_AutoFillQuizApp } from '../main-menu/script.js';
+
 
 const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
 const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
@@ -139,6 +146,12 @@ function init() {
   }
   crearFormularioLogin(barraLateral);
   verificarSesionUsuario();
+  panel_AutoFillQuizApp(barraLateral);
+
+  const menu = menu_AutoFillQuizApp();
+  barraLateral.appendChild(menu); // Asegúrate de agregarlo al contenedor correspondiente
+  
+
   configurarEventos();
 }
 
@@ -147,4 +160,5 @@ document.addEventListener('DOMContentLoaded', () => {
   init();
 });
 
+// Para poder llamar desde la consola
 window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz;

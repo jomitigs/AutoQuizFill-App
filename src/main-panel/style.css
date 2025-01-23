@@ -1,0 +1,93 @@
+/* El panel ocupará todo el ancho y la altura */
+#panel-autofillquizapp {
+    display: flex;
+    flex-direction: column; /* Disposición en columna */
+    height: 100vh; /* Ocupar toda la altura de la ventana */
+    width: 100%; /* Ocupar el 100% del ancho del contenedor padre */
+    background-color: #f4f7fa; /* Color de fondo más suave */
+    font-family: 'Poppins', sans-serif; /* Aplicando la fuente Poppins */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    border-radius: 8px; /* Bordes redondeados para suavizar el diseño */
+    box-sizing: border-box; /* Para evitar desbordamientos por padding */
+    overflow: hidden; /* Evitar que el contenido sobresalga */
+    position: relative; /* Necesario para contener los elementos hijos */
+}
+
+    /* Cabecera del panel: botón a la izquierda, título centrado */
+    .panel-header {
+        display: flex;
+        justify-content: flex-start; /* Alinear el botón y el título */
+        align-items: center;
+        padding: 15px 20px; /* Mayor espacio para una mejor sensación */
+        background-color: #ffffff; /* Fondo blanco limpio para el header */
+        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+        height: 60px; /* Asegura suficiente altura para el botón y el título */
+        position: relative;
+    }
+
+    /* Título centrado */
+    #titulo-autofillquizapp {
+        font-size: 22px; /* Tamaño más grande para el título */
+        font-weight: 600;
+        color: #34495e; /* Un color más oscuro y elegante */
+        text-align: center;
+        flex-grow: 1; /* Ocupar el espacio disponible */
+        margin-left: 20px; /* Ajuste para crear espacio entre el botón y el título */
+    }
+
+/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */
+#boton-hamburguesa-autofillquizapp {
+    background-color: #0073e6; /* Fondo blanco */
+    color: #ffffff; /* Azul moderno para el icono */
+    border: 2px solid #0073e6; /* Bordes sutiles con el mismo color que el icono */
+    border-radius: 5px; /* Botón redondo */
+    cursor: pointer; /* Cambia el cursor a mano */
+    font-size: 24px; /* Tamaño del icono */
+    width: 40px; /* Ancho fijo */
+    height: 40px; /* Alto fijo */
+    display: inline-flex; /* Usar flexbox para alinear */
+    justify-content: center; /* Centrar horizontalmente el icono */
+    align-items: center; /* Centrar verticalmente el icono */
+    padding: 0; /* Eliminar padding */
+    margin: 0; /* Eliminar márgenes */
+    position: relative; /* Mantener la posición en su contenedor */
+    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */
+    transition: all 0.3s ease; /* Transición suave para el hover */
+}
+
+/* Hover para darle efecto */
+#boton-hamburguesa-autofillquizapp:hover {
+    background-color: #002c67; /* Fondo azul al hacer hover */
+    color: #ffffff; /* Color blanco para el icono en hover */
+    border: 2px solid #002c67; /* Bordes sutiles con el mismo color que el icono */
+
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta ligeramente la sombra en hover */
+    transform: translateY(-2px); /* Levanta el botón ligeramente en hover */
+}
+
+/* Icono del botón de hamburguesa */
+#boton-hamburguesa-autofillquizapp i {
+    pointer-events: none; /* Asegura que el icono no interfiera con el clic */
+}
+
+
+/* Contenido principal ocupará el resto del espacio */
+#contenido-principal {
+    flex-grow: 1; /* Ocupar el espacio restante debajo del encabezado */
+    width: 100%; /* Asegurarse de que ocupe todo el ancho */
+    padding: 20px; /* Espaciado interno */
+    background-color: #ffffff; /* Fondo blanco para el contenido */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+    overflow-y: auto; /* Permitir scroll si el contenido es largo */
+    -ms-overflow-style: none;  /* Ocultar barra en IE y Edge */
+    scrollbar-width: none;  /* Ocultar barra en Firefox */
+    border-radius: 0 0 8px 8px; /* Redondear la parte inferior */
+    box-sizing: border-box; /* Evitar desbordamientos */
+}
+
+/* Ocultar barra de desplazamiento en navegadores basados en WebKit */
+#contenido-principal::-webkit-scrollbar {
+    display: none; /* Ocultar barra de desplazamiento */
+}

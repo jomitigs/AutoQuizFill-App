@@ -6,6 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { string } from 'rollup-plugin-string';
 
+
 export default {
   input: 'src/main-app.js',            // Único punto de entrada
   output: {
@@ -14,7 +15,7 @@ export default {
     name: 'MyBundle',              // Nombre global (opcional)
   },
   plugins: [
-    resolve(),
+    resolve({ browser: true }),
     commonjs(),
     string({
       include: '**/*.html', // Si necesitas importar archivos HTML como strings

@@ -1,0 +1,135 @@
+/* Estilos para el menú lateral */
+#menu-autofillquizapp {
+    position: fixed;
+    top: 0;
+    left: 0; /* Posicionar el menú a la izquierda */
+    min-width: 350px; /* Ancho de 350px */
+    max-width: 500px;
+    height: 100vh; /* Ocupar toda la altura de la pantalla */
+    background-color: #2c3e50; /* Fondo oscuro elegante */
+    color: #ecf0f1; /* Texto claro */
+    z-index: 10000;
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    padding-top: 20px;
+    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */
+    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */
+}
+
+
+/* Contenedor del botón cerrar y la palabra Menú */
+.contenedor-header-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */
+    padding: 10px;
+    position: relative;
+}
+
+/* Botón para cerrar el menú, alineado a la derecha */
+#boton-cerrar-menu-autofillquizapp {
+    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    position: absolute;
+    right: 25px; /* Posicionar a la derecha */
+}
+
+#boton-cerrar-menu-autofillquizapp:hover {
+    background-color: #c0392b; /* Cambio de color en hover */
+}
+
+/* Título "Menú", alineado a la izquierda */
+.titulo-menu {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ecf0f1;
+    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */
+    text-align: left;
+    flex-grow: 1; /* Ocupa el espacio disponible */
+    margin-left: 10px; /* Separación desde el borde izquierdo */
+}
+
+/* Contenedor de las opciones */
+.contenedor-opciones-menu {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Activar desplazamiento vertical */
+    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */
+    scrollbar-color: transparent transparent; /* Barra y pista transparentes */
+}
+
+/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */
+.contenedor-opciones-menu::-webkit-scrollbar {
+    width: 6px; /* Ancho de la barra de desplazamiento */
+}
+
+.contenedor-opciones-menu::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */
+    border-radius: 10px; /* Borde redondeado */
+}
+
+.contenedor-opciones-menu::-webkit-scrollbar-track {
+    background: transparent; /* Pista transparente */
+}
+
+
+/* Opciones del menú */
+.opcion-menu-autofillquizapp {
+    width: 100%;
+    padding: 15px 20px;
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font-size: 18px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+.opcion-menu-autofillquizapp:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */
+    padding-left: 30px; /* Animación de desplazamiento */
+}
+
+.opcion-menu-autofillquizapp i {
+    margin-right: 15px; /* Espacio entre el icono y el texto */
+}
+
+/* Contenedor para el botón de cerrar sesión */
+.contenedor-cerrar-sesion {
+    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */
+    padding: 20px;
+}
+
+/* Botón para cerrar sesión */
+.boton-cerrar-sesion {
+    width: 100%;
+    padding: 12px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */
+}
+
+.boton-cerrar-sesion:hover {
+    background-color: #c0392b;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}

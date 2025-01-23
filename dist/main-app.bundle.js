@@ -64,8 +64,8 @@
       }
     }
 
-    var css_248z$1 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 350px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 20px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n/* Estilos Específicos para Encabezados si se desean personalizar */\r\n#barra-lateral-autoquizfillapp h1,\r\n#barra-lateral-autoquizfillapp .h1 {\r\n    font-size: 2em;          /* Tamaño de fuente específico */\r\n    margin-bottom: 0.67em;   /* Margen inferior específico */\r\n    font-weight: bold;       /* Peso de fuente en negrita */\r\n    line-height: 1.2;        /* Altura de línea */\r\n    color: #333;             /* Color del texto */\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h2,\r\n#barra-lateral-autoquizfillapp .h2 {\r\n    font-size: 1.5em;\r\n    margin-bottom: 0.75em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h3,\r\n#barra-lateral-autoquizfillapp .h3 {\r\n    font-size: 1.17em;\r\n    margin-bottom: 0.83em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h4,\r\n#barra-lateral-autoquizfillapp .h4 {\r\n    font-size: 1em;\r\n    margin-bottom: 1.12em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h5,\r\n#barra-lateral-autoquizfillapp .h5 {\r\n    font-size: 0.83em;\r\n    margin-bottom: 1.5em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h6,\r\n#barra-lateral-autoquizfillapp .h6 {\r\n    font-size: 0.67em;\r\n    margin-bottom: 1.67em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n/* Estilos para Párrafos dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp p {\r\n    font-size: 1em;\r\n    line-height: 1.5;\r\n    color: #555;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n/* Estilos para Listas dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp ul {\r\n    list-style-type: disc;\r\n    padding-left: 20px;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp li {\r\n    margin-bottom: 0.5em;\r\n    color: #555;\r\n}\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
-    styleInject(css_248z$1);
+    var css_248z$4 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 350px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 20px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n/* Estilos Específicos para Encabezados si se desean personalizar */\r\n#barra-lateral-autoquizfillapp h1,\r\n#barra-lateral-autoquizfillapp .h1 {\r\n    font-size: 2em;          /* Tamaño de fuente específico */\r\n    margin-bottom: 0.67em;   /* Margen inferior específico */\r\n    font-weight: bold;       /* Peso de fuente en negrita */\r\n    line-height: 1.2;        /* Altura de línea */\r\n    color: #333;             /* Color del texto */\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h2,\r\n#barra-lateral-autoquizfillapp .h2 {\r\n    font-size: 1.5em;\r\n    margin-bottom: 0.75em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h3,\r\n#barra-lateral-autoquizfillapp .h3 {\r\n    font-size: 1.17em;\r\n    margin-bottom: 0.83em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h4,\r\n#barra-lateral-autoquizfillapp .h4 {\r\n    font-size: 1em;\r\n    margin-bottom: 1.12em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h5,\r\n#barra-lateral-autoquizfillapp .h5 {\r\n    font-size: 0.83em;\r\n    margin-bottom: 1.5em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h6,\r\n#barra-lateral-autoquizfillapp .h6 {\r\n    font-size: 0.67em;\r\n    margin-bottom: 1.67em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n/* Estilos para Párrafos dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp p {\r\n    font-size: 1em;\r\n    line-height: 1.5;\r\n    color: #555;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n/* Estilos para Listas dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp ul {\r\n    list-style-type: disc;\r\n    padding-left: 20px;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp li {\r\n    margin-bottom: 0.5em;\r\n    color: #555;\r\n}\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
+    styleInject(css_248z$4);
 
     // Importar el archivo HTML como cadena
 
@@ -21036,8 +21036,366 @@
     window.autenticacion = autenticacion;
     window.database = database;
 
-    var css_248z = "/* El panel ocupará todo el ancho y la altura */\r\n#panel-autofillquizapp {\r\n    display: flex;\r\n    flex-direction: column;\r\n    /* Disposición en columna */\r\n    height: 100vh;\r\n    /* Ocupar toda la altura de la ventana */\r\n    width: 100%;\r\n    /* Ocupar el 100% del ancho del contenedor padre */\r\n    background-color: #f4f7fa;\r\n    /* Color de fondo más suave */\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicando la fuente Poppins */\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave */\r\n    border-radius: 8px;\r\n    /* Bordes redondeados para suavizar el diseño */\r\n    box-sizing: border-box;\r\n    /* Para evitar desbordamientos por padding */\r\n    overflow: hidden;\r\n    /* Evitar que el contenido sobresalga */\r\n    position: relative;\r\n    /* Necesario para contener los elementos hijos */\r\n}\r\n\r\n/* Cabecera del panel: botón a la izquierda, título centrado */\r\n.panel-header {\r\n    display: flex;\r\n    justify-content: flex-start;\r\n    /* Alinear el botón y el título */\r\n    align-items: center;\r\n    padding: 15px 20px;\r\n    /* Mayor espacio para una mejor sensación */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco limpio para el header */\r\n    border-bottom: 1px solid #e1e4e8;\r\n    /* Borde inferior suave */\r\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    height: 60px;\r\n    /* Asegura suficiente altura para el botón y el título */\r\n    position: relative;\r\n}\r\n\r\n/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 22px;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n    margin-left: 20px;\r\n    /* Ajuste para crear espacio entre el botón y el título */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n#contenido-principal {\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio restante debajo del encabezado */\r\n    width: 100%;\r\n    /* Asegurarse de que ocupe todo el ancho */\r\n    padding: 20px;\r\n    /* Espaciado interno */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco para el contenido */\r\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    overflow-y: auto;\r\n    /* Permitir scroll si el contenido es largo */\r\n    -ms-overflow-style: none;\r\n    /* Ocultar barra en IE y Edge */\r\n    scrollbar-width: none;\r\n    /* Ocultar barra en Firefox */\r\n    border-radius: 0 0 8px 8px;\r\n    /* Redondear la parte inferior */\r\n    box-sizing: border-box;\r\n    /* Evitar desbordamientos */\r\n}\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+    var css_248z$3 = "/* El panel ocupará todo el ancho y la altura */\r\n#panel-autofillquizapp {\r\n    display: flex;\r\n    flex-direction: column;\r\n    /* Disposición en columna */\r\n    height: 100vh;\r\n    /* Ocupar toda la altura de la ventana */\r\n    width: 100%;\r\n    /* Ocupar el 100% del ancho del contenedor padre */\r\n    background-color: #f4f7fa;\r\n    /* Color de fondo más suave */\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicando la fuente Poppins */\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave */\r\n    border-radius: 8px;\r\n    /* Bordes redondeados para suavizar el diseño */\r\n    box-sizing: border-box;\r\n    /* Para evitar desbordamientos por padding */\r\n    overflow: hidden;\r\n    /* Evitar que el contenido sobresalga */\r\n    position: relative;\r\n    /* Necesario para contener los elementos hijos */\r\n}\r\n\r\n/* Cabecera del panel: botón a la izquierda, título centrado */\r\n.panel-header {\r\n    display: flex;\r\n    justify-content: flex-start;\r\n    /* Alinear el botón y el título */\r\n    align-items: center;\r\n    padding: 15px 20px;\r\n    /* Mayor espacio para una mejor sensación */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco limpio para el header */\r\n    border-bottom: 1px solid #e1e4e8;\r\n    /* Borde inferior suave */\r\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    height: 60px;\r\n    /* Asegura suficiente altura para el botón y el título */\r\n    position: relative;\r\n}\r\n\r\n/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 22px;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n    margin-left: 20px;\r\n    /* Ajuste para crear espacio entre el botón y el título */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n#contenido-principal {\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio restante debajo del encabezado */\r\n    width: 100%;\r\n    /* Asegurarse de que ocupe todo el ancho */\r\n    padding: 20px;\r\n    /* Espaciado interno */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco para el contenido */\r\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    overflow-y: auto;\r\n    /* Permitir scroll si el contenido es largo */\r\n    -ms-overflow-style: none;\r\n    /* Ocultar barra en IE y Edge */\r\n    scrollbar-width: none;\r\n    /* Ocultar barra en Firefox */\r\n    border-radius: 0 0 8px 8px;\r\n    /* Redondear la parte inferior */\r\n    box-sizing: border-box;\r\n    /* Evitar desbordamientos */\r\n}\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+    styleInject(css_248z$3);
+
+    var css_248z$2 = "/* El panel ocupará todo el ancho y la altura */\r\n#panel-autofillquizapp {\r\n    display: flex;\r\n    flex-direction: column; /* Disposición en columna */\r\n    height: 100vh; /* Ocupar toda la altura de la ventana */\r\n    width: 100%; /* Ocupar el 100% del ancho del contenedor padre */\r\n    background-color: #f4f7fa; /* Color de fondo más suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicando la fuente Poppins */\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */\r\n    border-radius: 8px; /* Bordes redondeados para suavizar el diseño */\r\n    box-sizing: border-box; /* Para evitar desbordamientos por padding */\r\n    overflow: hidden; /* Evitar que el contenido sobresalga */\r\n    position: relative; /* Necesario para contener los elementos hijos */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        height: 60px; /* Asegura suficiente altura para el botón y el título */\r\n        position: relative;\r\n    }\r\n\r\n    /* Título centrado */\r\n    #titulo-autofillquizapp {\r\n        font-size: 22px; /* Tamaño más grande para el título */\r\n        font-weight: 600;\r\n        color: #34495e; /* Un color más oscuro y elegante */\r\n        text-align: center;\r\n        flex-grow: 1; /* Ocupar el espacio disponible */\r\n        margin-left: 20px; /* Ajuste para crear espacio entre el botón y el título */\r\n    }\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6; /* Fondo blanco */\r\n    color: #ffffff; /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6; /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px; /* Botón redondo */\r\n    cursor: pointer; /* Cambia el cursor a mano */\r\n    font-size: 24px; /* Tamaño del icono */\r\n    width: 40px; /* Ancho fijo */\r\n    height: 40px; /* Alto fijo */\r\n    display: inline-flex; /* Usar flexbox para alinear */\r\n    justify-content: center; /* Centrar horizontalmente el icono */\r\n    align-items: center; /* Centrar verticalmente el icono */\r\n    padding: 0; /* Eliminar padding */\r\n    margin: 0; /* Eliminar márgenes */\r\n    position: relative; /* Mantener la posición en su contenedor */\r\n    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease; /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67; /* Fondo azul al hacer hover */\r\n    color: #ffffff; /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67; /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px); /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none; /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n#contenido-principal {\r\n    flex-grow: 1; /* Ocupar el espacio restante debajo del encabezado */\r\n    width: 100%; /* Asegurarse de que ocupe todo el ancho */\r\n    padding: 20px; /* Espaciado interno */\r\n    background-color: #ffffff; /* Fondo blanco para el contenido */\r\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n    overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n    -ms-overflow-style: none;  /* Ocultar barra en IE y Edge */\r\n    scrollbar-width: none;  /* Ocultar barra en Firefox */\r\n    border-radius: 0 0 8px 8px; /* Redondear la parte inferior */\r\n    box-sizing: border-box; /* Evitar desbordamientos */\r\n}\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none; /* Ocultar barra de desplazamiento */\r\n}";
+    styleInject(css_248z$2);
+
+    var css_248z$1 = "";
+    styleInject(css_248z$1);
+
+    function opcionAutoQuiz_html$1() {
+        return `
+     <div class="body-autoquiz">
+
+<div class="container-autoquiz">
+
+    <div class="users">
+
+        <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
+        <div class="usuario-actual">
+            <i class="fa-solid fa-user"></i>
+            <span id="nombre-usuario-actual" class="nombre-usuario"></span>
+        </div>
+
+<select id="siguiente-usuario" class="select-siguiente-usuario" >
+</select>
+
+<button id="boton-siguiente-usuario" class="boton-siguiente-usuario">
+    <i class="fa-solid fa-angles-right"></i>
+</button>
+
+    </div>
+
+
+    <!-- Contenedor Principal -->
+    <div id="ultima-ruta-configruta" class="estilo-configruta-title no-seleccionado">
+
+        <!-- Contenedor para Ruta y Ciclo apilados verticalmente -->
+        <div class="ruta-ciclo-container">
+
+            <!-- Ruta -->
+            <div id="ruta-configruta" class="title-configruta-ruta">
+                <span class="label-configruta">Ruta:</span>
+            </div>
+
+            <!-- Ciclo -->
+            <div id="ciclo-configruta" class="title-configruta-ciclo">
+                <span class="label-configruta">Ciclo:</span>
+            </div>
+
+        </div>
+    </div>
+
+            <!-- Contenedor para Subject Dinamic -->
+<div id="container-ruta-dinamica" class="subcontainer-autoquiz-autosavereview" style="display: none;" >
+
+
+        <div class="header-autoquiz">
+            <!-- Título y Switch -->
+            <h3 id="titulo-autoquiz-subject-dinamic">Ruta Dinámica</h3>
+
+            <label class="switch-autoquiz">
+                <input type="checkbox" id="switch-ruta-dinamica">
+                <span class="slider round"></span>
+            </label>
+
+        </div>
+
+        <div id="body-autoquiz-autosavereview-subject-dinamic" class="body-autoquiz">
+
+<div id="selects-subject-dinamic" >
+</div>
+
+        </div>
+    </div>
+
+
+    <!-- Nuevo contenedor para AutoFill-->
+    <div id="container-autofill" class="subcontainer-autoquiz-autofill" style="display: none;">
+
+        <div class="header-autoquiz">
+            <h2 id="titulo-autoquiz">AutoFill</h2>
+
+            <label class="switch-autoquiz">
+                <input type="checkbox" id="switch-autofill">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <!-- Contenido de AutoFill-->
+        <div id="body-autoquiz-autofill" class="body-autoquiz" style="display: none;">
+
+            <!-- Contenedor dinámico para las preguntas generadas -->
+            <div id="contenedor-preguntas" class="contenedor-preguntas">
+                <!-- Aquí se insertarán dinámicamente los detalles de cada pregunta -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contenedor para AutoSave -->
+    <div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
+
+        <div class="header-autoquiz">
+            <!-- Título y Switch -->
+            <h2 id="titulo-autoquiz">AutoSave</h2>
+            <label class="switch-autoquiz">
+                <input type="checkbox" id="switch-autosave">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <!-- Contenido de AutoSave -->
+        <div id="body-autoquiz-autosave" class="body-autoquiz">
+
+            <div class="dato-autoquiz">
+                <div>
+                    <span id="respuestasautosave"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Contenedor para AutoSaveReview -->
+    <div id="container-autosavereview" class="subcontainer-autoquiz-autosavereview" style="display: none;">
+
+        <div class="header-autoquiz">
+            <!-- Título y Switch -->
+            <h3 id="titulo-autoquiz">AutoSaveReview</h3>
+            <label class="switch-autoquiz">
+                <input type="checkbox" id="switch-autosavereview">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <!-- Contenido de AutoSaveReview -->
+        <div id="body-autoquiz-autosavereview" class="body-autoquiz">
+
+            <div class="dato-autoquiz">
+                <div>
+                    <span id="respuestasautosavereview"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Contenedor Verified -->
+    <div id="container-verified" class="subcontainer-autoquiz-verified" style="display: none;">
+
+        <!-- Head Verified -->
+        <div class="header-autoquiz">
+        <h4 id="titulo-autoquiz">Verificar Preguntas</h4>
+
+        </div>
+
+        <!-- Body Verified -->
+        <div id="body-autoquiz-verified" class="body-autoquiz">
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+`;
+    }
+
+    // Exportación nombrada de la función para que pueda ser importada en otro script
+    function panel_AutoFillQuizApp(barraLateral) {
+        const contenedor = document.createElement('div');
+        contenedor.id = 'panel-autofillquizapp';
+        contenedor.classList.add('panel-autofillquizapp');
+        contenedor.style.display = 'none';
+      
+        const panelHeader = document.createElement('div');
+        panelHeader.classList.add('panel-header');
+      
+        const botonMenu = document.createElement('button');
+        botonMenu.id = 'boton-hamburguesa-autofillquizapp';
+        botonMenu.classList.add('boton-hamburguesa-autofillquizapp');
+        botonMenu.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      
+        const tituloOpcion = document.createElement('span');
+        tituloOpcion.id = 'titulo-autofillquizapp';
+        tituloOpcion.classList.add('titulo-autofillquizapp');
+        tituloOpcion.innerHTML = 'AutoFillQuiz App';
+      
+        const contenedorContenido = document.createElement('div');
+        contenedorContenido.id = 'contenido-principal';
+        contenedorContenido.classList.add('contenido-principal-autofillquizapp');
+        contenedorContenido.innerHTML = opcionAutoQuiz_html$1();
+      
+        panelHeader.appendChild(botonMenu);
+        panelHeader.appendChild(tituloOpcion);
+        contenedor.appendChild(panelHeader);
+        contenedor.appendChild(contenedorContenido);
+        barraLateral.appendChild(contenedor);
+      
+        setTimeout(() => {
+          opcionAutoQuiz_js(); 
+        }, 100);
+      
+        botonMenu.addEventListener('click', () => {
+          const menu = document.getElementById('menu-autofillquizapp');
+          if (menu) {
+            menu.style.display = 'flex';
+          } else {
+            console.error("El menú no se encontró en el DOM.");
+          }
+        });
+      
+        return contenedor;
+      }
+
+    var css_248z = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
     styleInject(css_248z);
+
+    function menu_AutoFillQuizApp() {
+        // Crear el contenedor del menú lateral
+        const menu = document.createElement('div');
+        menu.id = 'menu-autofillquizapp';
+        menu.classList.add('menu-autofillquizapp');
+        menu.style.display = 'none'; // Oculto por defecto
+
+        // Crear el contenedor para el botón de cerrar y la palabra Menú
+        const contenedorHeader = document.createElement('div');
+        contenedorHeader.classList.add('contenedor-header-menu');
+
+        // Título "Menú"
+        const tituloMenu = document.createElement('span');
+        tituloMenu.classList.add('titulo-menu');
+        tituloMenu.innerText = 'Menú';
+
+        // Botón para cerrar el menú
+        const botonCerrar = document.createElement('button');
+        botonCerrar.id = 'boton-cerrar-menu-autofillquizapp';
+        botonCerrar.classList.add('boton-cerrar-menu-autofillquizapp');
+        botonCerrar.innerHTML = '<i class="fa-solid fa-times"></i>'; // Icono de cierre
+
+        // Añadir evento para cerrar el menú cuando se haga clic en el botón
+        botonCerrar.addEventListener('click', () => {
+            menu.style.display = 'none'; // Ocultar menú
+        });
+
+        // Añadir el botón de cerrar y el título al contenedor de cabecera
+        contenedorHeader.appendChild(botonCerrar);
+        contenedorHeader.appendChild(tituloMenu);
+
+        // Crear el contenedor de las opciones del menú
+        const contenedorOpciones = document.createElement('div');
+        contenedorOpciones.classList.add('contenedor-opciones-menu');
+
+        // Crear las opciones del menú, incluyendo la nueva opción "Gestion de Usuarios"
+        const opciones = ['AutoFill', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios'];
+        opciones.forEach(opcion => {
+            const botonOpcion = document.createElement('button');
+            botonOpcion.id = `opcion-${opcion.toLowerCase().replace(/ /g, '-')}-autofillquizapp`;
+            botonOpcion.classList.add('opcion-menu-autofillquizapp');
+
+            // Asignar el icono correspondiente
+            let icono;
+            switch (opcion) {
+                case 'AutoFill':
+                    icono = 'edit';
+                    break;
+                case 'Configuración de Ruta':
+                    icono = 'database';
+                    break;
+                case 'Generar PDF de preguntas':
+                    icono = 'file-pdf';
+                    break;
+                case 'Gestión de Usuarios':
+                    icono = 'id-card';
+                    break;
+                default:
+                    icono = 'circle';
+            }
+
+            botonOpcion.innerHTML = `<i class="fa-solid fa-${icono}"></i> ${opcion}`; // Icono según la opción
+
+            // Añadir evento para manejar la selección de una opción del menú
+            botonOpcion.addEventListener('click', async () => { // Convertir la función en asíncrona
+                const contenedorContenido = document.getElementById('contenido-principal');
+                if (contenedorContenido) {
+                    // Mostrar el contenido y ejecutar el script correspondiente a la opción seleccionada
+                    if (opcion === 'AutoFill') {
+                        localStorage.setItem('ultimoHtml', 'opcionAutoQuiz_html' );
+                        localStorage.setItem('ultimoJs', 'opcionAutoQuiz_js');
+
+                        contenedorContenido.innerHTML = opcionAutoQuiz_html(); // Mostrar contenido de AutoFill
+
+                        try {
+                            await opcionAutoQuiz_js(); // Ejecutar el script de AutoQuiz y esperar su finalización
+
+                        } catch (error) {
+                            console.error('Error al ejecutar opcionAutoQuiz_js:', error);
+                        }
+
+                    } else if (opcion === 'Configuración de Ruta') {
+                        localStorage.setItem('ultimoHtml', 'opcionConfigRuta_html' );
+                        localStorage.setItem('ultimoJs', 'opcionConfigRuta_js');
+
+                        contenedorContenido.innerHTML = opcionConfigRuta_html(); // Mostrar contenido de Configuración de Ruta
+                        opcionConfigRuta_js(); // Ejecutar el script de Configuración de Ruta
+                    } else if (opcion === 'Generar PDF de preguntas') {
+                        localStorage.setItem('ultimoHtml', 'opcionGenerarPDF_html' );
+                        localStorage.setItem('ultimoJs', 'opcionGenerarPDF_js');
+
+                        contenedorContenido.innerHTML = opcionGenerarPDF_html(); // Mostrar contenido de Generar PDF
+                        opcionGenerarPDF_js(); // Ejecutar el script para generar PDF
+                    } else if (opcion === 'Gestión de Usuarios') {
+                        localStorage.setItem('ultimoHtml', 'opcionGestionUsuarios_html' );
+                        localStorage.setItem('ultimoJs', 'opcionGestionUsuarios_js');
+
+                        contenedorContenido.innerHTML = opcionGestionUsuarios_html(); // Mostrar contenido de Gestión de Usuarios
+                        opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
+                    }
+                    menu.style.display = 'none'; // Ocultar el menú después de seleccionar una opción
+                }
+            });
+
+            // Añadir el botón de opción al contenedor de opciones
+            contenedorOpciones.appendChild(botonOpcion);
+        });
+
+        // Crear el contenedor para el botón de cerrar sesión
+        const contenedorCerrarSesion = document.createElement('div');
+        contenedorCerrarSesion.classList.add('contenedor-cerrar-sesion');
+
+        // Botón para cerrar sesión
+        const botonCerrarSesion = document.createElement('button');
+        botonCerrarSesion.id = 'boton-cerrar-sesion';
+        botonCerrarSesion.classList.add('boton-cerrar-sesion');
+        botonCerrarSesion.innerText = 'Cerrar Sesión';
+
+        // Asignar la función de cerrar sesión y ocultar el menú
+        botonCerrarSesion.addEventListener('click', () => {
+            cerrarSesionAutoQuiz(); // Llama a la función para cerrar sesión
+            menu.style.display = 'none'; // Ocultar el menú después de cerrar sesión
+        });
+
+        // Añadir el botón de cerrar sesión al contenedor
+        contenedorCerrarSesion.appendChild(botonCerrarSesion);
+
+        // Añadir el contenedor de cabecera, opciones y el botón de cerrar sesión al menú
+        menu.appendChild(contenedorHeader);
+        menu.appendChild(contenedorOpciones);
+        menu.appendChild(contenedorCerrarSesion);
+
+        // Retornar el menú para ser usado en otro lugar
+        return menu;
+    }
+
+    /* 
+      Este script maneja la autenticación (inicio/cierre de sesión), 
+      verifica el estado del usuario y controla la UI para AutoQuizFill.
+    */
+
 
     const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
     const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
@@ -21122,7 +21480,7 @@
         .catch((error) => mostrarError(error.message));
     }
 
-    function cerrarSesionAutoQuiz() {
+    function cerrarSesionAutoQuiz$1() {
       console.log('[AutoQuizFill] Cerrando sesión...');
       signOut(autenticacion)
         .then(() => {
@@ -21159,7 +21517,7 @@
     function configurarEventos() {
       const botonCerrarSesion = document.getElementById('botonCerrarSesion');
       if (botonCerrarSesion) {
-        botonCerrarSesion.addEventListener('click', cerrarSesionAutoQuiz);
+        botonCerrarSesion.addEventListener('click', cerrarSesionAutoQuiz$1);
       }
     }
 
@@ -21172,6 +21530,12 @@
       }
       crearFormularioLogin(barraLateral);
       verificarSesionUsuario();
+      panel_AutoFillQuizApp(barraLateral);
+
+      const menu = menu_AutoFillQuizApp();
+      barraLateral.appendChild(menu); // Asegúrate de agregarlo al contenedor correspondiente
+      
+
       configurarEventos();
     }
 
@@ -21180,6 +21544,7 @@
       init();
     });
 
-    window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz;
+    // Para poder llamar desde la consola
+    window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz$1;
 
 })();
