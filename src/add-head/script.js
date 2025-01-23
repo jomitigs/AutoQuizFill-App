@@ -41,5 +41,4 @@ window.Head = { // Asigna el objeto AutoQuizFillApp al window global
     agregarHead, // Exponiendo la función initBarraLateral
   };
 
-  // En otro archivo, si 'addHead.js' se ha importado o ya se ha cargado:
-window.Head.agregarHead();
+  console.log("window.Head ha sido creado correctamente.");
