@@ -5,7 +5,7 @@ import html from './index.html'; // Importa el contenido de index.html como una 
 import './style.css'; // Importa el archivo de estilos CSS
 
 // Función para inicializar la barra lateral
-export function initBarraLateral() { // Exporta la función initBarraLateral
+export function crearBarraLateral() { // Exporta la función initBarraLateral
   //console.log('initBarraLateral: Iniciando barra lateral...'); // Log de inicio
 
   // 1. Insertar el contenido HTML en el DOM
@@ -118,6 +118,6 @@ export function initBarraLateral() { // Exporta la función initBarraLateral
 }
 
 // Exponer la función al objeto global (ej. Tampermonkey)
-window.AutoQuizFillApp = { // Asigna el objeto AutoQuizFillApp al window global
-  initBarraLateral, // Exponiendo la función initBarraLateral
+window.BarraLateral = { // Asigna el objeto BarraLateral al window global
+  crearBarraLateral, // Exponiendo la función initBarraLateral
 };
