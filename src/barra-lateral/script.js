@@ -5,7 +5,7 @@ import html from './index.html'; // Importa el contenido de index.html como una 
 import './style.css'; // Importa el archivo de estilos CSS
 
 // Encapsular el código dentro de una IIFE
-(function() {
+(function () {
   // 1. Insertar el contenido HTML en el DOM
   document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
 
@@ -82,7 +82,7 @@ import './style.css'; // Importa el archivo de estilos CSS
 
   // Evento al hacer clic en el botón de mostrar/ocultar
   botonMostrarOcultar.addEventListener('click', () => {
-    console.log('botonMostrarOcultar: click detectado');
+    //console.log('botonMostrarOcultar: click detectado');
     alternarBarraLateral();
   });
 

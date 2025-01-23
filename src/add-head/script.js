@@ -22,9 +22,9 @@ const appendLinkIfNotExists = (href, pattern, resourceName) => {
         link.rel = 'stylesheet';
         link.href = href;
         document.head.appendChild(link);
-        console.log(`addHead: ${resourceName} inyectado en <head>`);
+        // console.log(`addHead: ${resourceName} inyectado en <head>`);
     } else {
-        console.log(`addHead: ${resourceName} ya existe en <head>`);
+        // console.log(`addHead: ${resourceName} ya existe en <head>`);
     }
 };
 

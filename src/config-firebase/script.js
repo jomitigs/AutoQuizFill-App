@@ -19,18 +19,18 @@ const configuracionFirebaseAutoQuiz = {
 };
 
 // Muestra la configuración en la consola para depuración
-console.log("Configuración de Firebase:", configuracionFirebaseAutoQuiz);
+//console.log("Configuración de Firebase:", configuracionFirebaseAutoQuiz);
 
 // Inicializa Firebase
 const app = initializeApp(configuracionFirebaseAutoQuiz);
-console.log("Firebase App inicializada:", app);
+//console.log("Firebase App inicializada:", app);
 
 // Inicializa servicios de Firebase
 const autenticacion = getAuth(app);
-console.log("Servicio de autenticación (Auth) inicializado:", autenticacion);
+//console.log("Servicio de autenticación (Auth) inicializado:", autenticacion);
 
 const database = getDatabase(app);
-console.log("Servicio de base de datos (Database) inicializado:", database);
+//console.log("Servicio de base de datos (Database) inicializado:", database);
 
 // Exponer las variables en el objeto global `window`
 window.autenticacion = autenticacion;
