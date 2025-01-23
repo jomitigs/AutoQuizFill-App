@@ -20,7 +20,7 @@ call git add .
 echo =========================================================================
 echo Realizando commit...
 echo =========================================================================
-call git commit -m "Descripción de los cambios"
+call git commit -m "AutoGuardado"
 
 echo =========================================================================
 echo Haciendo push al repositorio remoto...
