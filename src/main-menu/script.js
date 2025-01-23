@@ -1,4 +1,6 @@
 import './style.css';
+import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
+
 
 export function menu_AutoFillQuizApp() {
     // Crear el contenedor del menú lateral

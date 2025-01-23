@@ -5,3 +5,4 @@ import './config-firebase/script.js';
 import './login-auth/script.js';
 import './main-panel/script.js';
 import './opc-autofill-moodle/autoquiz.js';
+import './opc-config-ruta/script.js';

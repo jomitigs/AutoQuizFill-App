@@ -64,8 +64,8 @@
       }
     }
 
-    var css_248z$4 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 350px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 20px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n/* Estilos Específicos para Encabezados si se desean personalizar */\r\n#barra-lateral-autoquizfillapp h1,\r\n#barra-lateral-autoquizfillapp .h1 {\r\n    font-size: 2em;          /* Tamaño de fuente específico */\r\n    margin-bottom: 0.67em;   /* Margen inferior específico */\r\n    font-weight: bold;       /* Peso de fuente en negrita */\r\n    line-height: 1.2;        /* Altura de línea */\r\n    color: #333;             /* Color del texto */\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h2,\r\n#barra-lateral-autoquizfillapp .h2 {\r\n    font-size: 1.5em;\r\n    margin-bottom: 0.75em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h3,\r\n#barra-lateral-autoquizfillapp .h3 {\r\n    font-size: 1.17em;\r\n    margin-bottom: 0.83em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h4,\r\n#barra-lateral-autoquizfillapp .h4 {\r\n    font-size: 1em;\r\n    margin-bottom: 1.12em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h5,\r\n#barra-lateral-autoquizfillapp .h5 {\r\n    font-size: 0.83em;\r\n    margin-bottom: 1.5em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h6,\r\n#barra-lateral-autoquizfillapp .h6 {\r\n    font-size: 0.67em;\r\n    margin-bottom: 1.67em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n/* Estilos para Párrafos dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp p {\r\n    font-size: 1em;\r\n    line-height: 1.5;\r\n    color: #555;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n/* Estilos para Listas dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp ul {\r\n    list-style-type: disc;\r\n    padding-left: 20px;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp li {\r\n    margin-bottom: 0.5em;\r\n    color: #555;\r\n}\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
-    styleInject(css_248z$4);
+    var css_248z$5 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 350px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 20px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n/* Estilos Específicos para Encabezados si se desean personalizar */\r\n#barra-lateral-autoquizfillapp h1,\r\n#barra-lateral-autoquizfillapp .h1 {\r\n    font-size: 2em;          /* Tamaño de fuente específico */\r\n    margin-bottom: 0.67em;   /* Margen inferior específico */\r\n    font-weight: bold;       /* Peso de fuente en negrita */\r\n    line-height: 1.2;        /* Altura de línea */\r\n    color: #333;             /* Color del texto */\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h2,\r\n#barra-lateral-autoquizfillapp .h2 {\r\n    font-size: 1.5em;\r\n    margin-bottom: 0.75em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h3,\r\n#barra-lateral-autoquizfillapp .h3 {\r\n    font-size: 1.17em;\r\n    margin-bottom: 0.83em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h4,\r\n#barra-lateral-autoquizfillapp .h4 {\r\n    font-size: 1em;\r\n    margin-bottom: 1.12em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h5,\r\n#barra-lateral-autoquizfillapp .h5 {\r\n    font-size: 0.83em;\r\n    margin-bottom: 1.5em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp h6,\r\n#barra-lateral-autoquizfillapp .h6 {\r\n    font-size: 0.67em;\r\n    margin-bottom: 1.67em;\r\n    font-weight: bold;\r\n    line-height: 1.2;\r\n    color: #333;\r\n}\r\n\r\n/* Estilos para Párrafos dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp p {\r\n    font-size: 1em;\r\n    line-height: 1.5;\r\n    color: #555;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n/* Estilos para Listas dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp ul {\r\n    list-style-type: disc;\r\n    padding-left: 20px;\r\n    margin-bottom: 1em;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp li {\r\n    margin-bottom: 0.5em;\r\n    color: #555;\r\n}\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
+    styleInject(css_248z$5);
 
     // Importar el archivo HTML como cadena
 
@@ -11182,6 +11182,27 @@
         return typeof Windows === 'object' && typeof Windows.UI === 'object';
     };
     /**
+     * Converts a server error code to a JavaScript Error
+     */
+    function errorForServerCode(code, query) {
+        let reason = 'Unknown Error';
+        if (code === 'too_big') {
+            reason =
+                'The data requested exceeds the maximum size ' +
+                    'that can be accessed with a single request.';
+        }
+        else if (code === 'permission_denied') {
+            reason = "Client doesn't have permission to access the desired data.";
+        }
+        else if (code === 'unavailable') {
+            reason = 'The service is unavailable';
+        }
+        const error = new Error(code + ' at ' + query._path.toString() + ': ' + reason);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        error.code = code.toUpperCase();
+        return error;
+    }
+    /**
      * Used to test for integer-looking strings
      */
     const INTEGER_REGEXP_ = new RegExp('^-?(0*)\\d{1,10}$');
@@ -16533,6 +16554,421 @@
      * limitations under the License.
      */
     /**
+     * Doesn't really filter nodes but applies an index to the node and keeps track of any changes
+     */
+    class IndexedFilter {
+        constructor(index_) {
+            this.index_ = index_;
+        }
+        updateChild(snap, key, newChild, affectedPath, source, optChangeAccumulator) {
+            assert(snap.isIndexed(this.index_), 'A node must be indexed if only a child is updated');
+            const oldChild = snap.getImmediateChild(key);
+            // Check if anything actually changed.
+            if (oldChild.getChild(affectedPath).equals(newChild.getChild(affectedPath))) {
+                // There's an edge case where a child can enter or leave the view because affectedPath was set to null.
+                // In this case, affectedPath will appear null in both the old and new snapshots.  So we need
+                // to avoid treating these cases as "nothing changed."
+                if (oldChild.isEmpty() === newChild.isEmpty()) {
+                    // Nothing changed.
+                    // This assert should be valid, but it's expensive (can dominate perf testing) so don't actually do it.
+                    //assert(oldChild.equals(newChild), 'Old and new snapshots should be equal.');
+                    return snap;
+                }
+            }
+            if (optChangeAccumulator != null) {
+                if (newChild.isEmpty()) {
+                    if (snap.hasChild(key)) {
+                        optChangeAccumulator.trackChildChange(changeChildRemoved(key, oldChild));
+                    }
+                    else {
+                        assert(snap.isLeafNode(), 'A child remove without an old child only makes sense on a leaf node');
+                    }
+                }
+                else if (oldChild.isEmpty()) {
+                    optChangeAccumulator.trackChildChange(changeChildAdded(key, newChild));
+                }
+                else {
+                    optChangeAccumulator.trackChildChange(changeChildChanged(key, newChild, oldChild));
+                }
+            }
+            if (snap.isLeafNode() && newChild.isEmpty()) {
+                return snap;
+            }
+            else {
+                // Make sure the node is indexed
+                return snap.updateImmediateChild(key, newChild).withIndex(this.index_);
+            }
+        }
+        updateFullNode(oldSnap, newSnap, optChangeAccumulator) {
+            if (optChangeAccumulator != null) {
+                if (!oldSnap.isLeafNode()) {
+                    oldSnap.forEachChild(PRIORITY_INDEX, (key, childNode) => {
+                        if (!newSnap.hasChild(key)) {
+                            optChangeAccumulator.trackChildChange(changeChildRemoved(key, childNode));
+                        }
+                    });
+                }
+                if (!newSnap.isLeafNode()) {
+                    newSnap.forEachChild(PRIORITY_INDEX, (key, childNode) => {
+                        if (oldSnap.hasChild(key)) {
+                            const oldChild = oldSnap.getImmediateChild(key);
+                            if (!oldChild.equals(childNode)) {
+                                optChangeAccumulator.trackChildChange(changeChildChanged(key, childNode, oldChild));
+                            }
+                        }
+                        else {
+                            optChangeAccumulator.trackChildChange(changeChildAdded(key, childNode));
+                        }
+                    });
+                }
+            }
+            return newSnap.withIndex(this.index_);
+        }
+        updatePriority(oldSnap, newPriority) {
+            if (oldSnap.isEmpty()) {
+                return ChildrenNode.EMPTY_NODE;
+            }
+            else {
+                return oldSnap.updatePriority(newPriority);
+            }
+        }
+        filtersNodes() {
+            return false;
+        }
+        getIndexedFilter() {
+            return this;
+        }
+        getIndex() {
+            return this.index_;
+        }
+    }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * Filters nodes by range and uses an IndexFilter to track any changes after filtering the node
+     */
+    class RangedFilter {
+        constructor(params) {
+            this.indexedFilter_ = new IndexedFilter(params.getIndex());
+            this.index_ = params.getIndex();
+            this.startPost_ = RangedFilter.getStartPost_(params);
+            this.endPost_ = RangedFilter.getEndPost_(params);
+            this.startIsInclusive_ = !params.startAfterSet_;
+            this.endIsInclusive_ = !params.endBeforeSet_;
+        }
+        getStartPost() {
+            return this.startPost_;
+        }
+        getEndPost() {
+            return this.endPost_;
+        }
+        matches(node) {
+            const isWithinStart = this.startIsInclusive_
+                ? this.index_.compare(this.getStartPost(), node) <= 0
+                : this.index_.compare(this.getStartPost(), node) < 0;
+            const isWithinEnd = this.endIsInclusive_
+                ? this.index_.compare(node, this.getEndPost()) <= 0
+                : this.index_.compare(node, this.getEndPost()) < 0;
+            return isWithinStart && isWithinEnd;
+        }
+        updateChild(snap, key, newChild, affectedPath, source, optChangeAccumulator) {
+            if (!this.matches(new NamedNode(key, newChild))) {
+                newChild = ChildrenNode.EMPTY_NODE;
+            }
+            return this.indexedFilter_.updateChild(snap, key, newChild, affectedPath, source, optChangeAccumulator);
+        }
+        updateFullNode(oldSnap, newSnap, optChangeAccumulator) {
+            if (newSnap.isLeafNode()) {
+                // Make sure we have a children node with the correct index, not a leaf node;
+                newSnap = ChildrenNode.EMPTY_NODE;
+            }
+            let filtered = newSnap.withIndex(this.index_);
+            // Don't support priorities on queries
+            filtered = filtered.updatePriority(ChildrenNode.EMPTY_NODE);
+            const self = this;
+            newSnap.forEachChild(PRIORITY_INDEX, (key, childNode) => {
+                if (!self.matches(new NamedNode(key, childNode))) {
+                    filtered = filtered.updateImmediateChild(key, ChildrenNode.EMPTY_NODE);
+                }
+            });
+            return this.indexedFilter_.updateFullNode(oldSnap, filtered, optChangeAccumulator);
+        }
+        updatePriority(oldSnap, newPriority) {
+            // Don't support priorities on queries
+            return oldSnap;
+        }
+        filtersNodes() {
+            return true;
+        }
+        getIndexedFilter() {
+            return this.indexedFilter_;
+        }
+        getIndex() {
+            return this.index_;
+        }
+        static getStartPost_(params) {
+            if (params.hasStart()) {
+                const startName = params.getIndexStartName();
+                return params.getIndex().makePost(params.getIndexStartValue(), startName);
+            }
+            else {
+                return params.getIndex().minPost();
+            }
+        }
+        static getEndPost_(params) {
+            if (params.hasEnd()) {
+                const endName = params.getIndexEndName();
+                return params.getIndex().makePost(params.getIndexEndValue(), endName);
+            }
+            else {
+                return params.getIndex().maxPost();
+            }
+        }
+    }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * Applies a limit and a range to a node and uses RangedFilter to do the heavy lifting where possible
+     */
+    class LimitedFilter {
+        constructor(params) {
+            this.withinDirectionalStart = (node) => this.reverse_ ? this.withinEndPost(node) : this.withinStartPost(node);
+            this.withinDirectionalEnd = (node) => this.reverse_ ? this.withinStartPost(node) : this.withinEndPost(node);
+            this.withinStartPost = (node) => {
+                const compareRes = this.index_.compare(this.rangedFilter_.getStartPost(), node);
+                return this.startIsInclusive_ ? compareRes <= 0 : compareRes < 0;
+            };
+            this.withinEndPost = (node) => {
+                const compareRes = this.index_.compare(node, this.rangedFilter_.getEndPost());
+                return this.endIsInclusive_ ? compareRes <= 0 : compareRes < 0;
+            };
+            this.rangedFilter_ = new RangedFilter(params);
+            this.index_ = params.getIndex();
+            this.limit_ = params.getLimit();
+            this.reverse_ = !params.isViewFromLeft();
+            this.startIsInclusive_ = !params.startAfterSet_;
+            this.endIsInclusive_ = !params.endBeforeSet_;
+        }
+        updateChild(snap, key, newChild, affectedPath, source, optChangeAccumulator) {
+            if (!this.rangedFilter_.matches(new NamedNode(key, newChild))) {
+                newChild = ChildrenNode.EMPTY_NODE;
+            }
+            if (snap.getImmediateChild(key).equals(newChild)) {
+                // No change
+                return snap;
+            }
+            else if (snap.numChildren() < this.limit_) {
+                return this.rangedFilter_
+                    .getIndexedFilter()
+                    .updateChild(snap, key, newChild, affectedPath, source, optChangeAccumulator);
+            }
+            else {
+                return this.fullLimitUpdateChild_(snap, key, newChild, source, optChangeAccumulator);
+            }
+        }
+        updateFullNode(oldSnap, newSnap, optChangeAccumulator) {
+            let filtered;
+            if (newSnap.isLeafNode() || newSnap.isEmpty()) {
+                // Make sure we have a children node with the correct index, not a leaf node;
+                filtered = ChildrenNode.EMPTY_NODE.withIndex(this.index_);
+            }
+            else {
+                if (this.limit_ * 2 < newSnap.numChildren() &&
+                    newSnap.isIndexed(this.index_)) {
+                    // Easier to build up a snapshot, since what we're given has more than twice the elements we want
+                    filtered = ChildrenNode.EMPTY_NODE.withIndex(this.index_);
+                    // anchor to the startPost, endPost, or last element as appropriate
+                    let iterator;
+                    if (this.reverse_) {
+                        iterator = newSnap.getReverseIteratorFrom(this.rangedFilter_.getEndPost(), this.index_);
+                    }
+                    else {
+                        iterator = newSnap.getIteratorFrom(this.rangedFilter_.getStartPost(), this.index_);
+                    }
+                    let count = 0;
+                    while (iterator.hasNext() && count < this.limit_) {
+                        const next = iterator.getNext();
+                        if (!this.withinDirectionalStart(next)) {
+                            // if we have not reached the start, skip to the next element
+                            continue;
+                        }
+                        else if (!this.withinDirectionalEnd(next)) {
+                            // if we have reached the end, stop adding elements
+                            break;
+                        }
+                        else {
+                            filtered = filtered.updateImmediateChild(next.name, next.node);
+                            count++;
+                        }
+                    }
+                }
+                else {
+                    // The snap contains less than twice the limit. Faster to delete from the snap than build up a new one
+                    filtered = newSnap.withIndex(this.index_);
+                    // Don't support priorities on queries
+                    filtered = filtered.updatePriority(ChildrenNode.EMPTY_NODE);
+                    let iterator;
+                    if (this.reverse_) {
+                        iterator = filtered.getReverseIterator(this.index_);
+                    }
+                    else {
+                        iterator = filtered.getIterator(this.index_);
+                    }
+                    let count = 0;
+                    while (iterator.hasNext()) {
+                        const next = iterator.getNext();
+                        const inRange = count < this.limit_ &&
+                            this.withinDirectionalStart(next) &&
+                            this.withinDirectionalEnd(next);
+                        if (inRange) {
+                            count++;
+                        }
+                        else {
+                            filtered = filtered.updateImmediateChild(next.name, ChildrenNode.EMPTY_NODE);
+                        }
+                    }
+                }
+            }
+            return this.rangedFilter_
+                .getIndexedFilter()
+                .updateFullNode(oldSnap, filtered, optChangeAccumulator);
+        }
+        updatePriority(oldSnap, newPriority) {
+            // Don't support priorities on queries
+            return oldSnap;
+        }
+        filtersNodes() {
+            return true;
+        }
+        getIndexedFilter() {
+            return this.rangedFilter_.getIndexedFilter();
+        }
+        getIndex() {
+            return this.index_;
+        }
+        fullLimitUpdateChild_(snap, childKey, childSnap, source, changeAccumulator) {
+            // TODO: rename all cache stuff etc to general snap terminology
+            let cmp;
+            if (this.reverse_) {
+                const indexCmp = this.index_.getCompare();
+                cmp = (a, b) => indexCmp(b, a);
+            }
+            else {
+                cmp = this.index_.getCompare();
+            }
+            const oldEventCache = snap;
+            assert(oldEventCache.numChildren() === this.limit_, '');
+            const newChildNamedNode = new NamedNode(childKey, childSnap);
+            const windowBoundary = this.reverse_
+                ? oldEventCache.getFirstChild(this.index_)
+                : oldEventCache.getLastChild(this.index_);
+            const inRange = this.rangedFilter_.matches(newChildNamedNode);
+            if (oldEventCache.hasChild(childKey)) {
+                const oldChildSnap = oldEventCache.getImmediateChild(childKey);
+                let nextChild = source.getChildAfterChild(this.index_, windowBoundary, this.reverse_);
+                while (nextChild != null &&
+                    (nextChild.name === childKey || oldEventCache.hasChild(nextChild.name))) {
+                    // There is a weird edge case where a node is updated as part of a merge in the write tree, but hasn't
+                    // been applied to the limited filter yet. Ignore this next child which will be updated later in
+                    // the limited filter...
+                    nextChild = source.getChildAfterChild(this.index_, nextChild, this.reverse_);
+                }
+                const compareNext = nextChild == null ? 1 : cmp(nextChild, newChildNamedNode);
+                const remainsInWindow = inRange && !childSnap.isEmpty() && compareNext >= 0;
+                if (remainsInWindow) {
+                    if (changeAccumulator != null) {
+                        changeAccumulator.trackChildChange(changeChildChanged(childKey, childSnap, oldChildSnap));
+                    }
+                    return oldEventCache.updateImmediateChild(childKey, childSnap);
+                }
+                else {
+                    if (changeAccumulator != null) {
+                        changeAccumulator.trackChildChange(changeChildRemoved(childKey, oldChildSnap));
+                    }
+                    const newEventCache = oldEventCache.updateImmediateChild(childKey, ChildrenNode.EMPTY_NODE);
+                    const nextChildInRange = nextChild != null && this.rangedFilter_.matches(nextChild);
+                    if (nextChildInRange) {
+                        if (changeAccumulator != null) {
+                            changeAccumulator.trackChildChange(changeChildAdded(nextChild.name, nextChild.node));
+                        }
+                        return newEventCache.updateImmediateChild(nextChild.name, nextChild.node);
+                    }
+                    else {
+                        return newEventCache;
+                    }
+                }
+            }
+            else if (childSnap.isEmpty()) {
+                // we're deleting a node, but it was not in the window, so ignore it
+                return snap;
+            }
+            else if (inRange) {
+                if (cmp(windowBoundary, newChildNamedNode) >= 0) {
+                    if (changeAccumulator != null) {
+                        changeAccumulator.trackChildChange(changeChildRemoved(windowBoundary.name, windowBoundary.node));
+                        changeAccumulator.trackChildChange(changeChildAdded(childKey, childSnap));
+                    }
+                    return oldEventCache
+                        .updateImmediateChild(childKey, childSnap)
+                        .updateImmediateChild(windowBoundary.name, ChildrenNode.EMPTY_NODE);
+                }
+                else {
+                    return snap;
+                }
+            }
+            else {
+                return snap;
+            }
+        }
+    }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
      * This class is an immutable-from-the-public-api struct containing a set of query parameters defining a
      * range to be returned for a particular location. It is assumed that validation of parameters is done at the
      * user-facing API level, so it is not done here.
@@ -16659,6 +17095,17 @@
             copy.index_ = this.index_;
             copy.viewFrom_ = this.viewFrom_;
             return copy;
+        }
+    }
+    function queryParamsGetNodeFilter(queryParams) {
+        if (queryParams.loadsAllData()) {
+            return new IndexedFilter(queryParams.getIndex());
+        }
+        else if (queryParams.hasLimit()) {
+            return new LimitedFilter(queryParams);
+        }
+        else {
+            return new RangedFilter(queryParams);
         }
     }
     /**
@@ -17244,6 +17691,39 @@
      * See the License for the specific language governing permissions and
      * limitations under the License.
      */
+    class ListenComplete {
+        constructor(source, path) {
+            this.source = source;
+            this.path = path;
+            /** @inheritDoc */
+            this.type = OperationType.LISTEN_COMPLETE;
+        }
+        operationForChild(childName) {
+            if (pathIsEmpty(this.path)) {
+                return new ListenComplete(this.source, newEmptyPath());
+            }
+            else {
+                return new ListenComplete(this.source, pathPopFront(this.path));
+            }
+        }
+    }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
     class Overwrite {
         constructor(source, path, snap) {
             this.source = source;
@@ -17373,6 +17853,35 @@
         }
         getNode() {
             return this.node_;
+        }
+    }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * An EventGenerator is used to convert "raw" changes (Change) as computed by the
+     * CacheDiffer into actual events (Event) that can be raised.  See generateEventsForChanges()
+     * for details.
+     *
+     */
+    class EventGenerator {
+        constructor(query_) {
+            this.query_ = query_;
+            this.index_ = this.query_._queryParams.getIndex();
         }
     }
     /**
@@ -18574,6 +19083,26 @@
             }
         }
     }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    function newViewProcessor(filter) {
+        return { filter };
+    }
     function viewProcessorAssertIndexed(viewProcessor, viewCache) {
         assert(viewCache.eventCache.getNode().isIndexed(viewProcessor.filter.getIndex()), 'Event snap not indexed');
         assert(viewCache.serverCache.getNode().isIndexed(viewProcessor.filter.getIndex()), 'Server snap not indexed');
@@ -18980,6 +19509,60 @@
             return viewCacheUpdateEventSnap(viewCache, newEventCache, complete, viewProcessor.filter.filtersNodes());
         }
     }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * A view represents a specific location and query that has 1 or more event registrations.
+     *
+     * It does several things:
+     *  - Maintains the list of event registrations for this location/query.
+     *  - Maintains a cache of the data visible for this location/query.
+     *  - Applies new operations (via applyOperation), updates the cache, and based on the event
+     *    registrations returns the set of events to be raised.
+     */
+    class View {
+        constructor(query_, initialViewCache) {
+            this.query_ = query_;
+            this.eventRegistrations_ = [];
+            const params = this.query_._queryParams;
+            const indexFilter = new IndexedFilter(params.getIndex());
+            const filter = queryParamsGetNodeFilter(params);
+            this.processor_ = newViewProcessor(filter);
+            const initialServerCache = initialViewCache.serverCache;
+            const initialEventCache = initialViewCache.eventCache;
+            // Don't filter server node with other filter than index, wait for tagged listen
+            const serverSnap = indexFilter.updateFullNode(ChildrenNode.EMPTY_NODE, initialServerCache.getNode(), null);
+            const eventSnap = filter.updateFullNode(ChildrenNode.EMPTY_NODE, initialEventCache.getNode(), null);
+            const newServerCache = new CacheNode(serverSnap, initialServerCache.isFullyInitialized(), indexFilter.filtersNodes());
+            const newEventCache = new CacheNode(eventSnap, initialEventCache.isFullyInitialized(), filter.filtersNodes());
+            this.viewCache_ = newViewCache(newEventCache, newServerCache);
+            this.eventGenerator_ = new EventGenerator(this.query_);
+        }
+        get query() {
+            return this.query_;
+        }
+    }
+    function viewGetServerCache(view) {
+        return view.viewCache_.serverCache.getNode();
+    }
+    function viewGetCompleteNode(view) {
+        return viewCacheGetCompleteEventSnap(view.viewCache_);
+    }
     function viewGetCompleteServerCache(view, path) {
         const cache = viewCacheGetCompleteServerSnap(view.viewCache_);
         if (cache) {
@@ -18992,6 +19575,49 @@
             }
         }
         return null;
+    }
+    function viewIsEmpty(view) {
+        return view.eventRegistrations_.length === 0;
+    }
+    function viewAddEventRegistration(view, eventRegistration) {
+        view.eventRegistrations_.push(eventRegistration);
+    }
+    /**
+     * @param eventRegistration - If null, remove all callbacks.
+     * @param cancelError - If a cancelError is provided, appropriate cancel events will be returned.
+     * @returns Cancel events, if cancelError was provided.
+     */
+    function viewRemoveEventRegistration(view, eventRegistration, cancelError) {
+        const cancelEvents = [];
+        if (cancelError) {
+            assert(eventRegistration == null, 'A cancel should cancel all event registrations.');
+            const path = view.query._path;
+            view.eventRegistrations_.forEach(registration => {
+                const maybeEvent = registration.createCancelEvent(cancelError, path);
+                if (maybeEvent) {
+                    cancelEvents.push(maybeEvent);
+                }
+            });
+        }
+        if (eventRegistration) {
+            let remaining = [];
+            for (let i = 0; i < view.eventRegistrations_.length; ++i) {
+                const existing = view.eventRegistrations_[i];
+                if (!existing.matches(eventRegistration)) {
+                    remaining.push(existing);
+                }
+                else if (eventRegistration.hasAnyCallback()) {
+                    // We're removing just this one
+                    remaining = remaining.concat(view.eventRegistrations_.slice(i + 1));
+                    break;
+                }
+            }
+            view.eventRegistrations_ = remaining;
+        }
+        else {
+            view.eventRegistrations_ = [];
+        }
+        return cancelEvents;
     }
     /**
      * Applies the given Operation, updates our cache, and returns the appropriate events.
@@ -19008,10 +19634,26 @@
         assert(result.viewCache.serverCache.isFullyInitialized() ||
             !oldViewCache.serverCache.isFullyInitialized(), 'Once a server snap is complete, it should never go back');
         view.viewCache_ = result.viewCache;
-        return viewGenerateEventsForChanges_(view, result.changes, result.viewCache.eventCache.getNode());
+        return viewGenerateEventsForChanges_(view, result.changes, result.viewCache.eventCache.getNode(), null);
+    }
+    function viewGetInitialEvents(view, registration) {
+        const eventSnap = view.viewCache_.eventCache;
+        const initialChanges = [];
+        if (!eventSnap.getNode().isLeafNode()) {
+            const eventNode = eventSnap.getNode();
+            eventNode.forEachChild(PRIORITY_INDEX, (key, childNode) => {
+                initialChanges.push(changeChildAdded(key, childNode));
+            });
+        }
+        if (eventSnap.isFullyInitialized()) {
+            initialChanges.push(changeValue(eventSnap.getNode()));
+        }
+        return viewGenerateEventsForChanges_(view, initialChanges, eventSnap.getNode(), registration);
     }
     function viewGenerateEventsForChanges_(view, changes, eventCache, eventRegistration) {
-        const registrations = view.eventRegistrations_;
+        const registrations = eventRegistration
+            ? [eventRegistration]
+            : view.eventRegistrations_;
         return eventGeneratorGenerateEventsForChanges(view.eventGenerator_, changes, eventCache, registrations);
     }
 
@@ -19032,9 +19674,37 @@
      * limitations under the License.
      */
     let referenceConstructor$1;
+    /**
+     * SyncPoint represents a single location in a SyncTree with 1 or more event registrations, meaning we need to
+     * maintain 1 or more Views at this location to cache server data and raise appropriate events for server changes
+     * and user writes (set, transaction, update).
+     *
+     * It's responsible for:
+     *  - Maintaining the set of 1 or more views necessary at this location (a SyncPoint with 0 views should be removed).
+     *  - Proxying user / server operations to the views as appropriate (i.e. applyServerOverwrite,
+     *    applyUserOverwrite, etc.)
+     */
+    class SyncPoint {
+        constructor() {
+            /**
+             * The Views being tracked at this location in the tree, stored as a map where the key is a
+             * queryId and the value is the View for that query.
+             *
+             * NOTE: This list will be quite small (usually 1, but perhaps 2 or 3; any more is an odd use case).
+             */
+            this.views = new Map();
+        }
+    }
     function syncPointSetReferenceConstructor(val) {
         assert(!referenceConstructor$1, '__referenceConstructor has already been defined');
         referenceConstructor$1 = val;
+    }
+    function syncPointGetReferenceConstructor() {
+        assert(referenceConstructor$1, 'Reference.ts has not been loaded');
+        return referenceConstructor$1;
+    }
+    function syncPointIsEmpty(syncPoint) {
+        return syncPoint.views.size === 0;
     }
     function syncPointApplyOperation(syncPoint, operation, writesCache, optCompleteServerCache) {
         const queryId = operation.source.queryId;
@@ -19052,6 +19722,114 @@
         }
     }
     /**
+     * Get a view for the specified query.
+     *
+     * @param query - The query to return a view for
+     * @param writesCache
+     * @param serverCache
+     * @param serverCacheComplete
+     * @returns Events to raise.
+     */
+    function syncPointGetView(syncPoint, query, writesCache, serverCache, serverCacheComplete) {
+        const queryId = query._queryIdentifier;
+        const view = syncPoint.views.get(queryId);
+        if (!view) {
+            // TODO: make writesCache take flag for complete server node
+            let eventCache = writeTreeRefCalcCompleteEventCache(writesCache, serverCacheComplete ? serverCache : null);
+            let eventCacheComplete = false;
+            if (eventCache) {
+                eventCacheComplete = true;
+            }
+            else if (serverCache instanceof ChildrenNode) {
+                eventCache = writeTreeRefCalcCompleteEventChildren(writesCache, serverCache);
+                eventCacheComplete = false;
+            }
+            else {
+                eventCache = ChildrenNode.EMPTY_NODE;
+                eventCacheComplete = false;
+            }
+            const viewCache = newViewCache(new CacheNode(eventCache, eventCacheComplete, false), new CacheNode(serverCache, serverCacheComplete, false));
+            return new View(query, viewCache);
+        }
+        return view;
+    }
+    /**
+     * Add an event callback for the specified query.
+     *
+     * @param query
+     * @param eventRegistration
+     * @param writesCache
+     * @param serverCache - Complete server cache, if we have it.
+     * @param serverCacheComplete
+     * @returns Events to raise.
+     */
+    function syncPointAddEventRegistration(syncPoint, query, eventRegistration, writesCache, serverCache, serverCacheComplete) {
+        const view = syncPointGetView(syncPoint, query, writesCache, serverCache, serverCacheComplete);
+        if (!syncPoint.views.has(query._queryIdentifier)) {
+            syncPoint.views.set(query._queryIdentifier, view);
+        }
+        // This is guaranteed to exist now, we just created anything that was missing
+        viewAddEventRegistration(view, eventRegistration);
+        return viewGetInitialEvents(view, eventRegistration);
+    }
+    /**
+     * Remove event callback(s).  Return cancelEvents if a cancelError is specified.
+     *
+     * If query is the default query, we'll check all views for the specified eventRegistration.
+     * If eventRegistration is null, we'll remove all callbacks for the specified view(s).
+     *
+     * @param eventRegistration - If null, remove all callbacks.
+     * @param cancelError - If a cancelError is provided, appropriate cancel events will be returned.
+     * @returns removed queries and any cancel events
+     */
+    function syncPointRemoveEventRegistration(syncPoint, query, eventRegistration, cancelError) {
+        const queryId = query._queryIdentifier;
+        const removed = [];
+        let cancelEvents = [];
+        const hadCompleteView = syncPointHasCompleteView(syncPoint);
+        if (queryId === 'default') {
+            // When you do ref.off(...), we search all views for the registration to remove.
+            for (const [viewQueryId, view] of syncPoint.views.entries()) {
+                cancelEvents = cancelEvents.concat(viewRemoveEventRegistration(view, eventRegistration, cancelError));
+                if (viewIsEmpty(view)) {
+                    syncPoint.views.delete(viewQueryId);
+                    // We'll deal with complete views later.
+                    if (!view.query._queryParams.loadsAllData()) {
+                        removed.push(view.query);
+                    }
+                }
+            }
+        }
+        else {
+            // remove the callback from the specific view.
+            const view = syncPoint.views.get(queryId);
+            if (view) {
+                cancelEvents = cancelEvents.concat(viewRemoveEventRegistration(view, eventRegistration, cancelError));
+                if (viewIsEmpty(view)) {
+                    syncPoint.views.delete(queryId);
+                    // We'll deal with complete views later.
+                    if (!view.query._queryParams.loadsAllData()) {
+                        removed.push(view.query);
+                    }
+                }
+            }
+        }
+        if (hadCompleteView && !syncPointHasCompleteView(syncPoint)) {
+            // We removed our last complete view.
+            removed.push(new (syncPointGetReferenceConstructor())(query._repo, query._path));
+        }
+        return { removed, events: cancelEvents };
+    }
+    function syncPointGetQueryViews(syncPoint) {
+        const result = [];
+        for (const view of syncPoint.views.values()) {
+            if (!view.query._queryParams.loadsAllData()) {
+                result.push(view);
+            }
+        }
+        return result;
+    }
+    /**
      * @param path - The path to the desired complete snapshot
      * @returns A complete cache, if it exists
      */
@@ -19061,6 +19839,30 @@
             serverCache = serverCache || viewGetCompleteServerCache(view, path);
         }
         return serverCache;
+    }
+    function syncPointViewForQuery(syncPoint, query) {
+        const params = query._queryParams;
+        if (params.loadsAllData()) {
+            return syncPointGetCompleteView(syncPoint);
+        }
+        else {
+            const queryId = query._queryIdentifier;
+            return syncPoint.views.get(queryId);
+        }
+    }
+    function syncPointViewExistsForQuery(syncPoint, query) {
+        return syncPointViewForQuery(syncPoint, query) != null;
+    }
+    function syncPointHasCompleteView(syncPoint) {
+        return syncPointGetCompleteView(syncPoint) != null;
+    }
+    function syncPointGetCompleteView(syncPoint) {
+        for (const view of syncPoint.views.values()) {
+            if (view.query._queryParams.loadsAllData()) {
+                return view;
+            }
+        }
+        return null;
     }
 
     /**
@@ -19084,6 +19886,14 @@
         assert(!referenceConstructor, '__referenceConstructor has already been defined');
         referenceConstructor = val;
     }
+    function syncTreeGetReferenceConstructor() {
+        assert(referenceConstructor, 'Reference.ts has not been loaded');
+        return referenceConstructor;
+    }
+    /**
+     * Static tracker for next query tag.
+     */
+    let syncTreeNextQueryTag_ = 1;
     /**
      * SyncTree is the central class for managing event callback registration, data caching, views
      * (query processing), and event generation.  There are typically two SyncTree instances for
@@ -19183,6 +19993,115 @@
         return syncTreeApplyOperationToSyncPoints_(syncTree, new Merge(newOperationSourceServer(), path, changeTree));
     }
     /**
+     * Apply a listen complete for a query
+     *
+     * @returns Events to raise.
+     */
+    function syncTreeApplyListenComplete(syncTree, path) {
+        return syncTreeApplyOperationToSyncPoints_(syncTree, new ListenComplete(newOperationSourceServer(), path));
+    }
+    /**
+     * Apply a listen complete for a tagged query
+     *
+     * @returns Events to raise.
+     */
+    function syncTreeApplyTaggedListenComplete(syncTree, path, tag) {
+        const queryKey = syncTreeQueryKeyForTag_(syncTree, tag);
+        if (queryKey) {
+            const r = syncTreeParseQueryKey_(queryKey);
+            const queryPath = r.path, queryId = r.queryId;
+            const relativePath = newRelativePath(queryPath, path);
+            const op = new ListenComplete(newOperationSourceServerTaggedQuery(queryId), relativePath);
+            return syncTreeApplyTaggedOperation_(syncTree, queryPath, op);
+        }
+        else {
+            // We've already removed the query. No big deal, ignore the update
+            return [];
+        }
+    }
+    /**
+     * Remove event callback(s).
+     *
+     * If query is the default query, we'll check all queries for the specified eventRegistration.
+     * If eventRegistration is null, we'll remove all callbacks for the specified query/queries.
+     *
+     * @param eventRegistration - If null, all callbacks are removed.
+     * @param cancelError - If a cancelError is provided, appropriate cancel events will be returned.
+     * @param skipListenerDedup - When performing a `get()`, we don't add any new listeners, so no
+     *  deduping needs to take place. This flag allows toggling of that behavior
+     * @returns Cancel events, if cancelError was provided.
+     */
+    function syncTreeRemoveEventRegistration(syncTree, query, eventRegistration, cancelError, skipListenerDedup = false) {
+        // Find the syncPoint first. Then deal with whether or not it has matching listeners
+        const path = query._path;
+        const maybeSyncPoint = syncTree.syncPointTree_.get(path);
+        let cancelEvents = [];
+        // A removal on a default query affects all queries at that location. A removal on an indexed query, even one without
+        // other query constraints, does *not* affect all queries at that location. So this check must be for 'default', and
+        // not loadsAllData().
+        if (maybeSyncPoint &&
+            (query._queryIdentifier === 'default' ||
+                syncPointViewExistsForQuery(maybeSyncPoint, query))) {
+            const removedAndEvents = syncPointRemoveEventRegistration(maybeSyncPoint, query, eventRegistration, cancelError);
+            if (syncPointIsEmpty(maybeSyncPoint)) {
+                syncTree.syncPointTree_ = syncTree.syncPointTree_.remove(path);
+            }
+            const removed = removedAndEvents.removed;
+            cancelEvents = removedAndEvents.events;
+            if (!skipListenerDedup) {
+                /**
+                 * We may have just removed one of many listeners and can short-circuit this whole process
+                 * We may also not have removed a default listener, in which case all of the descendant listeners should already be
+                 * properly set up.
+                 */
+                // Since indexed queries can shadow if they don't have other query constraints, check for loadsAllData(), instead of
+                // queryId === 'default'
+                const removingDefault = -1 !==
+                    removed.findIndex(query => {
+                        return query._queryParams.loadsAllData();
+                    });
+                const covered = syncTree.syncPointTree_.findOnPath(path, (relativePath, parentSyncPoint) => syncPointHasCompleteView(parentSyncPoint));
+                if (removingDefault && !covered) {
+                    const subtree = syncTree.syncPointTree_.subtree(path);
+                    // There are potentially child listeners. Determine what if any listens we need to send before executing the
+                    // removal
+                    if (!subtree.isEmpty()) {
+                        // We need to fold over our subtree and collect the listeners to send
+                        const newViews = syncTreeCollectDistinctViewsForSubTree_(subtree);
+                        // Ok, we've collected all the listens we need. Set them up.
+                        for (let i = 0; i < newViews.length; ++i) {
+                            const view = newViews[i], newQuery = view.query;
+                            const listener = syncTreeCreateListenerForView_(syncTree, view);
+                            syncTree.listenProvider_.startListening(syncTreeQueryForListening_(newQuery), syncTreeTagForQuery(syncTree, newQuery), listener.hashFn, listener.onComplete);
+                        }
+                    }
+                    // Otherwise there's nothing below us, so nothing we need to start listening on
+                }
+                // If we removed anything and we're not covered by a higher up listen, we need to stop listening on this query
+                // The above block has us covered in terms of making sure we're set up on listens lower in the tree.
+                // Also, note that if we have a cancelError, it's already been removed at the provider level.
+                if (!covered && removed.length > 0 && !cancelError) {
+                    // If we removed a default, then we weren't listening on any of the other queries here. Just cancel the one
+                    // default. Otherwise, we need to iterate through and cancel each individual query
+                    if (removingDefault) {
+                        // We don't tag default listeners
+                        const defaultTag = null;
+                        syncTree.listenProvider_.stopListening(syncTreeQueryForListening_(query), defaultTag);
+                    }
+                    else {
+                        removed.forEach((queryToRemove) => {
+                            const tagToRemove = syncTree.queryToTagMap.get(syncTreeMakeQueryKey_(queryToRemove));
+                            syncTree.listenProvider_.stopListening(syncTreeQueryForListening_(queryToRemove), tagToRemove);
+                        });
+                    }
+                }
+            }
+            // Now, clear all of the tags we're tracking for the removed listens
+            syncTreeRemoveTags_(syncTree, removed);
+        }
+        return cancelEvents;
+    }
+    /**
      * Apply new server data for the specified tagged query.
      *
      * @returns Events to raise.
@@ -19222,6 +20141,67 @@
         }
     }
     /**
+     * Add an event callback for the specified query.
+     *
+     * @returns Events to raise.
+     */
+    function syncTreeAddEventRegistration(syncTree, query, eventRegistration, skipSetupListener = false) {
+        const path = query._path;
+        let serverCache = null;
+        let foundAncestorDefaultView = false;
+        // Any covering writes will necessarily be at the root, so really all we need to find is the server cache.
+        // Consider optimizing this once there's a better understanding of what actual behavior will be.
+        syncTree.syncPointTree_.foreachOnPath(path, (pathToSyncPoint, sp) => {
+            const relativePath = newRelativePath(pathToSyncPoint, path);
+            serverCache =
+                serverCache || syncPointGetCompleteServerCache(sp, relativePath);
+            foundAncestorDefaultView =
+                foundAncestorDefaultView || syncPointHasCompleteView(sp);
+        });
+        let syncPoint = syncTree.syncPointTree_.get(path);
+        if (!syncPoint) {
+            syncPoint = new SyncPoint();
+            syncTree.syncPointTree_ = syncTree.syncPointTree_.set(path, syncPoint);
+        }
+        else {
+            foundAncestorDefaultView =
+                foundAncestorDefaultView || syncPointHasCompleteView(syncPoint);
+            serverCache =
+                serverCache || syncPointGetCompleteServerCache(syncPoint, newEmptyPath());
+        }
+        let serverCacheComplete;
+        if (serverCache != null) {
+            serverCacheComplete = true;
+        }
+        else {
+            serverCacheComplete = false;
+            serverCache = ChildrenNode.EMPTY_NODE;
+            const subtree = syncTree.syncPointTree_.subtree(path);
+            subtree.foreachChild((childName, childSyncPoint) => {
+                const completeCache = syncPointGetCompleteServerCache(childSyncPoint, newEmptyPath());
+                if (completeCache) {
+                    serverCache = serverCache.updateImmediateChild(childName, completeCache);
+                }
+            });
+        }
+        const viewAlreadyExists = syncPointViewExistsForQuery(syncPoint, query);
+        if (!viewAlreadyExists && !query._queryParams.loadsAllData()) {
+            // We need to track a tag for this query
+            const queryKey = syncTreeMakeQueryKey_(query);
+            assert(!syncTree.queryToTagMap.has(queryKey), 'View does not exist, but we have a tag');
+            const tag = syncTreeGetNextQueryTag_();
+            syncTree.queryToTagMap.set(queryKey, tag);
+            syncTree.tagToQueryMap.set(tag, queryKey);
+        }
+        const writesCache = writeTreeChildWrites(syncTree.pendingWriteTree_, path);
+        let events = syncPointAddEventRegistration(syncPoint, query, eventRegistration, writesCache, serverCache, serverCacheComplete);
+        if (!viewAlreadyExists && !foundAncestorDefaultView && !skipSetupListener) {
+            const view = syncPointViewForQuery(syncPoint, query);
+            events = events.concat(syncTreeSetupListener_(syncTree, query, view));
+        }
+        return events;
+    }
+    /**
      * Returns a complete cache, if we have one, of the data at a particular path. If the location does not have a
      * listener above it, we will get a false "null". This shouldn't be a problem because transactions will always
      * have a listener above, and atomic operations would correctly show a jitter of <increment value> ->
@@ -19243,6 +20223,33 @@
             }
         });
         return writeTreeCalcCompleteEventCache(writeTree, path, serverCache, writeIdsToExclude, includeHiddenSets);
+    }
+    function syncTreeGetServerValue(syncTree, query) {
+        const path = query._path;
+        let serverCache = null;
+        // Any covering writes will necessarily be at the root, so really all we need to find is the server cache.
+        // Consider optimizing this once there's a better understanding of what actual behavior will be.
+        syncTree.syncPointTree_.foreachOnPath(path, (pathToSyncPoint, sp) => {
+            const relativePath = newRelativePath(pathToSyncPoint, path);
+            serverCache =
+                serverCache || syncPointGetCompleteServerCache(sp, relativePath);
+        });
+        let syncPoint = syncTree.syncPointTree_.get(path);
+        if (!syncPoint) {
+            syncPoint = new SyncPoint();
+            syncTree.syncPointTree_ = syncTree.syncPointTree_.set(path, syncPoint);
+        }
+        else {
+            serverCache =
+                serverCache || syncPointGetCompleteServerCache(syncPoint, newEmptyPath());
+        }
+        const serverCacheComplete = serverCache != null;
+        const serverCacheNode = serverCacheComplete
+            ? new CacheNode(serverCache, true, false)
+            : null;
+        const writesCache = writeTreeChildWrites(syncTree.pendingWriteTree_, query._path);
+        const view = syncPointGetView(syncPoint, query, writesCache, serverCacheComplete ? serverCacheNode.getNode() : ChildrenNode.EMPTY_NODE, serverCacheComplete);
+        return viewGetCompleteNode(view);
     }
     /**
      * A helper method that visits all descendant and ancestor SyncPoints, applying the operation.
@@ -19316,6 +20323,46 @@
         }
         return events;
     }
+    function syncTreeCreateListenerForView_(syncTree, view) {
+        const query = view.query;
+        const tag = syncTreeTagForQuery(syncTree, query);
+        return {
+            hashFn: () => {
+                const cache = viewGetServerCache(view) || ChildrenNode.EMPTY_NODE;
+                return cache.hash();
+            },
+            onComplete: (status) => {
+                if (status === 'ok') {
+                    if (tag) {
+                        return syncTreeApplyTaggedListenComplete(syncTree, query._path, tag);
+                    }
+                    else {
+                        return syncTreeApplyListenComplete(syncTree, query._path);
+                    }
+                }
+                else {
+                    // If a listen failed, kill all of the listeners here, not just the one that triggered the error.
+                    // Note that this may need to be scoped to just this listener if we change permissions on filtered children
+                    const error = errorForServerCode(status, query);
+                    return syncTreeRemoveEventRegistration(syncTree, query, 
+                    /*eventRegistration*/ null, error);
+                }
+            }
+        };
+    }
+    /**
+     * Return the tag associated with the given query.
+     */
+    function syncTreeTagForQuery(syncTree, query) {
+        const queryKey = syncTreeMakeQueryKey_(query);
+        return syncTree.queryToTagMap.get(queryKey);
+    }
+    /**
+     * Given a query, computes a "queryKey" suitable for use in our queryToTagMap_.
+     */
+    function syncTreeMakeQueryKey_(query) {
+        return query._path.toString() + '$' + query._queryIdentifier;
+    }
     /**
      * Return the query associated with the given tag, if we have one
      */
@@ -19341,6 +20388,106 @@
         assert(syncPoint, "Missing sync point for query tag that we're tracking");
         const writesCache = writeTreeChildWrites(syncTree.pendingWriteTree_, queryPath);
         return syncPointApplyOperation(syncPoint, operation, writesCache, null);
+    }
+    /**
+     * This collapses multiple unfiltered views into a single view, since we only need a single
+     * listener for them.
+     */
+    function syncTreeCollectDistinctViewsForSubTree_(subtree) {
+        return subtree.fold((relativePath, maybeChildSyncPoint, childMap) => {
+            if (maybeChildSyncPoint && syncPointHasCompleteView(maybeChildSyncPoint)) {
+                const completeView = syncPointGetCompleteView(maybeChildSyncPoint);
+                return [completeView];
+            }
+            else {
+                // No complete view here, flatten any deeper listens into an array
+                let views = [];
+                if (maybeChildSyncPoint) {
+                    views = syncPointGetQueryViews(maybeChildSyncPoint);
+                }
+                each(childMap, (_key, childViews) => {
+                    views = views.concat(childViews);
+                });
+                return views;
+            }
+        });
+    }
+    /**
+     * Normalizes a query to a query we send the server for listening
+     *
+     * @returns The normalized query
+     */
+    function syncTreeQueryForListening_(query) {
+        if (query._queryParams.loadsAllData() && !query._queryParams.isDefault()) {
+            // We treat queries that load all data as default queries
+            // Cast is necessary because ref() technically returns Firebase which is actually fb.api.Firebase which inherits
+            // from Query
+            return new (syncTreeGetReferenceConstructor())(query._repo, query._path);
+        }
+        else {
+            return query;
+        }
+    }
+    function syncTreeRemoveTags_(syncTree, queries) {
+        for (let j = 0; j < queries.length; ++j) {
+            const removedQuery = queries[j];
+            if (!removedQuery._queryParams.loadsAllData()) {
+                // We should have a tag for this
+                const removedQueryKey = syncTreeMakeQueryKey_(removedQuery);
+                const removedQueryTag = syncTree.queryToTagMap.get(removedQueryKey);
+                syncTree.queryToTagMap.delete(removedQueryKey);
+                syncTree.tagToQueryMap.delete(removedQueryTag);
+            }
+        }
+    }
+    /**
+     * Static accessor for query tags.
+     */
+    function syncTreeGetNextQueryTag_() {
+        return syncTreeNextQueryTag_++;
+    }
+    /**
+     * For a given new listen, manage the de-duplication of outstanding subscriptions.
+     *
+     * @returns This method can return events to support synchronous data sources
+     */
+    function syncTreeSetupListener_(syncTree, query, view) {
+        const path = query._path;
+        const tag = syncTreeTagForQuery(syncTree, query);
+        const listener = syncTreeCreateListenerForView_(syncTree, view);
+        const events = syncTree.listenProvider_.startListening(syncTreeQueryForListening_(query), tag, listener.hashFn, listener.onComplete);
+        const subtree = syncTree.syncPointTree_.subtree(path);
+        // The root of this subtree has our query. We're here because we definitely need to send a listen for that, but we
+        // may need to shadow other listens as well.
+        if (tag) {
+            assert(!syncPointHasCompleteView(subtree.value), "If we're adding a query, it shouldn't be shadowed");
+        }
+        else {
+            // Shadow everything at or below this location, this is a default listener.
+            const queriesToStop = subtree.fold((relativePath, maybeChildSyncPoint, childMap) => {
+                if (!pathIsEmpty(relativePath) &&
+                    maybeChildSyncPoint &&
+                    syncPointHasCompleteView(maybeChildSyncPoint)) {
+                    return [syncPointGetCompleteView(maybeChildSyncPoint).query];
+                }
+                else {
+                    // No default listener here, flatten any deeper queries into an array
+                    let queries = [];
+                    if (maybeChildSyncPoint) {
+                        queries = queries.concat(syncPointGetQueryViews(maybeChildSyncPoint).map(view => view.query));
+                    }
+                    each(childMap, (_key, childQueries) => {
+                        queries = queries.concat(childQueries);
+                    });
+                    return queries;
+                }
+            });
+            for (let i = 0; i < queriesToStop.length; ++i) {
+                const queryToStop = queriesToStop[i];
+                syncTree.listenProvider_.stopListening(syncTreeQueryForListening_(queryToStop), syncTreeTagForQuery(syncTree, queryToStop));
+            }
+        }
+        return events;
     }
 
     /**
@@ -19767,6 +20914,25 @@
             }
         }
     };
+    /**
+     * @internal
+     */
+    const validatePathString = function (fnName, argumentName, pathString, optional) {
+        if (!isValidPathString(pathString)) {
+            throw new Error(errorPrefix(fnName, argumentName) +
+                'was an invalid path = "' +
+                pathString +
+                '". Paths must be non-empty strings and ' +
+                'can\'t contain ".", "#", "$", "[", or "]"');
+        }
+    };
+    const validateRootPathString = function (fnName, argumentName, pathString, optional) {
+        if (pathString) {
+            // Allow '/.info/' at the beginning.
+            pathString = pathString.replace(/^\/*\.info(\/|$)/, '/');
+        }
+        validatePathString(fnName, argumentName, pathString);
+    };
     const validateUrl = function (fnName, parsedUrl) {
         // TODO = Validate server better.
         const pathString = parsedUrl.path.toString();
@@ -20092,6 +21258,63 @@
     }
     function repoGetNextWriteId(repo) {
         return repo.nextWriteId_++;
+    }
+    /**
+     * The purpose of `getValue` is to return the latest known value
+     * satisfying `query`.
+     *
+     * This method will first check for in-memory cached values
+     * belonging to active listeners. If they are found, such values
+     * are considered to be the most up-to-date.
+     *
+     * If the client is not connected, this method will wait until the
+     *  repo has established a connection and then request the value for `query`.
+     * If the client is not able to retrieve the query result for another reason,
+     * it reports an error.
+     *
+     * @param query - The query to surface a value for.
+     */
+    function repoGetValue(repo, query, eventRegistration) {
+        // Only active queries are cached. There is no persisted cache.
+        const cached = syncTreeGetServerValue(repo.serverSyncTree_, query);
+        if (cached != null) {
+            return Promise.resolve(cached);
+        }
+        return repo.server_.get(query).then(payload => {
+            const node = nodeFromJSON(payload).withIndex(query._queryParams.getIndex());
+            /**
+             * Below we simulate the actions of an `onlyOnce` `onValue()` event where:
+             * Add an event registration,
+             * Update data at the path,
+             * Raise any events,
+             * Cleanup the SyncTree
+             */
+            syncTreeAddEventRegistration(repo.serverSyncTree_, query, eventRegistration, true);
+            let events;
+            if (query._queryParams.loadsAllData()) {
+                events = syncTreeApplyServerOverwrite(repo.serverSyncTree_, query._path, node);
+            }
+            else {
+                const tag = syncTreeTagForQuery(repo.serverSyncTree_, query);
+                events = syncTreeApplyTaggedQueryOverwrite(repo.serverSyncTree_, query._path, node, tag);
+            }
+            /*
+             * We need to raise events in the scenario where `get()` is called at a parent path, and
+             * while the `get()` is pending, `onValue` is called at a child location. While get() is waiting
+             * for the data, `onValue` will register a new event. Then, get() will come back, and update the syncTree
+             * and its corresponding serverCache, including the child location where `onValue` is called. Then,
+             * `onValue` will receive the event from the server, but look at the syncTree and see that the data received
+             * from the server is already at the SyncPoint, and so the `onValue` callback will never get fired.
+             * Calling `eventQueueRaiseEventsForChangedPath()` is the correct way to propagate the events and
+             * ensure the corresponding child events will get fired.
+             */
+            eventQueueRaiseEventsForChangedPath(repo.eventQueue_, query._path, events);
+            syncTreeRemoveEventRegistration(repo.serverSyncTree_, query, eventRegistration, null, true);
+            return node;
+        }, err => {
+            repoLog(repo, 'get for query ' + stringify(query) + ' failed: ' + err);
+            return Promise.reject(new Error(err));
+        });
     }
     /**
      * Applies all of the changes stored up in the onDisconnect_ tree.
@@ -20646,6 +21869,127 @@
 
     /**
      * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * Encapsulates the data needed to raise an event
+     */
+    class DataEvent {
+        /**
+         * @param eventType - One of: value, child_added, child_changed, child_moved, child_removed
+         * @param eventRegistration - The function to call to with the event data. User provided
+         * @param snapshot - The data backing the event
+         * @param prevName - Optional, the name of the previous child for child_* events.
+         */
+        constructor(eventType, eventRegistration, snapshot, prevName) {
+            this.eventType = eventType;
+            this.eventRegistration = eventRegistration;
+            this.snapshot = snapshot;
+            this.prevName = prevName;
+        }
+        getPath() {
+            const ref = this.snapshot.ref;
+            if (this.eventType === 'value') {
+                return ref._path;
+            }
+            else {
+                return ref.parent._path;
+            }
+        }
+        getEventType() {
+            return this.eventType;
+        }
+        getEventRunner() {
+            return this.eventRegistration.getEventRunner(this);
+        }
+        toString() {
+            return (this.getPath().toString() +
+                ':' +
+                this.eventType +
+                ':' +
+                stringify(this.snapshot.exportVal()));
+        }
+    }
+    class CancelEvent {
+        constructor(eventRegistration, error, path) {
+            this.eventRegistration = eventRegistration;
+            this.error = error;
+            this.path = path;
+        }
+        getPath() {
+            return this.path;
+        }
+        getEventType() {
+            return 'cancel';
+        }
+        getEventRunner() {
+            return this.eventRegistration.getEventRunner(this);
+        }
+        toString() {
+            return this.path.toString() + ':cancel';
+        }
+    }
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * A wrapper class that converts events from the database@exp SDK to the legacy
+     * Database SDK. Events are not converted directly as event registration relies
+     * on reference comparison of the original user callback (see `matches()`) and
+     * relies on equality of the legacy SDK's `context` object.
+     */
+    class CallbackContext {
+        constructor(snapshotCallback, cancelCallback) {
+            this.snapshotCallback = snapshotCallback;
+            this.cancelCallback = cancelCallback;
+        }
+        onValue(expDataSnapshot, previousChildName) {
+            this.snapshotCallback.call(null, expDataSnapshot, previousChildName);
+        }
+        onCancel(error) {
+            assert(this.hasCancelCallback, 'Raising a cancel event on a listener with no cancel callback');
+            return this.cancelCallback.call(null, error);
+        }
+        get hasCancelCallback() {
+            return !!this.cancelCallback;
+        }
+        matches(other) {
+            return (this.snapshotCallback === other.snapshotCallback ||
+                (this.snapshotCallback.userCallback !== undefined &&
+                    this.snapshotCallback.userCallback ===
+                        other.snapshotCallback.userCallback &&
+                    this.snapshotCallback.context === other.snapshotCallback.context));
+        }
+    }
+
+    /**
+     * @license
      * Copyright 2020 Google LLC
      *
      * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20732,6 +22076,284 @@
                 ref = ref.parent;
             }
             return ref;
+        }
+    }
+    /**
+     * A `DataSnapshot` contains data from a Database location.
+     *
+     * Any time you read data from the Database, you receive the data as a
+     * `DataSnapshot`. A `DataSnapshot` is passed to the event callbacks you attach
+     * with `on()` or `once()`. You can extract the contents of the snapshot as a
+     * JavaScript object by calling the `val()` method. Alternatively, you can
+     * traverse into the snapshot by calling `child()` to return child snapshots
+     * (which you could then call `val()` on).
+     *
+     * A `DataSnapshot` is an efficiently generated, immutable copy of the data at
+     * a Database location. It cannot be modified and will never change (to modify
+     * data, you always call the `set()` method on a `Reference` directly).
+     */
+    class DataSnapshot {
+        /**
+         * @param _node - A SnapshotNode to wrap.
+         * @param ref - The location this snapshot came from.
+         * @param _index - The iteration order for this snapshot
+         * @hideconstructor
+         */
+        constructor(_node, 
+        /**
+         * The location of this DataSnapshot.
+         */
+        ref, _index) {
+            this._node = _node;
+            this.ref = ref;
+            this._index = _index;
+        }
+        /**
+         * Gets the priority value of the data in this `DataSnapshot`.
+         *
+         * Applications need not use priority but can order collections by
+         * ordinary properties (see
+         * {@link https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data |Sorting and filtering data}
+         * ).
+         */
+        get priority() {
+            // typecast here because we never return deferred values or internal priorities (MAX_PRIORITY)
+            return this._node.getPriority().val();
+        }
+        /**
+         * The key (last part of the path) of the location of this `DataSnapshot`.
+         *
+         * The last token in a Database location is considered its key. For example,
+         * "ada" is the key for the /users/ada/ node. Accessing the key on any
+         * `DataSnapshot` will return the key for the location that generated it.
+         * However, accessing the key on the root URL of a Database will return
+         * `null`.
+         */
+        get key() {
+            return this.ref.key;
+        }
+        /** Returns the number of child properties of this `DataSnapshot`. */
+        get size() {
+            return this._node.numChildren();
+        }
+        /**
+         * Gets another `DataSnapshot` for the location at the specified relative path.
+         *
+         * Passing a relative path to the `child()` method of a DataSnapshot returns
+         * another `DataSnapshot` for the location at the specified relative path. The
+         * relative path can either be a simple child name (for example, "ada") or a
+         * deeper, slash-separated path (for example, "ada/name/first"). If the child
+         * location has no data, an empty `DataSnapshot` (that is, a `DataSnapshot`
+         * whose value is `null`) is returned.
+         *
+         * @param path - A relative path to the location of child data.
+         */
+        child(path) {
+            const childPath = new Path(path);
+            const childRef = child(this.ref, path);
+            return new DataSnapshot(this._node.getChild(childPath), childRef, PRIORITY_INDEX);
+        }
+        /**
+         * Returns true if this `DataSnapshot` contains any data. It is slightly more
+         * efficient than using `snapshot.val() !== null`.
+         */
+        exists() {
+            return !this._node.isEmpty();
+        }
+        /**
+         * Exports the entire contents of the DataSnapshot as a JavaScript object.
+         *
+         * The `exportVal()` method is similar to `val()`, except priority information
+         * is included (if available), making it suitable for backing up your data.
+         *
+         * @returns The DataSnapshot's contents as a JavaScript value (Object,
+         *   Array, string, number, boolean, or `null`).
+         */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        exportVal() {
+            return this._node.val(true);
+        }
+        /**
+         * Enumerates the top-level children in the `IteratedDataSnapshot`.
+         *
+         * Because of the way JavaScript objects work, the ordering of data in the
+         * JavaScript object returned by `val()` is not guaranteed to match the
+         * ordering on the server nor the ordering of `onChildAdded()` events. That is
+         * where `forEach()` comes in handy. It guarantees the children of a
+         * `DataSnapshot` will be iterated in their query order.
+         *
+         * If no explicit `orderBy*()` method is used, results are returned
+         * ordered by key (unless priorities are used, in which case, results are
+         * returned by priority).
+         *
+         * @param action - A function that will be called for each child DataSnapshot.
+         * The callback can return true to cancel further enumeration.
+         * @returns true if enumeration was canceled due to your callback returning
+         * true.
+         */
+        forEach(action) {
+            if (this._node.isLeafNode()) {
+                return false;
+            }
+            const childrenNode = this._node;
+            // Sanitize the return value to a boolean. ChildrenNode.forEachChild has a weird return type...
+            return !!childrenNode.forEachChild(this._index, (key, node) => {
+                return action(new DataSnapshot(node, child(this.ref, key), PRIORITY_INDEX));
+            });
+        }
+        /**
+         * Returns true if the specified child path has (non-null) data.
+         *
+         * @param path - A relative path to the location of a potential child.
+         * @returns `true` if data exists at the specified child path; else
+         *  `false`.
+         */
+        hasChild(path) {
+            const childPath = new Path(path);
+            return !this._node.getChild(childPath).isEmpty();
+        }
+        /**
+         * Returns whether or not the `DataSnapshot` has any non-`null` child
+         * properties.
+         *
+         * You can use `hasChildren()` to determine if a `DataSnapshot` has any
+         * children. If it does, you can enumerate them using `forEach()`. If it
+         * doesn't, then either this snapshot contains a primitive value (which can be
+         * retrieved with `val()`) or it is empty (in which case, `val()` will return
+         * `null`).
+         *
+         * @returns true if this snapshot has any children; else false.
+         */
+        hasChildren() {
+            if (this._node.isLeafNode()) {
+                return false;
+            }
+            else {
+                return !this._node.isEmpty();
+            }
+        }
+        /**
+         * Returns a JSON-serializable representation of this object.
+         */
+        toJSON() {
+            return this.exportVal();
+        }
+        /**
+         * Extracts a JavaScript value from a `DataSnapshot`.
+         *
+         * Depending on the data in a `DataSnapshot`, the `val()` method may return a
+         * scalar type (string, number, or boolean), an array, or an object. It may
+         * also return null, indicating that the `DataSnapshot` is empty (contains no
+         * data).
+         *
+         * @returns The DataSnapshot's contents as a JavaScript value (Object,
+         *   Array, string, number, boolean, or `null`).
+         */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        val() {
+            return this._node.val();
+        }
+    }
+    /**
+     *
+     * Returns a `Reference` representing the location in the Database
+     * corresponding to the provided path. If no path is provided, the `Reference`
+     * will point to the root of the Database.
+     *
+     * @param db - The database instance to obtain a reference for.
+     * @param path - Optional path representing the location the returned
+     *   `Reference` will point. If not provided, the returned `Reference` will
+     *   point to the root of the Database.
+     * @returns If a path is provided, a `Reference`
+     *   pointing to the provided path. Otherwise, a `Reference` pointing to the
+     *   root of the Database.
+     */
+    function ref(db, path) {
+        db = getModularInstance(db);
+        db._checkNotDeleted('ref');
+        return path !== undefined ? child(db._root, path) : db._root;
+    }
+    /**
+     * Gets a `Reference` for the location at the specified relative path.
+     *
+     * The relative path can either be a simple child name (for example, "ada") or
+     * a deeper slash-separated path (for example, "ada/name/first").
+     *
+     * @param parent - The parent location.
+     * @param path - A relative path from this location to the desired child
+     *   location.
+     * @returns The specified child location.
+     */
+    function child(parent, path) {
+        parent = getModularInstance(parent);
+        if (pathGetFront(parent._path) === null) {
+            validateRootPathString('child', 'path', path);
+        }
+        else {
+            validatePathString('child', 'path', path);
+        }
+        return new ReferenceImpl(parent._repo, pathChild(parent._path, path));
+    }
+    /**
+     * Gets the most up-to-date result for this query.
+     *
+     * @param query - The query to run.
+     * @returns A `Promise` which resolves to the resulting DataSnapshot if a value is
+     * available, or rejects if the client is unable to return a value (e.g., if the
+     * server is unreachable and there is nothing cached).
+     */
+    function get(query) {
+        query = getModularInstance(query);
+        const callbackContext = new CallbackContext(() => { });
+        const container = new ValueEventRegistration(callbackContext);
+        return repoGetValue(query._repo, query, container).then(node => {
+            return new DataSnapshot(node, new ReferenceImpl(query._repo, query._path), query._queryParams.getIndex());
+        });
+    }
+    /**
+     * Represents registration for 'value' events.
+     */
+    class ValueEventRegistration {
+        constructor(callbackContext) {
+            this.callbackContext = callbackContext;
+        }
+        respondsTo(eventType) {
+            return eventType === 'value';
+        }
+        createEvent(change, query) {
+            const index = query._queryParams.getIndex();
+            return new DataEvent('value', this, new DataSnapshot(change.snapshotNode, new ReferenceImpl(query._repo, query._path), index));
+        }
+        getEventRunner(eventData) {
+            if (eventData.getEventType() === 'cancel') {
+                return () => this.callbackContext.onCancel(eventData.error);
+            }
+            else {
+                return () => this.callbackContext.onValue(eventData.snapshot, null);
+            }
+        }
+        createCancelEvent(error, path) {
+            if (this.callbackContext.hasCancelCallback) {
+                return new CancelEvent(this, error, path);
+            }
+            else {
+                return null;
+            }
+        }
+        matches(other) {
+            if (!(other instanceof ValueEventRegistration)) {
+                return false;
+            }
+            else if (!other.callbackContext || !this.callbackContext) {
+                // If no callback specified, we consider it to match any callback.
+                return true;
+            }
+            else {
+                return other.callbackContext.matches(this.callbackContext);
+            }
+        }
+        hasAnyCallback() {
+            return this.callbackContext !== null;
         }
     }
     /**
@@ -21036,14 +22658,14 @@
     window.autenticacion = autenticacion;
     window.database = database;
 
-    var css_248z$3 = "/* El panel ocupará todo el ancho y la altura */\r\n#panel-autofillquizapp {\r\n    display: flex;\r\n    flex-direction: column;\r\n    /* Disposición en columna */\r\n    height: 100vh;\r\n    /* Ocupar toda la altura de la ventana */\r\n    width: 100%;\r\n    /* Ocupar el 100% del ancho del contenedor padre */\r\n    background-color: #f4f7fa;\r\n    /* Color de fondo más suave */\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicando la fuente Poppins */\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave */\r\n    border-radius: 8px;\r\n    /* Bordes redondeados para suavizar el diseño */\r\n    box-sizing: border-box;\r\n    /* Para evitar desbordamientos por padding */\r\n    overflow: hidden;\r\n    /* Evitar que el contenido sobresalga */\r\n    position: relative;\r\n    /* Necesario para contener los elementos hijos */\r\n}\r\n\r\n/* Cabecera del panel: botón a la izquierda, título centrado */\r\n.panel-header {\r\n    display: flex;\r\n    justify-content: flex-start;\r\n    /* Alinear el botón y el título */\r\n    align-items: center;\r\n    padding: 15px 20px;\r\n    /* Mayor espacio para una mejor sensación */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco limpio para el header */\r\n    border-bottom: 1px solid #e1e4e8;\r\n    /* Borde inferior suave */\r\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    height: 60px;\r\n    /* Asegura suficiente altura para el botón y el título */\r\n    position: relative;\r\n}\r\n\r\n/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 22px;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n    margin-left: 20px;\r\n    /* Ajuste para crear espacio entre el botón y el título */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n#contenido-principal {\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio restante debajo del encabezado */\r\n    width: 100%;\r\n    /* Asegurarse de que ocupe todo el ancho */\r\n    padding: 20px;\r\n    /* Espaciado interno */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco para el contenido */\r\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    overflow-y: auto;\r\n    /* Permitir scroll si el contenido es largo */\r\n    -ms-overflow-style: none;\r\n    /* Ocultar barra en IE y Edge */\r\n    scrollbar-width: none;\r\n    /* Ocultar barra en Firefox */\r\n    border-radius: 0 0 8px 8px;\r\n    /* Redondear la parte inferior */\r\n    box-sizing: border-box;\r\n    /* Evitar desbordamientos */\r\n}\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+    var css_248z$4 = "\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+    styleInject(css_248z$4);
+
+    var css_248z$3 = "/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 22px;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n    margin-left: 20px;\r\n    /* Ajuste para crear espacio entre el botón y el título */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n#contenido-principal {\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio restante debajo del encabezado */\r\n    width: 100%;\r\n    /* Asegurarse de que ocupe todo el ancho */\r\n    padding: 20px;\r\n    /* Espaciado interno */\r\n    background-color: #ffffff;\r\n    /* Fondo blanco para el contenido */\r\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n    /* Sombra ligera */\r\n    overflow-y: auto;\r\n    /* Permitir scroll si el contenido es largo */\r\n    -ms-overflow-style: none;\r\n    /* Ocultar barra en IE y Edge */\r\n    scrollbar-width: none;\r\n    /* Ocultar barra en Firefox */\r\n    border-radius: 0 0 8px 8px;\r\n    /* Redondear la parte inferior */\r\n    box-sizing: border-box;\r\n    /* Evitar desbordamientos */\r\n}\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none; /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        height: 60px; /* Asegura suficiente altura para el botón y el título */\r\n        position: relative;\r\n    }";
     styleInject(css_248z$3);
 
-    var css_248z$2 = "/* El panel ocupará todo el ancho y la altura */\r\n#panel-autofillquizapp {\r\n    display: flex;\r\n    flex-direction: column; /* Disposición en columna */\r\n    height: 100vh; /* Ocupar toda la altura de la ventana */\r\n    width: 100%; /* Ocupar el 100% del ancho del contenedor padre */\r\n    background-color: #f4f7fa; /* Color de fondo más suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicando la fuente Poppins */\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */\r\n    border-radius: 8px; /* Bordes redondeados para suavizar el diseño */\r\n    box-sizing: border-box; /* Para evitar desbordamientos por padding */\r\n    overflow: hidden; /* Evitar que el contenido sobresalga */\r\n    position: relative; /* Necesario para contener los elementos hijos */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        height: 60px; /* Asegura suficiente altura para el botón y el título */\r\n        position: relative;\r\n    }\r\n\r\n    /* Título centrado */\r\n    #titulo-autofillquizapp {\r\n        font-size: 22px; /* Tamaño más grande para el título */\r\n        font-weight: 600;\r\n        color: #34495e; /* Un color más oscuro y elegante */\r\n        text-align: center;\r\n        flex-grow: 1; /* Ocupar el espacio disponible */\r\n        margin-left: 20px; /* Ajuste para crear espacio entre el botón y el título */\r\n    }\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6; /* Fondo blanco */\r\n    color: #ffffff; /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6; /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px; /* Botón redondo */\r\n    cursor: pointer; /* Cambia el cursor a mano */\r\n    font-size: 24px; /* Tamaño del icono */\r\n    width: 40px; /* Ancho fijo */\r\n    height: 40px; /* Alto fijo */\r\n    display: inline-flex; /* Usar flexbox para alinear */\r\n    justify-content: center; /* Centrar horizontalmente el icono */\r\n    align-items: center; /* Centrar verticalmente el icono */\r\n    padding: 0; /* Eliminar padding */\r\n    margin: 0; /* Eliminar márgenes */\r\n    position: relative; /* Mantener la posición en su contenedor */\r\n    z-index: 1000; /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease; /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67; /* Fondo azul al hacer hover */\r\n    color: #ffffff; /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67; /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px); /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none; /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n#contenido-principal {\r\n    flex-grow: 1; /* Ocupar el espacio restante debajo del encabezado */\r\n    width: 100%; /* Asegurarse de que ocupe todo el ancho */\r\n    padding: 20px; /* Espaciado interno */\r\n    background-color: #ffffff; /* Fondo blanco para el contenido */\r\n    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n    overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n    -ms-overflow-style: none;  /* Ocultar barra en IE y Edge */\r\n    scrollbar-width: none;  /* Ocultar barra en Firefox */\r\n    border-radius: 0 0 8px 8px; /* Redondear la parte inferior */\r\n    box-sizing: border-box; /* Evitar desbordamientos */\r\n}\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none; /* Ocultar barra de desplazamiento */\r\n}";
+    var css_248z$2 = ".dynamic-select {\r\n    width: 100%; /* Ocupar todo el ancho del contenedor */\r\n    padding: 0.5rem 1rem; /* Espaciado interno */\r\n    font-size: 1rem; /* Tamaño de fuente */\r\n    color: #333; /* Texto en gris oscuro */\r\n    background-color: #fff; /* Fondo blanco */\r\n    border: 1px solid #ccc; /* Borde tenue */\r\n    border-radius: 4px; /* Bordes redondeados */\r\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */\r\n    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición en foco */\r\n}\r\n\r\n/* Estilo al pasar el mouse por encima */\r\n.dynamic-select:hover {\r\n    border-color: #888; /* Borde más visible */\r\n}\r\n\r\n/* Estilo al enfocar el select */\r\n.dynamic-select:focus {\r\n    border-color: #007bff; /* Azul para el foco */\r\n    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul */\r\n    outline: none; /* Quitar borde predeterminado */\r\n}\r\n\r\n/* Estilo para las opciones dentro del select */\r\n.dynamic-select option {\r\n    font-size: 1rem; /* Tamaño de fuente uniforme */\r\n    color: #333; /* Color del texto */\r\n    padding: 0.5rem; /* Espaciado interno */\r\n}\r\n\r\n/* Estilo específico para pantallas pequeñas */\r\n@media (max-width: 600px) {\r\n    .dynamic-select {\r\n        font-size: 0.9rem; /* Ajustar tamaño de fuente */\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n                .autosavereview-verified {\r\n            display: inline-block;\r\n            background-color: LimeGreen;\r\n            color: white;\r\n            padding: 5px 10px;\r\n            margin-left: 10px;\r\n            border-radius: 5px;\r\n            font-weight: 600;\r\n    font-size: 14px;\r\n        }\r\n\r\n                .autosavereview-no-verified-correct {\r\n            display: inline-block;\r\n            background-color: LimeGreen;\r\n            color: white;\r\n            padding: 5px 10px;\r\n            margin-left: 10px;\r\n            border-radius: 5px;\r\n            font-weight: 600;\r\n    font-size: 14px;\r\n        }\r\n\r\n                        .autosavereview-no-verified {\r\n            display: inline-block;\r\n            background-color: Red;\r\n            color: white;\r\n            padding: 5px 10px;\r\n            margin-left: 10px;\r\n            border-radius: 5px;\r\n            font-weight: 600;\r\n    font-size: 14px;\r\n        }\r\n\r\n.autosavereview-contestar {\r\n            display: inline-block;\r\n            background-color: red;\r\n            color: white;\r\n            padding: 5px 10px;\r\n            margin-left: 10px;\r\n            border-radius: 5px;\r\n            font-weight: 600;\r\n    font-size: 14px;\r\n        }\r\n\r\n.select-siguiente-usuario {\r\n    font-size: 14px;              /* Tamaño de fuente para el texto seleccionado */\r\n    font-weight: 600;             /* Grosor de la fuente para el texto seleccionado */\r\n    color: #34495e;               /* Color del texto seleccionado */\r\n    border: none;                 /* Elimina el borde del select */\r\n    background-color: transparent;/* Fondo transparente */\r\n    outline: none;                /* Elimina el borde de enfoque */\r\n    appearance: none;             /* Quita el estilo predeterminado del navegador */\r\n    cursor: pointer;              /* Cambia el cursor a pointer */\r\n    text-align: right;            /* Alinea el texto seleccionado a la derecha */\r\n    padding-right: 0px;           /* Espacio entre el texto y el borde derecho */\r\n    direction: rtl;               /* Alinea el desplegable hacia la derecha */\r\n}\r\n\r\n/* Estilo de las opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;              /* Tamaño de fuente más pequeño para las opciones desplegables */\r\n    padding: 10px;            /* Espacio alrededor del texto en cada opción */\r\n    text-align: right;           /* Centra el texto dentro de las opciones */\r\n    direction: ltr;               /* Restablece la dirección del texto para que se lea correctamente */\r\n}\r\n\r\n/* Limita la altura del desplegable para mostrar un número reducido de opciones */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;             /* Reduce la altura visible del select */\r\n    overflow-y: auto;             /* Habilita la barra de desplazamiento vertical */\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;                   /* Reduce la anchura de la barra de desplazamiento */\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2); /* Barra de desplazamiento más transparente */\r\n    border-radius: 10px;          /* Bordes redondeados para la barra */\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;/* Fondo transparente para la pista de la barra */\r\n}\r\n\r\n/* Destacar la opción seleccionada incluso al pasar el mouse */\r\n/* Nota: Debido a limitaciones, esto solo funciona en algunos navegadores */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;    /* Fondo diferente para la opción seleccionada */\r\n    font-weight: bold;            /* Fuente en negrita para la opción seleccionada */\r\n}\r\n\r\n/* Evitar que el hover cambie el estilo de la opción seleccionada */\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;    /* Fondo al pasar el mouse */\r\n}\r\n\r\n/* Mantener el estilo de la opción seleccionada al hacer hover */\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;    /* Mantiene el fondo de la opción seleccionada */\r\n}\r\n\r\n\r\n\r\n/* Estilos para los checkboxes de AutoQuiz */\r\n.autoquiz-checkbox {\r\n    accent-color: #0072c5; /* Color por defecto para checkboxes habilitados */\r\n    width: 20px; /* Tamaño opcional */\r\n    height: 20px; /* Tamaño opcional */\r\n}\r\n\r\n/* Cambiar el color del checkbox cuando está deshabilitado */\r\n.autoquiz-checkbox:disabled {\r\n    accent-color: green; /* Cambia a verde cuando está deshabilitado */\r\n    cursor: not-allowed; /* Cambiar el cursor para indicar que está deshabilitado */\r\n}\r\n\r\n/* Opcional: Mejorar la apariencia general de los checkboxes */\r\n.checkbox-item {\r\n    display: flex;\r\n    align-items: center;\r\n    margin-bottom: 8px; /* Espaciado entre los items */\r\n}\r\n\r\n.checkbox-verified {\r\n    margin-right: 8px; /* Espaciado entre el checkbox y el label */\r\n}\r\n\r\n\r\n.boton-siguiente-usuario {\r\n    margin-top: 0;\r\n    margin-bottom: 0;           /* Establece el margen superior a 0 */\r\n    font-weight: 600;       /* Hace el texto del botón más negrito (600) */\r\n    border: none;           /* Elimina cualquier borde */\r\n    background-color: transparent; /* Fondo transparente */\r\n    cursor: pointer;        /* Cambia el cursor a pointer para indicar que es interactivo */\r\n    padding: 0px 3px;      /* Espaciado interno opcional */\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;       /* Ajusta el tamaño del ícono dentro del botón */\r\n    color: #34495e;         /* Color del ícono */\r\n}\r\n\r\n              /* Estilos básicos para los checkboxes */\r\n        .checkbox-item {\r\n            display: flex;\r\n            align-items: center;\r\n            margin-top: 5px;\r\n        }\r\n        .checkbox-item label {\r\n            margin-left: 8px;\r\n            margin-bottom: 0px;\r\n            margin-top: 0px;\r\n        }\r\n\r\n\r\n      .boton-verificar {\r\n        width: 100%;\r\n        padding: 12px;\r\n        background-color: #0072c5;\r\n        color: white;\r\n        border: none;\r\n        border-radius: 5px;\r\n        font-size: 16px;\r\n        cursor: pointer;\r\n        box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n        transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    }\r\n\r\n    /* Efecto hover en los botones */\r\n    .boton-verificar:hover {\r\n        background-color: #002c67;\r\n        box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n    }\r\n.buttons-container-verificar {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px; /* Espacio entre los botones */\r\n    margin-bottom: 10px; /* Espacio debajo de los botones */\r\n}\r\n\r\n\r\n\r\n        /* Estilos para el contenedor de Verificar */\r\n        .subcontainer-autoquiz-verificar {\r\n            margin-top: 10px; /* Espaciado superior para separar del contenido anterior */\r\n            margin-bottom: 10px; /* Espaciado inferior */\r\n            background-color: #f4f4f4; /* Color de fondo suave */\r\n            padding: 10px 15px; /* Relleno interno */\r\n            border-radius: 8px; /* Bordes redondeados */\r\n            border: 1px solid #dcdcdc; /* Borde suave */\r\n            overflow-y: auto; /* Habilitar desplazamiento si es necesario */\r\n            max-height: 100px; /* Limitar la altura máxima a 100px */\r\n        }\r\n\r\n        /* Estilos para el botón \"Verificar Preguntas\" */\r\n        .boton-verified {\r\n            width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */\r\n            padding: 12px;\r\n            background-color: #0072c5; /* Color de fondo */\r\n            color: white; /* Color del texto */\r\n            border: none; /* Sin bordes */\r\n            border-radius: 5px; /* Bordes redondeados */\r\n            font-size: 16px; /* Tamaño de la fuente */\r\n            cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */\r\n            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */\r\n            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */\r\n              margin-top: -4px; /* Margen inferior */\r\n              margin-bottom: 6px; /* Margen inferior */\r\n        }\r\n\r\n        /* Efecto hover en el botón \"Verificar Preguntas\" */\r\n        .boton-verified:hover {\r\n            background-color: #002c67; /* Cambio de color de fondo al pasar el cursor */\r\n            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el cursor */\r\n        }\r\n\r\n        /* Estilos para el contenedor de cada pregunta */\r\n        .question-container-autoquiz {\r\n            display: flex;\r\n            flex-direction: column;\r\n            justify-content: flex-start;\r\n            align-items: flex-start;\r\n            padding: 0;\r\n            color: #34495e;\r\n            flex-wrap: wrap;\r\n            width: 100%;\r\n            word-wrap: break-word;\r\n            word-break: break-word;\r\n            margin-bottom: 7px; /* Espacio entre preguntas */\r\n        }\r\n\r\n        /* Estilos para el título de la pregunta */\r\n        .question-title-autoquiz {\r\n            color: #333;\r\n            font-size: 13px;\r\n            font-weight: 500;\r\n            margin-bottom: -1px; /* Espacio después del título */\r\n        }\r\n\r\n        /* Contenedor para agrupar cada par de etiqueta-valor (Estado y Similitud) */\r\n        .question-data-group {\r\n            display: flex; /* Asegura que los elementos se alineen horizontalmente */\r\n            flex-direction: row; /* Coloca la etiqueta y el valor en una sola línea */\r\n            justify-content: flex-start;\r\n            align-items: center; /* Alinea verticalmente el contenido al centro */\r\n            margin: 0 0 -4px 0px; /* Eliminar margen adicional */\r\n            padding: 0; /* Eliminar padding adicional */\r\n        }\r\n\r\n        /* Estilos para los elementos de etiqueta como Estado, Similitud */\r\n        .question-label-autoquiz {\r\n            color: #333;\r\n            font-size: 13px;\r\n            font-weight: 500;\r\n            margin-right: 3px; /* Espacio entre la etiqueta y el valor */\r\n        }\r\n\r\n        /* Estilos para los valores correspondientes a Estado y Similitud */\r\n        /* Estilos para los valores correspondientes a Estado, Similitud, Respuestas */\r\n        .question-value-autoquiz {\r\n            color: #333;\r\n            font-size: 12px;\r\n            font-weight: 400;\r\n            font-style: normal;\r\n            line-height: 1.2; /* Ajuste para eliminar el espacio entre líneas */\r\n        }\r\n\r\n\r\n        /* Estilo para el contenedor específico de las respuestas */\r\n        .responses-container {\r\n            margin: 0px; /* Sin margen adicional */\r\n        }\r\n\r\n        .responses-container .question-label-autoquiz {\r\n            display: block; /* Mantiene la etiqueta \"Respuestas\" en una sola línea */\r\n            margin-bottom: 0px; /* Sin espacio adicional debajo de la etiqueta */\r\n            margin-top: 0px; /* Sin espacio adicional debajo de la etiqueta */\r\n        }\r\n\r\n        .responses-container .question-value-autoquiz {\r\n            display: block; /* Asegura que las respuestas aparezcan en una nueva línea */\r\n            margin-top: -2px; /* Sin margen adicional arriba de las respuestas */\r\n            padding-left: 0px; /* Alineación directa debajo de la etiqueta */\r\n        }\r\n\r\n\r\n           /* Estilos para el contenedor principal que ocupa toda la ventana */\r\n        .container-autoquiz {\r\n            height: 100vh;\r\n            display: flex;\r\n            flex-direction: column;\r\n            justify-content: flex-start;\r\n            padding: 10px;\r\n            box-sizing: border-box;\r\n            font-family: 'Poppins', sans-serif;\r\n            overflow-y: auto; /* Permite el desplazamiento vertical */\r\n            -ms-overflow-style: none; /* Ocultar en Internet Explorer y Edge */\r\n            scrollbar-width: none; /* Ocultar en Firefox */\r\n        }\r\n\r\n        /* Ocultar la barra de desplazamiento en Chrome, Safari y Opera */\r\n        .container-autoquiz::-webkit-scrollbar {\r\n            display: none;\r\n        }\r\n\r\n\r\n            /* Estilo para el contenedor que muestra los usuarios actuales y siguientes */\r\n            .users {\r\n                display: flex;\r\n                justify-content: space-between;\r\n                align-items: center;\r\n                width: 100%;\r\n                box-sizing: border-box;\r\n                margin-bottom: 15px ;\r\n            }\r\n\r\n            /* Estilo para el nombre de usuario */\r\n            .nombre-usuario, .nombre-siguiente-usuario {\r\n                font-size: 14px;\r\n                font-weight: 600;\r\n                color: #34495e;\r\n                margin: 0 5px;\r\n            }\r\n\r\n            /* Sección de usuario actual alineada a la izquierda */\r\n            .usuario-actual {\r\n                display: flex;\r\n                align-items: center;\r\n                justify-content: flex-start;\r\n                flex: 1;\r\n            }\r\n\r\n\r\n\r\n        /* Botón para el siguiente usuario sin fondo ni bordes */\r\n        .boton-simple-autoquiz {\r\n            background: none;\r\n            border: none;\r\n            color: #34495e;\r\n            font-size: 14px;\r\n            font-weight: 600;\r\n            cursor: pointer;\r\n            display: inline-flex; /* Cambiamos a inline-flex para respetar el ancho del texto */\r\n            align-items: center;\r\n            justify-content: flex-start; /* Alinea el texto y el ícono de forma continua */\r\n            width: auto; /* Ajusta el ancho según el contenido */\r\n            white-space: normal; /* Permite el quiebre del texto si el ancho es pequeño */\r\n            padding: 0;\r\n            margin: 0;\r\n        }\r\n\r\n        /* Alinear el ícono justo después del texto */\r\n        .boton-simple-autoquiz i {\r\n            margin-left: 5px; /* Añade un pequeño margen para separar el ícono del texto */\r\n            flex-shrink: 0; /* Evita que el ícono se reduzca en tamaños pequeños */\r\n            margin-bottom: 5px;\r\n        }\r\n\r\n        /* Efecto al hacer clic o al enfocarse */\r\n        .boton-simple-autoquiz:focus,\r\n        .boton-simple-autoquiz:active {\r\n            outline: none;\r\n            color: #2c3e50;\r\n            background: none;\r\n        }\r\n\r\n            /* Estilo para la ruta configurada */\r\n            .ruta-config {\r\n                margin-top: 10px;\r\n                font-size: 10px;\r\n                color: #34495e;\r\n            }\r\n\r\n        /* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */\r\n        .subcontainer-autoquiz-autofill {\r\n                margin-top: 10px;\r\n            margin-bottom: 10px;\r\n            background-color: #f4f4f4;\r\n            padding: 10px 15px;\r\n            border-radius: 8px;\r\n            border: 1px solid #dcdcdc;\r\n            overflow-y: auto; /* Habilitar desplazamiento si es necesario */\r\n            max-height: 300px; /* Limitar la altura máxima a 350px */\r\n\r\n        }\r\n        /* Estilos personalizados para la barra de desplazamiento */\r\n        .subcontainer-autoquiz-autofill::-webkit-scrollbar {\r\n            width: 3px; /* Ancho del scrollbar */\r\n        height: 3px; /* Alto del scrollbar horizontal */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autofill::-webkit-scrollbar-track {\r\n            background: transparent; /* Fondo del track transparente */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */\r\n            border-radius: 10px; /* Bordes redondeados */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb:hover {\r\n            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */\r\n        }\r\n\r\n        /* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */\r\n        .subcontainer-autoquiz-autosave {\r\n            margin-top: 10px;\r\n            margin-bottom: 10px;\r\n            background-color: #f4f4f4;\r\n            padding: 10px 15px;\r\n            border-radius: 8px;\r\n            border: 1px solid #dcdcdc;\r\n            overflow-y: auto; /* Habilitar desplazamiento si es necesario */\r\n            max-height: 300px; /* Limitar la altura máxima a 350px */\r\n        }\r\n\r\n        /* Estilos personalizados para la barra de desplazamiento */\r\n        .subcontainer-autoquiz-autosave::-webkit-scrollbar {\r\n            width: 3px; /* Ancho del scrollbar */\r\n            height: 3px; /* Alto del scrollbar horizontal */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosave::-webkit-scrollbar-track {\r\n            background: transparent; /* Fondo del track transparente */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb {\r\n            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */\r\n            border-radius: 10px; /* Bordes redondeados */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb:hover {\r\n            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */\r\n        }\r\n\r\n        .subcontainer-autoquiz-verified {\r\n            margin-top: 10px;\r\n            margin-bottom: 10px;\r\n            background-color: #f4f4f4;\r\n            padding: 10px 15px;\r\n            border-radius: 8px;\r\n            border: 1px solid #dcdcdc;\r\n            overflow-y: auto; /* Habilitar desplazamiento si es necesario */\r\n            max-height: 350px; /* Limitar la altura máxima a 350px */\r\n        }\r\n\r\n        /* Estilos personalizados para la barra de desplazamiento */\r\n        .subcontainer-autoquiz-verified::-webkit-scrollbar {\r\n            width: 3px; /* Ancho del scrollbar */\r\n            height: 3px; /* Alto del scrollbar horizontal */\r\n        }\r\n\r\n        .subcontainer-autoquiz-verified::-webkit-scrollbar-track {\r\n            background: transparent; /* Fondo del track transparente */\r\n        }\r\n\r\n        .subcontainer-autoquiz-verified::-webkit-scrollbar-thumb {\r\n            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */\r\n            border-radius: 10px; /* Bordes redondeados */\r\n        }\r\n\r\n        .subcontainer-autoquiz-verified::-webkit-scrollbar-thumb:hover {\r\n            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosavereview {\r\n            margin-top: 10px;\r\n            margin-bottom: 10px;\r\n            background-color: #f4f4f4;\r\n            padding: 10px 15px;\r\n            border-radius: 8px;\r\n            border: 1px solid #dcdcdc;\r\n            overflow-y: auto; /* Habilitar desplazamiento si es necesario */\r\n            max-height: 350px; /* Limitar la altura máxima a 350px */\r\n        }\r\n\r\n        /* Estilos personalizados para la barra de desplazamiento */\r\n        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar {\r\n            width: 3px; /* Ancho del scrollbar */\r\n            height: 3px; /* Alto del scrollbar horizontal */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-track {\r\n            background: transparent; /* Fondo del track transparente */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb {\r\n            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */\r\n            border-radius: 10px; /* Bordes redondeados */\r\n        }\r\n\r\n        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb:hover {\r\n            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */\r\n        }\r\n\r\n            /* Estilo común para el header que contiene el título y el switch */\r\n        .header-autoquiz {\r\n            margin-top: 5px;\r\n            display: flex;\r\n            justify-content: space-between;\r\n            align-items: center;\r\n            margin-bottom: 5px;\r\n        }\r\n\r\n        /* Estilo para el título */\r\n        .header-autoquiz h2 {\r\n            font-size: 22px;\r\n            font-weight: 600;\r\n            color: #34495e;\r\n            margin: 0;\r\n        }\r\n\r\n        .header-autoquiz h3 {\r\n            font-size: 20px;\r\n            font-weight: 600;\r\n            color: #34495e;\r\n            margin: 0;\r\n\r\n        }\r\n\r\n         .header-autoquiz h4 {\r\n         width: 100%;\r\n         display: flex;\r\n    justify-content: center;\r\n            font-size: 22px;\r\n            font-weight: 600;\r\n            color: #34495e;\r\n            margin: 0;\r\n            text-align: center;\r\n        }\r\n\r\n        /* Estilo para el switch */\r\n        .switch-autoquiz {\r\n            position: relative;\r\n            display: inline-block;\r\n            width: 34px;\r\n            height: 20px;\r\n        }\r\n\r\n        .switch-autoquiz input {\r\n            opacity: 0;\r\n            width: 0;\r\n            height: 0;\r\n        }\r\n\r\n        .slider {\r\n            position: absolute;\r\n            cursor: pointer;\r\n            top: 0;\r\n            left: 0;\r\n            right: 0;\r\n            bottom: 0;\r\n            background-color: #ccc;\r\n            transition: 0.4s;\r\n            border-radius: 20px;\r\n        }\r\n\r\n        .slider:before {\r\n            position: absolute;\r\n            content: \"\";\r\n            height: 12px;\r\n            width: 12px;\r\n            border-radius: 50%;\r\n            left: 4px;\r\n            bottom: 4px;\r\n            background-color: white;\r\n            transition: 0.4s;\r\n        }\r\n\r\n        input:checked + .slider {\r\n            background-color: #3498db;\r\n        }\r\n\r\n        input:checked + .slider:before {\r\n            transform: translateX(14px);\r\n        }\r\n\r\n        /* Estilo para el contenido dentro de los contenedores de AutoFill y AutoSave */\r\n        .body-autoquiz {\r\n            display: flex;\r\n            flex-direction: column;\r\n            gap: 0px;\r\n            font-size: 16px;\r\n            width: 100%; /* Para que ocupe el 100% del ancho del contenedor padre */\r\n        }\r\n\r\n        /* Estilo para cada línea de dato en AutoFill y AutoSave */\r\n        .dato-autoquiz {\r\n            display: flex;\r\n            justify-content: flex-start;\r\n            align-items: center;\r\n            padding: 0;\r\n            color: #34495e;\r\n            flex-wrap: wrap; /* Permitir que el contenido se ajuste si es muy largo */\r\n            width: 100%; /* Para que ocupe todo el ancho del contenedor */\r\n            word-wrap: break-word; /* Romper palabras si son muy largas */\r\n            word-break: break-word; /* Para manejar palabras largas en el texto */\r\n        }\r\n\r\n\r\n        /* Si la ruta no es válida, oculta los contenedores */\r\n        #container-autofill[style*=\"display: none\"],\r\n            #container-autosave[style*=\"display: none\"] {\r\n                display: none;\r\n            }\r\n\r\n        /* Estilo para el contenedor oculto que se muestra al hacer clic */\r\n        #container-viewquestion {\r\n            margin-top: 0;\r\n            padding: 10px;\r\n            font-size: 14px;\r\n            background-color: #f8f8f8;\r\n            border: 1px solid #ddd;\r\n            border-radius: 5px;\r\n        }\r\n\r\n        /* Estilos para la pregunta */\r\n        .preguntaautosave {\r\n            color: #333; /* Color casi negro */\r\n            font-size: 13px; /* Puedes ajustar el tamaño de la fuente aquí */\r\n            font-weight: 500;\r\n            margin-top: 5px;\r\n            /* Grosor modificable: 100 (fino), 400 (normal), 700 (grueso), etc. */\r\n        }\r\n\r\n        /* Estilos para las respuestas */\r\n        .respuestasautosave {\r\n            color: #333; /* Color casi negro, igual que las preguntas */\r\n            font-size: 12px; /* Tamaño de la fuente, ajustable */\r\n            font-weight: 400; /* Eliminar negritas */\r\n            font-style: normal; /* Eliminar la cursiva */\r\n        }\r\n\r\n        /* Estilos para la pregunta */\r\n        .preguntaautosavereview {\r\n            color: #333; /* Color casi negro */\r\n            font-size: 13px; /* Puedes ajustar el tamaño de la fuente aquí */\r\n            font-weight: 500;\r\n            margin-top: 5px;\r\n            /* Grosor modificable: 100 (fino), 400 (normal), 700 (grueso), etc. */\r\n        }\r\n\r\n        /* Estilos para las respuestas */\r\n        .respuestasautosavereview {\r\n            color: #333; /* Color casi negro, igual que las preguntas */\r\n            font-size: 12px; /* Tamaño de la fuente, ajustable */\r\n            font-weight: 400; /* Eliminar negritas */\r\n            font-style: normal; /* Eliminar la cursiva */\r\n        }";
     styleInject(css_248z$2);
-
-    var css_248z$1 = "";
-    styleInject(css_248z$1);
 
     function opcionAutoQuiz_html$1() {
         return `
@@ -21237,8 +22859,13 @@
         barraLateral.appendChild(contenedor);
       
         setTimeout(() => {
-          opcionAutoQuiz_js(); 
+          if (typeof opcionAutoQuiz_js === 'function') {
+            opcionAutoQuiz_js();
+          } else {
+            console.warn('La función opcionAutoQuiz_js no está definida.');
+          }
         }, 100);
+        
       
         botonMenu.addEventListener('click', () => {
           const menu = document.getElementById('menu-autofillquizapp');
@@ -21252,8 +22879,452 @@
         return contenedor;
       }
 
-    var css_248z = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
+    var css_248z$1 = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
+    styleInject(css_248z$1);
+
+    var css_248z = "\r\n/* Estilo para el Contenedor Principal */\r\n.estilo-configruta-title {\r\n    margin-bottom: 0;\r\n    margin-top: -10px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* Estilo para Ruta y Ciclo (apilados verticalmente) */\r\n.ruta-ciclo-container {\r\n    display: flex;\r\n    flex-direction: column; /* Cambiado a columna para apilar */\r\n    align-items: flex-start; /* Alinea los elementos al inicio horizontalmente */\r\n    margin-bottom: 0; /* Espacio entre Ciclo y Mensaje Combinado */\r\n    color: #34495e;\r\n}\r\n\r\n/* Estilo para Ruta */\r\n.title-configruta-ruta {\r\n    padding: 0; /* Espacio vertical entre Ruta y Ciclo */\r\n    font-size: 14px; /* Tamaño de fuente para Ruta */\r\n    color: #333; /* Color del texto */\r\n    font-family: 'Poppins', sans-serif;\r\n    margin-bottom: -5px;\r\n}\r\n\r\n/* Estilo para Ciclo */\r\n.title-configruta-ciclo {\r\n    padding: 5px 0; /* Espacio vertical */\r\n    font-size: 14px; /* Tamaño de fuente para Ciclo */\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n.label-configruta {\r\n    font-weight: 600;\r\n    color: #34495e; /* Color más oscuro para destacar */\r\n    font-size: 14px; /* Ligero aumento en tamaño */\r\n}\r\n\r\n.ciclo-configruta,\r\n.ruta-configruta {\r\n    font-weight: 600;\r\n    color: #34495e; /* Color más oscuro para destacar */\r\n    font-size: 14px; /* Ligero aumento en tamaño */\r\n}\r\n\r\n\r\n\r\n/* Contenedor principal que ocupa todo el alto */\r\n.contenido-configruta {\r\n    height: 100vh; /* Ocupar todo el alto de la ventana */\r\n    display: flex; /* Usar flexbox para la disposición */\r\n    flex-direction: column; /* Disponer el contenido en columnas */\r\n    justify-content: flex-start; /* Alinear contenido hacia arriba */\r\n    padding: 10px 20px; /* Espaciado interno */\r\n    box-sizing: border-box; /* Asegurarse de que el padding no afecte el tamaño del contenedor */\r\n    font-family: 'Poppins', sans-serif; /* Fuente moderna y clara */\r\n    overflow-y: auto; /* Permitir desplazamiento vertical si es necesario */\r\n    -ms-overflow-style: none; /* Ocultar barras de desplazamiento en IE y Edge */\r\n    scrollbar-width: none; /* Ocultar barras de desplazamiento en Firefox */\r\n}\r\n\r\n.contenido-configruta::-webkit-scrollbar {\r\n    display: none; /* Ocultar la barra de desplazamiento en Chrome, Safari y Opera */\r\n}\r\n\r\n/* Título estilizado */\r\n.title-optionmenu {\r\n    font-size: 22px;\r\n    font-weight: 700;\r\n    color: #34495e;\r\n    margin-bottom: 20px;\r\n    text-align: left;\r\n}\r\n\r\n/* Contenedores de elementos */\r\n.estilo-configruta-item {\r\n    margin-bottom: 10px;\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* Estilo para el Mensaje Combinado */\r\n.title-configruta-no-seleccionado {\r\n    display: none; /* Oculto por defecto */\r\n    width: 100%;\r\n    text-align: center;\r\n    margin-top: 10px;\r\n    color: red; /* Color del mensaje */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 10px; /* Tamaño de fuente para el mensaje combinado */\r\n}\r\n\r\n/* Opcional: Mostrar el mensaje cuando ambos no están seleccionados */\r\n.no-seleccionado .title-configruta-no-seleccionado {\r\n    display: block;\r\n}\r\n\r\n/* Estilos para los selects */\r\n.estilo-configruta-select {\r\n    width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */\r\n    padding: 12px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff; /* Fondo blanco */\r\n    color: #2c3e50; /* Texto oscuro para mayor legibilidad */\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */\r\n    transition: border 0.3s ease, box-shadow 0.3s ease; /* Transición suave */\r\n}\r\n\r\n/* Efecto hover y foco en los selects */\r\n.estilo-configruta-select:hover,\r\n.estilo-configruta-select:focus {\r\n    border-color: #0072c5;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\r\n    outline: none;\r\n}\r\n\r\n/* Botones estilizados */\r\n.estilo-configruta-boton {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n/* Efecto hover en los botones */\r\n.estilo-configruta-boton:hover {\r\n    background-color: #002c67;\r\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);\r\n}";
     styleInject(css_248z);
+
+    // src/opc-config-ruta/script.js
+
+
+
+    // Exporta las funciones que necesitas utilizar en otros módulos
+    function opcionConfigRuta_html() {
+        return `
+    <div class="contenido-configruta">
+        <h3 class="title-optionmenu">Configuración de Ruta</h3>
+
+    <!-- Contenedor Principal -->
+        <div id="ultima-ruta-configruta" class="estilo-configruta-title no-seleccionado">
+
+            <!-- Contenedor para Ruta y Ciclo apilados verticalmente -->
+            <div class="ruta-ciclo-container">
+
+                <!-- Ruta -->
+                <div id="ruta-configruta" class="title-configruta-ruta">
+                    <span class="label-configruta">Ruta:</span>
+                </div>
+
+                <!-- Ciclo -->
+                <div id="ciclo-configruta" class="title-configruta-ciclo">
+                    <span class="label-configruta">Ciclo:</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Contenedor Selects Dinamicos -->
+        <div id="selects-configruta">
+            <!-- Aquí puedes agregar más contenido o elementos dinámicos -->
+        </div>
+
+        <button id="boton-guardar-configruta" class="estilo-configruta-boton guardar">Guardar Ruta</button>
+    </div>
+    `;
+    } 
+
+
+    function comprobarRutaCiclo_ConfigRuta() {
+        const configRuta = localStorage.getItem('configRuta');
+        const ciclo = localStorage.getItem('ciclo');
+
+        console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
+
+        // Verificar si configRuta y ciclo están definidos
+        if (!configRuta || !ciclo) {
+            console.log('configRuta o ciclo no están definidos.');
+
+            // Desactivar autofill y autosave
+            localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
+            localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
+            console.log('Autofill y autosave desactivados en localStorage.');
+
+            // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
+            const mensaje = document.createElement('div');
+            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
+            mensaje.style.color = 'red';
+            mensaje.style.fontWeight = '500';
+            mensaje.style.fontSize = '1em';
+            mensaje.style.fontStyle = 'italic';
+            mensaje.style.textAlign = 'center';
+            mensaje.style.marginBottom = '10px';
+            mensaje.id = 'mensaje-ruta-invalida';
+
+            const rutaCicloContainer = document.querySelector('.ruta-ciclo-container');
+            const ultimaRutaConfigruta = document.getElementById('ultima-ruta-configruta');
+
+            if (ultimaRutaConfigruta && !document.getElementById('mensaje-ruta-invalida')) {
+                ultimaRutaConfigruta.appendChild(mensaje);
+
+                // Eliminada la redeclaración de 'ultimaRutaConfigruta'
+                // const ultimaRutaConfigruta = document.getElementById('ultima-ruta-configruta');
+
+                // Verifica si el elemento existe y luego lo oculta
+                if (rutaCicloContainer) {
+                    rutaCicloContainer.style.display = 'none';
+                    console.log('Elemento ruta-ciclo-container ocultado:', rutaCicloContainer);
+                }
+
+                console.log('Mensaje de advertencia añadido al contenido principal.');
+            }
+        } else {
+            console.log('configRuta y ciclo están definidos. Mostrando contenedores.');
+
+            const rutaCicloContainer = document.querySelector('.ruta-ciclo-container');
+
+            // Mostrar los contenedores si configRuta y ciclo están definidos
+            if (rutaCicloContainer) {
+                rutaCicloContainer.style.display = 'block';
+                console.log('Elemento ruta-ciclo-container mostrado:', rutaCicloContainer);
+            }
+
+            // Eliminar el mensaje si existe
+            const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
+            if (mensajeExistente) {
+                mensajeExistente.remove();
+                console.log('Mensaje de advertencia eliminado.');
+            }
+
+            // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
+            const rutaElemento = document.getElementById('ruta-configruta');
+            const cicloElemento = document.getElementById('ciclo-configruta');
+
+            if (rutaElemento && cicloElemento) {
+                // Asignar los valores de configRuta y ciclo en los elementos del DOM
+                rutaElemento.innerHTML = `<span class="ruta-configruta">Ruta:</span> ${configRuta}`;
+                cicloElemento.innerHTML = `<span class="ciclo-configruta">Ciclo:</span> ${ciclo}`;
+                console.log(`Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
+            }
+        }
+    }
+
+
+    // Variable global para llevar el conteo de niveles de select.
+    let nivelActual = 1;
+
+    function formatearLabelTexto(key) {
+        const partes = key.split('-').slice(1);
+        return partes.map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(' ');
+    }
+
+    function guardarEstadoSelects() {
+        const contenedorSelects = document.getElementById('selects-configruta');
+        const selects = Array.from(contenedorSelects.querySelectorAll('select'));
+        const estado = selects.map(select => ({
+            nivel: select.getAttribute('data-level'),
+            id: select.id,
+            ruta: select.getAttribute('data-path'),
+            seleccion: select.value  // Guardar el valor seleccionado actual
+        }));
+        console.log("Guardando estado en localStorage:", estado);
+        localStorage.setItem('estadoSelects', JSON.stringify(estado));
+    }
+
+    async function SelectUniversidad_ConfigRuta() {
+        console.log("Ejecutando SelectUniversidad_ConfigRuta...");
+
+        const rutaFirebase = 'ConfigRuta/universidad';
+        const databaseRef = ref(database, rutaFirebase); // Usar la función `ref` importada
+        const contenedorSelects = document.getElementById('selects-configruta');
+
+        if (!contenedorSelects) {
+            console.error('No se encontró el contenedor con id "selects-configruta"');
+            return;
+        }
+
+        contenedorSelects.innerHTML = '';
+        console.log("Contenedor 'selects-configruta' limpiado.");
+        nivelActual = 1;
+
+        try {
+            const snapshot = await get(databaseRef); // Usar la función `get` importada
+            const data = snapshot.val();
+
+            if (data) {
+                const label = document.createElement('label');
+                label.setAttribute('for', 'select-universidad-configruta');
+                label.textContent = 'Universidad';
+                label.className = 'estilo-configruta-item';
+
+                const selectUniversidad = document.createElement('select');
+                selectUniversidad.id = 'select-universidad-configruta';
+                selectUniversidad.className = 'estilo-configruta-select';
+                selectUniversidad.setAttribute('data-level', nivelActual);
+                selectUniversidad.setAttribute('data-path', 'ConfigRuta/universidad');
+                selectUniversidad.style.marginBottom = '10px';
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Seleccione una opción';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                selectUniversidad.appendChild(defaultOption);
+
+                for (const universidadKey in data) {
+                    if (data.hasOwnProperty(universidadKey)) {
+                        const option = document.createElement('option');
+                        option.value = universidadKey;
+                        option.textContent = typeof data[universidadKey] === 'string'
+                            ? data[universidadKey]
+                            : universidadKey;
+                        selectUniversidad.appendChild(option);
+                    }
+                }
+
+                selectUniversidad.addEventListener('change', async (event) => {
+                    const selectedUniversity = event.target.value;
+
+                    // Remover la opción por defecto de la lista
+                    if (defaultOption.parentNode) {
+                        selectUniversidad.removeChild(defaultOption);
+                    }
+
+                    await limpiarSelectsDesdeNivel(2);
+                    if (selectedUniversity) {
+                        await cargarSelectsDinamicos(selectedUniversity, rutaFirebase, 2, selectedUniversity);
+                    }
+                    guardarEstadoSelects(); // Guardar estado al cambiar selección
+                });
+
+                contenedorSelects.appendChild(label);
+                contenedorSelects.appendChild(selectUniversidad);
+
+                // Llama a la función para restaurar el estado de los selects si existe en localStorage
+                await manejarSeleccionesSecuenciales();
+            }
+        } catch (error) {
+            console.error('Error al obtener datos de Firebase:', error);
+            const mensajeError = document.createElement('p');
+            mensajeError.textContent = 'Hubo un error al cargar las configuraciones.';
+            contenedorSelects.appendChild(mensajeError);
+        }
+    }
+
+
+    // src/tu-archivo.js
+
+    // Asegúrate de importar o definir estas funciones en tu archivo
+    // import { limpiarSelectsDesdeNivel, cargarOpciones, guardarEstadoSelects, manejarSeleccionesSecuenciales } from './otras-funciones.js';
+
+    async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidadSeleccionada) {
+        let rutaActual;
+        if (nivel === 2) {
+            rutaActual = `${rutaPadre}/${selectedKey}`;
+        } else {
+            rutaActual = `ConfigRuta/opciones/${universidadSeleccionada}`;
+        }
+
+        const databaseRef = ref(database, rutaActual);
+
+        try {
+            const snapshot = await get(databaseRef);
+            const data = snapshot.val();
+            let keysPrincipales = [];
+
+            // Solo buscamos claves si el valor devuelto es un objeto
+            if (data && typeof data === 'object') {
+                if (nivel === 2) {
+                    keysPrincipales = Object.keys(data);
+                } else {
+                    keysPrincipales = Object.keys(data).filter(key => key.startsWith(selectedKey));
+                }
+            }
+
+            // Verificar si hay claves principales que generen nuevos selects
+            if (keysPrincipales.length > 0) {
+                await limpiarSelectsDesdeNivel(nivel + 1);
+                for (let keyPrincipal of keysPrincipales) {
+                    await cargarOpciones(keyPrincipal, universidadSeleccionada, nivel + 1);
+                }
+            } else {
+                console.log("No se encontraron opciones para generar nuevos selects.");
+            }
+        } catch (error) {
+            console.error(`Error al obtener datos de Firebase para '${rutaActual}':`, error);
+        }
+    }
+
+    async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
+        const rutaOpciones = `ConfigRuta/opciones/${universidadSeleccionada}/${keyPrincipal}`;
+        const databaseRef = ref(database, rutaOpciones); // Usar la función `ref` importada de Firebase v9
+        const contenedorSelects = document.getElementById('selects-configruta');
+
+        try {
+            const snapshot = await get(databaseRef); // Usar la función `get` importada de Firebase v9
+            const opciones = snapshot.val();
+
+            if (opciones && typeof opciones === 'object' && Object.keys(opciones).length > 0) {
+                const div = document.createElement('div');
+                div.className = 'estilo-configruta-item';
+                div.setAttribute('data-path', rutaOpciones);
+
+                const label = document.createElement('label');
+                label.setAttribute('for', `select-${keyPrincipal}`);
+                label.textContent = formatearLabelTexto(keyPrincipal);
+                label.className = 'estilo-configruta-item';
+
+                const selectDinamico = document.createElement('select');
+                selectDinamico.id = `select-${keyPrincipal}`;
+                selectDinamico.className = 'estilo-configruta-select';
+                selectDinamico.setAttribute('data-level', nivel);
+                selectDinamico.setAttribute('data-path', rutaOpciones);
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Seleccione una opción';
+                defaultOption.disabled = true; // Hace que la opción no sea seleccionable
+                defaultOption.selected = true; // Seleccionada por defecto al cargar
+                selectDinamico.appendChild(defaultOption);
+
+                for (const opcionKey in opciones) {
+                    if (opciones.hasOwnProperty(opcionKey)) {
+                        const option = document.createElement('option');
+                        option.value = opcionKey;
+                        option.textContent = opciones[opcionKey] ? opciones[opcionKey] : opcionKey;
+                        selectDinamico.appendChild(option);
+                    }
+                }
+
+                selectDinamico.addEventListener('change', async (event) => {
+                    const selectedOption = event.target.value;
+
+                    // Remover la opción por defecto de la lista una vez seleccionada otra opción
+                    if (defaultOption.parentNode) {
+                        selectDinamico.removeChild(defaultOption);
+                    }
+
+                    await limpiarSelectsDesdeNivel(nivel + 1);
+                    if (selectedOption) {
+                        await cargarSelectsDinamicos(selectedOption, `ConfigRuta/opciones/${universidadSeleccionada}`, nivel + 1, universidadSeleccionada);
+                    }
+                    guardarEstadoSelects(); // Guardar estado al cambiar selección
+                });
+
+                div.appendChild(label);
+                div.appendChild(selectDinamico);
+                contenedorSelects.appendChild(div);
+            }
+        } catch (error) {
+            console.error(`Error al obtener opciones de Firebase para '${rutaOpciones}':`, error);
+        }
+    }
+
+
+    function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
+        return new Promise((resolve) => {
+            const intervalo = setInterval(() => {
+                const select = document.getElementById(selectId);
+                if (select) {
+                    clearInterval(intervalo);
+                    const option = Array.from(select.options).find(option => option.value === valorSeleccionado);
+                    if (option) {
+                        select.value = option.value;
+                        console.log(`Opción seleccionada en ${selectId}: ${option.textContent.trim()}`);
+                        // Simular el evento 'change' para desencadenar la carga de selects dependientes
+                        select.dispatchEvent(new Event('change'));
+                    }
+                    resolve();
+                }
+            }, 100); // Reintenta cada 100 ms
+        });
+    }
+
+    async function manejarSeleccionesSecuenciales() {
+        const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects'));
+        console.log("Estado de los selects desde localStorage:", estadoSelects);
+
+        if (!estadoSelects || estadoSelects.length === 0) {
+            console.log("No hay datos en el estado de los selects.");
+            return;
+        }
+
+        for (let selectData of estadoSelects) {
+            const { id, seleccion } = selectData;
+            console.log(`Procesando ${id} con valor: ${seleccion}`);
+            await esperarYSeleccionarOpcion(id, seleccion);
+        }
+    }
+
+    async function limpiarSelectsDesdeNivel(nivelInicio) {
+        console.log(`Limpiando selects desde nivel ${nivelInicio} en adelante`);
+        const contenedorSelects = document.getElementById('selects-configruta');
+        const selects = Array.from(contenedorSelects.querySelectorAll('select'));
+
+        selects.forEach(select => {
+            const selectNivel = parseInt(select.getAttribute('data-level'), 10);
+            if (selectNivel >= nivelInicio) {
+                const parentDiv = select.parentElement;
+                if (parentDiv) {
+                    const label = parentDiv.querySelector('label');
+                    if (label) {
+                        label.remove();
+                    }
+                    select.remove();
+                }
+            }
+        });
+        nivelActual = nivelInicio - 1;
+    }
+
+    // Función que ejecuta todo el proceso
+    async function opcionConfigRuta_js() {
+        comprobarRutaCiclo_ConfigRuta();
+        console.log("Ejecutando opcionConfigRuta_js...");
+        await SelectUniversidad_ConfigRuta();
+
+        // Añadir el evento para el botón dentro de la función
+        const botonGuardar = document.getElementById("boton-guardar-configruta");
+        if (botonGuardar) {
+            botonGuardar.addEventListener("click", guardarConfigRuta);
+        } else {
+            console.error('No se encontró el botón con id "boton-guardar-configruta"');
+        }
+    }
+
+    function guardarConfigRuta() {
+        guardarEstadoSelects();
+
+        // Obtener el array de objetos desde localStorage
+        const estadoSelects = JSON.parse(localStorage.getItem("estadoSelects")) || [];
+
+        // Verificar si alguna selección está vacía
+        const algunaSeleccionVacia = estadoSelects.some(item => item.seleccion === "");
+        if (algunaSeleccionVacia) {
+            alert("No se puede guardar ruta, debido a que una opción no está seleccionada.");
+            return; // Detener la función si alguna selección está vacía
+        }
+
+        // Inicializar las variables para configRuta y ciclo
+        let configRuta = "";
+        let ciclo = "";
+
+        // Recorrer cada elemento del array
+        estadoSelects.forEach((item) => {
+            // Realizar split en el valor de seleccion si contiene ":"
+            let seleccion = item.seleccion.includes(":") ? item.seleccion.split(":").slice(1).join(":") : item.seleccion;
+
+            // Si el id contiene la palabra "ciclo", asignar el valor de selección a la variable ciclo
+            if (item.id.includes("ciclo")) {
+                ciclo = seleccion;
+            } else {
+                // Para los demás elementos, agregar selección a configRuta con "/"
+                configRuta += `${seleccion}/`;
+            }
+        });
+
+        // Quitar el último "/" de configRuta
+        configRuta = configRuta.slice(0, -1);
+
+        // Guardar configRuta y ciclo en localStorage
+        localStorage.setItem("configRuta", configRuta);
+        localStorage.setItem("ciclo", ciclo);
+
+        console.log("configRuta:", configRuta);
+        console.log("ciclo:", ciclo);
+
+        comprobarRutaCiclo_ConfigRuta();
+    }
 
     function menu_AutoFillQuizApp() {
         // Crear el contenedor del menú lateral

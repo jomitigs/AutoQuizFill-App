@@ -34,8 +34,13 @@ export function panel_AutoFillQuizApp(barraLateral) {
     barraLateral.appendChild(contenedor);
   
     setTimeout(() => {
-      opcionAutoQuiz_js(); 
+      if (typeof opcionAutoQuiz_js === 'function') {
+        opcionAutoQuiz_js();
+      } else {
+        console.warn('La función opcionAutoQuiz_js no está definida.');
+      }
     }, 100);
+    
   
     botonMenu.addEventListener('click', () => {
       const menu = document.getElementById('menu-autofillquizapp');

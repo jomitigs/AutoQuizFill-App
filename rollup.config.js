@@ -12,7 +12,7 @@ export default {
   output: {
     file: 'dist/main-app.bundle.js',        // Un solo archivo de salida
     format: 'iife',
-    name: 'MyBundle',              // Nombre global (opcional)
+    name: 'AutoQuizFillApp',              // Nombre global (opcional)
   },
   plugins: [
     resolve({ browser: true }),

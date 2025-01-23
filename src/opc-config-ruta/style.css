@@ -1,0 +1,141 @@
+
+/* Estilo para el Contenedor Principal */
+.estilo-configruta-title {
+    margin-bottom: 0;
+    margin-top: -10px;
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Opcional: padding interno */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo para Ruta y Ciclo (apilados verticalmente) */
+.ruta-ciclo-container {
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para apilar */
+    align-items: flex-start; /* Alinea los elementos al inicio horizontalmente */
+    margin-bottom: 0; /* Espacio entre Ciclo y Mensaje Combinado */
+    color: #34495e;
+}
+
+/* Estilo para Ruta */
+.title-configruta-ruta {
+    padding: 0; /* Espacio vertical entre Ruta y Ciclo */
+    font-size: 14px; /* Tamaño de fuente para Ruta */
+    color: #333; /* Color del texto */
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: -5px;
+}
+
+/* Estilo para Ciclo */
+.title-configruta-ciclo {
+    padding: 5px 0; /* Espacio vertical */
+    font-size: 14px; /* Tamaño de fuente para Ciclo */
+    font-family: 'Poppins', sans-serif;
+}
+
+.label-configruta {
+    font-weight: 600;
+    color: #34495e; /* Color más oscuro para destacar */
+    font-size: 14px; /* Ligero aumento en tamaño */
+}
+
+.ciclo-configruta,
+.ruta-configruta {
+    font-weight: 600;
+    color: #34495e; /* Color más oscuro para destacar */
+    font-size: 14px; /* Ligero aumento en tamaño */
+}
+
+
+
+/* Contenedor principal que ocupa todo el alto */
+.contenido-configruta {
+    height: 100vh; /* Ocupar todo el alto de la ventana */
+    display: flex; /* Usar flexbox para la disposición */
+    flex-direction: column; /* Disponer el contenido en columnas */
+    justify-content: flex-start; /* Alinear contenido hacia arriba */
+    padding: 10px 20px; /* Espaciado interno */
+    box-sizing: border-box; /* Asegurarse de que el padding no afecte el tamaño del contenedor */
+    font-family: 'Poppins', sans-serif; /* Fuente moderna y clara */
+    overflow-y: auto; /* Permitir desplazamiento vertical si es necesario */
+    -ms-overflow-style: none; /* Ocultar barras de desplazamiento en IE y Edge */
+    scrollbar-width: none; /* Ocultar barras de desplazamiento en Firefox */
+}
+
+.contenido-configruta::-webkit-scrollbar {
+    display: none; /* Ocultar la barra de desplazamiento en Chrome, Safari y Opera */
+}
+
+/* Título estilizado */
+.title-optionmenu {
+    font-size: 22px;
+    font-weight: 700;
+    color: #34495e;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Contenedores de elementos */
+.estilo-configruta-item {
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo para el Mensaje Combinado */
+.title-configruta-no-seleccionado {
+    display: none; /* Oculto por defecto */
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    color: red; /* Color del mensaje */
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; /* Tamaño de fuente para el mensaje combinado */
+}
+
+/* Opcional: Mostrar el mensaje cuando ambos no están seleccionados */
+.no-seleccionado .title-configruta-no-seleccionado {
+    display: block;
+}
+
+/* Estilos para los selects */
+.estilo-configruta-select {
+    width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */
+    padding: 12px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #ffffff; /* Fondo blanco */
+    color: #2c3e50; /* Texto oscuro para mayor legibilidad */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: border 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+/* Efecto hover y foco en los selects */
+.estilo-configruta-select:hover,
+.estilo-configruta-select:focus {
+    border-color: #0072c5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    outline: none;
+}
+
+/* Botones estilizados */
+.estilo-configruta-boton {
+    width: 100%;
+    padding: 12px;
+    background-color: #0072c5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto hover en los botones */
+.estilo-configruta-boton:hover {
+    background-color: #002c67;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
