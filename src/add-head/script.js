@@ -6,7 +6,6 @@
  * Puedes importar y llamar a esta función en tu código para cargar las fuentes necesarias.
  */
 
-export function agregarHead() {
     // URLs de las fuentes
     const poppinsHref = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
     const fontAwesomeHref = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
@@ -34,9 +33,3 @@ export function agregarHead() {
 
     // Añadir Font Awesome si no está presente
     appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern, 'Font Awesome');
-}
-
-// Exponer la función al objeto global (ej. Tampermonkey)
-window.addHead = { // Asigna el objeto AutoQuizFillApp al window global
-    agregarHead, // Exponiendo la función initBarraLateral
-  };
