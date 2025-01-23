@@ -23,7 +23,7 @@ export default {
       extensions: ['.css'],
       inject: true,
     }),
-    terser(),
+    // terser(),
     html({
       include: '**/*.html',
     }),

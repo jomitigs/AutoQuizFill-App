@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build:watch": "nodemon --watch src --ext js,jsx,ts,tsx --exec \"npm run build\""
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "glob": "^11.0.0",
+    "nodemon": "^3.1.9",
     "rollup": "^4.29.1",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-string": "^3.0.0"

@@ -1,89 +1,150 @@
-// Importar el CSS (PostCSS lo inyectará en el bundle)
-import './style.css'; // Importa el archivo de estilos CSS
+import './style.css';
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth';
+import { autenticacion } from '../config-firebase/script.js';
 
-// Asegúrate de que Firebase ya esté inicializado antes de este bloque
+const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
+const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
+const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
+const ID_FORM_FAKE = 'fake-form';
 
-(function () {
-    console.log("[AutoQuizFill] Script cargado."); // Depuración al cargar el script
+console.log('[AutoQuizFill] Script cargado.');
 
-    // Verificación de la sesión activa al cargar la página
-    function verificarSesionUsuario() {
-        console.log("[AutoQuizFill] Verificando sesión activa...");
-        autenticacion.onAuthStateChanged((usuario) => {
-            if (usuario) {
-                console.log("[AutoQuizFill] Usuario autenticado:", usuario);
-                mostrarPanel(); // Usuario ya autenticado, mostrar el panel
-            } else {
-                console.log("[AutoQuizFill] No hay usuario autenticado. Mostrar login.");
-                mostrarLogin(); // No hay sesión, mostrar el formulario de login
-            }
-        });
+function toggleElementById(elementId, show) {
+  const el = document.getElementById(elementId);
+  if (el) el.style.display = show ? 'block' : 'none';
+}
+
+function mostrarError(mensaje) {
+  console.error(`[AutoQuizFill] ${mensaje}`);
+  alert(`Error en inicio de sesión: ${mensaje}`);
+}
+
+function crearFormularioLogin(barraLateral) {
+  const loginAutoFillQuizApp = document.createElement('div');
+  loginAutoFillQuizApp.id = ID_LOGIN_CONTENEDOR;
+  loginAutoFillQuizApp.style.display = 'none';
+
+  loginAutoFillQuizApp.innerHTML = `
+    <div class="contenedor-login-autoquizfillapp">
+      <div class="contenedor-titulo-autoquizfillapp">
+        <h2 class="title-login-autoquizfillapp">AutoQuizFill App</h2>
+      </div>
+      <div class="contenedor-inputs-autoquizfillapp">
+        <input 
+          type="email" 
+          id="login-correo-autoquizfillapp" 
+          class="login-entrada-autoquizfillapp" 
+          placeholder="Correo electrónico"
+          autocomplete="email" 
+          form="${ID_FORM_FAKE}" 
+          required
+        >
+        <input 
+          type="password" 
+          id="login-contrasena-autoquizfillapp" 
+          class="login-entrada-autoquizfillapp" 
+          placeholder="Contraseña"
+          autocomplete="current-password" 
+          form="${ID_FORM_FAKE}" 
+          required
+        >
+      </div>
+      <div class="contenedor-boton-autoquizfillapp">
+        <button 
+          id="login-boton-autoquizfillapp" 
+          class="login-boton-autoquizfillapp"
+        >
+          Iniciar sesión
+        </button>
+      </div>
+    </div>
+    <form id="${ID_FORM_FAKE}" style="display: none;"></form>
+  `;
+
+  barraLateral.appendChild(loginAutoFillQuizApp);
+
+  const inputCorreo = document.getElementById('login-correo-autoquizfillapp');
+  const inputContrasena = document.getElementById('login-contrasena-autoquizfillapp');
+  const botonLogin = document.getElementById('login-boton-autoquizfillapp');
+
+  const iniciarSesionHandler = () => iniciarSesionAutoQuiz(inputCorreo.value, inputContrasena.value);
+  
+  inputContrasena.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') iniciarSesionHandler();
+  });
+  botonLogin.addEventListener('click', iniciarSesionHandler);
+}
+
+function iniciarSesionAutoQuiz(correo, contrasena) {
+  console.log('[AutoQuizFill] Iniciando sesión con:', correo);
+  signInWithEmailAndPassword(autenticacion, correo, contrasena)
+    .then(() => {
+      console.log('[AutoQuizFill] Sesión exitosa.');
+      mostrarPanel();
+    })
+    .catch((error) => mostrarError(error.message));
+}
+
+function cerrarSesionAutoQuiz() {
+  console.log('[AutoQuizFill] Cerrando sesión...');
+  signOut(autenticacion)
+    .then(() => {
+      console.log('[AutoQuizFill] Sesión cerrada.');
+      mostrarLogin();
+    })
+    .catch((error) => console.error('[AutoQuizFill] Error al cerrar sesión:', error));
+}
+
+function mostrarLogin() {
+  toggleElementById(ID_LOGIN_CONTENEDOR, true);
+  toggleElementById(ID_PANEL_CONTENEDOR, false);
+}
+
+function mostrarPanel() {
+  toggleElementById(ID_LOGIN_CONTENEDOR, false);
+  toggleElementById(ID_PANEL_CONTENEDOR, true);
+  console.log('[AutoQuizFill] Mostrando panel principal.');
+}
+
+function verificarSesionUsuario() {
+  console.log('[AutoQuizFill] Verificando sesión...');
+  onAuthStateChanged(autenticacion, (usuario) => {
+    if (usuario) {
+      console.log('[AutoQuizFill] Usuario autenticado:', usuario);
+      mostrarPanel();
+    } else {
+      console.log('[AutoQuizFill] No autenticado. Mostrando login.');
+      mostrarLogin();
     }
+  });
+}
 
-    // Función para iniciar sesión
-    function iniciarSesionAutoQuiz(correo, contrasena) {
-        console.log("[AutoQuizFill] Intentando iniciar sesión con correo:", correo);
-        autenticacion.signInWithEmailAndPassword(correo, contrasena)
-            .then(() => {
-                console.log("[AutoQuizFill] Inicio de sesión exitoso.");
-                mostrarPanel();
-            })
-            .catch((error) => {
-                console.error("[AutoQuizFill] Error en inicio de sesión:", error);
-                alert("Error en inicio de sesión: " + error.message);
-            });
-    }
+function configurarEventos() {
+  const botonCerrarSesion = document.getElementById('botonCerrarSesion');
+  if (botonCerrarSesion) {
+    botonCerrarSesion.addEventListener('click', cerrarSesionAutoQuiz);
+  }
+}
 
-    // Función para cerrar sesión
-    function cerrarSesionAutoQuiz() {
-        console.log("[AutoQuizFill] Intentando cerrar sesión...");
-        autenticacion.signOut().then(() => {
-            console.log("[AutoQuizFill] Cierre de sesión exitoso.");
-            mostrarLogin(); // Mostrar login tras cerrar sesión
-        }).catch((error) => {
-            console.error("[AutoQuizFill] Error al cerrar sesión:", error);
-        });
-    }
+function init() {
+  console.log('[AutoQuizFill] Inicializando...');
+  const barraLateral = document.getElementById(ID_BARRA_LATERAL);
+  if (!barraLateral) {
+    console.error(`No se encontró el elemento con ID "${ID_BARRA_LATERAL}".`);
+    return;
+  }
+  crearFormularioLogin(barraLateral);
+  verificarSesionUsuario();
+  configurarEventos();
+}
 
-    // Función para manejar el envío del formulario de login
-    function configurarEventos() {
-        console.log("[AutoQuizFill] Configurando eventos...");
-        const formLogin = document.getElementById('formLogin');
-        const botonCerrarSesion = document.getElementById('botonCerrarSesion');
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('[AutoQuizFill] DOM cargado.');
+  init();
+});
 
-        if (formLogin) {
-            console.log("[AutoQuizFill] Formulario de login encontrado.");
-            formLogin.addEventListener('submit', (event) => {
-                event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
-                const correo = formLogin.querySelector('input[name="correo"]').value;
-                const contrasena = formLogin.querySelector('input[name="contrasena"]').value;
-                console.log("[AutoQuizFill] Formulario enviado. Correo:", correo);
-                iniciarSesionAutoQuiz(correo, contrasena);
-            });
-        } else {
-            console.warn("[AutoQuizFill] Formulario de login no encontrado.");
-        }
-
-        if (botonCerrarSesion) {
-            console.log("[AutoQuizFill] Botón de cerrar sesión encontrado.");
-            botonCerrarSesion.addEventListener('click', () => {
-                cerrarSesionAutoQuiz();
-            });
-        } else {
-            console.warn("[AutoQuizFill] Botón de cerrar sesión no encontrado.");
-        }
-    }
-
-    // Inicialización de la IIFE
-    function init() {
-        console.log("[AutoQuizFill] Inicializando...");
-        verificarSesionUsuario();
-        configurarEventos();
-    }
-
-    // Ejecutar la función de inicialización cuando el DOM esté completamente cargado
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log("[AutoQuizFill] DOM completamente cargado.");
-        init();
-    });
-})();
+window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz;
