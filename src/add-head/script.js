@@ -47,3 +47,8 @@ export function addHead() {
 if (typeof window !== 'undefined') {
     window.addHead = addHead;
 }
+
+if (window.addHead) {
+    window.addHead(); 
+  }
+  
