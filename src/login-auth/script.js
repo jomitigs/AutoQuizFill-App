@@ -8,10 +8,16 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
-import { autenticacion } from '../config-firebase/script.js';
+import { autenticacion, database } from '../config-firebase/script.js';
 import { panel_AutoFillQuizApp } from '../main-panel/script.js';
 import { menu_AutoFillQuizApp } from '../main-menu/script.js';
-
+import { v4 as uuidv4 } from 'uuid'; // Importa la función para generar UUID
+import {
+  ref,
+  set,
+  onValue,
+  remove
+} from 'firebase/database';
 
 const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
 const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
@@ -19,6 +25,8 @@ const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
 const ID_FORM_FAKE = 'fake-form';
 
 console.log('[AutoQuizFill] Script cargado.');
+
+let sessionIdLocal = null; // Variable para almacenar el ID de sesión local
 
 function toggleElementById(elementId, show) {
   const el = document.getElementById(elementId);
@@ -89,11 +97,37 @@ function crearFormularioLogin(barraLateral) {
 function iniciarSesionAutoQuiz(correo, contrasena) {
   console.log('[AutoQuizFill] Iniciando sesión con:', correo);
   signInWithEmailAndPassword(autenticacion, correo, contrasena)
-    .then(() => {
+    .then((usuarioCredential) => {
       console.log('[AutoQuizFill] Sesión exitosa.');
+      const usuario = usuarioCredential.user;
+      configurarSesion(usuario.uid);
       mostrarPanel();
     })
     .catch((error) => mostrarError(error.message));
+}
+
+function configurarSesion(uid) {
+  // Genera un nuevo ID de sesión
+  const newSessionId = uuidv4();
+  sessionIdLocal = newSessionId;
+
+  // Guarda el nuevo ID de sesión en la base de datos
+  const sessionRef = ref(database, `users/${uid}/currentSession`);
+  set(sessionRef, newSessionId)
+    .then(() => {
+      console.log('[AutoQuizFill] ID de sesión actualizado en la base de datos.');
+      // Escucha cambios en el ID de sesión
+      onValue(sessionRef, (snapshot) => {
+        const currentSessionId = snapshot.val();
+        if (currentSessionId !== sessionIdLocal) {
+          console.log('[AutoQuizFill] Sesión inválida detectada. Cerrando sesión.');
+          cerrarSesionAutoQuiz();
+        }
+      });
+    })
+    .catch((error) => {
+      console.error('[AutoQuizFill] Error al actualizar ID de sesión:', error);
+    });
 }
 
 function cerrarSesionAutoQuiz() {
@@ -101,6 +135,18 @@ function cerrarSesionAutoQuiz() {
   signOut(autenticacion)
     .then(() => {
       console.log('[AutoQuizFill] Sesión cerrada.');
+      // Opcional: Eliminar el currentSession de la base de datos al cerrar sesión
+      const usuario = autenticacion.currentUser;
+      if (usuario) {
+        const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
+        remove(sessionRef)
+          .then(() => {
+            console.log('[AutoQuizFill] currentSession eliminado de la base de datos.');
+          })
+          .catch((error) => {
+            console.error('[AutoQuizFill] Error al eliminar currentSession:', error);
+          });
+      }
       mostrarLogin();
     })
     .catch((error) => console.error('[AutoQuizFill] Error al cerrar sesión:', error));
@@ -122,6 +168,7 @@ function verificarSesionUsuario() {
   onAuthStateChanged(autenticacion, (usuario) => {
     if (usuario) {
       console.log('[AutoQuizFill] Usuario autenticado:', usuario);
+      configurarSesion(usuario.uid);
       mostrarPanel();
     } else {
       console.log('[AutoQuizFill] No autenticado. Mostrando login.');
@@ -150,7 +197,6 @@ function init() {
 
   const menu = menu_AutoFillQuizApp();
   barraLateral.appendChild(menu); // Asegúrate de agregarlo al contenedor correspondiente
-  
 
   configurarEventos();
 }

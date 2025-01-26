@@ -20847,6 +20847,12 @@
         return isValidPathString(pathString);
     };
     /**
+     * Pre-validate a datum passed as an argument to Firebase function.
+     */
+    const validateFirebaseDataArg = function (fnName, value, path, optional) {
+        validateFirebaseData(errorPrefix(fnName, 'value'), value, path);
+    };
+    /**
      * Validate a data object client-side before sending to server.
      */
     const validateFirebaseData = function (errorPrefix, data, path_) {
@@ -20933,6 +20939,14 @@
         }
         validatePathString(fnName, argumentName, pathString);
     };
+    /**
+     * @internal
+     */
+    const validateWritablePath = function (fnName, path) {
+        if (pathGetFront(path) === '.info') {
+            throw new Error(fnName + " failed = Can't modify data under /.info/");
+        }
+    };
     const validateUrl = function (fnName, parsedUrl) {
         // TODO = Validate server better.
         const pathString = parsedUrl.path.toString();
@@ -21006,6 +21020,19 @@
         if (currList) {
             eventQueue.eventLists_.push(currList);
         }
+    }
+    /**
+     * Queues the specified events and synchronously raises all events (including previously queued ones)
+     * for the specified path.
+     *
+     * It is assumed that the new events are all for the specified path.
+     *
+     * @param path - The path to raise events for.
+     * @param eventDataList - The new events to raise.
+     */
+    function eventQueueRaiseEventsAtPath(eventQueue, path, eventDataList) {
+        eventQueueQueueEvents(eventQueue, eventDataList);
+        eventQueueRaiseQueuedEventsMatchingPredicate(eventQueue, eventPath => pathEquals(eventPath, path));
     }
     /**
      * Queues the specified events and synchronously raises all events (including previously queued ones) for
@@ -21316,6 +21343,35 @@
             return Promise.reject(new Error(err));
         });
     }
+    function repoSetWithPriority(repo, path, newVal, newPriority, onComplete) {
+        repoLog(repo, 'set', {
+            path: path.toString(),
+            value: newVal,
+            priority: newPriority
+        });
+        // TODO: Optimize this behavior to either (a) store flag to skip resolving where possible and / or
+        // (b) store unresolved paths on JSON parse
+        const serverValues = repoGenerateServerValues(repo);
+        const newNodeUnresolved = nodeFromJSON(newVal, newPriority);
+        const existing = syncTreeCalcCompleteEventCache(repo.serverSyncTree_, path);
+        const newNode = resolveDeferredValueSnapshot(newNodeUnresolved, existing, serverValues);
+        const writeId = repoGetNextWriteId(repo);
+        const events = syncTreeApplyUserOverwrite(repo.serverSyncTree_, path, newNode, writeId, true);
+        eventQueueQueueEvents(repo.eventQueue_, events);
+        repo.server_.put(path.toString(), newNodeUnresolved.val(/*export=*/ true), (status, errorReason) => {
+            const success = status === 'ok';
+            if (!success) {
+                warn('set at ' + path + ' failed: ' + status);
+            }
+            const clearEvents = syncTreeAckUserWrite(repo.serverSyncTree_, writeId, !success);
+            eventQueueRaiseEventsForChangedPath(repo.eventQueue_, path, clearEvents);
+            repoCallOnCompleteCallback(repo, onComplete, status, errorReason);
+        });
+        const affectedPath = repoAbortTransactions(repo, path);
+        repoRerunTransactions(repo, affectedPath);
+        // We queued the events above, so just flush the queue here
+        eventQueueRaiseEventsForChangedPath(repo.eventQueue_, affectedPath, []);
+    }
     /**
      * Applies all of the changes stored up in the onDisconnect_ tree.
      */
@@ -21336,6 +21392,28 @@
         repo.onDisconnect_ = newSparseSnapshotTree();
         eventQueueRaiseEventsForChangedPath(repo.eventQueue_, newEmptyPath(), events);
     }
+    function repoAddEventCallbackForQuery(repo, query, eventRegistration) {
+        let events;
+        if (pathGetFront(query._path) === '.info') {
+            events = syncTreeAddEventRegistration(repo.infoSyncTree_, query, eventRegistration);
+        }
+        else {
+            events = syncTreeAddEventRegistration(repo.serverSyncTree_, query, eventRegistration);
+        }
+        eventQueueRaiseEventsAtPath(repo.eventQueue_, query._path, events);
+    }
+    function repoRemoveEventCallbackForQuery(repo, query, eventRegistration) {
+        // These are guaranteed not to raise events, since we're not passing in a cancelError. However, we can future-proof
+        // a little bit by handling the return values anyways.
+        let events;
+        if (pathGetFront(query._path) === '.info') {
+            events = syncTreeRemoveEventRegistration(repo.infoSyncTree_, query, eventRegistration);
+        }
+        else {
+            events = syncTreeRemoveEventRegistration(repo.serverSyncTree_, query, eventRegistration);
+        }
+        eventQueueRaiseEventsAtPath(repo.eventQueue_, query._path, events);
+    }
     function repoInterrupt(repo) {
         if (repo.persistentConnection_) {
             repo.persistentConnection_.interrupt(INTERRUPT_REASON);
@@ -21347,6 +21425,26 @@
             prefix = repo.persistentConnection_.id + ':';
         }
         log(prefix, ...varArgs);
+    }
+    function repoCallOnCompleteCallback(repo, callback, status, errorReason) {
+        if (callback) {
+            exceptionGuard(() => {
+                if (status === 'ok') {
+                    callback(null);
+                }
+                else {
+                    const code = (status || 'error').toUpperCase();
+                    let message = code;
+                    if (errorReason) {
+                        message += ': ' + errorReason;
+                    }
+                    const error = new Error(message);
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    error.code = code;
+                    callback(error);
+                }
+            });
+        }
     }
     /**
      * @param excludeSets - A specific set to exclude
@@ -22295,6 +22393,62 @@
         return new ReferenceImpl(parent._repo, pathChild(parent._path, path));
     }
     /**
+     * Removes the data at this Database location.
+     *
+     * Any data at child locations will also be deleted.
+     *
+     * The effect of the remove will be visible immediately and the corresponding
+     * event 'value' will be triggered. Synchronization of the remove to the
+     * Firebase servers will also be started, and the returned Promise will resolve
+     * when complete. If provided, the onComplete callback will be called
+     * asynchronously after synchronization has finished.
+     *
+     * @param ref - The location to remove.
+     * @returns Resolves when remove on server is complete.
+     */
+    function remove(ref) {
+        validateWritablePath('remove', ref._path);
+        return set(ref, null);
+    }
+    /**
+     * Writes data to this Database location.
+     *
+     * This will overwrite any data at this location and all child locations.
+     *
+     * The effect of the write will be visible immediately, and the corresponding
+     * events ("value", "child_added", etc.) will be triggered. Synchronization of
+     * the data to the Firebase servers will also be started, and the returned
+     * Promise will resolve when complete. If provided, the `onComplete` callback
+     * will be called asynchronously after synchronization has finished.
+     *
+     * Passing `null` for the new value is equivalent to calling `remove()`; namely,
+     * all data at this location and all child locations will be deleted.
+     *
+     * `set()` will remove any priority stored at this location, so if priority is
+     * meant to be preserved, you need to use `setWithPriority()` instead.
+     *
+     * Note that modifying data with `set()` will cancel any pending transactions
+     * at that location, so extreme care should be taken if mixing `set()` and
+     * `transaction()` to modify the same data.
+     *
+     * A single `set()` will generate a single "value" event at the location where
+     * the `set()` was performed.
+     *
+     * @param ref - The location to write to.
+     * @param value - The value to be written (string, number, boolean, object,
+     *   array, or null).
+     * @returns Resolves when write to server is complete.
+     */
+    function set(ref, value) {
+        ref = getModularInstance(ref);
+        validateWritablePath('set', ref._path);
+        validateFirebaseDataArg('set', value, ref._path);
+        const deferred = new Deferred();
+        repoSetWithPriority(ref._repo, ref._path, value, 
+        /*priority=*/ null, deferred.wrapCallback(() => { }));
+        return deferred.promise;
+    }
+    /**
      * Gets the most up-to-date result for this query.
      *
      * @param query - The query to run.
@@ -22355,6 +22509,16 @@
         hasAnyCallback() {
             return this.callbackContext !== null;
         }
+    }
+    function addEventListener(query, eventType, callback, cancelCallbackOrListenOptions, options) {
+        const callbackContext = new CallbackContext(callback, undefined);
+        const container = new ValueEventRegistration(callbackContext)
+            ;
+        repoAddEventCallbackForQuery(query._repo, query, container);
+        return () => repoRemoveEventCallbackForQuery(query._repo, query, container);
+    }
+    function onValue(query, callback, cancelCallbackOrListenOptions, options) {
+        return addEventListener(query, 'value', callback);
     }
     /**
      * Define reference constructor in various modules
@@ -23461,11 +23625,66 @@
         return menu;
     }
 
+    const byteToHex = [];
+    for (let i = 0; i < 256; ++i) {
+        byteToHex.push((i + 0x100).toString(16).slice(1));
+    }
+    function unsafeStringify(arr, offset = 0) {
+        return (byteToHex[arr[offset + 0]] +
+            byteToHex[arr[offset + 1]] +
+            byteToHex[arr[offset + 2]] +
+            byteToHex[arr[offset + 3]] +
+            '-' +
+            byteToHex[arr[offset + 4]] +
+            byteToHex[arr[offset + 5]] +
+            '-' +
+            byteToHex[arr[offset + 6]] +
+            byteToHex[arr[offset + 7]] +
+            '-' +
+            byteToHex[arr[offset + 8]] +
+            byteToHex[arr[offset + 9]] +
+            '-' +
+            byteToHex[arr[offset + 10]] +
+            byteToHex[arr[offset + 11]] +
+            byteToHex[arr[offset + 12]] +
+            byteToHex[arr[offset + 13]] +
+            byteToHex[arr[offset + 14]] +
+            byteToHex[arr[offset + 15]]).toLowerCase();
+    }
+
+    let getRandomValues;
+    const rnds8 = new Uint8Array(16);
+    function rng() {
+        if (!getRandomValues) {
+            if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
+                throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+            }
+            getRandomValues = crypto.getRandomValues.bind(crypto);
+        }
+        return getRandomValues(rnds8);
+    }
+
+    const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+    var native = { randomUUID };
+
+    function v4(options, buf, offset) {
+        if (native.randomUUID && !buf && !options) {
+            return native.randomUUID();
+        }
+        options = options || {};
+        const rnds = options.random ?? options.rng?.() ?? rng();
+        if (rnds.length < 16) {
+            throw new Error('Random bytes length must be >= 16');
+        }
+        rnds[6] = (rnds[6] & 0x0f) | 0x40;
+        rnds[8] = (rnds[8] & 0x3f) | 0x80;
+        return unsafeStringify(rnds);
+    }
+
     /* 
       Este script maneja la autenticación (inicio/cierre de sesión), 
       verifica el estado del usuario y controla la UI para AutoQuizFill.
     */
-
 
     const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
     const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
@@ -23473,6 +23692,8 @@
     const ID_FORM_FAKE = 'fake-form';
 
     console.log('[AutoQuizFill] Script cargado.');
+
+    let sessionIdLocal = null; // Variable para almacenar el ID de sesión local
 
     function toggleElementById(elementId, show) {
       const el = document.getElementById(elementId);
@@ -23543,11 +23764,37 @@
     function iniciarSesionAutoQuiz(correo, contrasena) {
       console.log('[AutoQuizFill] Iniciando sesión con:', correo);
       signInWithEmailAndPassword(autenticacion, correo, contrasena)
-        .then(() => {
+        .then((usuarioCredential) => {
           console.log('[AutoQuizFill] Sesión exitosa.');
+          const usuario = usuarioCredential.user;
+          configurarSesion(usuario.uid);
           mostrarPanel();
         })
         .catch((error) => mostrarError(error.message));
+    }
+
+    function configurarSesion(uid) {
+      // Genera un nuevo ID de sesión
+      const newSessionId = v4();
+      sessionIdLocal = newSessionId;
+
+      // Guarda el nuevo ID de sesión en la base de datos
+      const sessionRef = ref(database, `users/${uid}/currentSession`);
+      set(sessionRef, newSessionId)
+        .then(() => {
+          console.log('[AutoQuizFill] ID de sesión actualizado en la base de datos.');
+          // Escucha cambios en el ID de sesión
+          onValue(sessionRef, (snapshot) => {
+            const currentSessionId = snapshot.val();
+            if (currentSessionId !== sessionIdLocal) {
+              console.log('[AutoQuizFill] Sesión inválida detectada. Cerrando sesión.');
+              cerrarSesionAutoQuiz$1();
+            }
+          });
+        })
+        .catch((error) => {
+          console.error('[AutoQuizFill] Error al actualizar ID de sesión:', error);
+        });
     }
 
     function cerrarSesionAutoQuiz$1() {
@@ -23555,6 +23802,18 @@
       signOut(autenticacion)
         .then(() => {
           console.log('[AutoQuizFill] Sesión cerrada.');
+          // Opcional: Eliminar el currentSession de la base de datos al cerrar sesión
+          const usuario = autenticacion.currentUser;
+          if (usuario) {
+            const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
+            remove(sessionRef)
+              .then(() => {
+                console.log('[AutoQuizFill] currentSession eliminado de la base de datos.');
+              })
+              .catch((error) => {
+                console.error('[AutoQuizFill] Error al eliminar currentSession:', error);
+              });
+          }
           mostrarLogin();
         })
         .catch((error) => console.error('[AutoQuizFill] Error al cerrar sesión:', error));
@@ -23576,6 +23835,7 @@
       onAuthStateChanged(autenticacion, (usuario) => {
         if (usuario) {
           console.log('[AutoQuizFill] Usuario autenticado:', usuario);
+          configurarSesion(usuario.uid);
           mostrarPanel();
         } else {
           console.log('[AutoQuizFill] No autenticado. Mostrando login.');
@@ -23604,7 +23864,6 @@
 
       const menu = menu_AutoFillQuizApp();
       barraLateral.appendChild(menu); // Asegúrate de agregarlo al contenedor correspondiente
-      
 
       configurarEventos();
     }
