@@ -23554,14 +23554,6 @@
                 select.name = 'select-plataforma';
                 select.classList.add('estilo-config-select'); // Aplica estilos al select
 
-                // Crear la opción por defecto
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = '-- Selecciona una plataforma --';
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                select.appendChild(defaultOption);
-
                 // Agregar opciones dinámicamente
                 plataformaKeys.forEach(opcion => {
                     const optionElement = document.createElement('option');
