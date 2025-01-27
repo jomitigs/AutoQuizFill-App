@@ -264,12 +264,14 @@ function startAFQ() {
   
         // b. Mostrar el panel principal y ocultar el contenedor de login
         toggleElementById(ID_LOGIN_CONTENEDOR, false);
-        toggleElementById(ID_PANEL_CONTENEDOR, true);
   
         /**
          * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
          */
         panel_AutoFillQuizApp(barraLateral);
+
+        toggleElementById(ID_PANEL_CONTENEDOR, true);
+
         
         /**
          * d. Crear el menú de AutoFillQuizApp
@@ -292,11 +294,7 @@ function startAFQ() {
          * a. Mostrar el formulario de login y ocultar el panel principal
          */
         toggleElementById2(ID_LOGIN_CONTENEDOR, true);
-        toggleElementById2(ID_PANEL_CONTENEDOR, false);
   
-        // Opcional: Puedes agregar lógica adicional aquí si es necesario
-        // Por ejemplo, limpiar campos de formulario o mostrar mensajes informativos
-        mostrarLogin();
       }
     });
   }
