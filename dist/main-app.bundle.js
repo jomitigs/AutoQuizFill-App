@@ -23511,8 +23511,6 @@
         <div id="selects-plataforma" class="estilo-config-item">
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
-
-        <button id="boton-guardar-configruta" class="estilo-configruta-boton guardar">Guardar Ruta</button>
     </div>
     `; 
     }
@@ -23570,8 +23568,20 @@
                     // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
                     if (plataformaKeys.includes('Moodle')) {
                         select.value = 'Moodle';
+                    } else if (plataformaKeys.length > 0) {
+                        // Opcional: Establecer la primera opción como seleccionada si "Moodle" no está disponible
+                        select.value = plataformaKeys[0];
                     }
                 }
+
+                // Agregar un listener para guardar la selección en localStorage cuando cambie
+                select.addEventListener('change', (event) => {
+                    const seleccion = event.target.value;
+                    if (seleccion) {
+                        localStorage.setItem('plataformaSeleccionada', seleccion);
+                        mostrarMensaje('Configuración guardada exitosamente.', 'success');
+                    }
+                });
 
                 // Agregar la etiqueta y el select al contenedor
                 selectsContainer.appendChild(label);
@@ -23581,6 +23591,33 @@
             }
         } catch (error) {
             console.error('Error al obtener las plataformas de Firebase:', error);
+        }
+    }
+
+    /**
+     * Función para mostrar mensajes al usuario
+     * @param {string} mensaje - El mensaje a mostrar
+     * @param {string} tipo - El tipo de mensaje ('success', 'warning', 'error')
+     */
+    function mostrarMensaje(mensaje, tipo) {
+        // Crear un elemento para el mensaje
+        const mensajeElemento = document.createElement('div');
+        mensajeElemento.textContent = mensaje;
+        mensajeElemento.classList.add('mensaje'); // Clase base para mensajes
+
+        // Añadir clase según el tipo de mensaje
+        {
+            mensajeElemento.classList.add('mensaje-exito');
+        }
+
+        // Insertar el mensaje en el DOM, por ejemplo, al final del contenedor de configuración
+        const contenidoConfig = document.querySelector('.contenido-config');
+        if (contenidoConfig) {
+            contenidoConfig.appendChild(mensajeElemento);
+            // Remover el mensaje después de 3 segundos
+            setTimeout(() => {
+                mensajeElemento.remove();
+            }, 3000);
         }
     }
 
