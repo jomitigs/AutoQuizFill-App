@@ -19,6 +19,8 @@ import {
   remove
 } from 'firebase/database';
 
+console.log('[AutoQuizFill] iniciando login-auth');
+
 const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
 const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
 const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
