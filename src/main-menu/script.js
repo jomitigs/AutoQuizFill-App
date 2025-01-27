@@ -3,6 +3,11 @@ import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/s
 
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js';
 
+import { opcionAutoFillMoodle_html } from '../opc-autofill-moodle/script.js';
+
+import { opcionAutoFillAltissia_html } from '../opc-autofill-altissia/script.js';
+
+
 export function menu_AutoFillQuizApp() {
     console.log('[AutoQuizFill] Creando main-menu');
 
@@ -109,6 +114,8 @@ export function menu_AutoFillQuizApp() {
                     opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
 
                 } else if (opcion === 'Configuración') {
+                    localStorage.setItem('ultimoHtml', 'opcionConfig_html');
+                    localStorage.setItem('ultimoJs', 'opcionConfig_js');
 
                     contenedorContenido.innerHTML = opcionConfig_html(); // Mostrar contenido de Gestión de Usuarios
                     opcionConfig_js(); // Ejecutar el script para Gestión de Usuarios

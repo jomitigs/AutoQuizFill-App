@@ -23815,6 +23815,8 @@
                         opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
 
                     } else if (opcion === 'Configuración') {
+                        localStorage.setItem('ultimoHtml', 'opcionConfig_html');
+                        localStorage.setItem('ultimoJs', 'opcionConfig_js');
 
                         contenedorContenido.innerHTML = opcionConfig_html(); // Mostrar contenido de Gestión de Usuarios
                         opcionConfig_js(); // Ejecutar el script para Gestión de Usuarios
