@@ -26,7 +26,6 @@ const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
 const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
 const ID_FORM_FAKE = 'fake-form';
 
-
 let sessionIdLocal = null; // Variable para almacenar el ID de sesión local
 
 /**
@@ -39,6 +38,7 @@ function toggleElementById(elementId, show) {
   if (el) {
     el.style.display = show ? 'block' : 'none';
   } else {
+    console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${elementId}".`);
   }
 }
 
@@ -103,7 +103,6 @@ function crearFormularioLogin(barraLateral) {
   const botonLogin = document.getElementById('login-boton-autoquizfillapp');
 
   if (inputCorreo && inputContrasena && botonLogin) {
-
     const iniciarSesionHandler = () => {
       iniciarSesionAutoQuiz(inputCorreo.value, inputContrasena.value);
     };
@@ -114,11 +113,9 @@ function crearFormularioLogin(barraLateral) {
       }
     });
     
-    botonLogin.addEventListener('click', () => {
-      iniciarSesionHandler();
-    });
+    botonLogin.addEventListener('click', iniciarSesionHandler);
   } else {
-    console.error('[AutoQuizFill] CrearFormularioLogin: No se encontraron todos los elementos del formulario de login.');
+    console.error('[AutoQuizFill] crearFormularioLogin: No se encontraron todos los elementos del formulario de login.');
   }
 }
 
@@ -161,7 +158,7 @@ function configurarSesion(uid) {
       });
     })
     .catch((error) => {
-      console.error(`[AutoQuizFill] ConfigurarSesion: Error al actualizar ID de sesión - ${error.code}: ${error.message}`);
+      console.error(`[AutoQuizFill] configurarSesion: Error al actualizar ID de sesión - ${error.code}: ${error.message}`);
     });
 }
 
@@ -169,22 +166,21 @@ function configurarSesion(uid) {
  * Cierra la sesión del usuario y limpia la sesión en la base de datos.
  */
 function cerrarSesionAutoQuiz() {
+  const usuario = autenticacion.currentUser;
+
   signOut(autenticacion)
     .then(() => {
-      // Opcional: Eliminar el currentSession de la base de datos al cerrar sesión
-      const usuario = autenticacion.currentUser;
       if (usuario) {
         const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
         remove(sessionRef)
-          .then(() => {
-          })
           .catch((error) => {
+            console.error(`[AutoQuizFill] cerrarSesionAutoQuiz: Error al eliminar currentSession - ${error.code}: ${error.message}`);
           });
       }
       mostrarLogin();
     })
     .catch((error) => {
-      console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al cerrar sesión - ${error.code}: ${error.message}`);
+      console.error(`[AutoQuizFill] cerrarSesionAutoQuiz: Error al cerrar sesión - ${error.code}: ${error.message}`);
     });
 }
 
@@ -205,24 +201,6 @@ function mostrarPanel() {
 }
 
 /**
- * Configura los eventos de la aplicación, como el cierre de sesión.
- */
-function configurarEventos() {
-  const botonCerrarSesion = document.getElementById('botonCerrarSesion');
-  if (botonCerrarSesion) {
-    botonCerrarSesion.addEventListener('click', () => {
-      cerrarSesionAutoQuiz();
-    });
-    console.log('[AutoQuizFill] ConfigurarEventos: Evento de cierre de sesión configurado.');
-  } else {
-    console.warn('[AutoQuizFill] ConfigurarEventos: No se encontró el botón de cerrar sesión para configurar el evento.');
-  }
-}
-
-/**
- * Inicializa la aplicación AutoQuizFill.
- */
-/**
  * Inicializa la aplicación AutoFillQuiz.
  * 
  * Este proceso incluye:
@@ -234,102 +212,50 @@ function configurarEventos() {
  *      b. Mostrar el panel principal.
  *      c. Inicializar la aplicación AutoFillQuiz.
  *      d. Crear y agregar el menú de AutoFillQuiz.
- *      e. Configurar los eventos necesarios.
  *    - Si el usuario no está autenticado:
  *      a. Mostrar el formulario de login.
  */
 function startAFQ() {
-    // Intentar obtener el elemento de la barra lateral por su ID
-    const barraLateral = document.getElementById(ID_BARRA_LATERAL);
-    
-    // Si no se encuentra la barra lateral, registrar un error y abortar la inicialización
-    if (!barraLateral) {
-      console.error(`[AutoQuizFill] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
-      return;
-    }
-  
-    // Crear y agregar el formulario de login a la barra lateral
-    crearFormularioLogin(barraLateral);
-  
-    /**
-     * Verifica el estado de autenticación del usuario.
-     * Usa `onAuthStateChanged` para escuchar cambios en el estado de autenticación.
-     */
-    onAuthStateChanged(autenticacion, (usuario) => {
-      if (usuario) {
-        // Si el usuario está autenticado
-  
-        // a. Configurar la sesión con el UID del usuario
-        configurarSesion(usuario.uid);
-  
-        // b. Mostrar el panel principal y ocultar el contenedor de login
-        toggleElementById(ID_LOGIN_CONTENEDOR, false);
-  
-        /**
-         * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
-         */
-        panel_AutoFillQuizApp(barraLateral);
+  const barraLateral = document.getElementById(ID_BARRA_LATERAL);
 
-        toggleElementById(ID_PANEL_CONTENEDOR, true);
+  if (!barraLateral) {
+    console.error(`[AutoQuizFill] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
+    return;
+  }
 
-        
-        /**
-         * d. Crear el menú de AutoFillQuizApp
-         */
-        const menu = menu_AutoFillQuizApp();
-        
-        // Si el menú se creó correctamente, agregarlo a la barra lateral
-        if (menu) {
-          barraLateral.appendChild(menu);
-        }
-  
-        /**
-         * e. Configurar los eventos necesarios para la aplicación
-         */
-        configurarEventos();
-      } else {
-        // Si el usuario no está autenticado
-  
-        /**
-         * a. Mostrar el formulario de login y ocultar el panel principal
-         */
-        toggleElementById2(ID_LOGIN_CONTENEDOR, true);
-  
+  crearFormularioLogin(barraLateral);
+
+  /**
+   * Verifica el estado de autenticación del usuario.
+   * Usa `onAuthStateChanged` para escuchar cambios en el estado de autenticación.
+   */
+  onAuthStateChanged(autenticacion, (usuario) => {
+    if (usuario) {
+      // Si el usuario está autenticado
+      configurarSesion(usuario.uid);
+      mostrarPanel();
+
+      // Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
+      panel_AutoFillQuizApp(barraLateral);
+
+      // Crear el menú de AutoFillQuizApp y agregarlo a la barra lateral
+      const menu = menu_AutoFillQuizApp();
+      if (menu) {
+        barraLateral.appendChild(menu);
       }
-    });
-  }
-  
-  /**
-   * Alterna la visibilidad de un elemento del DOM basado en su ID.
-   * 
-   * @param {string} id - El ID del elemento a mostrar u ocultar.
-   * @param {boolean} mostrar - Si es `true`, muestra el elemento; si es `false`, lo oculta.
-   */
-  function toggleElementById2(id, mostrar) {
-    const elemento = document.getElementById(id);
-    if (elemento) {
-      elemento.style.display = mostrar ? 'block' : 'none';
     } else {
-      console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${id}".`);
+      // Si el usuario no está autenticado
+      mostrarLogin();
     }
-  }
-  
-  /**
-   * Muestra el formulario de login.
-   * 
-   * Este método asume que `mostrarLogin` ya maneja la visibilidad del formulario de login.
-   */
-  
+  });
+}
 
-// Al final de tu bundle, reemplaza el listener de DOMContentLoaded existente con lo siguiente:
-
+// Inicializa la aplicación una vez que el DOM esté completamente cargado
 if (document.readyState === 'loading') { // La página aún se está cargando
-    document.addEventListener('DOMContentLoaded', () => {
-        startAFQ();
-    });
-  } else { // El DOM ya está cargado
-    startAFQ();
-  }
-  
+  document.addEventListener('DOMContentLoaded', startAFQ);
+} else { // El DOM ya está cargado
+  startAFQ();
+}
+
 // Exposición de la función de cierre de sesión para uso externo (opcional).
 window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz;
