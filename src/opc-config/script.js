@@ -1,3 +1,5 @@
+// configuracion.js
+
 // Importa el CSS (PostCSS lo inyectará en el bundle)
 import './style.css'; // Importa el archivo de estilos CSS
 
@@ -24,6 +26,7 @@ export function opcionConfig_html() {
 
 /**
  * Genera un select dinámico basado en las claves de 'Config/Plataforma' en Firebase.
+ * Establece el valor seleccionado según 'localStorage' o por defecto a 'Moodle'.
  */
 export async function opcionConfig_js() {
     try {
@@ -73,6 +76,20 @@ export async function opcionConfig_js() {
                 optionElement.textContent = opcion;
                 select.appendChild(optionElement);
             });
+
+            // Establecer el valor seleccionado desde localStorage o por defecto a 'Moodle'
+            const seleccionGuardada = localStorage.getItem('plataformaSeleccionada');
+            if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
+                select.value = seleccionGuardada;
+                // Asegurarse de que la opción por defecto no esté seleccionada
+                defaultOption.selected = false;
+            } else {
+                // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
+                if (plataformaKeys.includes('Moodle')) {
+                    select.value = 'Moodle';
+                    defaultOption.selected = false;
+                }
+            }
 
             // Agregar la etiqueta y el select al contenedor
             selectsContainer.appendChild(label);
