@@ -23512,7 +23512,7 @@
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
     </div>
-    `; 
+    `;
     }
 
     /**
@@ -23522,7 +23522,10 @@
     async function opcionConfig_js() {
         try {
 
-            localStorage.setItem('ConfigPlataforma', "Moodle");
+            if (!localStorage.getItem('ConfigPlataforma')) {
+                localStorage.setItem('ConfigPlataforma', "Moodle");
+            }
+
 
             // Referencia a la ruta 'Config/Plataforma' en Firebase
             const plataformaRef = ref(database, 'Config/Plataforma');
@@ -23563,14 +23566,18 @@
                     select.appendChild(optionElement);
                 });
 
+
                 // Establecer el valor seleccionado desde localStorage o por defecto a 'Moodle'
                 const seleccionGuardada = localStorage.getItem('ConfigPlataforma');
                 if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
                     select.value = seleccionGuardada;
                 } else {
-                    // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
-                    if (plataformaKeys.includes('Moodle')) {
-                        select.value = 'Moodle';
+
+                    if (!localStorage.getItem('ConfigPlataforma')) {
+                        // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
+                        if (plataformaKeys.includes('Moodle')) {
+                            select.value = 'Moodle';
+                        }
                     } else if (plataformaKeys.length > 0) {
                         // Opcional: Establecer la primera opción como seleccionada si "Moodle" no está disponible
                         select.value = plataformaKeys[0];
