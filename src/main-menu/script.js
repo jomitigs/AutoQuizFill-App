@@ -62,7 +62,7 @@ export function menu_AutoFillQuizApp() {
                 icono = 'id-card';
                 break;
             case 'Configuración':
-                icono = 'cog"></i>';
+                icono = 'cog';
                 break;
             default:
                 icono = 'circle';
