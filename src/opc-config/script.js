@@ -1,18 +1,95 @@
 // Importa el CSS (PostCSS lo inyectará en el bundle)
 import './style.css'; // Importa el archivo de estilos CSS
 
+import { ref, get } from 'firebase/database';
+import { database } from '../config-firebase/script.js';
+
 // Exporta las funciones que necesitas utilizar en otros módulos
+
+/**
+ * Retorna el HTML de la configuración con un contenedor para los selects dinámicos.
+ */
 export function opcionConfig_html() {
     return `
     <div class="contenido-config">
-        <h3 id="titulo-config">Configuración de Ruta</h3>
+        <h3 id="titulo-config">Configuración</h3>
 
         <!-- Contenedor Selects Dinamicos -->
-        <div id="selects-config">
-            <!-- Aquí puedes agregar más contenido o elementos dinámicos -->
+        <div id="selects-plataforma">
+            <!-- Aquí se inyectarán los selects dinámicamente -->
         </div>
 
         <button id="boton-guardar-configruta" class="estilo-configruta-boton guardar">Guardar Ruta</button>
     </div>
     `;
 } 
+
+/**
+ * Genera selects dinámicamente basados en las claves de 'Config/Plataforma' en Firebase.
+ */
+export async function opcionConfig_js() {
+    try {
+        // Referencia a la ruta 'Config/Plataforma' en Firebase
+        const plataformaRef = ref(database, 'Config/Plataforma');
+        const snapshot = await get(plataformaRef);
+
+        if (snapshot.exists()) {
+            const plataformas = snapshot.val();
+            const plataformaKeys = Object.keys(plataformas);
+
+            // Obtener el contenedor donde se insertarán los selects
+            const selectsContainer = document.getElementById('selects-plataforma');
+
+            if (!selectsContainer) {
+                console.error('El contenedor con ID "selects-plataforma" no existe en el DOM.');
+                return;
+            }
+
+            // Limpiar el contenedor antes de agregar nuevos selects
+            selectsContainer.innerHTML = '';
+
+            plataformaKeys.forEach((plataforma, index) => {
+                // Crear un contenedor para cada select
+                const selectWrapper = document.createElement('div');
+                selectWrapper.classList.add('select-wrapper');
+
+                // Crear una etiqueta para el select
+                const label = document.createElement('label');
+                label.setAttribute('for', `select-plataforma-${index}`);
+                label.textContent = `Selecciona plataforma para ${plataforma}: `;
+
+                // Crear el elemento select
+                const select = document.createElement('select');
+                select.id = `select-plataforma-${index}`;
+                select.name = `select-plataforma-${index}`;
+
+                // Crear la opción por defecto
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = '-- Selecciona una plataforma --';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+
+                // Agregar opciones dinámicamente
+                plataformaKeys.forEach(opcion => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = opcion;
+                    optionElement.textContent = opcion;
+                    select.appendChild(optionElement);
+                });
+
+                // Agregar la etiqueta y el select al contenedor
+                selectWrapper.appendChild(label);
+                selectWrapper.appendChild(select);
+
+                // Insertar el select en el contenedor principal
+                selectsContainer.appendChild(selectWrapper);
+            });
+        } else {
+            console.log('No se encontraron plataformas en Firebase.');
+        }
+    } catch (error) {
+        console.error('Error al obtener las plataformas de Firebase:', error);
+    }
+}

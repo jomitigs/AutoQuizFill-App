@@ -1,7 +1,7 @@
 import './style.css';
 import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
 
-import { opcionConfig_html } from '../opc-config/script.js';
+import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js';
 
 export function menu_AutoFillQuizApp() {
     console.log('[AutoQuizFill] Creando main-menu');
@@ -111,7 +111,7 @@ export function menu_AutoFillQuizApp() {
                 } else if (opcion === 'Configuración') {
 
                     contenedorContenido.innerHTML = opcionConfig_html(); // Mostrar contenido de Gestión de Usuarios
-                    //opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
+                    opcionConfig_js(); // Ejecutar el script para Gestión de Usuarios
                 }
                 menu.style.display = 'none'; // Ocultar el menú después de seleccionar una opción
             }
