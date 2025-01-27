@@ -1,6 +1,6 @@
 import './style.css';
 
-export function opcionAutoQuiz_html() {
+export function opcionAutoFillMoodle_html() {
     return `
      <div class="body-autoquiz">
 

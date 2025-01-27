@@ -1,6 +1,6 @@
 import './style.css';
 
-import { opcionAutoQuiz_html } from '../opc-autofill-moodle/script.js';
+import { opcionAutoFillMoodle } from '../opc-autofill-moodle/script.js';
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js'; // Asegúrate de importar las funciones de configuración
 import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
 
@@ -50,13 +50,13 @@ export function panel_AutoFillQuizApp(barraLateral) {
   }
 
   // Función para cargar AutoQuiz por defecto
-  function cargarAutoQuiz() {
+  function cargarAutoFillMoodle() {
     console.log('[AutoQuizFill] Cargando autoquiz_html y autoquiz_js por defecto.');
-    contenedorContenido.innerHTML = opcionAutoQuiz_html();
+    contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
 
     setTimeout(() => {
       if (typeof opcionAutoQuiz_js === 'function') {
-        opcionAutoQuiz_js();
+        opcionAutoFillMoodle_js();
       } else {
         console.warn('La función opcionAutoQuiz_js no está definida.');
       }
@@ -114,7 +114,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
     }
   } else {
     // Caso 3: Existe ConfigPlataforma pero no existen ultimoHtml y ultimoJs
-    cargarAutoQuiz();
+    cargarAutoFillMoodle();
   }
 
 
