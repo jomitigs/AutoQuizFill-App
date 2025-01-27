@@ -34,9 +34,9 @@ export default {
     obfuscator({
       compact: true,
       controlFlowFlattening: true,
-      controlFlowFlatteningThreshold: 0.75,
+      controlFlowFlatteningThreshold: 0.80,
       deadCodeInjection: true,
-      deadCodeInjectionThreshold: 0.4,
+      deadCodeInjectionThreshold: 0.6,
       debugProtection: false,
       debugProtectionInterval: false,
       disableConsoleOutput: true, // Elimina cualquier mensaje de consola que sobreviva
