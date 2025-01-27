@@ -1,6 +1,6 @@
 /* Título centrado */
 #titulo-autofillquizapp {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     /* Tamaño más grande para el título */
     font-weight: 600;
     color: #34495e;
@@ -8,8 +8,6 @@
     text-align: center;
     flex-grow: 1;
     /* Ocupar el espacio disponible */
-    margin-left: 20px;
-    /* Ajuste para crear espacio entre el botón y el título */
 }
 
 /* Ajuste para asegurarse de que el botón tiene el espacio adecuado */
