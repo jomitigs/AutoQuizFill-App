@@ -8,3 +8,20 @@
     font-family: 'Poppins', sans-serif;
     font-size: 1.5rem; /* Tamaño de fuente de 1rem */
 }
+
+.estilo-config-select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #2c3e50;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.estilo-config-item {
+        margin-bottom: 10px;
+        font-family: 'Poppins', sans-serif;
+}

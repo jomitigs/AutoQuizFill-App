@@ -13,7 +13,7 @@ export function opcionConfig_html() {
         <h3 id="titulo-config">Configuración</h3>
 
         <!-- Contenedor Select Dinámico -->
-        <div id="selects-plataforma">
+        <div id="selects-plataforma" class="estilo-config-item">
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
@@ -46,10 +46,17 @@ export async function opcionConfig_js() {
             // Limpiar el contenedor antes de agregar el select
             selectsContainer.innerHTML = '';
 
+            // Crear la etiqueta para el select
+            const label = document.createElement('label');
+            label.setAttribute('for', 'select-plataforma');
+            label.textContent = 'Plataforma: ';
+            label.classList.add('estilo-config-item'); // Aplica estilos al label si es necesario
+
             // Crear el elemento select
             const select = document.createElement('select');
-            select.id = `select-plataforma`;
-            select.name = `select-plataforma`;
+            select.id = 'select-plataforma';
+            select.name = 'select-plataforma';
+            select.classList.add('estilo-config-select'); // Aplica estilos al select
 
             // Crear la opción por defecto
             const defaultOption = document.createElement('option');
@@ -67,7 +74,8 @@ export async function opcionConfig_js() {
                 select.appendChild(optionElement);
             });
 
-            // Insertar el select en el contenedor principal
+            // Agregar la etiqueta y el select al contenedor
+            selectsContainer.appendChild(label);
             selectsContainer.appendChild(select);
         } else {
             console.log('No se encontraron plataformas en Firebase.');
