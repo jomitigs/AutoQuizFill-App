@@ -23,15 +23,15 @@ export default {
       extensions: ['.css'],
       inject: true,
     }),
-    terser({
+    //terser({
       format: {
         comments: false, // Elimina todos los comentarios
       },
       compress: {
         drop_console: true, // Elimina los mensajes de consola
       },
-    }),
-    obfuscator({
+    //}),
+    //obfuscator({
       compact: true,
       controlFlowFlattening: true,
       controlFlowFlatteningThreshold: 0.80,
@@ -49,7 +49,7 @@ export default {
       stringArrayThreshold: 0.75,
       transformObjectKeys: true,
       unicodeEscapeSequence: false,
-    }),
+    //}),
     html({
       include: '**/*.html',
     }),
