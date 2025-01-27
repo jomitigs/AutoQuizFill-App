@@ -84,7 +84,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
       contenedorContenido.innerHTML = funcionHtml();
     } else {
       console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
-      cargarAutoQuiz(); // Carga por defecto si no se encuentra
+      cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
       return;
     }
 
