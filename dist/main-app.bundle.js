@@ -23709,6 +23709,19 @@
     var css_248z = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
     styleInject(css_248z);
 
+    function opcionAutoFillAltissia_html() {
+        return `
+     <div class="contenido-config">
+        <h3 id="titulo-config">Configuración</h3>
+
+        <!-- Contenedor Select Dinámico -->
+        <div id="selects-plataforma" class="estilo-config-item">
+            <!-- Aquí se inyectará el select dinámicamente -->
+        </div>
+    </div>
+`;
+    }
+
     function menu_AutoFillQuizApp() {
         console.log('[AutoQuizFill] Creando main-menu');
 
@@ -23783,19 +23796,38 @@
                 if (contenedorContenido) {
                     // Mostrar el contenido y ejecutar el script correspondiente a la opción seleccionada
                     if (opcion === 'AutoFill') {
-                        localStorage.setItem('ultimoHtml', 'opcionAutoQuiz_html');
-                        localStorage.setItem('ultimoJs', 'opcionAutoQuiz_js');
-
-                        contenedorContenido.innerHTML = opcionAutoQuiz_html(); // Mostrar contenido de AutoFill
-
-                        try {
-                            await opcionAutoQuiz_js(); // Ejecutar el script de AutoQuiz y esperar su finalización
-
-                        } catch (error) {
-                            console.error('Error al ejecutar opcionAutoQuiz_js:', error);
+                        // Obtener la configuración de la plataforma desde localStorage
+                        const configPlataforma = localStorage.getItem('ConfigPlataforma');
+                    
+                        // Verificar la plataforma configurada y ejecutar el código correspondiente
+                        if (configPlataforma === 'Moodle') {
+                            localStorage.setItem('ultimoHtml', 'opcionAutoFillMoodle_html');
+                            localStorage.setItem('ultimoJs', 'opcionAutoFillMoodle_js');
+                    
+                            contenedorContenido.innerHTML = opcionAutoFillMoodle_html(); // Mostrar contenido de AutoFill para Moodle
+                    
+                            try {
+                                await opcionAutoFillMoodle_js(); // Ejecutar el script de AutoFill para Moodle y esperar su finalización
+                            } catch (error) {
+                                console.error('Error al ejecutar opcionAutoFillMoodle_js:', error);
+                            }
+                        } else if (configPlataforma === 'Altissia') {
+                            localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');
+                            localStorage.setItem('ultimoJs', 'opcionAutoFillAltissia_js');
+                    
+                            contenedorContenido.innerHTML = opcionAutoFillAltissia_html(); // Mostrar contenido de AutoFill para Altissia
+                    
+                            try {
+                                await opcionAutoFillAltissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
+                            } catch (error) {
+                                console.error('Error al ejecutar opcionAutoFillAltissia_js:', error);
+                            }
+                        } else {
+                            console.warn('Plataforma desconocida en ConfigPlataforma:', configPlataforma);
+                            // Opcional: manejar otras plataformas o establecer un comportamiento por defecto
                         }
-
-                    } else if (opcion === 'Configuración de Ruta') {
+                    }
+                     else if (opcion === 'Configuración de Ruta') {
                         localStorage.setItem('ultimoHtml', 'opcionConfigRuta_html');
                         localStorage.setItem('ultimoJs', 'opcionConfigRuta_js');
 

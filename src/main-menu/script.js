@@ -82,19 +82,38 @@ export function menu_AutoFillQuizApp() {
             if (contenedorContenido) {
                 // Mostrar el contenido y ejecutar el script correspondiente a la opción seleccionada
                 if (opcion === 'AutoFill') {
-                    localStorage.setItem('ultimoHtml', 'opcionAutoQuiz_html');
-                    localStorage.setItem('ultimoJs', 'opcionAutoQuiz_js');
-
-                    contenedorContenido.innerHTML = opcionAutoQuiz_html(); // Mostrar contenido de AutoFill
-
-                    try {
-                        await opcionAutoQuiz_js(); // Ejecutar el script de AutoQuiz y esperar su finalización
-
-                    } catch (error) {
-                        console.error('Error al ejecutar opcionAutoQuiz_js:', error);
+                    // Obtener la configuración de la plataforma desde localStorage
+                    const configPlataforma = localStorage.getItem('ConfigPlataforma');
+                
+                    // Verificar la plataforma configurada y ejecutar el código correspondiente
+                    if (configPlataforma === 'Moodle') {
+                        localStorage.setItem('ultimoHtml', 'opcionAutoFillMoodle_html');
+                        localStorage.setItem('ultimoJs', 'opcionAutoFillMoodle_js');
+                
+                        contenedorContenido.innerHTML = opcionAutoFillMoodle_html(); // Mostrar contenido de AutoFill para Moodle
+                
+                        try {
+                            await opcionAutoFillMoodle_js(); // Ejecutar el script de AutoFill para Moodle y esperar su finalización
+                        } catch (error) {
+                            console.error('Error al ejecutar opcionAutoFillMoodle_js:', error);
+                        }
+                    } else if (configPlataforma === 'Altissia') {
+                        localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');
+                        localStorage.setItem('ultimoJs', 'opcionAutoFillAltissia_js');
+                
+                        contenedorContenido.innerHTML = opcionAutoFillAltissia_html(); // Mostrar contenido de AutoFill para Altissia
+                
+                        try {
+                            await opcionAutoFillAltissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
+                        } catch (error) {
+                            console.error('Error al ejecutar opcionAutoFillAltissia_js:', error);
+                        }
+                    } else {
+                        console.warn('Plataforma desconocida en ConfigPlataforma:', configPlataforma);
+                        // Opcional: manejar otras plataformas o establecer un comportamiento por defecto
                     }
-
-                } else if (opcion === 'Configuración de Ruta') {
+                }
+                 else if (opcion === 'Configuración de Ruta') {
                     localStorage.setItem('ultimoHtml', 'opcionConfigRuta_html');
                     localStorage.setItem('ultimoJs', 'opcionConfigRuta_js');
 
