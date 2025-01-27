@@ -24101,20 +24101,6 @@
     }
 
     /**
-     * Verifica el estado de autenticación del usuario.
-     */
-    function verificarSesionUsuario() {
-      onAuthStateChanged(autenticacion, (usuario) => {
-        if (usuario) {
-          configurarSesion(usuario.uid);
-          mostrarPanel();
-        } else {
-          mostrarLogin();
-        }
-      });
-    }
-
-    /**
      * Configura los eventos de la aplicación, como el cierre de sesión.
      */
     function configurarEventos() {
@@ -24132,24 +24118,106 @@
     /**
      * Inicializa la aplicación AutoQuizFill.
      */
+    /**
+     * Inicializa la aplicación AutoFillQuiz.
+     * 
+     * Este proceso incluye:
+     * 1. Verificar la existencia de la barra lateral en el DOM.
+     * 2. Crear el formulario de login.
+     * 3. Verificar la sesión del usuario.
+     *    - Si el usuario está autenticado:
+     *      a. Configurar la sesión.
+     *      b. Mostrar el panel principal.
+     *      c. Inicializar la aplicación AutoFillQuiz.
+     *      d. Crear y agregar el menú de AutoFillQuiz.
+     *      e. Configurar los eventos necesarios.
+     *    - Si el usuario no está autenticado:
+     *      a. Mostrar el formulario de login.
+     */
     function startAFQ() {
-      const barraLateral = document.getElementById(ID_BARRA_LATERAL);
-      if (!barraLateral) {
-        console.error(`[AutoQuizFill] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
-        return;
-      }
-
-      crearFormularioLogin(barraLateral);
-      verificarSesionUsuario();
-      panel_AutoFillQuizApp(barraLateral);
+        // Intentar obtener el elemento de la barra lateral por su ID
+        const barraLateral = document.getElementById(ID_BARRA_LATERAL);
+        
+        // Si no se encuentra la barra lateral, registrar un error y abortar la inicialización
+        if (!barraLateral) {
+          console.error(`[AutoQuizFill] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
+          return;
+        }
       
-      const menu = menu_AutoFillQuizApp();
-      if (menu) {
-        barraLateral.appendChild(menu);
+        // Crear y agregar el formulario de login a la barra lateral
+        crearFormularioLogin(barraLateral);
+      
+        /**
+         * Verifica el estado de autenticación del usuario.
+         * Usa `onAuthStateChanged` para escuchar cambios en el estado de autenticación.
+         */
+        onAuthStateChanged(autenticacion, (usuario) => {
+          if (usuario) {
+            // Si el usuario está autenticado
+      
+            // a. Configurar la sesión con el UID del usuario
+            configurarSesion(usuario.uid);
+      
+            // b. Mostrar el panel principal y ocultar el contenedor de login
+            toggleElementById(ID_LOGIN_CONTENEDOR, false);
+            toggleElementById(ID_PANEL_CONTENEDOR, true);
+      
+            /**
+             * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
+             */
+            panel_AutoFillQuizApp(barraLateral);
+            
+            /**
+             * d. Crear el menú de AutoFillQuizApp
+             */
+            const menu = menu_AutoFillQuizApp();
+            
+            // Si el menú se creó correctamente, agregarlo a la barra lateral
+            if (menu) {
+              barraLateral.appendChild(menu);
+            }
+      
+            /**
+             * e. Configurar los eventos necesarios para la aplicación
+             */
+            configurarEventos();
+          } else {
+            // Si el usuario no está autenticado
+      
+            /**
+             * a. Mostrar el formulario de login y ocultar el panel principal
+             */
+            toggleElementById2(ID_LOGIN_CONTENEDOR, true);
+            toggleElementById2(ID_PANEL_CONTENEDOR, false);
+      
+            // Opcional: Puedes agregar lógica adicional aquí si es necesario
+            // Por ejemplo, limpiar campos de formulario o mostrar mensajes informativos
+            mostrarLogin();
+          }
+        });
       }
-
-      configurarEventos();
-    }
+      
+      /**
+       * Alterna la visibilidad de un elemento del DOM basado en su ID.
+       * 
+       * @param {string} id - El ID del elemento a mostrar u ocultar.
+       * @param {boolean} mostrar - Si es `true`, muestra el elemento; si es `false`, lo oculta.
+       */
+      function toggleElementById2(id, mostrar) {
+        const elemento = document.getElementById(id);
+        if (elemento) {
+          elemento.style.display = mostrar ? 'block' : 'none';
+        } else {
+          console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${id}".`);
+        }
+      }
+      
+      /**
+       * Muestra el formulario de login.
+       * 
+       * Este método asume que `mostrarLogin` ya maneja la visibilidad del formulario de login.
+       */
+      
 
     // Al final de tu bundle, reemplaza el listener de DOMContentLoaded existente con lo siguiente:
 
