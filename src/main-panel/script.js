@@ -70,18 +70,24 @@ export function panel_AutoFillQuizApp(barraLateral) {
     // Mapeo de las posibles funciones HTML y JS
     const funcionesHtml = {
       'opcionConfigRuta_html': opcionConfigRuta_html,
+      'opcionAutoFillMoodle_html': opcionConfigRuta_html,
+      'opcionAutoFillAltissia_html': opcionConfigRuta_html
       // Agrega aquí otras funciones HTML si es necesario
     };
 
     const funcionesJs = {
       'opcionConfigRuta_js': opcionConfigRuta_js,
+      'opcionAutoFillMoodle_js': opcionConfigRuta_js,
+      'opcionAutoFillAltissia_js': opcionConfigRuta_js
       // Agrega aquí otras funciones JS si es necesario
     };
 
     // Obtener y establecer el HTML correspondiente
     const funcionHtml = funcionesHtml[ultimoHtml];
+
     if (funcionHtml) {
       contenedorContenido.innerHTML = funcionHtml();
+
     } else {
       console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
       cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
