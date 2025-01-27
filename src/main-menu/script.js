@@ -40,7 +40,7 @@ export function menu_AutoFillQuizApp() {
     contenedorOpciones.classList.add('contenedor-opciones-menu');
 
     // Crear las opciones del menú, incluyendo la nueva opción "Gestion de Usuarios"
-    const opciones = ['AutoFill', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios'];
+    const opciones = ['AutoFill', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios', 'Configuración' ];
     opciones.forEach(opcion => {
         const botonOpcion = document.createElement('button');
         botonOpcion.id = `opcion-${opcion.toLowerCase().replace(/ /g, '-')}-autofillquizapp`;
@@ -60,6 +60,9 @@ export function menu_AutoFillQuizApp() {
                 break;
             case 'Gestión de Usuarios':
                 icono = 'id-card';
+                break;
+            case 'Configuración':
+                icono = 'cog"></i>';
                 break;
             default:
                 icono = 'circle';
@@ -103,7 +106,14 @@ export function menu_AutoFillQuizApp() {
 
                     contenedorContenido.innerHTML = opcionGestionUsuarios_html(); // Mostrar contenido de Gestión de Usuarios
                     opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
-                }
+               
+            } else if (opcion === 'Configuración') {
+                localStorage.setItem('ultimoHtml', 'opcionGestionUsuarios_html' );
+                localStorage.setItem('ultimoJs', 'opcionGestionUsuarios_js');
+
+                contenedorContenido.innerHTML = opcionConfiguracion_html(); // Mostrar contenido de Gestión de Usuarios
+                opcionConfiguracion_js(); // Ejecutar el script para Gestión de Usuarios
+            }
                 menu.style.display = 'none'; // Ocultar el menú después de seleccionar una opción
             }
         });
