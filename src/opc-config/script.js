@@ -73,13 +73,10 @@ export async function opcionConfig_js() {
             const seleccionGuardada = localStorage.getItem('plataformaSeleccionada');
             if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
                 select.value = seleccionGuardada;
-                // Asegurarse de que la opción por defecto no esté seleccionada
-                defaultOption.selected = false;
             } else {
                 // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
                 if (plataformaKeys.includes('Moodle')) {
                     select.value = 'Moodle';
-                    defaultOption.selected = false;
                 }
             }
 
