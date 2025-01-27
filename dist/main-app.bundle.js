@@ -23493,7 +23493,7 @@
         comprobarRutaCiclo_ConfigRuta();
     }
 
-    var css_248z = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.5rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}";
+    var css_248z = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}";
     styleInject(css_248z);
 
     // configuracion.js
