@@ -1,0 +1,10 @@
+/* Estilo para el Contenedor Principal */
+#titulo-config {
+    margin-bottom: 5px;
+    margin-top: 0;
+    display: flex;
+    color: #34495e;
+    padding: 0; /* Opcional: padding interno */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem; /* Tamaño de fuente de 1rem */
+}

@@ -1,6 +1,7 @@
 import './style.css';
 import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
 
+import { opcionConfig_html } from '../opc-config/script.js';
 
 export function menu_AutoFillQuizApp() {
     console.log('[AutoQuizFill] Creando main-menu');
@@ -40,7 +41,7 @@ export function menu_AutoFillQuizApp() {
     contenedorOpciones.classList.add('contenedor-opciones-menu');
 
     // Crear las opciones del menú, incluyendo la nueva opción "Gestion de Usuarios"
-    const opciones = ['AutoFill', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios', 'Configuración' ];
+    const opciones = ['AutoFill', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios', 'Configuración'];
     opciones.forEach(opcion => {
         const botonOpcion = document.createElement('button');
         botonOpcion.id = `opcion-${opcion.toLowerCase().replace(/ /g, '-')}-autofillquizapp`;
@@ -76,7 +77,7 @@ export function menu_AutoFillQuizApp() {
             if (contenedorContenido) {
                 // Mostrar el contenido y ejecutar el script correspondiente a la opción seleccionada
                 if (opcion === 'AutoFill') {
-                    localStorage.setItem('ultimoHtml', 'opcionAutoQuiz_html' );
+                    localStorage.setItem('ultimoHtml', 'opcionAutoQuiz_html');
                     localStorage.setItem('ultimoJs', 'opcionAutoQuiz_js');
 
                     contenedorContenido.innerHTML = opcionAutoQuiz_html(); // Mostrar contenido de AutoFill
@@ -89,31 +90,29 @@ export function menu_AutoFillQuizApp() {
                     }
 
                 } else if (opcion === 'Configuración de Ruta') {
-                    localStorage.setItem('ultimoHtml', 'opcionConfigRuta_html' );
+                    localStorage.setItem('ultimoHtml', 'opcionConfigRuta_html');
                     localStorage.setItem('ultimoJs', 'opcionConfigRuta_js');
 
                     contenedorContenido.innerHTML = opcionConfigRuta_html(); // Mostrar contenido de Configuración de Ruta
                     opcionConfigRuta_js(); // Ejecutar el script de Configuración de Ruta
                 } else if (opcion === 'Generar PDF de preguntas') {
-                    localStorage.setItem('ultimoHtml', 'opcionGenerarPDF_html' );
+                    localStorage.setItem('ultimoHtml', 'opcionGenerarPDF_html');
                     localStorage.setItem('ultimoJs', 'opcionGenerarPDF_js');
 
                     contenedorContenido.innerHTML = opcionGenerarPDF_html(); // Mostrar contenido de Generar PDF
                     opcionGenerarPDF_js(); // Ejecutar el script para generar PDF
                 } else if (opcion === 'Gestión de Usuarios') {
-                    localStorage.setItem('ultimoHtml', 'opcionGestionUsuarios_html' );
+                    localStorage.setItem('ultimoHtml', 'opcionGestionUsuarios_html');
                     localStorage.setItem('ultimoJs', 'opcionGestionUsuarios_js');
 
                     contenedorContenido.innerHTML = opcionGestionUsuarios_html(); // Mostrar contenido de Gestión de Usuarios
                     opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
-               
-            } else if (opcion === 'Configuración') {
-                localStorage.setItem('ultimoHtml', 'opcionGestionUsuarios_html' );
-                localStorage.setItem('ultimoJs', 'opcionGestionUsuarios_js');
 
-                contenedorContenido.innerHTML = opcionConfiguracion_html(); // Mostrar contenido de Gestión de Usuarios
-                opcionConfiguracion_js(); // Ejecutar el script para Gestión de Usuarios
-            }
+                } else if (opcion === 'Configuración') {
+
+                    contenedorContenido.innerHTML = opcionConfig_html(); // Mostrar contenido de Gestión de Usuarios
+                    //opcionGestionUsuarios_js(); // Ejecutar el script para Gestión de Usuarios
+                }
                 menu.style.display = 'none'; // Ocultar el menú después de seleccionar una opción
             }
         });
