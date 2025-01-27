@@ -23928,9 +23928,7 @@
 
     /**
      * Función para alternar la visibilidad de un elemento por su ID.
-     * @param {string} elementId - ID del elemento en el DOM.
-     * @param {boolean} show - Determina si se muestra o se oculta el elemento.
-     */
+    */
     function toggleElementById(elementId, show) {
       const el = document.getElementById(elementId);
       if (el) {
@@ -23940,7 +23938,6 @@
 
     /**
      * Función para mostrar errores tanto en la consola como en alertas.
-     * @param {string} mensaje - Mensaje de error a mostrar.
      */
     function mostrarError(mensaje) {
       alert(`Error en inicio de sesión: ${mensaje}`);
@@ -23948,7 +23945,6 @@
 
     /**
      * Crea y configura el formulario de login en la barra lateral.
-     * @param {HTMLElement} barraLateral - Elemento DOM de la barra lateral donde se insertará el formulario.
      */
     function crearFormularioLogin(barraLateral) {
       const loginAutoFillQuizApp = document.createElement('div');
@@ -24020,9 +24016,7 @@
 
     /**
      * Maneja el inicio de sesión del usuario.
-     * @param {string} correo - Correo electrónico del usuario.
-     * @param {string} contrasena - Contraseña del usuario.
-     */
+    */
     function iniciarSesionAutoQuiz(correo, contrasena) {
       signInWithEmailAndPassword(autenticacion, correo, contrasena)
         .then((usuarioCredential) => {
@@ -24037,8 +24031,8 @@
 
     /**
      * Configura la sesión del usuario en la base de datos y establece un listener para cambios.
-     * @param {string} uid - UID del usuario autenticado.
      */
+
     function configurarSesion(uid) {
       // Genera un nuevo ID de sesión
       const newSessionId = v4();
