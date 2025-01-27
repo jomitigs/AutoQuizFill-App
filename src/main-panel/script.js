@@ -1,10 +1,12 @@
 import './style.css';
 
-import { opcionAutoQuiz_html } from '../opc-autofill-moodle/autoquiz.js';
+import { opcionAutoQuiz_html } from '../opc-autofill-moodle/script.js';
+import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js'; // Asegúrate de importar las funciones de configuración
+import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
 
 // Exportación nombrada de la función para que pueda ser importada en otro script
 export function panel_AutoFillQuizApp(barraLateral) {
-   console.log('[AutoQuizFill] Creando main-panel');
+    console.log('[AutoQuizFill] Creando main-panel');
 
     const contenedor = document.createElement('div');
     contenedor.id = 'panel-autofillquizapp';
@@ -27,32 +29,85 @@ export function panel_AutoFillQuizApp(barraLateral) {
     const contenedorContenido = document.createElement('div');
     contenedorContenido.id = 'contenido-principal';
     contenedorContenido.classList.add('contenido-principal-autofillquizapp');
-    contenedorContenido.innerHTML = opcionAutoQuiz_html();
-  
+
+    // Lógica para determinar qué contenido cargar
+    const configPlataforma = localStorage.getItem('ConfigPlataforma');
+    let ultimoHtml = localStorage.getItem('ultimoHtml');
+    let ultimoJs = localStorage.getItem('ultimoJs');
+
+    if (configPlataforma) {
+        // Si ConfigPlataforma existe y tiene un valor
+        console.log('[AutoQuizFill] ConfigPlataforma encontrada en localStorage.');
+        contenedorContenido.innerHTML = opcionConfig_html();
+
+        setTimeout(() => {
+            if (typeof opcionConfig_js === 'function') {
+                opcionConfig_js();
+            } else {
+                console.warn('La función opcionConfig_js no está definida.');
+            }
+        }, 100);
+    } else if (ultimoHtml && ultimoJs) {
+        // Si no existe ConfigPlataforma, pero hay últimas funciones usadas en localStorage
+        console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
+        
+        // Mapeo de las posibles funciones HTML y JS
+        const funcionesHtml = {
+            'opcionConfigRuta_html': opcionConfigRuta_html,
+            // Agrega aquí otras funciones HTML si es necesario
+        };
+
+        const funcionesJs = {
+            'opcionConfigRuta_js': opcionConfigRuta_js,
+            // Agrega aquí otras funciones JS si es necesario
+        };
+
+        // Obtener y establecer el HTML correspondiente
+        const funcionHtml = funcionesHtml[ultimoHtml];
+        if (funcionHtml) {
+            contenedorContenido.innerHTML = funcionHtml();
+        } else {
+            console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
+            contenedorContenido.innerHTML = opcionAutoQuiz_html(); // Carga por defecto si no se encuentra
+        }
+
+        // Ejecutar la función JS correspondiente
+        setTimeout(() => {
+            const funcionJs = funcionesJs[ultimoJs];
+            if (typeof funcionJs === 'function') {
+                funcionJs();
+            } else {
+                console.warn(`La función JS "${ultimoJs}" no está definida.`);
+            }
+        }, 100);
+    } else {
+        // Carga por defecto si no hay ConfigPlataforma ni últimas funciones
+        console.log('[AutoQuizFill] Cargando contenido por defecto.');
+        contenedorContenido.innerHTML = opcionAutoQuiz_html();
+
+        setTimeout(() => {
+            if (typeof opcionAutoQuiz_js === 'function') {
+                opcionAutoQuiz_js();
+            } else {
+                console.warn('La función opcionAutoQuiz_js no está definida.');
+            }
+        }, 100);
+    }
+
     panelHeader.appendChild(botonMenu);
     panelHeader.appendChild(tituloOpcion);
     contenedor.appendChild(panelHeader);
     contenedor.appendChild(contenedorContenido);
     barraLateral.appendChild(contenedor);
-  
-    setTimeout(() => {
-      if (typeof opcionAutoQuiz_js === 'function') {
-        opcionAutoQuiz_js();
-      } else {
-        console.warn('La función opcionAutoQuiz_js no está definida.');
-      }
-    }, 100);
-    
-  
+
     botonMenu.addEventListener('click', () => {
-      const menu = document.getElementById('menu-autofillquizapp');
-      if (menu) {
-        menu.style.display = 'flex';
-      } else {
-        console.error("El menú no se encontró en el DOM.");
-      }
+        const menu = document.getElementById('menu-autofillquizapp');
+        if (menu) {
+            menu.style.display = 'flex';
+        } else {
+            console.error("El menú no se encontró en el DOM.");
+        }
     });
-  
+
     return contenedor;
-  }
-  
+}

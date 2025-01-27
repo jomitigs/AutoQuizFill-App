@@ -22993,62 +22993,143 @@
 `;
     }
 
-    // Exportación nombrada de la función para que pueda ser importada en otro script
-    function panel_AutoFillQuizApp(barraLateral) {
-       console.log('[AutoQuizFill] Creando main-panel');
-
-        const contenedor = document.createElement('div');
-        contenedor.id = 'panel-autofillquizapp';
-        contenedor.classList.add('panel-autofillquizapp');
-        contenedor.style.display = 'none';
-      
-        const panelHeader = document.createElement('div');
-        panelHeader.classList.add('panel-header');
-      
-        const botonMenu = document.createElement('button');
-        botonMenu.id = 'boton-hamburguesa-autofillquizapp';
-        botonMenu.classList.add('boton-hamburguesa-autofillquizapp');
-        botonMenu.innerHTML = '<i class="fa-solid fa-bars"></i>';
-      
-        const tituloOpcion = document.createElement('span');
-        tituloOpcion.id = 'titulo-autofillquizapp';
-        tituloOpcion.classList.add('titulo-autofillquizapp');
-        tituloOpcion.innerHTML = 'AutoFillQuiz App';
-      
-        const contenedorContenido = document.createElement('div');
-        contenedorContenido.id = 'contenido-principal';
-        contenedorContenido.classList.add('contenido-principal-autofillquizapp');
-        contenedorContenido.innerHTML = opcionAutoQuiz_html$1();
-      
-        panelHeader.appendChild(botonMenu);
-        panelHeader.appendChild(tituloOpcion);
-        contenedor.appendChild(panelHeader);
-        contenedor.appendChild(contenedorContenido);
-        barraLateral.appendChild(contenedor);
-      
-        setTimeout(() => {
-          if (typeof opcionAutoQuiz_js === 'function') {
-            opcionAutoQuiz_js();
-          } else {
-            console.warn('La función opcionAutoQuiz_js no está definida.');
-          }
-        }, 100);
-        
-      
-        botonMenu.addEventListener('click', () => {
-          const menu = document.getElementById('menu-autofillquizapp');
-          if (menu) {
-            menu.style.display = 'flex';
-          } else {
-            console.error("El menú no se encontró en el DOM.");
-          }
-        });
-      
-        return contenedor;
-      }
-
-    var css_248z$2 = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
+    var css_248z$2 = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}";
     styleInject(css_248z$2);
+
+    // configuracion.js
+
+
+    /**
+     * Retorna el HTML de la configuración con un contenedor para el select dinámico.
+     */
+    function opcionConfig_html() {
+        return `
+    <div class="contenido-config">
+        <h3 id="titulo-config">Configuración</h3>
+
+        <!-- Contenedor Select Dinámico -->
+        <div id="selects-plataforma" class="estilo-config-item">
+            <!-- Aquí se inyectará el select dinámicamente -->
+        </div>
+    </div>
+    `;
+    }
+
+    /**
+     * Genera un select dinámico basado en las claves de 'Config/Plataforma' en Firebase.
+     * Establece el valor seleccionado según 'localStorage' o por defecto a 'Moodle'.
+     */
+    async function opcionConfig_js() {
+        try {
+
+            if (!localStorage.getItem('ConfigPlataforma')) {
+                localStorage.setItem('ConfigPlataforma', "Moodle");
+            }
+
+
+            // Referencia a la ruta 'Config/Plataforma' en Firebase
+            const plataformaRef = ref(database, 'Config/Plataforma');
+            const snapshot = await get(plataformaRef);
+
+            if (snapshot.exists()) {
+                const plataformas = snapshot.val();
+                const plataformaKeys = Object.keys(plataformas);
+
+                // Obtener el contenedor donde se insertará el select
+                const selectsContainer = document.getElementById('selects-plataforma');
+
+                if (!selectsContainer) {
+                    console.error('El contenedor con ID "selects-plataforma" no existe en el DOM.');
+                    return;
+                }
+
+                // Limpiar el contenedor antes de agregar el select
+                selectsContainer.innerHTML = '';
+
+                // Crear la etiqueta para el select
+                const label = document.createElement('label');
+                label.setAttribute('for', 'select-plataforma');
+                label.textContent = 'Plataforma: ';
+                label.classList.add('estilo-config-item'); // Aplica estilos al label si es necesario
+
+                // Crear el elemento select
+                const select = document.createElement('select');
+                select.id = 'select-plataforma';
+                select.name = 'select-plataforma';
+                select.classList.add('estilo-config-select'); // Aplica estilos al select
+
+                // Agregar opciones dinámicamente
+                plataformaKeys.forEach(opcion => {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = opcion;
+                    optionElement.textContent = opcion;
+                    select.appendChild(optionElement);
+                });
+
+
+                // Establecer el valor seleccionado desde localStorage o por defecto a 'Moodle'
+                const seleccionGuardada = localStorage.getItem('ConfigPlataforma');
+                if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
+                    select.value = seleccionGuardada;
+                } else {
+
+                    if (!localStorage.getItem('ConfigPlataforma')) {
+                        // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
+                        if (plataformaKeys.includes('Moodle')) {
+                            select.value = 'Moodle';
+                        }
+                    } else if (plataformaKeys.length > 0) {
+                        // Opcional: Establecer la primera opción como seleccionada si "Moodle" no está disponible
+                        select.value = plataformaKeys[0];
+                    }
+                }
+
+                // Agregar un listener para guardar la selección en localStorage cuando cambie
+                select.addEventListener('change', (event) => {
+                    const seleccion = event.target.value;
+                    if (seleccion) {
+                        localStorage.setItem('ConfigPlataforma', seleccion);
+                        mostrarMensaje('Configuración guardada exitosamente.', 'success');
+                    }
+                });
+
+                // Agregar la etiqueta y el select al contenedor
+                selectsContainer.appendChild(label);
+                selectsContainer.appendChild(select);
+            } else {
+                console.log('No se encontraron plataformas en Firebase.');
+            }
+        } catch (error) {
+            console.error('Error al obtener las plataformas de Firebase:', error);
+        }
+    }
+
+    /**
+     * Función para mostrar mensajes al usuario
+     * @param {string} mensaje - El mensaje a mostrar
+     * @param {string} tipo - El tipo de mensaje ('success', 'warning', 'error')
+     */
+    function mostrarMensaje(mensaje, tipo) {
+        // Crear un elemento para el mensaje
+        const mensajeElemento = document.createElement('div');
+        mensajeElemento.textContent = mensaje;
+        mensajeElemento.classList.add('mensaje'); // Clase base para mensajes
+
+        // Añadir clase según el tipo de mensaje
+        {
+            mensajeElemento.classList.add('mensaje-exito');
+        }
+
+        // Insertar el mensaje en el DOM, por ejemplo, al final del contenedor de configuración
+        const contenidoConfig = document.querySelector('.contenido-config');
+        if (contenidoConfig) {
+            contenidoConfig.appendChild(mensajeElemento);
+            // Remover el mensaje después de 3 segundos
+            setTimeout(() => {
+                mensajeElemento.remove();
+            }, 3000);
+        }
+    }
 
     var css_248z$1 = "\r\n/* Estilo para el Contenedor Principal */\r\n#titulo-configruta {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n/* Estilo para Ruta y Ciclo (apilados verticalmente) */\r\n.ruta-ciclo-container {\r\n    display: flex;\r\n    flex-direction: column; /* Cambiado a columna para apilar */\r\n    align-items: flex-start; /* Alinea los elementos al inicio horizontalmente */\r\n    margin-bottom: 0; /* Espacio entre Ciclo y Mensaje Combinado */\r\n    color: #34495e;\r\n}\r\n\r\n/* Estilo para Ruta */\r\n.title-configruta-ruta {\r\n    padding: 0; /* Espacio vertical entre Ruta y Ciclo */\r\n    font-size: 14px; /* Tamaño de fuente para Ruta */\r\n    color: #333; /* Color del texto */\r\n    font-family: 'Poppins', sans-serif;\r\n    margin-bottom: -5px;\r\n}\r\n\r\n/* Estilo para Ciclo */\r\n.title-configruta-ciclo {\r\n    padding: 5px 0; /* Espacio vertical */\r\n    font-size: 14px; /* Tamaño de fuente para Ciclo */\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n.label-configruta {\r\n    font-weight: 600;\r\n    color: #34495e; /* Color más oscuro para destacar */\r\n    font-size: 14px; /* Ligero aumento en tamaño */\r\n}\r\n\r\n.ciclo-configruta,\r\n.ruta-configruta {\r\n    font-weight: 600;\r\n    color: #34495e; /* Color más oscuro para destacar */\r\n    font-size: 14px; /* Ligero aumento en tamaño */\r\n}\r\n\r\n/* Título estilizado */\r\n.title-optionmenu {\r\n    font-size: 22px;\r\n    font-weight: 700;\r\n    color: #34495e;\r\n    margin-bottom: 20px;\r\n    text-align: left;\r\n}\r\n\r\n/* Contenedores de elementos */\r\n.estilo-configruta-item {\r\n    margin-bottom: 10px;\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* Estilo para el Mensaje Combinado */\r\n.title-configruta-no-seleccionado {\r\n    display: none; /* Oculto por defecto */\r\n    width: 100%;\r\n    text-align: center;\r\n    margin-top: 10px;\r\n    color: red; /* Color del mensaje */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 10px; /* Tamaño de fuente para el mensaje combinado */\r\n}\r\n\r\n/* Opcional: Mostrar el mensaje cuando ambos no están seleccionados */\r\n.no-seleccionado .title-configruta-no-seleccionado {\r\n    display: block;\r\n}\r\n\r\n/* Estilos para los selects */\r\n.estilo-configruta-select {\r\n    width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */\r\n    padding: 12px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff; /* Fondo blanco */\r\n    color: #2c3e50; /* Texto oscuro para mayor legibilidad */\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */\r\n    transition: border 0.3s ease, box-shadow 0.3s ease; /* Transición suave */\r\n}\r\n\r\n/* Efecto hover y foco en los selects */\r\n.estilo-configruta-select:hover,\r\n.estilo-configruta-select:focus {\r\n    border-color: #0072c5;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\r\n    outline: none;\r\n}\r\n\r\n/* Botones estilizados */\r\n.estilo-configruta-boton {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins */\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n/* Efecto hover en los botones */\r\n.estilo-configruta-boton:hover {\r\n    background-color: #002c67;\r\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);\r\n}";
     styleInject(css_248z$1);
@@ -23493,143 +23574,116 @@
         comprobarRutaCiclo_ConfigRuta();
     }
 
-    var css_248z = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}";
-    styleInject(css_248z);
+    // Exportación nombrada de la función para que pueda ser importada en otro script
+    function panel_AutoFillQuizApp(barraLateral) {
+        console.log('[AutoQuizFill] Creando main-panel');
 
-    // configuracion.js
+        const contenedor = document.createElement('div');
+        contenedor.id = 'panel-autofillquizapp';
+        contenedor.classList.add('panel-autofillquizapp');
+        contenedor.style.display = 'none';
+      
+        const panelHeader = document.createElement('div');
+        panelHeader.classList.add('panel-header');
+      
+        const botonMenu = document.createElement('button');
+        botonMenu.id = 'boton-hamburguesa-autofillquizapp';
+        botonMenu.classList.add('boton-hamburguesa-autofillquizapp');
+        botonMenu.innerHTML = '<i class="fa-solid fa-bars"></i>';
+      
+        const tituloOpcion = document.createElement('span');
+        tituloOpcion.id = 'titulo-autofillquizapp';
+        tituloOpcion.classList.add('titulo-autofillquizapp');
+        tituloOpcion.innerHTML = 'AutoFillQuiz App';
+      
+        const contenedorContenido = document.createElement('div');
+        contenedorContenido.id = 'contenido-principal';
+        contenedorContenido.classList.add('contenido-principal-autofillquizapp');
 
+        // Lógica para determinar qué contenido cargar
+        const configPlataforma = localStorage.getItem('ConfigPlataforma');
+        let ultimoHtml = localStorage.getItem('ultimoHtml');
+        let ultimoJs = localStorage.getItem('ultimoJs');
 
-    /**
-     * Retorna el HTML de la configuración con un contenedor para el select dinámico.
-     */
-    function opcionConfig_html() {
-        return `
-    <div class="contenido-config">
-        <h3 id="titulo-config">Configuración</h3>
+        if (configPlataforma) {
+            // Si ConfigPlataforma existe y tiene un valor
+            console.log('[AutoQuizFill] ConfigPlataforma encontrada en localStorage.');
+            contenedorContenido.innerHTML = opcionConfig_html();
 
-        <!-- Contenedor Select Dinámico -->
-        <div id="selects-plataforma" class="estilo-config-item">
-            <!-- Aquí se inyectará el select dinámicamente -->
-        </div>
-    </div>
-    `;
-    }
-
-    /**
-     * Genera un select dinámico basado en las claves de 'Config/Plataforma' en Firebase.
-     * Establece el valor seleccionado según 'localStorage' o por defecto a 'Moodle'.
-     */
-    async function opcionConfig_js() {
-        try {
-
-            if (!localStorage.getItem('ConfigPlataforma')) {
-                localStorage.setItem('ConfigPlataforma', "Moodle");
-            }
-
-
-            // Referencia a la ruta 'Config/Plataforma' en Firebase
-            const plataformaRef = ref(database, 'Config/Plataforma');
-            const snapshot = await get(plataformaRef);
-
-            if (snapshot.exists()) {
-                const plataformas = snapshot.val();
-                const plataformaKeys = Object.keys(plataformas);
-
-                // Obtener el contenedor donde se insertará el select
-                const selectsContainer = document.getElementById('selects-plataforma');
-
-                if (!selectsContainer) {
-                    console.error('El contenedor con ID "selects-plataforma" no existe en el DOM.');
-                    return;
-                }
-
-                // Limpiar el contenedor antes de agregar el select
-                selectsContainer.innerHTML = '';
-
-                // Crear la etiqueta para el select
-                const label = document.createElement('label');
-                label.setAttribute('for', 'select-plataforma');
-                label.textContent = 'Plataforma: ';
-                label.classList.add('estilo-config-item'); // Aplica estilos al label si es necesario
-
-                // Crear el elemento select
-                const select = document.createElement('select');
-                select.id = 'select-plataforma';
-                select.name = 'select-plataforma';
-                select.classList.add('estilo-config-select'); // Aplica estilos al select
-
-                // Agregar opciones dinámicamente
-                plataformaKeys.forEach(opcion => {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = opcion;
-                    optionElement.textContent = opcion;
-                    select.appendChild(optionElement);
-                });
-
-
-                // Establecer el valor seleccionado desde localStorage o por defecto a 'Moodle'
-                const seleccionGuardada = localStorage.getItem('ConfigPlataforma');
-                if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
-                    select.value = seleccionGuardada;
-                } else {
-
-                    if (!localStorage.getItem('ConfigPlataforma')) {
-                        // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
-                        if (plataformaKeys.includes('Moodle')) {
-                            select.value = 'Moodle';
-                        }
-                    } else if (plataformaKeys.length > 0) {
-                        // Opcional: Establecer la primera opción como seleccionada si "Moodle" no está disponible
-                        select.value = plataformaKeys[0];
-                    }
-                }
-
-                // Agregar un listener para guardar la selección en localStorage cuando cambie
-                select.addEventListener('change', (event) => {
-                    const seleccion = event.target.value;
-                    if (seleccion) {
-                        localStorage.setItem('ConfigPlataforma', seleccion);
-                        mostrarMensaje('Configuración guardada exitosamente.', 'success');
-                    }
-                });
-
-                // Agregar la etiqueta y el select al contenedor
-                selectsContainer.appendChild(label);
-                selectsContainer.appendChild(select);
-            } else {
-                console.log('No se encontraron plataformas en Firebase.');
-            }
-        } catch (error) {
-            console.error('Error al obtener las plataformas de Firebase:', error);
-        }
-    }
-
-    /**
-     * Función para mostrar mensajes al usuario
-     * @param {string} mensaje - El mensaje a mostrar
-     * @param {string} tipo - El tipo de mensaje ('success', 'warning', 'error')
-     */
-    function mostrarMensaje(mensaje, tipo) {
-        // Crear un elemento para el mensaje
-        const mensajeElemento = document.createElement('div');
-        mensajeElemento.textContent = mensaje;
-        mensajeElemento.classList.add('mensaje'); // Clase base para mensajes
-
-        // Añadir clase según el tipo de mensaje
-        {
-            mensajeElemento.classList.add('mensaje-exito');
-        }
-
-        // Insertar el mensaje en el DOM, por ejemplo, al final del contenedor de configuración
-        const contenidoConfig = document.querySelector('.contenido-config');
-        if (contenidoConfig) {
-            contenidoConfig.appendChild(mensajeElemento);
-            // Remover el mensaje después de 3 segundos
             setTimeout(() => {
-                mensajeElemento.remove();
-            }, 3000);
+                if (typeof opcionConfig_js === 'function') {
+                    opcionConfig_js();
+                } else {
+                    console.warn('La función opcionConfig_js no está definida.');
+                }
+            }, 100);
+        } else if (ultimoHtml && ultimoJs) {
+            // Si no existe ConfigPlataforma, pero hay últimas funciones usadas en localStorage
+            console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
+            
+            // Mapeo de las posibles funciones HTML y JS
+            const funcionesHtml = {
+                'opcionConfigRuta_html': opcionConfigRuta_html,
+                // Agrega aquí otras funciones HTML si es necesario
+            };
+
+            const funcionesJs = {
+                'opcionConfigRuta_js': opcionConfigRuta_js,
+                // Agrega aquí otras funciones JS si es necesario
+            };
+
+            // Obtener y establecer el HTML correspondiente
+            const funcionHtml = funcionesHtml[ultimoHtml];
+            if (funcionHtml) {
+                contenedorContenido.innerHTML = funcionHtml();
+            } else {
+                console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
+                contenedorContenido.innerHTML = opcionAutoQuiz_html$1(); // Carga por defecto si no se encuentra
+            }
+
+            // Ejecutar la función JS correspondiente
+            setTimeout(() => {
+                const funcionJs = funcionesJs[ultimoJs];
+                if (typeof funcionJs === 'function') {
+                    funcionJs();
+                } else {
+                    console.warn(`La función JS "${ultimoJs}" no está definida.`);
+                }
+            }, 100);
+        } else {
+            // Carga por defecto si no hay ConfigPlataforma ni últimas funciones
+            console.log('[AutoQuizFill] Cargando contenido por defecto.');
+            contenedorContenido.innerHTML = opcionAutoQuiz_html$1();
+
+            setTimeout(() => {
+                if (typeof opcionAutoQuiz_js === 'function') {
+                    opcionAutoQuiz_js();
+                } else {
+                    console.warn('La función opcionAutoQuiz_js no está definida.');
+                }
+            }, 100);
         }
+
+        panelHeader.appendChild(botonMenu);
+        panelHeader.appendChild(tituloOpcion);
+        contenedor.appendChild(panelHeader);
+        contenedor.appendChild(contenedorContenido);
+        barraLateral.appendChild(contenedor);
+
+        botonMenu.addEventListener('click', () => {
+            const menu = document.getElementById('menu-autofillquizapp');
+            if (menu) {
+                menu.style.display = 'flex';
+            } else {
+                console.error("El menú no se encontró en el DOM.");
+            }
+        });
+
+        return contenedor;
     }
+
+    var css_248z = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
+    styleInject(css_248z);
 
     function menu_AutoFillQuizApp() {
         console.log('[AutoQuizFill] Creando main-menu');
