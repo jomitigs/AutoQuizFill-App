@@ -28,6 +28,9 @@ export function opcionConfig_html() {
  */
 export async function opcionConfig_js() {
     try {
+
+        localStorage.setItem('ConfigPlataforma', "Moodle");
+
         // Referencia a la ruta 'Config/Plataforma' en Firebase
         const plataformaRef = ref(database, 'Config/Plataforma');
         const snapshot = await get(plataformaRef);
