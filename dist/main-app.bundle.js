@@ -23600,69 +23600,93 @@
         contenedorContenido.id = 'contenido-principal';
         contenedorContenido.classList.add('contenido-principal-autofillquizapp');
 
-        // Lógica para determinar qué contenido cargar
-        const configPlataforma = localStorage.getItem('ConfigPlataforma');
-        let ultimoHtml = localStorage.getItem('ultimoHtml');
-        let ultimoJs = localStorage.getItem('ultimoJs');
+    // Obtener los valores de localStorage
+    const configPlataforma = localStorage.getItem('ConfigPlataforma');
+    const ultimoHtml = localStorage.getItem('ultimoHtml');
+    const ultimoJs = localStorage.getItem('ultimoJs');
 
-        if (configPlataforma) {
-            // Si ConfigPlataforma existe y tiene un valor
-            console.log('[AutoQuizFill] ConfigPlataforma encontrada en localStorage.');
-            contenedorContenido.innerHTML = opcionConfig_html();
+    // Función para cargar contenido por defecto (opcionConfig)
+    function cargarOpcionConfig() {
+        console.log('[AutoQuizFill] Cargando opcionConfig_html y opcionConfig_js.');
+        contenedorContenido.innerHTML = opcionConfig_html();
 
-            setTimeout(() => {
-                if (typeof opcionConfig_js === 'function') {
-                    opcionConfig_js();
-                } else {
-                    console.warn('La función opcionConfig_js no está definida.');
-                }
-            }, 100);
-        } else if (ultimoHtml && ultimoJs) {
-            // Si no existe ConfigPlataforma, pero hay últimas funciones usadas en localStorage
-            console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
-            
-            // Mapeo de las posibles funciones HTML y JS
-            const funcionesHtml = {
-                'opcionConfigRuta_html': opcionConfigRuta_html,
-                // Agrega aquí otras funciones HTML si es necesario
-            };
-
-            const funcionesJs = {
-                'opcionConfigRuta_js': opcionConfigRuta_js,
-                // Agrega aquí otras funciones JS si es necesario
-            };
-
-            // Obtener y establecer el HTML correspondiente
-            const funcionHtml = funcionesHtml[ultimoHtml];
-            if (funcionHtml) {
-                contenedorContenido.innerHTML = funcionHtml();
+        setTimeout(() => {
+            if (typeof opcionConfig_js === 'function') {
+                opcionConfig_js();
             } else {
-                console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
-                contenedorContenido.innerHTML = opcionAutoQuiz_html$1(); // Carga por defecto si no se encuentra
+                console.warn('La función opcionConfig_js no está definida.');
             }
+        }, 100);
+    }
 
-            // Ejecutar la función JS correspondiente
-            setTimeout(() => {
-                const funcionJs = funcionesJs[ultimoJs];
-                if (typeof funcionJs === 'function') {
-                    funcionJs();
-                } else {
-                    console.warn(`La función JS "${ultimoJs}" no está definida.`);
-                }
-            }, 100);
+    // Función para cargar AutoQuiz por defecto
+    function cargarAutoQuiz() {
+        console.log('[AutoQuizFill] Cargando autoquiz_html y autoquiz_js por defecto.');
+        contenedorContenido.innerHTML = opcionAutoQuiz_html$1();
+
+        setTimeout(() => {
+            if (typeof opcionAutoQuiz_js === 'function') {
+                opcionAutoQuiz_js();
+            } else {
+                console.warn('La función opcionAutoQuiz_js no está definida.');
+            }
+        }, 100);
+    }
+
+    // Función para cargar las últimas funciones almacenadas
+    function cargarUltimasFunciones() {
+        console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
+
+        // Mapeo de las posibles funciones HTML y JS
+        const funcionesHtml = {
+            'opcionConfigRuta_html': opcionConfigRuta_html,
+            // Agrega aquí otras funciones HTML si es necesario
+        };
+
+        const funcionesJs = {
+            'opcionConfigRuta_js': opcionConfigRuta_js,
+            // Agrega aquí otras funciones JS si es necesario
+        };
+
+        // Obtener y establecer el HTML correspondiente
+        const funcionHtml = funcionesHtml[ultimoHtml];
+        if (funcionHtml) {
+            contenedorContenido.innerHTML = funcionHtml();
         } else {
-            // Carga por defecto si no hay ConfigPlataforma ni últimas funciones
-            console.log('[AutoQuizFill] Cargando contenido por defecto.');
-            contenedorContenido.innerHTML = opcionAutoQuiz_html$1();
-
-            setTimeout(() => {
-                if (typeof opcionAutoQuiz_js === 'function') {
-                    opcionAutoQuiz_js();
-                } else {
-                    console.warn('La función opcionAutoQuiz_js no está definida.');
-                }
-            }, 100);
+            console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
+            cargarAutoQuiz(); // Carga por defecto si no se encuentra
+            return;
         }
+
+        // Ejecutar la función JS correspondiente
+        setTimeout(() => {
+            const funcionJs = funcionesJs[ultimoJs];
+            if (typeof funcionJs === 'function') {
+                funcionJs();
+            } else {
+                console.warn(`La función JS "${ultimoJs}" no está definida.`);
+            }
+        }, 100);
+    }
+
+    // Lógica principal para determinar qué contenido cargar
+    if (configPlataforma && ultimoHtml && ultimoJs) {
+        // Caso 1: Existe ConfigPlataforma y existen ultimoHtml y ultimoJs
+        cargarUltimasFunciones();
+    } else if (!configPlataforma) {
+        if (ultimoHtml && ultimoJs) {
+            // Caso 2: No existe ConfigPlataforma pero existen ultimoHtml y ultimoJs
+            // Según la descripción, también se carga opcionConfig
+            cargarOpcionConfig();
+        } else {
+            // Caso 4: No existe ConfigPlataforma y no existen ultimoHtml y ultimoJs
+            cargarOpcionConfig();
+        }
+    } else {
+        // Caso 3: Existe ConfigPlataforma pero no existen ultimoHtml y ultimoJs
+        cargarAutoQuiz();
+    }
+
 
         panelHeader.appendChild(botonMenu);
         panelHeader.appendChild(tituloOpcion);
