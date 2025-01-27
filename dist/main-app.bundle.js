@@ -23960,12 +23960,18 @@
       console.log('[AutoQuizFill] Init: Aplicación inicializada correctamente.');
     }
 
-    // Escucha el evento DOMContentLoaded para iniciar la aplicación.
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('[AutoQuizFill] DOMContentLoaded: DOM cargado. Iniciando aplicación.');
-      init();
-    });
+    // Al final de tu bundle, reemplaza el listener de DOMContentLoaded existente con lo siguiente:
 
+    if (document.readyState === 'loading') { // La página aún se está cargando
+        document.addEventListener('DOMContentLoaded', () => {
+          console.log('[AutoQuizFill] DOMContentLoaded: DOM cargado. Iniciando aplicación.');
+          init();
+        });
+      } else { // El DOM ya está cargado
+        console.log('[AutoQuizFill] DOM ya está cargado. Iniciando aplicación.');
+        init();
+      }
+      
     // Exposición de la función de cierre de sesión para uso externo (opcional).
     window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz$1;
 
