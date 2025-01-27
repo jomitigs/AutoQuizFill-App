@@ -1,5 +1,7 @@
 import './style.css';
 
+import { contenedorUsers_js } from '../opc-autofill-moodle/users/script.js';
+
 export function opcionAutoFillMoodle_html() {
     return `
      <div class="body-autoquiz">
@@ -158,4 +160,54 @@ export function opcionAutoFillMoodle_html() {
 
 </div>
 `;
+}
+
+export async function opcionAutoFillMoodle_js() {
+    const url = window.location.href;
+
+    // // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
+    // if (url.includes('grade/report/overview/index.php')) {
+    //     extractRevision();
+    //     viewRevisiones();
+    // }
+
+    // Llamar a contenedorUsers_js en todas las páginas
+    contenedorUsers_js();
+
+    // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
+    // if (url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php' ) ) {
+    //     const rutaDinamicaContainer = document.getElementById('container-ruta-dinamica');
+    //     rutaDinamicaContainer.style.display = 'block';
+    //     await contenedorRutaDinamica_js();
+    // }
+
+    // // Verificar si "switch-ruta-dinamica" no existe en localStorage
+    // if (!localStorage.getItem('switch-ruta-dinamica')) {
+    //     contenedorRuta_js();
+    // }
+
+
+    // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
+    if (url.includes('mod/quiz/attempt.php') || url.includes('/mod/quiz/view.php')) {
+        const autofillContainer = document.getElementById('container-autofill');
+        const autosaveContainer = document.getElementById('container-autosave');
+        autofillContainer.style.display = 'block';
+        autosaveContainer.style.display = 'block';
+        contenedorAutoFill_js();
+        contenedorAutoSave_js();
+    }
+
+    // // Mostrar contenedor de autosavereview si estamos en 'mod/quiz/review.php'
+    // if (url.includes('mod/quiz/review.php')) {
+    //     const autoSaveReviewContainer = document.getElementById('container-autosavereview');
+    //     autoSaveReviewContainer.style.display = 'block';
+    //     contenedorAutoSaveReview_js();
+    // }
+
+    // // Mostrar contenedor de verified si estamos en cualquiera de las páginas especificadas
+    // if (url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
+    //     const verifiedContainer = document.getElementById('container-verified');
+    //     verifiedContainer.style.display = 'block';
+    //     await opcionVerified_js();
+    // }
 }
