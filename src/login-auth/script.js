@@ -236,10 +236,10 @@ function configurarEventos() {
 /**
  * Inicializa la aplicación AutoQuizFill.
  */
-function init() {
+function startAFQ() {
   const barraLateral = document.getElementById(ID_BARRA_LATERAL);
   if (!barraLateral) {
-    console.error(`[AutoQuizFill] Init: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
+    console.error(`[AutoQuizFill] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
     return;
   }
 
@@ -260,10 +260,10 @@ function init() {
 
 if (document.readyState === 'loading') { // La página aún se está cargando
     document.addEventListener('DOMContentLoaded', () => {
-      init();
+        startAFQ();
     });
   } else { // El DOM ya está cargado
-    init();
+    startAFQ();
   }
   
 // Exposición de la función de cierre de sesión para uso externo (opcional).
