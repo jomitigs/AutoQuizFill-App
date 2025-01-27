@@ -23561,7 +23561,7 @@
                 });
 
                 // Establecer el valor seleccionado desde localStorage o por defecto a 'Moodle'
-                const seleccionGuardada = localStorage.getItem('plataformaSeleccionada');
+                const seleccionGuardada = localStorage.getItem('ConfigPlataforma');
                 if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
                     select.value = seleccionGuardada;
                 } else {
@@ -23578,7 +23578,7 @@
                 select.addEventListener('change', (event) => {
                     const seleccion = event.target.value;
                     if (seleccion) {
-                        localStorage.setItem('plataformaSeleccionada', seleccion);
+                        localStorage.setItem('ConfigPlataforma', seleccion);
                         mostrarMensaje('Configuración guardada exitosamente.', 'success');
                     }
                 });
