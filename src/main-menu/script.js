@@ -3,7 +3,7 @@ import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/s
 
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js';
 
-import { opcionAutoFillMoodle_html } from '../opc-autofill-moodle/script.js';
+import { opcionAutoFillMoodle_html, opcionAutoFillMoodle_js } from '../opc-autofill-moodle/script.js';
 
 import { opcionAutoFillAltissia_html } from '../opc-autofill-altissia/script.js';
 

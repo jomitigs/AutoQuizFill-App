@@ -23118,7 +23118,7 @@
 `;
     }
 
-    async function opcionAutoFillMoodle_js$1() {
+    async function opcionAutoFillMoodle_js() {
         const url = window.location.href;
 
         // // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
@@ -23801,7 +23801,7 @@
 
         setTimeout(() => {
           if (typeof opcionAutoQuiz_js === 'function') {
-            opcionAutoFillMoodle_js$1();
+            opcionAutoFillMoodle_js();
           } else {
             console.warn('La función opcionAutoQuiz_js no está definida.');
           }
