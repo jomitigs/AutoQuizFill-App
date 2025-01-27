@@ -65,50 +65,81 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
   // Función para cargar las últimas funciones almacenadas
   function cargarUltimasFunciones() {
-    console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
+    console.log('[AutoQuizFill] Iniciando la carga de las últimas funciones desde localStorage.');
+
+    // Obtener las últimas funciones almacenadas en localStorage
+    const ultimoHtml = localStorage.getItem('ultimoHtml');
+    const ultimoJs = localStorage.getItem('ultimoJs');
+
+    console.log(`[AutoQuizFill] ultimoHtml obtenido: "${ultimoHtml}"`);
+    console.log(`[AutoQuizFill] ultimoJs obtenido: "${ultimoJs}"`);
+
+    // Verificar que las variables se hayan obtenido correctamente
+    if (!ultimoHtml || !ultimoJs) {
+        console.warn('[AutoQuizFill] No se encontraron las últimas funciones en localStorage.');
+        cargarAutoFillMoodle(); // Carga por defecto
+        return;
+    }
 
     // Mapeo de las posibles funciones HTML y JS
     const funcionesHtml = {
       'opcionConfigRuta_html': opcionConfigRuta_html,
-      'opcionAutoFillMoodle_html': opcionConfigRuta_html,
-      'opcionAutoFillAltissia_html': opcionConfigRuta_html
+      'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, // Corregido
+      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html  // Corregido
       // Agrega aquí otras funciones HTML si es necesario
     };
 
     const funcionesJs = {
       'opcionConfigRuta_js': opcionConfigRuta_js,
-      'opcionAutoFillMoodle_js': opcionConfigRuta_js,
-      'opcionAutoFillAltissia_js': opcionConfigRuta_js
+      'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, // Corregido
+      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js  // Corregido
       // Agrega aquí otras funciones JS si es necesario
     };
 
+    console.log('[AutoQuizFill] Mapeo de funciones HTML y JS establecido.');
+
     // Obtener y establecer el HTML correspondiente
     const funcionHtml = funcionesHtml[ultimoHtml];
+    console.log(`[AutoQuizFill] Función HTML seleccionada: "${ultimoHtml}"`);
 
     if (funcionHtml) {
-      contenedorContenido.innerHTML = funcionHtml();
-
+        try {
+            contenedorContenido.innerHTML = funcionHtml();
+            console.log('[AutoQuizFill] HTML cargado exitosamente.');
+        } catch (error) {
+            console.error('[AutoQuizFill] Error al ejecutar la función HTML:', error);
+            cargarAutoFillMoodle(); // Carga por defecto en caso de error
+            return;
+        }
     } else {
-      console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
-      cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
-      return;
+        console.warn(`[AutoQuizFill] La función HTML "${ultimoHtml}" no está definida.`);
+        cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
+        return;
     }
 
     // Ejecutar la función JS correspondiente
     setTimeout(() => {
-      const funcionJs = funcionesJs[ultimoJs];
-      if (typeof funcionJs === 'function') {
-        funcionJs();
-      } else {
-        console.warn(`La función JS "${ultimoJs}" no está definida.`);
-      }
+        console.log(`[AutoQuizFill] Intentando ejecutar la función JS: "${ultimoJs}"`);
+        const funcionJs = funcionesJs[ultimoJs];
+        if (typeof funcionJs === 'function') {
+            try {
+                funcionJs();
+                console.log('[AutoQuizFill] Función JS ejecutada exitosamente.');
+            } catch (error) {
+                console.error('[AutoQuizFill] Error al ejecutar la función JS:', error);
+            }
+        } else {
+            console.warn(`[AutoQuizFill] La función JS "${ultimoJs}" no está definida.`);
+        }
     }, 100);
-  }
+}
+
 
   // Lógica principal para determinar qué contenido cargar
   if (configPlataforma && ultimoHtml && ultimoJs) {
     // Caso 1: Existe ConfigPlataforma y existen ultimoHtml y ultimoJs
     cargarUltimasFunciones();
+
   } else if (!configPlataforma) {
     if (ultimoHtml && ultimoJs) {
       // Caso 2: No existe ConfigPlataforma pero existen ultimoHtml y ultimoJs

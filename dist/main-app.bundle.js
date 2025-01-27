@@ -23810,50 +23810,81 @@
 
       // Función para cargar las últimas funciones almacenadas
       function cargarUltimasFunciones() {
-        console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
+        console.log('[AutoQuizFill] Iniciando la carga de las últimas funciones desde localStorage.');
+
+        // Obtener las últimas funciones almacenadas en localStorage
+        const ultimoHtml = localStorage.getItem('ultimoHtml');
+        const ultimoJs = localStorage.getItem('ultimoJs');
+
+        console.log(`[AutoQuizFill] ultimoHtml obtenido: "${ultimoHtml}"`);
+        console.log(`[AutoQuizFill] ultimoJs obtenido: "${ultimoJs}"`);
+
+        // Verificar que las variables se hayan obtenido correctamente
+        if (!ultimoHtml || !ultimoJs) {
+            console.warn('[AutoQuizFill] No se encontraron las últimas funciones en localStorage.');
+            cargarAutoFillMoodle(); // Carga por defecto
+            return;
+        }
 
         // Mapeo de las posibles funciones HTML y JS
         const funcionesHtml = {
           'opcionConfigRuta_html': opcionConfigRuta_html,
-          'opcionAutoFillMoodle_html': opcionConfigRuta_html,
-          'opcionAutoFillAltissia_html': opcionConfigRuta_html
+          'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, // Corregido
+          'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html  // Corregido
           // Agrega aquí otras funciones HTML si es necesario
         };
 
         const funcionesJs = {
           'opcionConfigRuta_js': opcionConfigRuta_js,
-          'opcionAutoFillMoodle_js': opcionConfigRuta_js,
-          'opcionAutoFillAltissia_js': opcionConfigRuta_js
+          'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, // Corregido
+          'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js  // Corregido
           // Agrega aquí otras funciones JS si es necesario
         };
 
+        console.log('[AutoQuizFill] Mapeo de funciones HTML y JS establecido.');
+
         // Obtener y establecer el HTML correspondiente
         const funcionHtml = funcionesHtml[ultimoHtml];
+        console.log(`[AutoQuizFill] Función HTML seleccionada: "${ultimoHtml}"`);
 
         if (funcionHtml) {
-          contenedorContenido.innerHTML = funcionHtml();
-
+            try {
+                contenedorContenido.innerHTML = funcionHtml();
+                console.log('[AutoQuizFill] HTML cargado exitosamente.');
+            } catch (error) {
+                console.error('[AutoQuizFill] Error al ejecutar la función HTML:', error);
+                cargarAutoFillMoodle(); // Carga por defecto en caso de error
+                return;
+            }
         } else {
-          console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
-          cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
-          return;
+            console.warn(`[AutoQuizFill] La función HTML "${ultimoHtml}" no está definida.`);
+            cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
+            return;
         }
 
         // Ejecutar la función JS correspondiente
         setTimeout(() => {
-          const funcionJs = funcionesJs[ultimoJs];
-          if (typeof funcionJs === 'function') {
-            funcionJs();
-          } else {
-            console.warn(`La función JS "${ultimoJs}" no está definida.`);
-          }
+            console.log(`[AutoQuizFill] Intentando ejecutar la función JS: "${ultimoJs}"`);
+            const funcionJs = funcionesJs[ultimoJs];
+            if (typeof funcionJs === 'function') {
+                try {
+                    funcionJs();
+                    console.log('[AutoQuizFill] Función JS ejecutada exitosamente.');
+                } catch (error) {
+                    console.error('[AutoQuizFill] Error al ejecutar la función JS:', error);
+                }
+            } else {
+                console.warn(`[AutoQuizFill] La función JS "${ultimoJs}" no está definida.`);
+            }
         }, 100);
-      }
+    }
+
 
       // Lógica principal para determinar qué contenido cargar
       if (configPlataforma && ultimoHtml && ultimoJs) {
         // Caso 1: Existe ConfigPlataforma y existen ultimoHtml y ultimoJs
         cargarUltimasFunciones();
+
       } else if (!configPlataforma) {
         if (ultimoHtml && ultimoJs) {
           // Caso 2: No existe ConfigPlataforma pero existen ultimoHtml y ultimoJs
@@ -23890,7 +23921,7 @@
     var css_248z = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
     styleInject(css_248z);
 
-    function opcionAutoFillAltissia_html() {
+    function opcionAutoFillAltissia_html$1() {
         return `
      <div class="contenido-config">
         <h3 id="titulo-config">Configuración</h3>
@@ -23996,7 +24027,7 @@
                             localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');
                             localStorage.setItem('ultimoJs', 'opcionAutoFillAltissia_js');
                     
-                            contenedorContenido.innerHTML = opcionAutoFillAltissia_html(); // Mostrar contenido de AutoFill para Altissia
+                            contenedorContenido.innerHTML = opcionAutoFillAltissia_html$1(); // Mostrar contenido de AutoFill para Altissia
                     
                             try {
                                 await opcionAutoFillAltissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
