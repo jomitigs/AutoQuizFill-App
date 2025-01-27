@@ -23,8 +23,15 @@ export default {
       extensions: ['.css'],
       inject: true,
     }),
-    terser(), // Minificación del código
-    obfuscator({ // Ofuscación del código
+    terser({
+      format: {
+        comments: false, // Elimina todos los comentarios
+      },
+      compress: {
+        drop_console: true, // Elimina los mensajes de consola
+      },
+    }),
+    obfuscator({
       compact: true,
       controlFlowFlattening: true,
       controlFlowFlatteningThreshold: 0.75,
@@ -32,7 +39,7 @@ export default {
       deadCodeInjectionThreshold: 0.4,
       debugProtection: false,
       debugProtectionInterval: false,
-      disableConsoleOutput: true,
+      disableConsoleOutput: true, // Elimina cualquier mensaje de consola que sobreviva
       identifierNamesGenerator: 'hexadecimal',
       renameGlobals: false,
       selfDefending: true,
