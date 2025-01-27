@@ -23576,134 +23576,134 @@
 
     // Exportación nombrada de la función para que pueda ser importada en otro script
     function panel_AutoFillQuizApp(barraLateral) {
-        console.log('[AutoQuizFill] Creando main-panel');
+      console.log('[AutoQuizFill] Creando main-panel');
 
-        const contenedor = document.createElement('div');
-        contenedor.id = 'panel-autofillquizapp';
-        contenedor.classList.add('panel-autofillquizapp');
-        contenedor.style.display = 'none';
-      
-        const panelHeader = document.createElement('div');
-        panelHeader.classList.add('panel-header');
-      
-        const botonMenu = document.createElement('button');
-        botonMenu.id = 'boton-hamburguesa-autofillquizapp';
-        botonMenu.classList.add('boton-hamburguesa-autofillquizapp');
-        botonMenu.innerHTML = '<i class="fa-solid fa-bars"></i>';
-      
-        const tituloOpcion = document.createElement('span');
-        tituloOpcion.id = 'titulo-autofillquizapp';
-        tituloOpcion.classList.add('titulo-autofillquizapp');
-        tituloOpcion.innerHTML = 'AutoFillQuiz App';
-      
-        const contenedorContenido = document.createElement('div');
-        contenedorContenido.id = 'contenido-principal';
-        contenedorContenido.classList.add('contenido-principal-autofillquizapp');
+      const contenedor = document.createElement('div');
+      contenedor.id = 'panel-autofillquizapp';
+      contenedor.classList.add('panel-autofillquizapp');
+      contenedor.style.display = 'none';
 
-    // Obtener los valores de localStorage
-    const configPlataforma = localStorage.getItem('ConfigPlataforma');
-    const ultimoHtml = localStorage.getItem('ultimoHtml');
-    const ultimoJs = localStorage.getItem('ultimoJs');
+      const panelHeader = document.createElement('div');
+      panelHeader.classList.add('panel-header');
 
-    // Función para cargar contenido por defecto (opcionConfig)
-    function cargarOpcionConfig() {
+      const botonMenu = document.createElement('button');
+      botonMenu.id = 'boton-hamburguesa-autofillquizapp';
+      botonMenu.classList.add('boton-hamburguesa-autofillquizapp');
+      botonMenu.innerHTML = '<i class="fa-solid fa-bars"></i>';
+
+      const tituloOpcion = document.createElement('span');
+      tituloOpcion.id = 'titulo-autofillquizapp';
+      tituloOpcion.classList.add('titulo-autofillquizapp');
+      tituloOpcion.innerHTML = 'AutoFillQuiz App';
+
+      const contenedorContenido = document.createElement('div');
+      contenedorContenido.id = 'contenido-principal';
+      contenedorContenido.classList.add('contenido-principal-autofillquizapp');
+
+      // Obtener los valores de localStorage
+      const configPlataforma = localStorage.getItem('ConfigPlataforma');
+      const ultimoHtml = localStorage.getItem('ultimoHtml');
+      const ultimoJs = localStorage.getItem('ultimoJs');
+
+      // Función para cargar contenido por defecto (opcionConfig)
+      function cargarOpcionConfig() {
         console.log('[AutoQuizFill] Cargando opcionConfig_html y opcionConfig_js.');
         contenedorContenido.innerHTML = opcionConfig_html();
 
         setTimeout(() => {
-            if (typeof opcionConfig_js === 'function') {
-                opcionConfig_js();
-            } else {
-                console.warn('La función opcionConfig_js no está definida.');
-            }
+          if (typeof opcionConfig_js === 'function') {
+            opcionConfig_js();
+          } else {
+            console.warn('La función opcionConfig_js no está definida.');
+          }
         }, 100);
-    }
+      }
 
-    // Función para cargar AutoQuiz por defecto
-    function cargarAutoQuiz() {
+      // Función para cargar AutoQuiz por defecto
+      function cargarAutoQuiz() {
         console.log('[AutoQuizFill] Cargando autoquiz_html y autoquiz_js por defecto.');
         contenedorContenido.innerHTML = opcionAutoQuiz_html$1();
 
         setTimeout(() => {
-            if (typeof opcionAutoQuiz_js === 'function') {
-                opcionAutoQuiz_js();
-            } else {
-                console.warn('La función opcionAutoQuiz_js no está definida.');
-            }
+          if (typeof opcionAutoQuiz_js === 'function') {
+            opcionAutoQuiz_js();
+          } else {
+            console.warn('La función opcionAutoQuiz_js no está definida.');
+          }
         }, 100);
-    }
+      }
 
-    // Función para cargar las últimas funciones almacenadas
-    function cargarUltimasFunciones() {
+      // Función para cargar las últimas funciones almacenadas
+      function cargarUltimasFunciones() {
         console.log('[AutoQuizFill] Cargando últimas funciones usadas desde localStorage.');
 
         // Mapeo de las posibles funciones HTML y JS
         const funcionesHtml = {
-            'opcionConfigRuta_html': opcionConfigRuta_html,
-            // Agrega aquí otras funciones HTML si es necesario
+          'opcionConfigRuta_html': opcionConfigRuta_html,
+          // Agrega aquí otras funciones HTML si es necesario
         };
 
         const funcionesJs = {
-            'opcionConfigRuta_js': opcionConfigRuta_js,
-            // Agrega aquí otras funciones JS si es necesario
+          'opcionConfigRuta_js': opcionConfigRuta_js,
+          // Agrega aquí otras funciones JS si es necesario
         };
 
         // Obtener y establecer el HTML correspondiente
         const funcionHtml = funcionesHtml[ultimoHtml];
         if (funcionHtml) {
-            contenedorContenido.innerHTML = funcionHtml();
+          contenedorContenido.innerHTML = funcionHtml();
         } else {
-            console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
-            cargarAutoQuiz(); // Carga por defecto si no se encuentra
-            return;
+          console.warn(`La función HTML "${ultimoHtml}" no está definida.`);
+          cargarAutoQuiz(); // Carga por defecto si no se encuentra
+          return;
         }
 
         // Ejecutar la función JS correspondiente
         setTimeout(() => {
-            const funcionJs = funcionesJs[ultimoJs];
-            if (typeof funcionJs === 'function') {
-                funcionJs();
-            } else {
-                console.warn(`La función JS "${ultimoJs}" no está definida.`);
-            }
+          const funcionJs = funcionesJs[ultimoJs];
+          if (typeof funcionJs === 'function') {
+            funcionJs();
+          } else {
+            console.warn(`La función JS "${ultimoJs}" no está definida.`);
+          }
         }, 100);
-    }
+      }
 
-    // Lógica principal para determinar qué contenido cargar
-    if (configPlataforma && ultimoHtml && ultimoJs) {
+      // Lógica principal para determinar qué contenido cargar
+      if (configPlataforma && ultimoHtml && ultimoJs) {
         // Caso 1: Existe ConfigPlataforma y existen ultimoHtml y ultimoJs
         cargarUltimasFunciones();
-    } else if (!configPlataforma) {
+      } else if (!configPlataforma) {
         if (ultimoHtml && ultimoJs) {
-            // Caso 2: No existe ConfigPlataforma pero existen ultimoHtml y ultimoJs
-            // Según la descripción, también se carga opcionConfig
-            cargarOpcionConfig();
+          // Caso 2: No existe ConfigPlataforma pero existen ultimoHtml y ultimoJs
+          // Según la descripción, también se carga opcionConfig
+          cargarOpcionConfig();
         } else {
-            // Caso 4: No existe ConfigPlataforma y no existen ultimoHtml y ultimoJs
-            cargarOpcionConfig();
+          // Caso 4: No existe ConfigPlataforma y no existen ultimoHtml y ultimoJs
+          cargarOpcionConfig();
         }
-    } else {
+      } else {
         // Caso 3: Existe ConfigPlataforma pero no existen ultimoHtml y ultimoJs
         cargarAutoQuiz();
-    }
+      }
 
 
-        panelHeader.appendChild(botonMenu);
-        panelHeader.appendChild(tituloOpcion);
-        contenedor.appendChild(panelHeader);
-        contenedor.appendChild(contenedorContenido);
-        barraLateral.appendChild(contenedor);
+      panelHeader.appendChild(botonMenu);
+      panelHeader.appendChild(tituloOpcion);
+      contenedor.appendChild(panelHeader);
+      contenedor.appendChild(contenedorContenido);
+      barraLateral.appendChild(contenedor);
 
-        botonMenu.addEventListener('click', () => {
-            const menu = document.getElementById('menu-autofillquizapp');
-            if (menu) {
-                menu.style.display = 'flex';
-            } else {
-                console.error("El menú no se encontró en el DOM.");
-            }
-        });
+      botonMenu.addEventListener('click', () => {
+        const menu = document.getElementById('menu-autofillquizapp');
+        if (menu) {
+          menu.style.display = 'flex';
+        } else {
+          console.error("El menú no se encontró en el DOM.");
+        }
+      });
 
-        return contenedor;
+      return contenedor;
     }
 
     var css_248z = "/* Estilos para el menú lateral */\r\n#menu-autofillquizapp {\r\n    position: fixed;\r\n    top: 0;\r\n    left: 0; /* Posicionar el menú a la izquierda */\r\n    min-width: 350px; /* Ancho de 350px */\r\n    max-width: 500px;\r\n    height: 100vh; /* Ocupar toda la altura de la pantalla */\r\n    background-color: #2c3e50; /* Fondo oscuro elegante */\r\n    color: #ecf0f1; /* Texto claro */\r\n    z-index: 10000;\r\n    display: none; /* Oculto por defecto */\r\n    flex-direction: column;\r\n    padding-top: 20px;\r\n    border-radius: 0 5px 5px 0; /* Borde redondeado en los lados derecho */\r\n    overflow-y: hidden; /* Ocultar barra de desplazamiento vertical */\r\n    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* Sombra suave */\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a todo el menú */\r\n}\r\n\r\n\r\n/* Contenedor del botón cerrar y la palabra Menú */\r\n.contenedor-header-menu {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between; /* Alinear título a la izquierda y botón a la derecha */\r\n    padding: 10px;\r\n    position: relative;\r\n}\r\n\r\n/* Botón para cerrar el menú, alineado a la derecha */\r\n#boton-cerrar-menu-autofillquizapp {\r\n    background-color: #e74c3c; /* Fondo rojo típico de los botones de cerrar */\r\n    color: #fff;\r\n    border: none;\r\n    font-size: 18px;\r\n    cursor: pointer;\r\n    width: 40px;\r\n    height: 40px;\r\n    border-radius: 5px;\r\n    position: absolute;\r\n    right: 25px; /* Posicionar a la derecha */\r\n}\r\n\r\n#boton-cerrar-menu-autofillquizapp:hover {\r\n    background-color: #c0392b; /* Cambio de color en hover */\r\n}\r\n\r\n/* Título \"Menú\", alineado a la izquierda */\r\n.titulo-menu {\r\n    font-size: 22px;\r\n    font-weight: bold;\r\n    color: #ecf0f1;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al título */\r\n    text-align: left;\r\n    flex-grow: 1; /* Ocupa el espacio disponible */\r\n    margin-left: 10px; /* Separación desde el borde izquierdo */\r\n}\r\n\r\n/* Contenedor de las opciones */\r\n.contenedor-opciones-menu {\r\n    margin-top: 20px;\r\n    display: flex;\r\n    flex-direction: column;\r\n    overflow-y: auto; /* Activar desplazamiento vertical */\r\n    scrollbar-width: thin; /* Barra delgada para navegadores compatibles con Firefox */\r\n    scrollbar-color: transparent transparent; /* Barra y pista transparentes */\r\n}\r\n\r\n/* Estilo personalizado para la barra de desplazamiento en navegadores basados en Webkit (Chrome, Edge, Safari) */\r\n.contenedor-opciones-menu::-webkit-scrollbar {\r\n    width: 6px; /* Ancho de la barra de desplazamiento */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-thumb {\r\n    background-color: rgba(255, 255, 255, 0.3); /* Barra de desplazamiento semitransparente */\r\n    border-radius: 10px; /* Borde redondeado */\r\n}\r\n\r\n.contenedor-opciones-menu::-webkit-scrollbar-track {\r\n    background: transparent; /* Pista transparente */\r\n}\r\n\r\n\r\n/* Opciones del menú */\r\n.opcion-menu-autofillquizapp {\r\n    width: 100%;\r\n    padding: 15px 20px;\r\n    background: none;\r\n    border: none;\r\n    color: #ecf0f1;\r\n    font-size: 18px;\r\n    text-align: left;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins a las opciones */\r\n    transition: background-color 0.3s ease, padding-left 0.3s ease;\r\n}\r\n\r\n.opcion-menu-autofillquizapp:hover {\r\n    background-color: rgba(255, 255, 255, 0.1); /* Efecto hover */\r\n    padding-left: 30px; /* Animación de desplazamiento */\r\n}\r\n\r\n.opcion-menu-autofillquizapp i {\r\n    margin-right: 15px; /* Espacio entre el icono y el texto */\r\n}\r\n\r\n/* Contenedor para el botón de cerrar sesión */\r\n.contenedor-cerrar-sesion {\r\n    margin-top: auto; /* Poner el botón de cerrar sesión al final del menú */\r\n    padding: 20px;\r\n}\r\n\r\n/* Botón para cerrar sesión */\r\n.boton-cerrar-sesion {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #e74c3c;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    text-align: center;\r\n    box-shadow: 0 2px 5px rgba(0,0,0,0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n    font-family: 'Poppins', sans-serif; /* Aplicar Poppins al botón de cerrar sesión */\r\n}\r\n\r\n.boton-cerrar-sesion:hover {\r\n    background-color: #c0392b;\r\n    box-shadow: 0 4px 10px rgba(0,0,0,0.2);\r\n}\r\n";
@@ -23923,7 +23923,6 @@
     const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
     const ID_FORM_FAKE = 'fake-form';
 
-    console.log('[AutoQuizFill] Script cargado.');
 
     let sessionIdLocal = null; // Variable para almacenar el ID de sesión local
 
@@ -23933,13 +23932,9 @@
      * @param {boolean} show - Determina si se muestra o se oculta el elemento.
      */
     function toggleElementById(elementId, show) {
-      console.log(`[AutoQuizFill] toggleElementById: Intentando mostrar "${elementId}" - ${show}`);
       const el = document.getElementById(elementId);
       if (el) {
         el.style.display = show ? 'block' : 'none';
-        console.log(`[AutoQuizFill] toggleElementById: Elemento "${elementId}" ${show ? 'mostrado' : 'ocultado'}.`);
-      } else {
-        console.warn(`[AutoQuizFill] toggleElementById: Elemento con ID "${elementId}" no encontrado.`);
       }
     }
 
@@ -23948,7 +23943,6 @@
      * @param {string} mensaje - Mensaje de error a mostrar.
      */
     function mostrarError(mensaje) {
-      console.error(`[AutoQuizFill] Error: ${mensaje}`);
       alert(`Error en inicio de sesión: ${mensaje}`);
     }
 
@@ -23957,7 +23951,6 @@
      * @param {HTMLElement} barraLateral - Elemento DOM de la barra lateral donde se insertará el formulario.
      */
     function crearFormularioLogin(barraLateral) {
-      console.log('[AutoQuizFill] CrearFormularioLogin: Iniciando creación del formulario de login.');
       const loginAutoFillQuizApp = document.createElement('div');
       loginAutoFillQuizApp.id = ID_LOGIN_CONTENEDOR;
       loginAutoFillQuizApp.style.display = 'none';
@@ -24000,29 +23993,24 @@
   `;
 
       barraLateral.appendChild(loginAutoFillQuizApp);
-      console.log('[AutoQuizFill] CrearFormularioLogin: Formulario de login añadido a la barra lateral.');
 
       const inputCorreo = document.getElementById('login-correo-autoquizfillapp');
       const inputContrasena = document.getElementById('login-contrasena-autoquizfillapp');
       const botonLogin = document.getElementById('login-boton-autoquizfillapp');
 
       if (inputCorreo && inputContrasena && botonLogin) {
-        console.log('[AutoQuizFill] CrearFormularioLogin: Elementos del formulario de login encontrados correctamente.');
 
         const iniciarSesionHandler = () => {
-          console.log('[AutoQuizFill] CrearFormularioLogin: Handler de inicio de sesión activado.');
           iniciarSesionAutoQuiz(inputCorreo.value, inputContrasena.value);
         };
         
         inputContrasena.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
-            console.log('[AutoQuizFill] CrearFormularioLogin: Tecla Enter presionada en el campo de contraseña.');
             iniciarSesionHandler();
           }
         });
         
         botonLogin.addEventListener('click', () => {
-          console.log('[AutoQuizFill] CrearFormularioLogin: Botón de inicio de sesión clickeado.');
           iniciarSesionHandler();
         });
       } else {
@@ -24036,18 +24024,14 @@
      * @param {string} contrasena - Contraseña del usuario.
      */
     function iniciarSesionAutoQuiz(correo, contrasena) {
-      console.log(`[AutoQuizFill] IniciarSesionAutoQuiz: Intentando iniciar sesión con correo "${correo}".`);
       signInWithEmailAndPassword(autenticacion, correo, contrasena)
         .then((usuarioCredential) => {
-          console.log('[AutoQuizFill] IniciarSesionAutoQuiz: Sesión exitosa.');
           const usuario = usuarioCredential.user;
-          console.log(`[AutoQuizFill] IniciarSesionAutoQuiz: Usuario autenticado - UID: ${usuario.uid}, Email: ${usuario.email}`);
           configurarSesion(usuario.uid);
           mostrarPanel();
         })
         .catch((error) => {
           mostrarError(error.message);
-          console.error(`[AutoQuizFill] IniciarSesionAutoQuiz: Error al iniciar sesión - ${error.code}: ${error.message}`);
         });
     }
 
@@ -24056,23 +24040,18 @@
      * @param {string} uid - UID del usuario autenticado.
      */
     function configurarSesion(uid) {
-      console.log(`[AutoQuizFill] ConfigurarSesion: Configurando sesión para UID: ${uid}`);
       // Genera un nuevo ID de sesión
       const newSessionId = v4();
       sessionIdLocal = newSessionId;
-      console.log(`[AutoQuizFill] ConfigurarSesion: Nuevo ID de sesión generado - ${newSessionId}`);
 
       // Guarda el nuevo ID de sesión en la base de datos
       const sessionRef = ref(database, `users/${uid}/currentSession`);
       set(sessionRef, newSessionId)
         .then(() => {
-          console.log('[AutoQuizFill] ConfigurarSesion: ID de sesión actualizado en la base de datos.');
           // Escucha cambios en el ID de sesión
           onValue(sessionRef, (snapshot) => {
             const currentSessionId = snapshot.val();
-            console.log(`[AutoQuizFill] ConfigurarSesion: currentSession desde DB: ${currentSessionId}`);
             if (currentSessionId !== sessionIdLocal) {
-              console.warn('[AutoQuizFill] ConfigurarSesion: Sesión inválida detectada. Cerrando sesión.');
               cerrarSesionAutoQuiz$1();
             }
           });
@@ -24086,20 +24065,16 @@
      * Cierra la sesión del usuario y limpia la sesión en la base de datos.
      */
     function cerrarSesionAutoQuiz$1() {
-      console.log('[AutoQuizFill] CerrarSesionAutoQuiz: Intentando cerrar sesión.');
       signOut(autenticacion)
         .then(() => {
-          console.log('[AutoQuizFill] CerrarSesionAutoQuiz: Sesión cerrada correctamente.');
           // Opcional: Eliminar el currentSession de la base de datos al cerrar sesión
           const usuario = autenticacion.currentUser;
           if (usuario) {
             const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
             remove(sessionRef)
               .then(() => {
-                console.log('[AutoQuizFill] CerrarSesionAutoQuiz: currentSession eliminado de la base de datos.');
               })
               .catch((error) => {
-                console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentSession - ${error.code}: ${error.message}`);
               });
           }
           mostrarLogin();
@@ -24113,7 +24088,6 @@
      * Muestra el formulario de login y oculta el panel principal.
      */
     function mostrarLogin() {
-      console.log('[AutoQuizFill] MostrarLogin: Mostrando formulario de login y ocultando panel principal.');
       toggleElementById(ID_LOGIN_CONTENEDOR, true);
       toggleElementById(ID_PANEL_CONTENEDOR, false);
     }
@@ -24122,24 +24096,19 @@
      * Muestra el panel principal y oculta el formulario de login.
      */
     function mostrarPanel() {
-      console.log('[AutoQuizFill] MostrarPanel: Mostrando panel principal y ocultando formulario de login.');
       toggleElementById(ID_LOGIN_CONTENEDOR, false);
       toggleElementById(ID_PANEL_CONTENEDOR, true);
-      console.log('[AutoQuizFill] MostrarPanel: Panel principal mostrado correctamente.');
     }
 
     /**
      * Verifica el estado de autenticación del usuario.
      */
     function verificarSesionUsuario() {
-      console.log('[AutoQuizFill] VerificarSesionUsuario: Verificando estado de autenticación del usuario.');
       onAuthStateChanged(autenticacion, (usuario) => {
         if (usuario) {
-          console.log(`[AutoQuizFill] VerificarSesionUsuario: Usuario autenticado - UID: ${usuario.uid}, Email: ${usuario.email}`);
           configurarSesion(usuario.uid);
           mostrarPanel();
         } else {
-          console.log('[AutoQuizFill] VerificarSesionUsuario: No hay usuario autenticado. Mostrando formulario de login.');
           mostrarLogin();
         }
       });
@@ -24149,11 +24118,9 @@
      * Configura los eventos de la aplicación, como el cierre de sesión.
      */
     function configurarEventos() {
-      console.log('[AutoQuizFill] ConfigurarEventos: Configurando eventos de la aplicación.');
       const botonCerrarSesion = document.getElementById('botonCerrarSesion');
       if (botonCerrarSesion) {
         botonCerrarSesion.addEventListener('click', () => {
-          console.log('[AutoQuizFill] ConfigurarEventos: Botón de cerrar sesión clickeado.');
           cerrarSesionAutoQuiz$1();
         });
         console.log('[AutoQuizFill] ConfigurarEventos: Evento de cierre de sesión configurado.');
@@ -24166,41 +24133,31 @@
      * Inicializa la aplicación AutoQuizFill.
      */
     function init() {
-      console.log('[AutoQuizFill] Init: Inicializando aplicación.');
       const barraLateral = document.getElementById(ID_BARRA_LATERAL);
       if (!barraLateral) {
         console.error(`[AutoQuizFill] Init: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
         return;
       }
-      console.log('[AutoQuizFill] Init: Elemento de barra lateral encontrado.');
 
       crearFormularioLogin(barraLateral);
       verificarSesionUsuario();
-      
-      console.log('[AutoQuizFill] Init: Inicializando panel y menú de AutoQuizFill.');
       panel_AutoFillQuizApp(barraLateral);
       
       const menu = menu_AutoFillQuizApp();
       if (menu) {
         barraLateral.appendChild(menu);
-        console.log('[AutoQuizFill] Init: Menú de AutoQuizFill añadido a la barra lateral.');
-      } else {
-        console.error('[AutoQuizFill] Init: Error al crear el menú de AutoQuizFill.');
       }
 
       configurarEventos();
-      console.log('[AutoQuizFill] Init: Aplicación inicializada correctamente.');
     }
 
     // Al final de tu bundle, reemplaza el listener de DOMContentLoaded existente con lo siguiente:
 
     if (document.readyState === 'loading') { // La página aún se está cargando
         document.addEventListener('DOMContentLoaded', () => {
-          console.log('[AutoQuizFill] DOMContentLoaded: DOM cargado. Iniciando aplicación.');
           init();
         });
       } else { // El DOM ya está cargado
-        console.log('[AutoQuizFill] DOM ya está cargado. Iniciando aplicación.');
         init();
       }
       
