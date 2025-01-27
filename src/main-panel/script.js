@@ -1,6 +1,6 @@
 import './style.css';
 
-import { opcionAutoFillMoodle } from '../opc-autofill-moodle/script.js';
+import { opcionAutoFillMoodle_html } from '../opc-autofill-moodle/script.js';
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js'; // Asegúrate de importar las funciones de configuración
 import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
 
