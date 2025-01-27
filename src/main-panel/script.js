@@ -4,6 +4,8 @@ import { opcionAutoQuiz_html } from '../opc-autofill-moodle/autoquiz.js';
 
 // Exportación nombrada de la función para que pueda ser importada en otro script
 export function panel_AutoFillQuizApp(barraLateral) {
+   console.log('[AutoQuizFill] Creando main-panel');
+
     const contenedor = document.createElement('div');
     contenedor.id = 'panel-autofillquizapp';
     contenedor.classList.add('panel-autofillquizapp');

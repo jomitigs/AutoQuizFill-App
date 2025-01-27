@@ -71,6 +71,8 @@
 
     // Encapsular el código dentro de una IIFE
     (function () {
+      console.log('[AutoQuizFill] Creando barra-lateral');
+
       // 1. Insertar el contenido HTML en el DOM
       document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
 
@@ -22993,6 +22995,8 @@
 
     // Exportación nombrada de la función para que pueda ser importada en otro script
     function panel_AutoFillQuizApp(barraLateral) {
+       console.log('[AutoQuizFill] Creando main-panel');
+
         const contenedor = document.createElement('div');
         contenedor.id = 'panel-autofillquizapp';
         contenedor.classList.add('panel-autofillquizapp');
@@ -23490,6 +23494,8 @@
     }
 
     function menu_AutoFillQuizApp() {
+        console.log('[AutoQuizFill] Creando main-menu');
+
         // Crear el contenedor del menú lateral
         const menu = document.createElement('div');
         menu.id = 'menu-autofillquizapp';
@@ -23686,7 +23692,7 @@
       verifica el estado del usuario y controla la UI para AutoQuizFill.
     */
 
-    console.log('[AutoQuizFill] iniciando login-auth');
+    console.log('[AutoQuizFill] Iniciando login-auth');
 
     const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
     const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';

@@ -3,6 +3,8 @@ import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/s
 
 
 export function menu_AutoFillQuizApp() {
+    console.log('[AutoQuizFill] Creando main-menu');
+
     // Crear el contenedor del menú lateral
     const menu = document.createElement('div');
     menu.id = 'menu-autofillquizapp';
