@@ -56,15 +56,32 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
   // Función para cargar AutoFillMoodle por defecto
   function cargarAutoFillMoodle() {
-    console.log('[AutoFillQuiz-App] Cargando AutoFill: Moodle.');
+    console.log('[main-panel] Cargando AutoFill: Moodle.');
     
-    contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
-
+    if (opcionAutoFillMoodle_html) {
+      try {
+        contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
+        console.log('[main-panel] HTML cargado exitosamente.');
+      } catch (error) {
+        console.error('[main-panel] Error al ejecutar la función HTML:', error);
+        return;
+      }
+    } else {
+      console.error('[main-panel] La función HTML "opcionAutoFillMoodle_html" no está definida.');
+      return;
+    }
+    
+    // Ejecutar la función JS correspondiente
     setTimeout(() => {
       if (typeof opcionAutoFillMoodle_js === 'function') {
-        opcionAutoFillMoodle_js();
+        try {
+          opcionAutoFillMoodle_js();
+          console.log('[main-panel] JS ejecutada exitosamente.');
+        } catch (error) {
+          console.error('[main-panel] Error al ejecutar la función JS:', error);
+        }
       } else {
-        console.warn('La función opcionAutoFillMoodle_js no está definida.');
+        console.warn('[main-panel] La función JS "opcionAutoFillMoodle_js" no está definida.');
       }
     }, 100);
   }
