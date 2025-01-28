@@ -24011,7 +24011,7 @@
 
             if (ultimaRutaConfigruta && !document.getElementById('mensaje-ruta-invalida')) {
                 ultimaRutaConfigruta.appendChild(mensaje);
-                console.log('[opc-config-ruta] Mensaje de advertencia añadido al contenido principal.');
+                console.log('[opc-config-ruta] No ha seleccionado una ruta o ciclo.');
             }
         } else {
             console.log('[opc-config-ruta] configRuta y ciclo están definidos. Mostrando contenedores.');
