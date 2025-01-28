@@ -1,4 +1,4 @@
-(function (script_js) {
+(function () {
     'use strict';
 
     // addHead.js
@@ -23056,57 +23056,59 @@
 
         async function actualizaConfigRutaDinamic(contenedorSelects) {
             try {
+                // console.log("Iniciando actualizaConfigRutaDinamic...");
+
                 const configRuta = localStorage.getItem('configRuta');
                 if (!configRuta) {
                     console.error('No se encontró configRuta en localStorage.');
                     return null;
                 }
                 const universidad = configRuta.split('/')[0];
-        
+                // console.log(`Universidad obtenida de configRuta: ${universidad}`);
+
                 const breadcrumbItems = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
                 const quizItems = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
-        
+
                 // Obtener Materia
                 let materiaValor = null;
-        
+
                 if (breadcrumbItems.length > 0) {
                     const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
                     console.log(`Título del breadcrumb encontrado: ${breadcrumbTitle}`);
-        
+
                     // Extraer claves entre corchetes del atributo title
                     const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
                     console.log(`Coincidencias encontradas en el título del breadcrumb: ${matches}`);
-        
+
                     if (matches && matches.length > 0) {
                         const searchKey = matches[0].replace(/[\[\]]/g, '');
                         console.log(`Clave de búsqueda extraída: ${searchKey}`);
-        
+
                         const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
                         console.log(`Ruta para materias generada: ${materiaRuta}`);
-        
-                        const materiaRef = ref(script_js.database, materiaRuta);
-                        const materiaSnapshot = await get(materiaRef);
-                        const materiaOptions = materiaSnapshot.val();
+
+                        const materiaData = await firebase.database().ref(materiaRuta).once('value');
+                        const materiaOptions = materiaData.val();
                         console.log(`Datos obtenidos de Firebase:`, materiaOptions);
-        
+
                         if (materiaOptions) {
                             let found = false; // Bandera para saber si se encuentra alguna coincidencia
-        
+
                             // Iterar por cada clave en materiaOptions
                             for (const [key, value] of Object.entries(materiaOptions)) {
                                 console.log(`Analizando clave: "${key}" con valores contenidos: "${value}"`);
-        
+
                                 const values = value.split(',').map(item => item.trim());
                                 console.log(`Valores separados:`, values);
-        
+
                                 for (const val of values) {
                                     if (val.includes(':')) {
                                         const [firstPart, secondPart] = val.split(':').map(part => part.trim());
                                         console.log(`Valor con ":", Parte 1: "${firstPart}", Parte 2: "${secondPart}"`);
-        
+
                                         console.log(`Comparando "${firstPart}" con "${searchKey}"`);
                                         console.log(`Comparando "${breadcrumbTitle}" con "${secondPart}"`);
-        
+
                                         if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
                                             materiaValor = key;
                                             console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
@@ -23122,14 +23124,14 @@
                                         }
                                     }
                                 }
-        
+
                                 if (found) break;
                             }
-        
+
                             if (!found) {
                                 console.warn(`No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
                             }
-        
+
                         } else {
                             console.warn(`No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
                         }
@@ -23139,121 +23141,127 @@
                 } else {
                     console.warn('No se encontraron elementos breadcrumb en la página.');
                 }
-        
+
+
+
                 // Obtener Test
-                let testClave = null;
-                if (quizItems.length > 0) {
-                    const quizText = quizItems[0].querySelector('span.text-truncate').textContent.trim();
-                    const quizNumberMatch = quizText.match(/\d+/); // Buscar números en formato numérico
-        
-                    let quizNumber = null;
-        
-                    if (quizNumberMatch) {
-                        quizNumber = parseInt(quizNumberMatch[0]);
-                    } else {
-                        // Si no se encuentran números, buscar números escritos en palabras
-                        const numWords = {
-                            'uno': 1,
-                            'dos': 2,
-                            'tres': 3,
-                            'cuatro': 4,
-                            'cinco': 5,
-                            'seis': 6,
-                            'siete': 7,
-                            'ocho': 8,
-                            'nueve': 9,
-                            'diez': 10
-                            // Puedes agregar más si lo necesitas
-                        };
-        
-                        // Convertir texto a minúsculas y buscar la palabra
-                        const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
-                        if (wordMatch) {
-                            quizNumber = numWords[wordMatch[0].toLowerCase()];
-                        }
-                    }
-        
-                    if (quizNumber !== null) {
-                        const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
-        
-                        const testRef = ref(script_js.database, testRuta);
-                        const testSnapshot = await get(testRef);
-                        const testOptions = testSnapshot.val();
-        
-                        if (testOptions) {
-                            testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
-                        } else {
-                            console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
-                        }
-                    } else {
-                        console.warn(`No se encontraron números en el texto: ${quizText}`);
-                    }
-                }
-        
+    let testClave = null;
+    if (quizItems.length > 0) {
+        const quizText = quizItems[0].querySelector('span.text-truncate').textContent.trim();
+        const quizNumberMatch = quizText.match(/\d+/); // Buscar números en formato numérico
+
+        let quizNumber = null;
+
+        if (quizNumberMatch) {
+            quizNumber = parseInt(quizNumberMatch[0]);
+        } else {
+            // Si no se encuentran números, buscar números escritos en palabras
+            const numWords = {
+                'uno': 1,
+                'dos': 2,
+                'tres': 3,
+                'cuatro': 4,
+                'cinco': 5,
+                'seis': 6,
+                'siete': 7,
+                'ocho': 8,
+                'nueve': 9,
+                'diez': 10
+                // Puedes agregar más si lo necesitas
+            };
+
+            // Convertir texto a minúsculas y buscar la palabra
+            const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
+            if (wordMatch) {
+                quizNumber = numWords[wordMatch[0].toLowerCase()];
+            }
+        }
+
+        if (quizNumber !== null) {
+            const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
+
+            const testData = await firebase.database().ref(testRuta).once('value');
+            const testOptions = testData.val();
+
+            if (testOptions) {
+                testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
+            } else {
+                console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
+            }
+        } else {
+            console.warn(`No se encontraron números en el texto: ${quizText}`);
+        }
+    }
+
+
                 // Actualizar ConfigRutaDinamic
                 if (materiaValor && testClave) {
                     const configRutaParts = configRuta.split('/');
                     configRutaParts[configRutaParts.length - 2] = materiaValor;
                     configRutaParts[configRutaParts.length - 1] = testClave;
-        
+
                     const updatedConfigRuta = configRutaParts.join('/');
                     sessionStorage.setItem('configRutaDinamic', updatedConfigRuta);
-        
+
                     // Actualizar el elemento HTML con la ruta creada
                     const rutaElement = document.getElementById('ruta-configruta');
                     if (rutaElement) {
                         rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
+                        // console.log(`Ruta visual actualizada: ${updatedConfigRuta}`);
                     }
-        
+
                     return updatedConfigRuta;
-        
+
                 } else if (window.location.href.includes('grade/report/overview/index.php')) {
                     const rutaElement = document.getElementById('ruta-configruta');
-        
+
                     if (rutaElement) {
                         rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span>`;
+                        // console.log(`Ruta visual actualizada: ${updatedConfigRuta}`);
                     }
-        
+
                 }
                 else {
                     console.warn('No se pudieron determinar materiaValor o testClave. No se actualizó ConfigRutaDinamic.');
-        
+
                     contenedorRuta_js$1();
-        
+
                     // Crear selects dinámicos si no se encontraron datos
                     const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-        
+
                     if (!configRutaDinamic) {
                         console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
                         await crearSelectsDinamicos(contenedorSelects);
-        
+
                     } else {
                         const rutaElemento = document.getElementById('ruta-configruta');
-                        const configRutaDinamicStored = sessionStorage.getItem('configRutaDinamic');
-        
+                        const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+
                         if (rutaElemento) {
-                            console.log("La ruta es", rutaElemento);
+                            console.log("la ruta es", rutaElemento);
                             // Asignar los valores de configRuta y ciclo en los elementos del DOM
-                            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamicStored}</span> `;
+                            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span> `;
                             console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
+
                         }
                         else {
                             console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+
                         }
                     }
-        
+
                     return null;
                 }
-        
+
             } catch (error) {
                 console.error('Error en actualizaConfigRutaDinamic:', error);
                 return null;
             }
         }
-        
+
         async function crearSelectsDinamicos() {
             const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
-        
+
             // Asegurarse de limpiar completamente el contenedor
             if (contenedorSelects) {
                 console.log('Limpiando todos los elementos existentes en el contenedor.');
@@ -23262,34 +23270,33 @@
                 console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
                 return;
             }
-        
+
             // Leer los datos del localStorage
             const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects')) || [];
             console.log('Datos obtenidos de estadoSelects:', estadoSelects);
-        
+
             // Filtrar solo los selects de nivel 5
             const selectsNivel5 = estadoSelects.filter(select => select.nivel === "5");
             console.log('Selects nivel 5:', selectsNivel5);
-        
+
             for (const selectInfo of selectsNivel5) {
                 try {
                     // Obtener datos de Firebase para la ruta especificada
-                    const optionsRef = ref(script_js.database, selectInfo.ruta);
-                    const optionsSnapshot = await get(optionsRef);
-                    if (!optionsSnapshot.exists()) {
+                    const optionsData = await firebase.database().ref(selectInfo.ruta).once('value');
+                    if (!optionsData.exists()) {
                         console.warn(`No se encontraron datos en la ruta: ${selectInfo.ruta}`);
                         continue;
                     }
-        
-                    const options = optionsSnapshot.val();
+
+                    const options = optionsData.val();
                     console.log(`Opciones obtenidas para ${selectInfo.id}:`, options);
-        
+
                     // Crear el select dinámico
                     const selectElement = document.createElement('select');
                     selectElement.id = selectInfo.id;
                     selectElement.classList.add('dynamic-select');
                     selectElement.style.display = 'none';
-        
+
                     // Añadir opciones al select
                     for (const [key, value] of Object.entries(options)) {
                         const optionElement = document.createElement('option');
@@ -23298,7 +23305,7 @@
                         if (key === selectInfo.seleccion) optionElement.selected = true;
                         selectElement.appendChild(optionElement);
                     }
-        
+
                     // Agregar el select al contenedor
                     contenedorSelects.appendChild(selectElement);
                     console.log(`Select creado para: ${selectInfo.id}`);
@@ -23306,20 +23313,20 @@
                     console.error(`Error al procesar el select con ID ${selectInfo.id}:`, error);
                 }
             }
-        
+
             // Crear el botón "Guardar ruta" después de todos los select
             const botonGuardarRuta = document.createElement('button');
             botonGuardarRuta.textContent = 'Guardar Ruta';
             botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
             botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
-        
+
             // Agregar el botón al contenedor
             contenedorSelects.appendChild(botonGuardarRuta);
             console.log('Botón "Guardar ruta" agregado.');
-        
+
             actualizarVisibilidadSelects();
         }
-        
+
         function guardarRutaDinamica() {
             console.log('Guardando ruta...');
 
@@ -25062,4 +25069,4 @@
     // Exposición de la función de cierre de sesión para uso externo (opcional).
     window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz$1;
 
-})(script_js);
+})();
