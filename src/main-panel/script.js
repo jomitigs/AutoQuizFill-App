@@ -53,7 +53,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
   // Función para cargar AutoQuiz por defecto
   function cargarAutoFillMoodle() {
-    console.log('[AutoQuizFill] Cargando autoquiz_html y autoquiz_js por defecto.');
+    console.log('[AutoQuizFill] Cargando opcionAutoFillMoodle_html y opcionAutoFillMoodle_js por defecto.');
     contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
 
     setTimeout(() => {
@@ -87,14 +87,16 @@ export function panel_AutoFillQuizApp(barraLateral) {
     const funcionesHtml = {
       'opcionConfigRuta_html': opcionConfigRuta_html,
       'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, // Corregido
-      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html  // Corregido
+      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html,  // Corregido
+      'opcionConfig_html': opcionConfig_html  // Corregido
       // Agrega aquí otras funciones HTML si es necesario
     };
 
     const funcionesJs = {
       'opcionConfigRuta_js': opcionConfigRuta_js,
       'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, // Corregido
-      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js  // Corregido
+      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js,  // Corregido
+      'opcionConfig_js': opcionConfig_js  // Corregido
       // Agrega aquí otras funciones JS si es necesario
     };
 

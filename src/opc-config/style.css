@@ -33,7 +33,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 200px; /* Ajusta el ancho según tus necesidades */
+    width: 100%; /* Ajusta el ancho según tus necesidades */
     padding: 10px;
     margin: 10px 0; /* Espaciado entre switches */
     border: 1px solid #ddd; /* Opcional: para visualizar el contenedor */
