@@ -6,7 +6,6 @@ import './style.css'; // Importa el archivo de estilos CSS
 import { ref, get } from 'firebase/database';
 import { database } from '../config-firebase/script.js';
 
-
 // Exporta las funciones que necesitas utilizar en otros módulos
 export function opcionConfigRuta_html() {
     return `
@@ -42,13 +41,26 @@ export function opcionConfigRuta_html() {
     `;
 } 
 
+// Función principal que ejecuta todo el proceso
+export async function opcionConfigRuta_js() {
+    comprobarRutaCiclo_ConfigRuta(); // Verifica y muestra la ruta y ciclo actuales
+    await SelectUniversidad_ConfigRuta(); // Inicializa el select de Universidad
 
+    // Añadir el evento para el botón guardar dentro de la función
+    const botonGuardar = document.getElementById("boton-guardar-configruta");
+    if (botonGuardar) {
+        botonGuardar.addEventListener("click", guardarConfigRuta); // Asigna el manejador de evento
+    } else {
+        console.error('No se encontró el botón con id "boton-guardar-configruta"');
+    }
+}
+
+// Verifica si la ruta y ciclo están configurados en localStorage
 function comprobarRutaCiclo_ConfigRuta() {
     const configRuta = localStorage.getItem('configRuta');
     const ciclo = localStorage.getItem('ciclo');
 
     console.log(`[opc-config-ruta] Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
-
 
     // Verificar si configRuta y ciclo están definidos
     if (!configRuta || !ciclo) {
@@ -85,8 +97,6 @@ function comprobarRutaCiclo_ConfigRuta() {
             console.log('[opc-config-ruta] Mostrando "rutaCicloContainer".');
         }
 
-        
-
         // Eliminar el mensaje si existe
         const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
         if (mensajeExistente) {
@@ -105,31 +115,10 @@ function comprobarRutaCiclo_ConfigRuta() {
     }
 }
 
-
-// Variable global para llevar el conteo de niveles de select.
-
-
-function formatearLabelTexto(key) {
-    const partes = key.split('-').slice(1);
-    return partes.map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(' ');
-}
-
-function guardarEstadoSelects() {
-    const contenedorSelects = document.getElementById('selects-configruta');
-    const selects = Array.from(contenedorSelects.querySelectorAll('select'));
-    const estado = selects.map(select => ({
-        nivel: select.getAttribute('data-level'),
-        id: select.id,
-        ruta: select.getAttribute('data-path'),
-        seleccion: select.value  // Guardar el valor seleccionado actual
-    }));
-    console.log("Guardando estado en localStorage:", estado);
-    localStorage.setItem('estadoSelects', JSON.stringify(estado));
-}
-
+// Inicializa el select de Universidad y maneja su cambio
 async function SelectUniversidad_ConfigRuta() {
     const rutaFirebase = 'ConfigRuta/universidad';
-    const databaseRef = ref(database, rutaFirebase); // Usar la función `ref` importada
+    const databaseRef = ref(database, rutaFirebase); // Referencia a la ruta de Firebase
     const contenedorSelects = document.getElementById('selects-configruta');
 
     if (!contenedorSelects) {
@@ -137,14 +126,15 @@ async function SelectUniversidad_ConfigRuta() {
         return;
     }
 
-    contenedorSelects.innerHTML = '';
-    nivelActual = 1;
+    contenedorSelects.innerHTML = ''; // Limpia el contenedor
+    nivelActual = 1; // Inicializa el nivel actual
 
     try {
-        const snapshot = await get(databaseRef); // Usar la función `get` importada
+        const snapshot = await get(databaseRef); // Obtiene los datos de Firebase
         const data = snapshot.val();
 
         if (data) {
+            // Crear etiqueta y select para Universidad
             const label = document.createElement('label');
             label.setAttribute('for', 'select-universidad-configruta');
             label.textContent = 'Universidad';
@@ -157,6 +147,7 @@ async function SelectUniversidad_ConfigRuta() {
             selectUniversidad.setAttribute('data-path', 'ConfigRuta/universidad');
             selectUniversidad.style.marginBottom = '10px';
 
+            // Opción por defecto
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'Seleccione una opción';
@@ -164,6 +155,7 @@ async function SelectUniversidad_ConfigRuta() {
             defaultOption.selected = true;
             selectUniversidad.appendChild(defaultOption);
 
+            // Agregar opciones de Universidad
             for (const universidadKey in data) {
                 if (data.hasOwnProperty(universidadKey)) {
                     const option = document.createElement('option');
@@ -175,6 +167,7 @@ async function SelectUniversidad_ConfigRuta() {
                 }
             }
 
+            // Evento al cambiar la selección de Universidad
             selectUniversidad.addEventListener('change', async (event) => {
                 const selectedUniversity = event.target.value;
 
@@ -183,15 +176,15 @@ async function SelectUniversidad_ConfigRuta() {
                     selectUniversidad.removeChild(defaultOption);
                 }
 
-                await limpiarSelectsDesdeNivel(2);
+                await limpiarSelectsDesdeNivel(2); // Limpia selects de niveles superiores
                 if (selectedUniversity) {
-                    await cargarSelectsDinamicos(selectedUniversity, rutaFirebase, 2, selectedUniversity);
+                    await cargarSelectsDinamicos(selectedUniversity, rutaFirebase, 2, selectedUniversity); // Carga selects dinámicos
                 }
-                guardarEstadoSelects(); // Guardar estado al cambiar selección
+                guardarEstadoSelects(); // Guarda el estado actual de los selects
             });
 
-            contenedorSelects.appendChild(label);
-            contenedorSelects.appendChild(selectUniversidad);
+            contenedorSelects.appendChild(label); // Añade la etiqueta al contenedor
+            contenedorSelects.appendChild(selectUniversidad); // Añade el select al contenedor
 
             // Llama a la función para restaurar el estado de los selects si existe en localStorage
             await manejarSeleccionesSecuenciales();
@@ -204,7 +197,7 @@ async function SelectUniversidad_ConfigRuta() {
     }
 }
 
-
+// Carga selects dinámicos basados en la selección anterior
 async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidadSeleccionada) {
     let rutaActual;
     if (nivel === 2) {
@@ -243,14 +236,14 @@ async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidad
     }
 }
 
-
+// Carga opciones para un select dinámico específico
 async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
     const rutaOpciones = `ConfigRuta/opciones/${universidadSeleccionada}/${keyPrincipal}`;
-    const databaseRef = ref(database, rutaOpciones); // Usar la función `ref` importada de Firebase v9
+    const databaseRef = ref(database, rutaOpciones);
     const contenedorSelects = document.getElementById('selects-configruta');
 
     try {
-        const snapshot = await get(databaseRef); // Usar la función `get` importada de Firebase v9
+        const snapshot = await get(databaseRef);
         const opciones = snapshot.val();
 
         if (opciones && typeof opciones === 'object' && Object.keys(opciones).length > 0) {
@@ -258,24 +251,28 @@ async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
             div.className = 'estilo-configruta-item';
             div.setAttribute('data-path', rutaOpciones);
 
+            // Crear etiqueta para el select dinámico
             const label = document.createElement('label');
             label.setAttribute('for', `select-${keyPrincipal}`);
             label.textContent = formatearLabelTexto(keyPrincipal);
             label.className = 'estilo-configruta-item';
 
+            // Crear el select dinámico
             const selectDinamico = document.createElement('select');
             selectDinamico.id = `select-${keyPrincipal}`;
             selectDinamico.className = 'estilo-configruta-select';
             selectDinamico.setAttribute('data-level', nivel);
             selectDinamico.setAttribute('data-path', rutaOpciones);
 
+            // Opción por defecto
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'Seleccione una opción';
-            defaultOption.disabled = true; // Hace que la opción no sea seleccionable
-            defaultOption.selected = true; // Seleccionada por defecto al cargar
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
             selectDinamico.appendChild(defaultOption);
 
+            // Agregar opciones al select dinámico
             for (const opcionKey in opciones) {
                 if (opciones.hasOwnProperty(opcionKey)) {
                     const option = document.createElement('option');
@@ -285,6 +282,7 @@ async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
                 }
             }
 
+            // Evento al cambiar la selección del select dinámico
             selectDinamico.addEventListener('change', async (event) => {
                 const selectedOption = event.target.value;
 
@@ -293,95 +291,116 @@ async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
                     selectDinamico.removeChild(defaultOption);
                 }
 
-                await limpiarSelectsDesdeNivel(nivel + 1);
+                await limpiarSelectsDesdeNivel(nivel + 1); // Limpia selects de niveles superiores
                 if (selectedOption) {
-                    await cargarSelectsDinamicos(selectedOption, `ConfigRuta/opciones/${universidadSeleccionada}`, nivel + 1, universidadSeleccionada);
+                    await cargarSelectsDinamicos(selectedOption, `ConfigRuta/opciones/${universidadSeleccionada}`, nivel + 1, universidadSeleccionada); // Carga más selects si es necesario
                 }
-                guardarEstadoSelects(); // Guardar estado al cambiar selección
+                guardarEstadoSelects(); // Guarda el estado actual de los selects
             });
 
-            div.appendChild(label);
-            div.appendChild(selectDinamico);
-            contenedorSelects.appendChild(div);
+            div.appendChild(label); // Añade la etiqueta al div
+            div.appendChild(selectDinamico); // Añade el select al div
+            contenedorSelects.appendChild(div); // Añade el div al contenedor principal
         }
     } catch (error) {
         console.error(`Error al obtener opciones de Firebase para '${rutaOpciones}':`, error);
     }
 }
 
-let nivelActual = 1;
-
-function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
-    return new Promise((resolve) => {
-        const intervalo = setInterval(() => {
-            const select = document.getElementById(selectId);
-            if (select) {
-                clearInterval(intervalo);
-                const option = Array.from(select.options).find(option => option.value === valorSeleccionado);
-                if (option) {
-                    select.value = option.value;
-                    console.log(`Opción seleccionada en ${selectId}: ${option.textContent.trim()}`);
-                    // Simular el evento 'change' para desencadenar la carga de selects dependientes
-                    select.dispatchEvent(new Event('change'));
-                }
-                resolve();
-            }
-        }, 100); // Reintenta cada 100 ms
-    });
+// Formatea el texto de la etiqueta a partir de la clave
+function formatearLabelTexto(key) {
+    const partes = key.split('-').slice(1);
+    return partes.map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1)).join(' ');
 }
 
+// Guarda el estado actual de los selects en localStorage
+function guardarEstadoSelects() {
+    const contenedorSelects = document.getElementById('selects-configruta');
+    const selects = Array.from(contenedorSelects.querySelectorAll('select'));
+    const estado = selects.map(select => ({
+        nivel: select.getAttribute('data-level'),
+        id: select.id,
+        ruta: select.getAttribute('data-path'),
+        seleccion: select.value  // Guarda el valor seleccionado actual
+    }));
+    console.log("Guardando estado en localStorage:", estado);
+    localStorage.setItem('estadoSelects', JSON.stringify(estado));
+}
+
+// Maneja la selección secuencial de opciones basadas en el estado guardado
 async function manejarSeleccionesSecuenciales() {
+    // Obtiene el estado de los selects desde localStorage y lo parsea de JSON a objeto
     const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects'));
 
+    // Si no hay datos o el arreglo está vacío, registra un mensaje y termina la función
     if (!estadoSelects || estadoSelects.length === 0) {
         console.log("[opc-config-ruta] No existen datos para las listas desplegables para \"opc-config-ruta\"");
         return;
     }
 
+    // Itera sobre cada objeto selectData en el arreglo estadoSelects
     for (let selectData of estadoSelects) {
-        const { id, seleccion } = selectData;
-        console.log(`Procesando ${id} con valor: ${seleccion}`);
+        const { id, seleccion } = selectData; // Desestructura el ID y la selección del objeto
+        console.log(`Procesando ${id} con valor: ${seleccion}`); // Registra el proceso actual
+        // Espera a que se seleccione la opción correspondiente en el <select>
         await esperarYSeleccionarOpcion(id, seleccion);
     }
 }
 
+// Espera hasta que un select específico esté disponible en el DOM y selecciona una opción
+function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
+    return new Promise((resolve) => {
+        // Configura un intervalo que se ejecuta cada 100 ms
+        const intervalo = setInterval(() => {
+            // Intenta obtener el elemento <select> por su ID
+            const select = document.getElementById(selectId);
+            if (select) { // Si el <select> existe en el DOM
+                clearInterval(intervalo); // Detiene el intervalo
+                // Busca la opción dentro del <select> que coincide con el valor proporcionado
+                const option = Array.from(select.options).find(option => option.value === valorSeleccionado);
+                if (option) { // Si se encuentra la opción
+                    select.value = option.value; // Establece el valor seleccionado del <select>
+                    console.log(`Opción seleccionada en ${selectId}: ${option.textContent.trim()}`); // Registra en la consola
+                    // Simula el evento 'change' para que cualquier listener asociado responda a la selección
+                    select.dispatchEvent(new Event('change'));
+                }
+                resolve(); // Resuelve la promesa una vez completada la selección
+            }
+        }, 100); // Intervalo de 100 milisegundos para reintentar la búsqueda del <select>
+    });
+}
+
+// Limpia (elimina) los selects a partir de un nivel especificado
 async function limpiarSelectsDesdeNivel(nivelInicio) {
-    console.log(`Limpiando selects desde nivel ${nivelInicio} en adelante`);
+    console.log(`Limpiando selects desde nivel ${nivelInicio} en adelante`); // Registra la acción de limpieza
+    // Obtiene el contenedor que contiene todos los elementos <select> relacionados con la configuración de ruta
     const contenedorSelects = document.getElementById('selects-configruta');
+    // Obtiene una lista de todos los elementos <select> dentro del contenedor
     const selects = Array.from(contenedorSelects.querySelectorAll('select'));
 
+    // Itera sobre cada <select> encontrado
     selects.forEach(select => {
+        // Obtiene el nivel del <select> a partir del atributo 'data-level' y lo convierte a entero
         const selectNivel = parseInt(select.getAttribute('data-level'), 10);
+        // Si el nivel del <select> es mayor o igual al nivel de inicio para limpiar
         if (selectNivel >= nivelInicio) {
-            const parentDiv = select.parentElement;
-            if (parentDiv) {
-                const label = parentDiv.querySelector('label');
-                if (label) {
-                    label.remove();
+            const parentDiv = select.parentElement; // Obtiene el elemento padre del <select>
+            if (parentDiv) { // Si existe el elemento padre
+                const label = parentDiv.querySelector('label'); // Busca una etiqueta <label> dentro del padre
+                if (label) { // Si se encuentra la etiqueta <label>
+                    label.remove(); // Elimina la etiqueta <label> del DOM
                 }
-                select.remove();
+                select.remove(); // Elimina el <select> del DOM
             }
         }
     });
+    // Actualiza el nivel actual restando 1 al nivel de inicio, reflejando que los niveles a partir de nivelInicio han sido limpiados
     nivelActual = nivelInicio - 1;
 }
 
-// Función que ejecuta todo el proceso
-export async function opcionConfigRuta_js() {
-    comprobarRutaCiclo_ConfigRuta();
-    await SelectUniversidad_ConfigRuta();
-
-    // Añadir el evento para el botón dentro de la función
-    const botonGuardar = document.getElementById("boton-guardar-configruta");
-    if (botonGuardar) {
-        botonGuardar.addEventListener("click", guardarConfigRuta);
-    } else {
-        console.error('No se encontró el botón con id "boton-guardar-configruta"');
-    }
-}
-
+// Guarda la configuración de ruta y ciclo en localStorage
 function guardarConfigRuta() {
-    guardarEstadoSelects();
+    guardarEstadoSelects(); // Guarda el estado actual de los selects
 
     // Obtener el array de objetos desde localStorage
     const estadoSelects = JSON.parse(localStorage.getItem("estadoSelects")) || [];
@@ -421,5 +440,8 @@ function guardarConfigRuta() {
     console.log("configRuta:", configRuta);
     console.log("ciclo:", ciclo);
 
-    comprobarRutaCiclo_ConfigRuta();
+    comprobarRutaCiclo_ConfigRuta(); // Verifica y muestra la nueva ruta y ciclo
 }
+
+// Variable global para llevar el conteo de niveles de select.
+let nivelActual = 1;
