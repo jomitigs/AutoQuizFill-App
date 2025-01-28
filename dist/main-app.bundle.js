@@ -23984,16 +23984,16 @@
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
 
-        console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
+        console.log('[opc-config-ruta] Valores obtenidos de localStorage:', { configRuta, ciclo });
 
         // Verificar si configRuta y ciclo están definidos
         if (!configRuta || !ciclo) {
-            console.log('configRuta o ciclo no están definidos.');
+            console.log('[opc-config-ruta] configRuta o ciclo no están definidos.');
 
             // Desactivar autofill y autosave
             localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
             localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-            console.log('Autofill y autosave desactivados en localStorage.');
+            console.log('[opc-config-ruta] Autofill y autosave desactivados en localStorage.');
 
             // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
             const mensaje = document.createElement('div');
@@ -24017,27 +24017,27 @@
                 // Verifica si el elemento existe y luego lo oculta
                 if (rutaCicloContainer) {
                     rutaCicloContainer.style.display = 'none';
-                    console.log('Elemento ruta-ciclo-container ocultado:', rutaCicloContainer);
+                    console.log('[opc-config-ruta] Elemento ruta-ciclo-container ocultado:', rutaCicloContainer);
                 }
 
-                console.log('Mensaje de advertencia añadido al contenido principal.');
+                console.log('[opc-config-ruta] Mensaje de advertencia añadido al contenido principal.');
             }
         } else {
-            console.log('configRuta y ciclo están definidos. Mostrando contenedores.');
+            console.log('[opc-config-ruta] configRuta y ciclo están definidos. Mostrando contenedores.');
 
             const rutaCicloContainer = document.querySelector('.ruta-ciclo-container');
 
             // Mostrar los contenedores si configRuta y ciclo están definidos
             if (rutaCicloContainer) {
                 rutaCicloContainer.style.display = 'block';
-                console.log('Elemento ruta-ciclo-container mostrado:', rutaCicloContainer);
+                console.log('[opc-config-ruta] Elemento ruta-ciclo-container mostrado:', rutaCicloContainer);
             }
 
             // Eliminar el mensaje si existe
             const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
             if (mensajeExistente) {
                 mensajeExistente.remove();
-                console.log('Mensaje de advertencia eliminado.');
+                console.log('[opc-config-ruta] Mensaje de advertencia eliminado.');
             }
 
             // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
@@ -24048,7 +24048,7 @@
                 // Asignar los valores de configRuta y ciclo en los elementos del DOM
                 rutaElemento.innerHTML = `<span class="ruta-configruta">Ruta:</span> ${configRuta}`;
                 cicloElemento.innerHTML = `<span class="ciclo-configruta">Ciclo:</span> ${ciclo}`;
-                console.log(`Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
+                console.log(`[opc-config-ruta] Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
             }
         }
     }
