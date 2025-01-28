@@ -432,7 +432,7 @@ if (quizItems.length > 0) {
 
     // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
 
-    function contenedorRuta_js() {
+    export function contenedorRuta_js() {
         const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');

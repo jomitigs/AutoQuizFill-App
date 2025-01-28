@@ -1,6 +1,7 @@
 import './style.css';
 
 import { contenedorUsers_js } from '../opc-autofill-moodle/users/script.js';
+import { contenedorRuta_js } from '../opc-autofill-moodle/ruta/script.js';
 
 export function opcionAutoFillMoodle_html() {
     return `
@@ -183,7 +184,7 @@ export async function opcionAutoFillMoodle_js() {
 
     // Verificar si "switch-ruta-dinamica" no existe en localStorage
     if (!localStorage.getItem('switch-ruta-dinamica')) {
-    //     contenedorRuta_js();
+         contenedorRuta_js();
      }
 
 

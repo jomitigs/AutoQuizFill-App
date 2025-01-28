@@ -22958,6 +22958,82 @@
         }
     }
 
+    // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
+
+        // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
+
+        function contenedorRuta_js$1() {
+            const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
+            const configRuta = localStorage.getItem('configRuta');
+            const ciclo = localStorage.getItem('ciclo');
+
+            // console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
+
+            // Verificar si configRuta y ciclo están definidos
+            if (!configRuta || !ciclo) {
+                // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
+
+                // Ocultar todos los elementos con la clase 'container-autoquiz'
+                containerAutoQuiz.forEach(container => {
+                    if (container) {
+                        container.style.display = 'none';
+                        // console.log('Contenedor .container-autoquiz ocultado:', container);
+                    }
+                });
+
+                // Desactivar autofill y autosave
+                localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
+                localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
+                console.log('Autofill y autosave desactivados en localStorage.');
+
+                // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
+                const mensaje = document.createElement('div');
+                mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
+                mensaje.style.color = 'red';
+                mensaje.style.fontWeight = '500';
+                mensaje.style.fontSize = '0.95em';
+                mensaje.style.fontStyle = 'italic';
+                mensaje.style.textAlign = 'center';
+                mensaje.id = 'mensaje-ruta-invalida';
+
+                const contenidoPrincipal = document.getElementById('contenido-principal');
+                if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
+                    contenidoPrincipal.appendChild(mensaje);
+                    console.log('Mensaje de advertencia añadido al contenido principal.');
+                }
+            }
+
+            else {
+                // console.log('configRuta y ciclo están definidos. Mostrando contenedores.');
+
+                // Mostrar los contenedores si configRuta y ciclo están definidos
+                containerAutoQuiz.forEach(container => {
+                    if (container) {
+                        container.style.display = 'block';
+                        // console.log('Contenedor .container-autoquiz mostrado:', container);
+                    }
+                });
+
+                // Eliminar el mensaje si existe
+                const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
+                if (mensajeExistente) {
+                    mensajeExistente.remove();
+                    console.log('Mensaje de advertencia eliminado.');
+                }
+
+                // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
+                const rutaElemento = document.getElementById('ruta-configruta');
+                const cicloElemento = document.getElementById('ciclo-configruta');
+
+                if (rutaElemento && cicloElemento) {
+                    // Asignar los valores de configRuta y ciclo en los elementos del DOM
+                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> ${configRuta}`;
+                    cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
+                    // console.log(`Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
+                }
+            }
+        }
+
     function opcionAutoFillMoodle_html() {
         return `
      <div class="body-autoquiz">
@@ -23135,7 +23211,9 @@
         }
 
         // Verificar si "switch-ruta-dinamica" no existe en localStorage
-        if (!localStorage.getItem('switch-ruta-dinamica')) ;
+        if (!localStorage.getItem('switch-ruta-dinamica')) {
+             contenedorRuta_js$1();
+         }
 
 
         // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
