@@ -23210,11 +23210,7 @@
         contenedorUsers_js();
 
         // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-         if (esMoodle && url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php'   )|| url.includes('http://127.0.0.1:5500/dist/index.html') ) {
-           const rutaDinamicaContainer = document.getElementById('container-ruta-dinamica');
-           rutaDinamicaContainer.style.display = 'block';
-        //     await contenedorRutaDinamica_js();
-        }
+         if (esMoodle && url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php'   )|| url.includes('http://127.0.0.1:5500/dist/index.html') ) ;
 
         // Verificar si "switch-ruta-dinamica" no existe en localStorage
         if (!localStorage.getItem('switch-ruta-dinamica')) {
