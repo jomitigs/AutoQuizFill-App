@@ -23385,11 +23385,36 @@
                 console.log('No se encontraron plataformas en Firebase.');
             }
 
+            initOpcConfigSwitch();
+
             
         } catch (error) {
             console.error('Error al obtener las plataformas de Firebase:', error);
         }
+
+
     }
+
+    function initOpcConfigSwitch() {
+        const container = document.querySelector(".opc-config-switch-container");
+        const checkbox = document.querySelector(".opc-config-switch-checkbox");
+      
+        // Mostrar el contenedor si ConfigPlataforma es "Moodle"
+        const configPlataforma = localStorage.getItem("ConfigPlataforma");
+        if (configPlataforma === "Moodle") {
+          container.style.display = "block";
+        }
+      
+        // Establecer el estado inicial del checkbox desde configRutaDinamic
+        const configRutaDinamic = localStorage.getItem("configRutaDinamic");
+        checkbox.checked = configRutaDinamic === "true";
+      
+        // Escuchar cambios en el checkbox
+        checkbox.addEventListener("change", () => {
+          const isChecked = checkbox.checked;
+          localStorage.setItem("configRutaDinamic", isChecked.toString());
+        });
+      }
 
     /**
      * Función para mostrar mensajes al usuario
