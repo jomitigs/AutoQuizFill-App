@@ -19,7 +19,7 @@ import {
   remove
 } from 'firebase/database';
 
-console.log('[AutoQuizFill] Iniciando login-auth');
+console.log('[AutoFillQuiz-App] Iniciando login-auth');
 
 const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
 const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
@@ -220,7 +220,7 @@ function startAFQ() {
     
     // Si no se encuentra la barra lateral, registrar un error y abortar la inicialización
     if (!barraLateral) {
-      console.error(`[AutoQuizFill] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
+      console.error(`[AutoFillQuiz-App] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
       return;
     }
   
