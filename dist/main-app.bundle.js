@@ -23386,6 +23386,54 @@
                 // Obtener el contenedor donde se inyectará el toggle
                 const container = document.getElementById('opc-config-ruta-dinamica');
 
+                if (container) {
+                    // Limpiar el contenedor antes de añadir el toggle
+                    container.innerHTML = '';
+
+                    // Crear el elemento label que contendrá el switch
+                    const label = document.createElement('label');
+                    label.className = 'switch';
+
+                    // Crear el texto de la etiqueta
+                    const labelText = document.createElement('span');
+                    labelText.textContent = 'Ruta Dinamica';
+                    labelText.style.flex = '1'; // Para alinear el texto y el switch
+
+                    // Crear el input checkbox
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = 'ruta-dinamica-toggle';
+
+                    // Crear el span que representará el slider
+                    const slider = document.createElement('span');
+                    slider.className = 'slider';
+
+                    // Añadir el texto, checkbox y slider al label
+                    label.appendChild(labelText);
+                    label.appendChild(checkbox);
+                    label.appendChild(slider);
+
+                    // Añadir el label al contenedor
+                    container.appendChild(label);
+
+                    // Obtener el estado actual de 'configRutaDinamic' desde localStorage
+                    const configRutaDinamic = localStorage.getItem('configRutaDinamic');
+                    // Establecer el estado del checkbox según el valor almacenado
+                    checkbox.checked = configRutaDinamic === 'true';
+
+                    // Añadir un listener para cambios en el checkbox
+                    checkbox.addEventListener('change', function() {
+                        // Actualizar el valor en localStorage
+                        localStorage.setItem('configRutaDinamic', checkbox.checked.toString());
+                        // Opcional: Puedes realizar otras acciones aquí cuando el toggle cambie
+                        console.log('configRutaDinamic actualizado a:', checkbox.checked);
+                    });
+                }
+                
+                else {
+                    console.error('El contenedor con ID "opc-config-ruta-dinamica" no existe en el DOM.');
+                    mostrarMensaje('Error al cargar la configuración de Ruta Dinámica.', 'error');
+                }
 
             } else {
                 // Si no es 'Moodle', limpiar el contenedor del toggle para evitar duplicados
@@ -23412,8 +23460,12 @@
         mensajeElemento.classList.add('mensaje'); // Clase base para mensajes
 
         // Añadir clase según el tipo de mensaje
-        {
+        if (tipo === 'success') {
             mensajeElemento.classList.add('mensaje-exito');
+        } else if (tipo === 'warning') {
+            mensajeElemento.classList.add('mensaje-advertencia');
+        } else if (tipo === 'error') {
+            mensajeElemento.classList.add('mensaje-error');
         }
 
         // Insertar el mensaje en el DOM, por ejemplo, al final del contenedor de configuración
