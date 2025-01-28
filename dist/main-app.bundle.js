@@ -23040,7 +23040,7 @@
 
 <div class="container-autoquiz">
 
-    <div class="users">
+    <div id="users-autofill-moodle" class="users" style="display: none;">
 
         <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
         <div class="usuario-actual">
@@ -23209,6 +23209,8 @@
         // Llamar a contenedorUsers_js en todas las páginas
         // Verificar si configUsersAutofill está en localStorage y su valor es "true"
         if (localStorage.getItem('configUsersAutofill') === 'true') {
+            const autofillUsers = document.getElementById('users-autofill-moodle');
+            autofillUsers.style.display = 'flex';
             // Ejecutar la función contenedorUsers_js
             contenedorUsers_js();
         }
