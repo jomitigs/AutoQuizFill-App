@@ -105,7 +105,11 @@ export async function opcionConfig_js() {
             // Agregar un listener para guardar la selección en localStorage cuando cambie
             select.addEventListener('change', (event) => {
                 const seleccion = event.target.value;
-                initOpcConfigSwitch();
+                if (seleccion) {
+                    localStorage.setItem('ConfigPlataforma', seleccion);
+                    mostrarMensaje('Configuración guardada exitosamente.', 'success');
+                    initOpcConfigSwitch();
+                }
             });
 
             // Agregar la etiqueta y el select al contenedor
