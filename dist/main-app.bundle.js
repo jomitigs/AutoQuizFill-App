@@ -23651,12 +23651,10 @@
 
         if (  localStorage.getItem('switch-ruta-dinamica') === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
             console.log('[opcionAutoFillMoodle_js] switch-ruta-dinamica:', localStorage.getItem('switch-ruta-dinamica'));
-            console.log('[opcionAutoFillMoodle_js] esMoodle:', esMoodle);
             console.log('[opcionAutoFillMoodle_js] Cargando contenedorRutaDinamica_js...');
             await contenedorRutaDinamica_js();
         } else {
             console.log('[opcionAutoFillMoodle_js] switch-ruta-dinamica:', localStorage.getItem('switch-ruta-dinamica'));
-            console.log('[opcionAutoFillMoodle_js] esMoodle:', esMoodle);
             console.log('[opcionAutoFillMoodle_js] Cargando contenedorRuta_js...');
             contenedorRuta_js$1();
         }
