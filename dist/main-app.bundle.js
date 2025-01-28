@@ -23954,7 +23954,7 @@
         <div id="ultima-ruta-configruta" class="estilo-configruta-title no-seleccionado">
 
             <!-- Contenedor para Ruta y Ciclo apilados verticalmente -->
-            <div class="ruta-ciclo-container" style =  "display; none" >
+            <div class="ruta-ciclo-container" style="display: none"> >
 
                 <!-- Ruta -->
                 <div id="ruta-configruta" class="title-configruta-ruta">
