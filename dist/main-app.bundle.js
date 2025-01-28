@@ -23278,20 +23278,21 @@
      */
     function opcionConfig_html() {
         return `
-    <div class="contenido-config">
-        <h3 id="titulo-config">Configuración</h3>
+        <div class="contenido-config">
+            <h3 id="titulo-config">Configuración</h3>
 
-        <!-- Contenedor Select Dinámico -->
-        <div id="selects-plataforma" class="estilo-config-item">
-            <!-- Aquí se inyectará el select dinámicamente -->
+            <!-- Contenedor Select Dinámico -->
+            <div id="selects-plataforma" class="estilo-config-item">
+                <!-- Aquí se inyectará el select dinámicamente -->
+            </div>
 
-        </div>
+            <!-- Switch -->
             <label class="switch">
-                <input type="checkbox">
+                <input type="checkbox" />
                 <span class="slider"></span>
             </label>
+        </div>
 
-    </div>
     `;
     }
 
