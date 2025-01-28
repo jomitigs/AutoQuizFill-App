@@ -76,9 +76,6 @@ export function panel_AutoFillQuizApp(barraLateral) {
     const ultimoHtml = localStorage.getItem('ultimoHtml');
     const ultimoJs = localStorage.getItem('ultimoJs');
 
-    let opcion = `${ultimoJs}_aplit`.split('_')[0];
-    console.log(`[main-panel] Iniciando: "${opcion}"`);
-
     // Verificar que las variables se hayan obtenido correctamente
     if (!ultimoHtml || !ultimoJs) {
       console.warn('[AutoQuizFill] No se encontraron las últimas funciones en localStorage.');
@@ -88,36 +85,36 @@ export function panel_AutoFillQuizApp(barraLateral) {
     // Mapeo de las posibles funciones HTML y JS
     const funcionesHtml = {
       'opcionConfigRuta_html': opcionConfigRuta_html,
-      'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, // Corregido
-      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html,  // Corregido
-      'opcionConfig_html': opcionConfig_html  // Corregido
-      // Agrega aquí otras funciones HTML si es necesario
+      'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, 
+      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html, 
+      'opcionConfig_html': opcionConfig_html  
     };
 
     const funcionesJs = {
       'opcionConfigRuta_js': opcionConfigRuta_js,
-      'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, // Corregido
-      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js,  // Corregido
-      'opcionConfig_js': opcionConfig_js  // Corregido
-      // Agrega aquí otras funciones JS si es necesario
+      'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, 
+      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js,  
+      'opcionConfig_js': opcionConfig_js 
     };
-
-    console.log('[AutoQuizFill] Mapeo de funciones HTML y JS establecido.');
 
     // Obtener y establecer el HTML correspondiente
     const funcionHtml = funcionesHtml[ultimoHtml];
-    console.log(`[AutoQuizFill] Función HTML seleccionada: "${ultimoHtml}"`);
+    // console.log(`[AutoQuizFill] Función HTML seleccionada: "${ultimoHtml}"`);
+
+    let opcionfuncionHtml = `${ultimoJs}_aplit`.split('_')[0];
+    console.log(`[main-panel] Iniciando: "${opcionfuncionHtml}"`);
+
 
     if (funcionHtml) {
       try {
         contenedorContenido.innerHTML = funcionHtml();
-        console.log('[AutoQuizFill] HTML cargado exitosamente.');
+        console.log('[main-panel] HTML cargado exitosamente.');
       } catch (error) {
-        console.error('[AutoQuizFill] Error al ejecutar la función HTML:', error);
+        console.error('[main-panel] Error al ejecutar la función HTML:', error);
         return;
       }
     } else {
-      console.warn(`[AutoQuizFill] La función HTML "${ultimoHtml}" no está definida.`);
+      console.error(`[AutoQuizFill] La función HTML "${opcionfuncionHtml}" no está definida.`);
       return;
     }
 
