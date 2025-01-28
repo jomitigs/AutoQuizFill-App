@@ -9,7 +9,8 @@ export function opcionAutoFillMoodle_html() {
 
 <div class="container-autoquiz">
 
-    <div class="users" style = "display; none">
+   <div class="users" style="display: none;"></div>
+
 
         <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
         <div class="usuario-actual">
