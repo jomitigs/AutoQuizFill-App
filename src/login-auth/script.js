@@ -11,13 +11,7 @@ import {
 import { autenticacion, database } from '../config-firebase/script.js';
 import { panel_AutoFillQuizApp } from '../main-panel/script.js';
 import { menu_AutoFillQuizApp } from '../main-menu/script.js';
-import { v4 as uuidv4 } from 'uuid'; // Importa la función para generar UUID
-import {
-  ref,
-  set,
-  onValue,
-  remove
-} from 'firebase/database';
+import { ref, set, onValue, remove } from 'firebase/database';
 
 console.log('[AutoFillQuiz-App] Iniciando Autenticación.');
 
@@ -26,8 +20,7 @@ const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
 const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
 const ID_FORM_FAKE = 'fake-form';
 
-
-let sessionIdLocal = null; // Variable para almacenar el ID de sesión local
+let currentOriginLocal = null; // Variable para almacenar el origen local
 
 /**
  * Función para alternar la visibilidad de un elemento por su ID.
@@ -138,31 +131,24 @@ function iniciarSesionAutoQuiz(correo, contrasena) {
  * Configura la sesión del usuario en la base de datos y establece un listener para cambios.
  */
 function configurarSesion(uid) {
-  // Verificar si ya existe un sessionId en localStorage
-  let storedSessionId = localStorage.getItem('sessionId');
+  const currentOrigin = window.location.origin; // Obtiene el origen actual del dominio
+  localStorage.setItem('currentOrigin', currentOrigin); // Almacena el currentOrigin en localStorage
+  currentOriginLocal = currentOrigin;
 
-  if (!storedSessionId) {
-    // Si no existe, generar uno nuevo
-    storedSessionId = uuidv4();
-    localStorage.setItem('sessionId', storedSessionId);
-  }
-
-  sessionIdLocal = storedSessionId;
-
-  // Guarda el sessionId en la base de datos
-  const sessionRef = ref(database, `users/${uid}/currentSession`);
-  set(sessionRef, sessionIdLocal)
+  // Guarda el currentOrigin en la base de datos
+  const originRef = ref(database, `users/${uid}/currentOrigin`);
+  set(originRef, currentOrigin)
     .then(() => {
-      // Escucha cambios en el ID de sesión
-      onValue(sessionRef, (snapshot) => {
-        const currentSessionId = snapshot.val();
-        if (currentSessionId !== sessionIdLocal) {
+      // Escucha cambios en el currentOrigin
+      onValue(originRef, (snapshot) => {
+        const dbOrigin = snapshot.val();
+        if (dbOrigin !== currentOriginLocal) {
           cerrarSesionAutoQuiz();
         }
       });
     })
     .catch((error) => {
-      console.error(`[AutoQuizFill] ConfigurarSesion: Error al actualizar ID de sesión - ${error.code}: ${error.message}`);
+      console.error(`[AutoQuizFill] ConfigurarSesion: Error al actualizar currentOrigin - ${error.code}: ${error.message}`);
     });
 }
 
@@ -172,21 +158,21 @@ function configurarSesion(uid) {
 function cerrarSesionAutoQuiz() {
   signOut(autenticacion)
     .then(() => {
-      // Opcional: Eliminar el currentSession de la base de datos al cerrar sesión
+      // Eliminar el currentOrigin de la base de datos al cerrar sesión
       const usuario = autenticacion.currentUser;
       if (usuario) {
-        const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
-        remove(sessionRef)
+        const originRef = ref(database, `users/${usuario.uid}/currentOrigin`);
+        remove(originRef)
           .then(() => {
-            // Limpiar el sessionId de localStorage
-            localStorage.removeItem('sessionId');
+            // Limpiar el currentOrigin de localStorage
+            localStorage.removeItem('currentOrigin');
           })
           .catch((error) => {
-            console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentSession - ${error.code}: ${error.message}`);
+            console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentOrigin - ${error.code}: ${error.message}`);
           });
       } else {
-        // Si no hay usuario, simplemente limpiar el sessionId
-        localStorage.removeItem('sessionId');
+        // Si no hay usuario, simplemente limpiar el currentOrigin
+        localStorage.removeItem('currentOrigin');
       }
       mostrarLogin();
     })
@@ -246,7 +232,6 @@ function startAFQ() {
    */
   onAuthStateChanged(autenticacion, (usuario) => {
     if (usuario) {
-      // Si el usuario está autenticado
       console.log(`[login-auth] Usuario correctamente autenticado.`);
       // a. Configurar la sesión con el UID del usuario
       configurarSesion(usuario.uid);
@@ -282,19 +267,18 @@ function startAFQ() {
 }
 
 /**
- * Escuchar cambios en localStorage para sincronizar sesiones entre pestañas
+ * Escuchar cambios en currentOrigin para sincronizar sesiones entre dominios
  */
-window.addEventListener('storage', (event) => {
-  if (event.key === 'sessionId') {
-    const newSessionId = event.newValue;
-    if (newSessionId !== sessionIdLocal) {
-      // Actualizar el sessionIdLocal con el nuevo valor
-      sessionIdLocal = newSessionId;
-      // Cerrar la sesión si el sessionId ha cambiado
+function escucharCambiosCurrentOrigin(uid) {
+  const originRef = ref(database, `users/${uid}/currentOrigin`);
+  onValue(originRef, (snapshot) => {
+    const dbOrigin = snapshot.val();
+    const currentOrigin = window.location.origin;
+    if (dbOrigin && dbOrigin !== currentOrigin) {
       cerrarSesionAutoQuiz();
     }
-  }
-});
+  });
+}
 
 /**
  * Alterna la visibilidad de un elemento del DOM basado en su ID.

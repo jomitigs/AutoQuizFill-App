@@ -24740,62 +24740,6 @@
         return menu;
     }
 
-    const byteToHex = [];
-    for (let i = 0; i < 256; ++i) {
-        byteToHex.push((i + 0x100).toString(16).slice(1));
-    }
-    function unsafeStringify(arr, offset = 0) {
-        return (byteToHex[arr[offset + 0]] +
-            byteToHex[arr[offset + 1]] +
-            byteToHex[arr[offset + 2]] +
-            byteToHex[arr[offset + 3]] +
-            '-' +
-            byteToHex[arr[offset + 4]] +
-            byteToHex[arr[offset + 5]] +
-            '-' +
-            byteToHex[arr[offset + 6]] +
-            byteToHex[arr[offset + 7]] +
-            '-' +
-            byteToHex[arr[offset + 8]] +
-            byteToHex[arr[offset + 9]] +
-            '-' +
-            byteToHex[arr[offset + 10]] +
-            byteToHex[arr[offset + 11]] +
-            byteToHex[arr[offset + 12]] +
-            byteToHex[arr[offset + 13]] +
-            byteToHex[arr[offset + 14]] +
-            byteToHex[arr[offset + 15]]).toLowerCase();
-    }
-
-    let getRandomValues;
-    const rnds8 = new Uint8Array(16);
-    function rng() {
-        if (!getRandomValues) {
-            if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
-                throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
-            }
-            getRandomValues = crypto.getRandomValues.bind(crypto);
-        }
-        return getRandomValues(rnds8);
-    }
-
-    const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
-    var native = { randomUUID };
-
-    function v4(options, buf, offset) {
-        if (native.randomUUID && !buf && !options) {
-            return native.randomUUID();
-        }
-        options = options || {};
-        const rnds = options.random ?? options.rng?.() ?? rng();
-        if (rnds.length < 16) {
-            throw new Error('Random bytes length must be >= 16');
-        }
-        rnds[6] = (rnds[6] & 0x0f) | 0x40;
-        rnds[8] = (rnds[8] & 0x3f) | 0x80;
-        return unsafeStringify(rnds);
-    }
-
     /* 
       Este script maneja la autenticación (inicio/cierre de sesión), 
       verifica el estado del usuario y controla la UI para AutoQuizFill.
@@ -24808,8 +24752,7 @@
     const ID_PANEL_CONTENEDOR = 'panel-autofillquizapp';
     const ID_FORM_FAKE = 'fake-form';
 
-
-    let sessionIdLocal = null; // Variable para almacenar el ID de sesión local
+    let currentOriginLocal = null; // Variable para almacenar el origen local
 
     /**
      * Función para alternar la visibilidad de un elemento por su ID.
@@ -24920,31 +24863,24 @@
      * Configura la sesión del usuario en la base de datos y establece un listener para cambios.
      */
     function configurarSesion(uid) {
-      // Verificar si ya existe un sessionId en localStorage
-      let storedSessionId = localStorage.getItem('sessionId');
+      const currentOrigin = window.location.origin; // Obtiene el origen actual del dominio
+      localStorage.setItem('currentOrigin', currentOrigin); // Almacena el currentOrigin en localStorage
+      currentOriginLocal = currentOrigin;
 
-      if (!storedSessionId) {
-        // Si no existe, generar uno nuevo
-        storedSessionId = v4();
-        localStorage.setItem('sessionId', storedSessionId);
-      }
-
-      sessionIdLocal = storedSessionId;
-
-      // Guarda el sessionId en la base de datos
-      const sessionRef = ref(database, `users/${uid}/currentSession`);
-      set(sessionRef, sessionIdLocal)
+      // Guarda el currentOrigin en la base de datos
+      const originRef = ref(database, `users/${uid}/currentOrigin`);
+      set(originRef, currentOrigin)
         .then(() => {
-          // Escucha cambios en el ID de sesión
-          onValue(sessionRef, (snapshot) => {
-            const currentSessionId = snapshot.val();
-            if (currentSessionId !== sessionIdLocal) {
+          // Escucha cambios en el currentOrigin
+          onValue(originRef, (snapshot) => {
+            const dbOrigin = snapshot.val();
+            if (dbOrigin !== currentOriginLocal) {
               cerrarSesionAutoQuiz$1();
             }
           });
         })
         .catch((error) => {
-          console.error(`[AutoQuizFill] ConfigurarSesion: Error al actualizar ID de sesión - ${error.code}: ${error.message}`);
+          console.error(`[AutoQuizFill] ConfigurarSesion: Error al actualizar currentOrigin - ${error.code}: ${error.message}`);
         });
     }
 
@@ -24954,21 +24890,21 @@
     function cerrarSesionAutoQuiz$1() {
       signOut(autenticacion)
         .then(() => {
-          // Opcional: Eliminar el currentSession de la base de datos al cerrar sesión
+          // Eliminar el currentOrigin de la base de datos al cerrar sesión
           const usuario = autenticacion.currentUser;
           if (usuario) {
-            const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
-            remove(sessionRef)
+            const originRef = ref(database, `users/${usuario.uid}/currentOrigin`);
+            remove(originRef)
               .then(() => {
-                // Limpiar el sessionId de localStorage
-                localStorage.removeItem('sessionId');
+                // Limpiar el currentOrigin de localStorage
+                localStorage.removeItem('currentOrigin');
               })
               .catch((error) => {
-                console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentSession - ${error.code}: ${error.message}`);
+                console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentOrigin - ${error.code}: ${error.message}`);
               });
           } else {
-            // Si no hay usuario, simplemente limpiar el sessionId
-            localStorage.removeItem('sessionId');
+            // Si no hay usuario, simplemente limpiar el currentOrigin
+            localStorage.removeItem('currentOrigin');
           }
           mostrarLogin();
         })
@@ -25028,7 +24964,6 @@
        */
       onAuthStateChanged(autenticacion, (usuario) => {
         if (usuario) {
-          // Si el usuario está autenticado
           console.log(`[login-auth] Usuario correctamente autenticado.`);
           // a. Configurar la sesión con el UID del usuario
           configurarSesion(usuario.uid);
@@ -25062,21 +24997,6 @@
         }
       });
     }
-
-    /**
-     * Escuchar cambios en localStorage para sincronizar sesiones entre pestañas
-     */
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'sessionId') {
-        const newSessionId = event.newValue;
-        if (newSessionId !== sessionIdLocal) {
-          // Actualizar el sessionIdLocal con el nuevo valor
-          sessionIdLocal = newSessionId;
-          // Cerrar la sesión si el sessionId ha cambiado
-          cerrarSesionAutoQuiz$1();
-        }
-      }
-    });
 
     /**
      * Muestra el formulario de login.
