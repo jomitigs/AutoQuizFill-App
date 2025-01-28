@@ -23274,7 +23274,7 @@
 
 
     /**
-     * Retorna el HTML de la configuración con un contenedor para el select dinámico.
+     * Retorna el HTML de la configuración con un contenedor para el select dinámico y el toggle.
      */
     function opcionConfig_html() {
         return `
@@ -23287,7 +23287,7 @@
         </div>
 
         <div id="opc-config-ruta-dinamica">
-            <!-- Aquí se inyectará el select dinámicamente -->
+            <!-- Aquí se inyectará el toggle dinámicamente -->
         </div>
 
     </div>
@@ -23299,12 +23299,12 @@
      * Establece el valor seleccionado según 'localStorage' o por defecto a 'Moodle'.
      */
     async function opcionConfig_js() {
+        console.log('opcionConfig_js se está ejecutando');
         try {
 
             if (!localStorage.getItem('ConfigPlataforma')) {
                 localStorage.setItem('ConfigPlataforma', "Moodle");
             }
-
 
             // Referencia a la ruta 'Config/Plataforma' en Firebase
             const plataformaRef = ref(database, 'Config/Plataforma');
@@ -23319,6 +23319,7 @@
 
                 if (!selectsContainer) {
                     console.error('El contenedor con ID "selects-plataforma" no existe en el DOM.');
+                    mostrarMensaje('Error al cargar las plataformas.', 'error');
                     return;
                 }
 
@@ -23345,20 +23346,15 @@
                     select.appendChild(optionElement);
                 });
 
-
                 // Establecer el valor seleccionado desde localStorage o por defecto a 'Moodle'
                 const seleccionGuardada = localStorage.getItem('ConfigPlataforma');
                 if (seleccionGuardada && plataformaKeys.includes(seleccionGuardada)) {
                     select.value = seleccionGuardada;
                 } else {
-
-                    if (!localStorage.getItem('ConfigPlataforma')) {
-                        // Si 'Moodle' está entre las opciones, establecerlo como seleccionado
-                        if (plataformaKeys.includes('Moodle')) {
-                            select.value = 'Moodle';
-                        }
+                    if (plataformaKeys.includes('Moodle')) {
+                        select.value = 'Moodle';
                     } else if (plataformaKeys.length > 0) {
-                        // Opcional: Establecer la primera opción como seleccionada si "Moodle" no está disponible
+                        // Establecer la primera opción como seleccionada si "Moodle" no está disponible
                         select.value = plataformaKeys[0];
                     }
                 }
@@ -23369,6 +23365,8 @@
                     if (seleccion) {
                         localStorage.setItem('ConfigPlataforma', seleccion);
                         mostrarMensaje('Configuración guardada exitosamente.', 'success');
+                        // Re-ejecutar la configuración para manejar el toggle según la nueva selección
+                        opcionConfig_js();
                     }
                 });
 
@@ -23378,57 +23376,73 @@
             } 
             else {
                 console.log('No se encontraron plataformas en Firebase.');
+                mostrarMensaje('No se encontraron plataformas disponibles.', 'warning');
             }
 
             // Verificar si 'ConfigPlataforma' en localStorage es 'Moodle'
-        const configPlataforma = localStorage.getItem('ConfigPlataforma');
+            const configPlataforma = localStorage.getItem('ConfigPlataforma');
 
-        if (configPlataforma === 'Moodle') {
-            // Obtener el contenedor donde se inyectará el toggle
-            const container = document.getElementById('opc-config-ruta-dinamica');
+            if (configPlataforma === 'Moodle') {
+                // Obtener el contenedor donde se inyectará el toggle
+                const container = document.getElementById('opc-config-ruta-dinamica');
 
-            // Crear el elemento label que contendrá el switch
-            const label = document.createElement('label');
-            label.className = 'switch';
+                if (container) {
+                    // Limpiar el contenedor antes de añadir el toggle
+                    container.innerHTML = '';
 
-            // Crear el texto de la etiqueta
-            const labelText = document.createElement('span');
-            labelText.textContent = 'Ruta Dinamica';
-            labelText.style.flex = '1'; // Para alinear el texto y el switch
+                    // Crear el elemento label que contendrá el switch
+                    const label = document.createElement('label');
+                    label.className = 'switch';
 
-            // Crear el input checkbox
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = 'ruta-dinamica-toggle';
+                    // Crear el texto de la etiqueta
+                    const labelText = document.createElement('span');
+                    labelText.textContent = 'Ruta Dinamica';
+                    labelText.style.flex = '1'; // Para alinear el texto y el switch
 
-            // Crear el span que representará el slider
-            const slider = document.createElement('span');
-            slider.className = 'slider';
+                    // Crear el input checkbox
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = 'ruta-dinamica-toggle';
 
-            // Añadir el texto, checkbox y slider al label
-            label.appendChild(labelText);
-            label.appendChild(checkbox);
-            label.appendChild(slider);
+                    // Crear el span que representará el slider
+                    const slider = document.createElement('span');
+                    slider.className = 'slider';
 
-            // Añadir el label al contenedor
-            container.appendChild(label);
+                    // Añadir el texto, checkbox y slider al label
+                    label.appendChild(labelText);
+                    label.appendChild(checkbox);
+                    label.appendChild(slider);
 
-            // Obtener el estado actual de 'configRutaDinamic' desde sessionStorage
-            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-            // Establecer el estado del checkbox según el valor almacenado
-            checkbox.checked = configRutaDinamic === 'true';
+                    // Añadir el label al contenedor
+                    container.appendChild(label);
 
-            // Añadir un listener para cambios en el checkbox
-            checkbox.addEventListener('change', function() {
-                // Actualizar el valor en sessionStorage
-                sessionStorage.setItem('configRutaDinamic', checkbox.checked.toString());
-                // Opcional: Puedes realizar otras acciones aquí cuando el toggle cambie
-                console.log('configRutaDinamic actualizado a:', checkbox.checked);
-            });
-        }
+                    // Obtener el estado actual de 'configRutaDinamic' desde localStorage
+                    const configRutaDinamic = localStorage.getItem('configRutaDinamic');
+                    // Establecer el estado del checkbox según el valor almacenado
+                    checkbox.checked = configRutaDinamic === 'true';
+
+                    // Añadir un listener para cambios en el checkbox
+                    checkbox.addEventListener('change', function() {
+                        // Actualizar el valor en localStorage
+                        localStorage.setItem('configRutaDinamic', checkbox.checked.toString());
+                        // Opcional: Puedes realizar otras acciones aquí cuando el toggle cambie
+                        console.log('configRutaDinamic actualizado a:', checkbox.checked);
+                    });
+                } else {
+                    console.error('El contenedor con ID "opc-config-ruta-dinamica" no existe en el DOM.');
+                    mostrarMensaje('Error al cargar la configuración de Ruta Dinámica.', 'error');
+                }
+            } else {
+                // Si no es 'Moodle', limpiar el contenedor del toggle para evitar duplicados
+                const container = document.getElementById('opc-config-ruta-dinamica');
+                if (container) {
+                    container.innerHTML = '';
+                }
+            }
 
         } catch (error) {
             console.error('Error al obtener las plataformas de Firebase:', error);
+            mostrarMensaje('Ocurrió un error al cargar las plataformas. Por favor, intenta nuevamente.', 'error');
         }
     }
 
@@ -23444,8 +23458,12 @@
         mensajeElemento.classList.add('mensaje'); // Clase base para mensajes
 
         // Añadir clase según el tipo de mensaje
-        {
+        if (tipo === 'success') {
             mensajeElemento.classList.add('mensaje-exito');
+        } else if (tipo === 'warning') {
+            mensajeElemento.classList.add('mensaje-advertencia');
+        } else if (tipo === 'error') {
+            mensajeElemento.classList.add('mensaje-error');
         }
 
         // Insertar el mensaje en el DOM, por ejemplo, al final del contenedor de configuración
