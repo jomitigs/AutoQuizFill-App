@@ -23240,7 +23240,7 @@
         }
 
         // Mostrar contenedor de verified si estamos en cualquiera de las páginas especificadas
-        if (esMoodle || url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
+        if (esMoodle && url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
          const verifiedContainer = document.getElementById('container-verified');
         verifiedContainer.style.display = 'block';
         //     await opcionVerified_js();
