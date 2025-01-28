@@ -193,8 +193,8 @@ export async function opcionAutoFillMoodle_js() {
         const autosaveContainer = document.getElementById('container-autosave');
         autofillContainer.style.display = 'block';
         autosaveContainer.style.display = 'block';
-        contenedorAutoFill_js();
-        contenedorAutoSave_js();
+        //contenedorAutoFill_js();
+        //contenedorAutoSave_js();
     }
 
     // // Mostrar contenedor de autosavereview si estamos en 'mod/quiz/review.php'
