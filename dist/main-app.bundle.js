@@ -24316,7 +24316,7 @@
 
     // Limpia (elimina) los selects a partir de un nivel especificado
     async function limpiarSelectsDesdeNivel(nivelInicio) {
-        console.log(`Limpiando selects desde nivel ${nivelInicio} en adelante`); // Registra la acción de limpieza
+        //  console.log(`Limpiando selects desde nivel ${nivelInicio} en adelante`); // Registra la acción de limpieza
         // Obtiene el contenedor que contiene todos los elementos <select> relacionados con la configuración de ruta
         const contenedorSelects = document.getElementById('selects-configruta');
         // Obtiene una lista de todos los elementos <select> dentro del contenedor
