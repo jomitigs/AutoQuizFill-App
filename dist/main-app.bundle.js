@@ -23196,6 +23196,7 @@
 
     async function opcionAutoFillMoodle_js() {
         const url = window.location.href;
+        let esMoodle = esPaginaMoodle();
 
         // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
         if (url.includes('grade/report/overview/index.php')) ;
@@ -23217,7 +23218,7 @@
 
 
         // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
-        if (url.includes('mod/quiz/attempt.php') || url.includes('/mod/quiz/view.php') || url.includes('http://127.0.0.1:5500/dist/index.html')) {
+        if (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) {
             const autofillContainer = document.getElementById('container-autofill');
             const autosaveContainer = document.getElementById('container-autosave');
             autofillContainer.style.display = 'block';
@@ -23240,6 +23241,43 @@
         //     await opcionVerified_js();
         }
     }
+
+
+
+    // Función para verificar si la página está construida con Moodle
+    function esPaginaMoodle() {
+        // Método 1: Verificar la etiqueta meta "generator"
+        const metaGenerator = document.querySelector('meta[name="generator"]');
+        if (metaGenerator && metaGenerator.getAttribute('content').toLowerCase().includes('moodle')) {
+            return true;
+        }
+
+        // Método 2: Verificar clases específicas en el <body>
+        if (document.body.classList.contains('moodle')) {
+            return true;
+        }
+
+        // Método 3: Verificar contenedores específicos de Moodle
+        const moodleContainer = document.querySelector('.moodle-page');
+        if (moodleContainer) {
+            return true;
+        }
+
+        // Método 4: Verificar URLs o scripts específicos
+        const scripts = document.querySelectorAll('script[src]');
+        for (let script of scripts) {
+            if (script.src.toLowerCase().includes('moodle')) {
+                return true;
+            }
+        }
+
+        // Si ninguno de los métodos anteriores detecta Moodle
+        return false;
+    }
+
+    // Uso de la función
+    const paginaEsMoodle = esPaginaMoodle();
+    console.log("¿La página está construida con Moodle? ", paginaEsMoodle);
 
     function opcionAutoFillAltissia_html() {
         return `
