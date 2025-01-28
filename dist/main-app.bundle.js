@@ -23286,7 +23286,7 @@
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
-        <div id="config-ruta-dinamica">
+        <div id="opc-config-ruta-dinamica">
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
@@ -23385,7 +23385,7 @@
 
         if (configPlataforma === 'Moodle') {
             // Obtener el contenedor donde se inyectará el toggle
-            const container = document.getElementById('config-ruta-dinamica');
+            const container = document.getElementById('opc-config-ruta-dinamica');
 
             // Crear el elemento label que contendrá el switch
             const label = document.createElement('label');
