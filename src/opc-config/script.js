@@ -47,7 +47,7 @@ export async function opcionConfig_js() {
         // Referencia a la ruta 'Config/Plataforma' en Firebase
         const plataformaRef = ref(database, 'Config/Plataforma');
         const snapshot = await get(plataformaRef);
-       
+
 
         if (snapshot.exists()) {
             const plataformas = snapshot.val();
@@ -121,7 +121,7 @@ export async function opcionConfig_js() {
 
         initOpcConfigSwitch();
 
-        
+
     } catch (error) {
         console.error('Error al obtener las plataformas de Firebase:', error);
     }
@@ -132,23 +132,28 @@ export async function opcionConfig_js() {
 function initOpcConfigSwitch() {
     const container = document.querySelector(".opc-config-switch-container");
     const checkbox = document.querySelector(".opc-config-switch-checkbox");
-  
+
     // Mostrar el contenedor si ConfigPlataforma es "Moodle"
     const configPlataforma = localStorage.getItem("ConfigPlataforma");
     if (configPlataforma === "Moodle") {
-      container.style.display = "flex";
+        container.style.display = "flex";
+
+        const configRutaDinamic = localStorage.getItem("configRutaDinamic");
+        checkbox.checked = configRutaDinamic === "true";
+
+    } else {
+        container.style.display = "none";
     }
-  
+
     // Establecer el estado inicial del checkbox desde configRutaDinamic
-    const configRutaDinamic = localStorage.getItem("configRutaDinamic");
-    checkbox.checked = configRutaDinamic === "true";
-  
+
+
     // Escuchar cambios en el checkbox
     checkbox.addEventListener("change", () => {
-      const isChecked = checkbox.checked;
-      localStorage.setItem("configRutaDinamic", isChecked.toString());
+        const isChecked = checkbox.checked;
+        localStorage.setItem("configRutaDinamic", isChecked.toString());
     });
-  }
+}
 
 /**
  * Función para mostrar mensajes al usuario
