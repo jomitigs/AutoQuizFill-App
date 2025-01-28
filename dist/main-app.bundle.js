@@ -24019,7 +24019,7 @@
             // Mostrar los contenedores si configRuta y ciclo están definidos
             if (rutaCicloContainer) {
                 rutaCicloContainer.style.display = 'block';
-                console.log('[opc-config-ruta] Mostrando .rutaCicloContainer.');
+                console.log('[opc-config-ruta] Mostrando "rutaCicloContainer".');
             }
 
             
@@ -24075,7 +24075,7 @@
         }
 
         contenedorSelects.innerHTML = '';
-        console.log("[main-panel] Listas limpiadas.");
+        console.log("[opc-config-ruta] Listas limpiadas.");
         nivelActual = 1;
 
         try {
