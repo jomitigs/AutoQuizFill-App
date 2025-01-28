@@ -23620,9 +23620,9 @@
         let esMoodle = esPaginaMoodle();
 
         if (esMoodle) {
-            console.log("Esta página está construida con Moodle");
+            console.log("[opcionAutoFillMoodle_js] Esta página está construida con Moodle");
         } else {
-            console.log("Esta página no está construida con Moodle");
+            console.log("[opcionAutoFillMoodle_js] Esta página no está construida con Moodle");
         }
         // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
         if (esMoodle && url.includes('grade/report/overview/index.php')) ;
@@ -23645,11 +23645,20 @@
             //contenedorRuta_js();
         //}
 
-        if ((localStorage.getItem('switch-ruta-dinamica') && esMoodle)  || url.includes('http://127.0.0.1:5500/dist/index.html') ) {
+        if ((localStorage.getItem('switch-ruta-dinamica') && esMoodle) || url.includes('http://127.0.0.1:5500/dist/index.html')) {
+            console.log('[opcionAutoFillMoodle_js] switch-ruta-dinamica:', localStorage.getItem('switch-ruta-dinamica'));
+            console.log('[opcionAutoFillMoodle_js] esMoodle:', esMoodle);
+            console.log('[opcionAutoFillMoodle_js] opcionAutoFillMoodle_html:', opcionAutoFillMoodle_html);
+            console.log('[opcionAutoFillMoodle_js] Cargando contenedorRutaDinamica_js...');
             await contenedorRutaDinamica_js();
         } else {
+            console.log('[opcionAutoFillMoodle_js] switch-ruta-dinamica:', localStorage.getItem('switch-ruta-dinamica'));
+            console.log('[opcionAutoFillMoodle_js] esMoodle:', esMoodle);
+            console.log('[opcionAutoFillMoodle_js] opcionAutoFillMoodle_html:', opcionAutoFillMoodle_html);
+            console.log('[opcionAutoFillMoodle_js] Cargando contenedorRuta_js...');
             contenedorRuta_js$1();
         }
+        
 
 
         // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
