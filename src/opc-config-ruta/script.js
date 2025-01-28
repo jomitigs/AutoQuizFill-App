@@ -107,7 +107,7 @@ function comprobarRutaCiclo_ConfigRuta() {
 
 
 // Variable global para llevar el conteo de niveles de select.
-let nivelActual = 1;
+
 
 function formatearLabelTexto(key) {
     const partes = key.split('-').slice(1);
@@ -308,6 +308,8 @@ async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
         console.error(`Error al obtener opciones de Firebase para '${rutaOpciones}':`, error);
     }
 }
+
+let nivelActual = 1;
 
 function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
     return new Promise((resolve) => {

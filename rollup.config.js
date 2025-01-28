@@ -23,14 +23,14 @@ export default {
       extensions: ['.css'],
       inject: true,
     }),
-    //terser({
-      //format: {
-        //comments: false, // Elimina todos los comentarios
-      //},
-      //compress: {
-        //drop_console: true, // Elimina los mensajes de consola
-      //},
-    //}),
+    terser({
+      format: {
+        comments: false, // Elimina todos los comentarios
+      },
+      compress: {
+        drop_console: true, // Elimina los mensajes de consola
+      },
+    }),
     //obfuscator({
       //compact: true,
       //controlFlowFlattening: true,
