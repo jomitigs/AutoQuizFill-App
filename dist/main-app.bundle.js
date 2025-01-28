@@ -24274,7 +24274,7 @@
         const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects'));
 
         if (!estadoSelects || estadoSelects.length === 0) {
-            console.log("[opc-config-ruta] No existe datos para las listas desplegables para \"opc-config-ruta\"");
+            console.log("[opc-config-ruta] No existen datos para las listas desplegables para \"opc-config-ruta\"");
             return;
         }
 
