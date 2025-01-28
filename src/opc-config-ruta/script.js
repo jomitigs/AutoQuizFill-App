@@ -230,7 +230,7 @@ async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidad
                 await cargarOpciones(keyPrincipal, universidadSeleccionada, nivel + 1);
             }
         } else {
-            console.log("No se encontraron opciones para generar nuevos selects.");
+            // console.log("No se encontraron opciones para generar nuevos selects.");
         }
     } catch (error) {
         console.error(`Error al obtener datos de Firebase para '${rutaActual}':`, error);
