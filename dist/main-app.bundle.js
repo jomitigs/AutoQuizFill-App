@@ -25021,7 +25021,7 @@
 
         } else {
           // Si el usuario no está autenticado
-
+          console.log(`[startAFQ] Usuario no autenticado.`);
           /**
            * a. Mostrar el formulario de login y ocultar el panel principal
            */
