@@ -172,20 +172,19 @@ export async function opcionAutoFillMoodle_js() {
     } else {
         console.log("[opc-autofill-moodle: main] Esta página no está construida con Moodle");
     }
-    // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
-    if (esMoodle && url.includes('grade/report/overview/index.php')) {
-        //     extractRevision();
-        //     viewRevisiones();
-    }
 
-    // Llamar a contenedorUsers_js en todas las páginas
-    // Verificar si configUsersAutofill está en localStorage y su valor es "true"
-    if (localStorage.getItem('configUsersAutofill') === 'true') {
+    if (localStorage.getItem('configUsersAutofill') === 'true' && esMoodle) {
         const autofillUsers = document.getElementById('users-autofill-moodle');
         autofillUsers.style.display = 'flex';
-        // Ejecutar la función contenedorUsers_js
         contenedorUsers_js();
     }
+
+    // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
+    // if (esMoodle && url.includes('grade/report/overview/index.php')) {
+        //     extractRevision();
+        //     viewRevisiones();
+    // }
+
     // // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
    // if (esMoodle && ( url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php'))|| url.includes('http://127.0.0.1:5500/dist/index.html')) {
     //         await contenedorRutaDinamica_js();
