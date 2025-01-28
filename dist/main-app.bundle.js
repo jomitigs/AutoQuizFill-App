@@ -23040,7 +23040,7 @@
 
 <div class="container-autoquiz">
 
-    <div class="users">
+    <div class="users" style = "display; none">
 
         <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
         <div class="usuario-actual">
@@ -23048,12 +23048,12 @@
             <span id="nombre-usuario-actual" class="nombre-usuario"></span>
         </div>
 
-<select id="siguiente-usuario" class="select-siguiente-usuario" >
-</select>
+        <select id="siguiente-usuario" class="select-siguiente-usuario" >
+        </select>
 
-<button id="boton-siguiente-usuario" class="boton-siguiente-usuario">
-    <i class="fa-solid fa-angles-right"></i>
-</button>
+        <button id="boton-siguiente-usuario" class="boton-siguiente-usuario">
+            <i class="fa-solid fa-angles-right"></i>
+        </button>
 
     </div>
 
@@ -23242,7 +23242,6 @@
         //     await opcionVerified_js();
         }
     }
-
 
 
     // Función para verificar si la página está construida con Moodle
