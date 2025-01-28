@@ -23483,11 +23483,11 @@
         if (configPlataforma === "Moodle") {
             container.style.display = "flex";
 
-            const configRutaDinamic = localStorage.getItem("configRutaDinamic");
+            const configRutaDinamic = localStorage.getItem("configUsersAutofill");
             checkbox.checked = configRutaDinamic === "true";
 
         } else {
-            localStorage.setItem("configRutaDinamic", "false");
+            localStorage.setItem("configUsersAutofill", "false");
             container.style.display = "none";
         }
 
