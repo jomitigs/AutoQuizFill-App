@@ -6,7 +6,7 @@ import './style.css'; // Importa el archivo de estilos CSS
 
 // Encapsular el código dentro de una IIFE
 (function () {
-  console.log('[AutoQuizFill] Creando barra-lateral');
+  console.log('[AutoFillQuiz-App] Creando barra-lateral');
 
   // 1. Insertar el contenido HTML en el DOM
   document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body

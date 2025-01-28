@@ -71,7 +71,7 @@
 
     // Encapsular el código dentro de una IIFE
     (function () {
-      console.log('[AutoQuizFill] Creando barra-lateral');
+      console.log('[AutoFillQuiz-App] Creando barra-lateral');
 
       // 1. Insertar el contenido HTML en el DOM
       document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
@@ -23715,10 +23715,6 @@
         // Si ninguno de los métodos anteriores detecta Moodle
         return false;
     }
-
-    // Uso de la función
-    const paginaEsMoodle = esPaginaMoodle();
-    console.log("¿La página está construida con Moodle? ", paginaEsMoodle);
 
     function opcionAutoFillAltissia_html() {
         return `

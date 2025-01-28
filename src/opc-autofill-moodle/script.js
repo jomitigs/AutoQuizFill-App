@@ -267,6 +267,3 @@ function esPaginaMoodle() {
     return false;
 }
 
-// Uso de la función
-const paginaEsMoodle = esPaginaMoodle();
-console.log("¿La página está construida con Moodle? ", paginaEsMoodle);
