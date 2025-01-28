@@ -19,7 +19,7 @@ export function opcionConfig_html() {
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
-        <div id="config-ruta-dinamica" class="estilo-config-item">
+        <div id="opc-config-ruta-dinamica" class="estilo-config-item">
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
@@ -42,6 +42,7 @@ export async function opcionConfig_js() {
         // Referencia a la ruta 'Config/Plataforma' en Firebase
         const plataformaRef = ref(database, 'Config/Plataforma');
         const snapshot = await get(plataformaRef);
+        const configPlataforma = localStorage.getItem('ConfigPlataforma');
 
         if (snapshot.exists()) {
             const plataformas = snapshot.val();
@@ -111,6 +112,8 @@ export async function opcionConfig_js() {
         } else {
             console.log('No se encontraron plataformas en Firebase.');
         }
+
+        
         
     } catch (error) {
         console.error('Error al obtener las plataformas de Firebase:', error);
