@@ -205,11 +205,6 @@ async function SelectUniversidad_ConfigRuta() {
 }
 
 
-// src/tu-archivo.js
-
-// Asegúrate de importar o definir estas funciones en tu archivo
-// import { limpiarSelectsDesdeNivel, cargarOpciones, guardarEstadoSelects, manejarSeleccionesSecuenciales } from './otras-funciones.js';
-
 async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidadSeleccionada) {
     let rutaActual;
     if (nivel === 2) {
@@ -248,8 +243,6 @@ async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidad
     }
 }
 
-// Asegúrate de exportar la función si la necesitas en otros módulos
-export { cargarSelectsDinamicos };
 
 async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
     const rutaOpciones = `ConfigRuta/opciones/${universidadSeleccionada}/${keyPrincipal}`;
@@ -315,10 +308,6 @@ async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
         console.error(`Error al obtener opciones de Firebase para '${rutaOpciones}':`, error);
     }
 }
-
-// Asegúrate de exportar la función si la necesitas en otros módulos
-export { cargarOpciones };
-
 
 function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
     return new Promise((resolve) => {

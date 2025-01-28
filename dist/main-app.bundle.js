@@ -24142,11 +24142,6 @@
     }
 
 
-    // src/tu-archivo.js
-
-    // Asegúrate de importar o definir estas funciones en tu archivo
-    // import { limpiarSelectsDesdeNivel, cargarOpciones, guardarEstadoSelects, manejarSeleccionesSecuenciales } from './otras-funciones.js';
-
     async function cargarSelectsDinamicos(selectedKey, rutaPadre, nivel, universidadSeleccionada) {
         let rutaActual;
         if (nivel === 2) {
@@ -24184,6 +24179,7 @@
             console.error(`Error al obtener datos de Firebase para '${rutaActual}':`, error);
         }
     }
+
 
     async function cargarOpciones(keyPrincipal, universidadSeleccionada, nivel) {
         const rutaOpciones = `ConfigRuta/opciones/${universidadSeleccionada}/${keyPrincipal}`;
@@ -24249,7 +24245,6 @@
             console.error(`Error al obtener opciones de Firebase para '${rutaOpciones}':`, error);
         }
     }
-
 
     function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
         return new Promise((resolve) => {
