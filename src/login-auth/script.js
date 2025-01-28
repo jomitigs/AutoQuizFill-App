@@ -240,7 +240,6 @@ function startAFQ() {
   
         // b. Mostrar el panel principal y ocultar el contenedor de login
         toggleElementById(ID_LOGIN_CONTENEDOR, false);
-        console.log(`[startAFQ] Mostrando Panel Principal.`);
         /**
          * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
          */

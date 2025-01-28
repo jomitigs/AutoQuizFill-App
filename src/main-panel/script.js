@@ -8,7 +8,7 @@ import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/s
 
 // Exportación nombrada de la función para que pueda ser importada en otro script
 export function panel_AutoFillQuizApp(barraLateral) {
-  console.log('[AutoQuizFill] Creando main-panel');
+  console.log('[AutoFillQuiz-App] Creando main-panel');
 
   const contenedor = document.createElement('div');
   contenedor.id = 'panel-autofillquizapp';

@@ -24382,7 +24382,7 @@
 
     // Exportación nombrada de la función para que pueda ser importada en otro script
     function panel_AutoFillQuizApp(barraLateral) {
-      console.log('[AutoQuizFill] Creando main-panel');
+      console.log('[AutoFillQuiz-App] Creando main-panel');
 
       const contenedor = document.createElement('div');
       contenedor.id = 'panel-autofillquizapp';
@@ -25002,7 +25002,6 @@
       
             // b. Mostrar el panel principal y ocultar el contenedor de login
             toggleElementById(ID_LOGIN_CONTENEDOR, false);
-            console.log(`[startAFQ] Mostrando Panel Principal.`);
             /**
              * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
              */
