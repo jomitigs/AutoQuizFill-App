@@ -29,7 +29,7 @@ export function opcionConfig_html() {
 </div>
 
 <div id="users-autofill-switch" class="opc-config-switch-container" style="display: none">
-  <span class="opc-config-switch-label">Users AutoFill</span>
+  <span class="opc-config-switch-label">AutoFill Users</span>
   <label class="opc-config-switch">
     <input type="checkbox" id="users-autofill-switch-checkbox" class="opc-config-switch-checkbox">
     <span class="opc-config-slider round"></span>
