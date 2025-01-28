@@ -114,23 +114,22 @@ export function panel_AutoFillQuizApp(barraLateral) {
         return;
       }
     } else {
-      console.error(`[AutoQuizFill] La función HTML "${opcionfuncionHtml}" no está definida.`);
+      console.error(`[main-panel] La función HTML "${opcionfuncionHtml}" no está definida.`);
       return;
     }
 
     // Ejecutar la función JS correspondiente
     setTimeout(() => {
-      console.log(`[AutoQuizFill] Intentando ejecutar la función JS: "${ultimoJs}"`);
       const funcionJs = funcionesJs[ultimoJs];
       if (typeof funcionJs === 'function') {
         try {
           funcionJs();
-          console.log('[AutoQuizFill] Función JS ejecutada exitosamente.');
+          console.log('[main-panel] JS ejecutada exitosamente.');
         } catch (error) {
-          console.error('[AutoQuizFill] Error al ejecutar la función JS:', error);
+          console.error('[main-panel] Error al ejecutar la función JS:', error);
         }
       } else {
-        console.warn(`[AutoQuizFill] La función JS "${ultimoJs}" no está definida.`);
+        console.warn(`[main-panel] La función JS "${ultimoJs}" no está definida.`);
       }
     }, 100);
   }
