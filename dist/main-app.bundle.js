@@ -23892,21 +23892,21 @@
         if (configPlataforma === "Moodle") {
             container.style.display = "flex";
 
-            const configRutaDinamic = localStorage.getItem("configRutaDinamic");
+            const configRutaDinamic = localStorage.getItem("switch-ruta-dinamica");
             checkbox.checked = configRutaDinamic === "true";
 
         } else {
-            localStorage.setItem("configRutaDinamic", "false");
+            localStorage.setItem("switch-ruta-dinamica", "false");
             container.style.display = "none";
         }
 
-        // Establecer el estado inicial del checkbox desde configRutaDinamic
+        // Establecer el estado inicial del checkbox desde switch-ruta-dinamica
 
 
         // Escuchar cambios en el checkbox
         checkbox.addEventListener("change", () => {
             const isChecked = checkbox.checked;
-            localStorage.setItem("configRutaDinamic", isChecked.toString());
+            localStorage.setItem("switch-ruta-dinamica", isChecked.toString());
         });
     }
 
