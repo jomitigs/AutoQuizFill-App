@@ -23326,21 +23326,22 @@
             </div>
 
             <!-- Switch -->
-  <div class="opc-config-switch-container" style="display: none">
-    <span class="opc-config-switch-label">Ruta Dinámica</span>
-    <label class="opc-config-switch">
-      <input type="checkbox" class="opc-config-switch-checkbox">
-      <span class="opc-config-slider round"></span>
-    </label>
-  </div>
+<div id="dynamic-route-switch" class="opc-config-switch-container" style="display: none">
+  <span class="opc-config-switch-label">Ruta Dinámica</span>
+  <label class="opc-config-switch">
+    <input type="checkbox" id="dynamic-route-switch-checkbox" class="opc-config-switch-checkbox">
+    <span class="opc-config-slider round"></span>
+  </label>
+</div>
 
-    <div class="opc-config-switch-container" style="display: none">
-    <span class="opc-config-switch-label">Users AutoFill</span>
-    <label class="opc-config-switch">
-      <input type="checkbox" class="opc-config-switch-checkbox">
-      <span class="opc-config-slider round"></span>
-    </label>
-  </div>
+<div id="users-autofill-switch" class="opc-config-switch-container" style="display: none">
+  <span class="opc-config-switch-label">Users AutoFill</span>
+  <label class="opc-config-switch">
+    <input type="checkbox" class="opc-config-switch-checkbox">
+    <span class="opc-config-slider round"></span>
+  </label>
+</div>
+
 
         </div>
 
@@ -23445,8 +23446,8 @@
     }
 
     function initOpcConfigSwitch() {
-        const container = document.querySelector(".opc-config-switch-container");
-        const checkbox = document.querySelector(".opc-config-switch-checkbox");
+        const container = document.getElementById("dynamic-route-switch");
+        const checkbox = document.getElementById("dynamic-route-switch-checkbox");
 
         // Mostrar el contenedor si ConfigPlataforma es "Moodle"
         const configPlataforma = localStorage.getItem("ConfigPlataforma");
