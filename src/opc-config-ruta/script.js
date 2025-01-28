@@ -327,7 +327,7 @@ function guardarEstadoSelects() {
         ruta: select.getAttribute('data-path'),
         seleccion: select.value  // Guarda el valor seleccionado actual
     }));
-    console.log("Guardando estado en localStorage:", estado);
+    // console.log("Guardando estado en localStorage:", estado);
     localStorage.setItem('estadoSelects', JSON.stringify(estado));
 }
 
@@ -348,7 +348,7 @@ async function manejarSeleccionesSecuenciales() {
     // Itera sobre cada objeto selectData en el arreglo estadoSelects
     for (let selectData of estadoSelects) {
         const { id, seleccion, nivel } = selectData; // Desestructura el ID y la selección del objeto
-        console.log(`Procesando ${id} con valor: ${seleccion} en nivel ${nivel}`); // Registra el proceso actual
+        // console.log(`Procesando ${id} con valor: ${seleccion} en nivel ${nivel}`); // Registra el proceso actual
         // Espera a que se seleccione la opción correspondiente en el <select>
         await esperarYSeleccionarOpcion(id, seleccion);
     }
@@ -367,7 +367,7 @@ function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
                 const option = Array.from(select.options).find(option => option.value === valorSeleccionado);
                 if (option) { // Si se encuentra la opción
                     select.value = option.value; // Establece el valor seleccionado del <select>
-                    console.log(`Opción seleccionada en ${selectId}: ${option.textContent.trim()}`); // Registra en la consola
+                    //console.log(`Opción seleccionada en ${selectId}: ${option.textContent.trim()}`); // Registra en la consola
                     // Simula el evento 'change' para que cualquier listener asociado responda a la selección
                     select.dispatchEvent(new Event('change'));
                 }
