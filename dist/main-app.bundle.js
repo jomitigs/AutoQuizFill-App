@@ -23620,9 +23620,9 @@
         let esMoodle = esPaginaMoodle();
 
         if (esMoodle) {
-            console.log("[opcionAutoFillMoodle_js] Esta página está construida con Moodle");
+            console.log("[opc-autofill-moodle: main] Esta página está construida con Moodle");
         } else {
-            console.log("[opcionAutoFillMoodle_js] Esta página no está construida con Moodle");
+            console.log("[opc-autofill-moodle: main] Esta página no está construida con Moodle");
         }
         // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
         if (esMoodle && url.includes('grade/report/overview/index.php')) ;
