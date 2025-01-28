@@ -24818,6 +24818,8 @@
       const el = document.getElementById(elementId);
       if (el) {
         el.style.display = show ? 'block' : 'none';
+      } else {
+        console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${elementId}".`);
       }
     }
 
@@ -24917,15 +24919,21 @@
     /**
      * Configura la sesión del usuario en la base de datos y establece un listener para cambios.
      */
-
     function configurarSesion(uid) {
-      // Genera un nuevo ID de sesión
-      const newSessionId = v4();
-      sessionIdLocal = newSessionId;
+      // Verificar si ya existe un sessionId en localStorage
+      let storedSessionId = localStorage.getItem('sessionId');
 
-      // Guarda el nuevo ID de sesión en la base de datos
+      if (!storedSessionId) {
+        // Si no existe, generar uno nuevo
+        storedSessionId = v4();
+        localStorage.setItem('sessionId', storedSessionId);
+      }
+
+      sessionIdLocal = storedSessionId;
+
+      // Guarda el sessionId en la base de datos
       const sessionRef = ref(database, `users/${uid}/currentSession`);
-      set(sessionRef, newSessionId)
+      set(sessionRef, sessionIdLocal)
         .then(() => {
           // Escucha cambios en el ID de sesión
           onValue(sessionRef, (snapshot) => {
@@ -24952,9 +24960,15 @@
             const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
             remove(sessionRef)
               .then(() => {
+                // Limpiar el sessionId de localStorage
+                localStorage.removeItem('sessionId');
               })
               .catch((error) => {
+                console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentSession - ${error.code}: ${error.message}`);
               });
+          } else {
+            // Si no hay usuario, simplemente limpiar el sessionId
+            localStorage.removeItem('sessionId');
           }
           mostrarLogin();
         })
@@ -25044,23 +25058,25 @@
           /**
            * a. Mostrar el formulario de login y ocultar el panel principal
            */
-          toggleElementById2(ID_LOGIN_CONTENEDOR);
-
+          toggleElementById(ID_LOGIN_CONTENEDOR, true);
         }
       });
     }
 
     /**
-     * Alterna la visibilidad de un elemento del DOM basado en su ID.
-    */
-    function toggleElementById2(id, mostrar) {
-      const elemento = document.getElementById(id);
-      if (elemento) {
-        elemento.style.display = 'block' ;
-      } else {
-        console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${id}".`);
+     * Escuchar cambios en localStorage para sincronizar sesiones entre pestañas
+     */
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'sessionId') {
+        const newSessionId = event.newValue;
+        if (newSessionId !== sessionIdLocal) {
+          // Actualizar el sessionIdLocal con el nuevo valor
+          sessionIdLocal = newSessionId;
+          // Cerrar la sesión si el sessionId ha cambiado
+          cerrarSesionAutoQuiz$1();
+        }
       }
-    }
+    });
 
     /**
      * Muestra el formulario de login.

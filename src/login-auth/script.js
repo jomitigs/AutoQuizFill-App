@@ -37,6 +37,7 @@ function toggleElementById(elementId, show) {
   if (el) {
     el.style.display = show ? 'block' : 'none';
   } else {
+    console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${elementId}".`);
   }
 }
 
@@ -136,15 +137,21 @@ function iniciarSesionAutoQuiz(correo, contrasena) {
 /**
  * Configura la sesión del usuario en la base de datos y establece un listener para cambios.
  */
-
 function configurarSesion(uid) {
-  // Genera un nuevo ID de sesión
-  const newSessionId = uuidv4();
-  sessionIdLocal = newSessionId;
+  // Verificar si ya existe un sessionId en localStorage
+  let storedSessionId = localStorage.getItem('sessionId');
 
-  // Guarda el nuevo ID de sesión en la base de datos
+  if (!storedSessionId) {
+    // Si no existe, generar uno nuevo
+    storedSessionId = uuidv4();
+    localStorage.setItem('sessionId', storedSessionId);
+  }
+
+  sessionIdLocal = storedSessionId;
+
+  // Guarda el sessionId en la base de datos
   const sessionRef = ref(database, `users/${uid}/currentSession`);
-  set(sessionRef, newSessionId)
+  set(sessionRef, sessionIdLocal)
     .then(() => {
       // Escucha cambios en el ID de sesión
       onValue(sessionRef, (snapshot) => {
@@ -171,9 +178,15 @@ function cerrarSesionAutoQuiz() {
         const sessionRef = ref(database, `users/${usuario.uid}/currentSession`);
         remove(sessionRef)
           .then(() => {
+            // Limpiar el sessionId de localStorage
+            localStorage.removeItem('sessionId');
           })
           .catch((error) => {
+            console.error(`[AutoQuizFill] CerrarSesionAutoQuiz: Error al eliminar currentSession - ${error.code}: ${error.message}`);
           });
+      } else {
+        // Si no hay usuario, simplemente limpiar el sessionId
+        localStorage.removeItem('sessionId');
       }
       mostrarLogin();
     })
@@ -263,11 +276,25 @@ function startAFQ() {
       /**
        * a. Mostrar el formulario de login y ocultar el panel principal
        */
-      toggleElementById2(ID_LOGIN_CONTENEDOR, true);
-
+      toggleElementById(ID_LOGIN_CONTENEDOR, true);
     }
   });
 }
+
+/**
+ * Escuchar cambios en localStorage para sincronizar sesiones entre pestañas
+ */
+window.addEventListener('storage', (event) => {
+  if (event.key === 'sessionId') {
+    const newSessionId = event.newValue;
+    if (newSessionId !== sessionIdLocal) {
+      // Actualizar el sessionIdLocal con el nuevo valor
+      sessionIdLocal = newSessionId;
+      // Cerrar la sesión si el sessionId ha cambiado
+      cerrarSesionAutoQuiz();
+    }
+  }
+});
 
 /**
  * Alterna la visibilidad de un elemento del DOM basado en su ID.
