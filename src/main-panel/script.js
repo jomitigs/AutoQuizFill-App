@@ -57,10 +57,10 @@ export function panel_AutoFillQuizApp(barraLateral) {
     contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
 
     setTimeout(() => {
-      if (typeof opcionAutoQuiz_js === 'function') {
+      if (typeof opcionAutoFillMoodle_js === 'function') {
         opcionAutoFillMoodle_js();
       } else {
-        console.warn('La función opcionAutoQuiz_js no está definida.');
+        console.warn('La función opcionAutoFillMoodle_js no está definida.');
       }
     }, 100);
   }
