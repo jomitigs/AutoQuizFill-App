@@ -23040,8 +23040,7 @@
 
 <div class="container-autoquiz">
 
-   <div class="users" "></div>
-
+    <div class="users">
 
         <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
         <div class="usuario-actual">
@@ -23198,25 +23197,28 @@
     async function opcionAutoFillMoodle_js() {
         const url = window.location.href;
         let esMoodle = esPaginaMoodle();
-        
-    if (esMoodle) {
-        console.log("Esta página está construida con Moodle");
-    } else {
-        console.log("Esta página no está construida con Moodle");
-    }
+
+        if (esMoodle) {
+            console.log("Esta página está construida con Moodle");
+        } else {
+            console.log("Esta página no está construida con Moodle");
+        }
         // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
         if (esMoodle && url.includes('grade/report/overview/index.php')) ;
 
         // Llamar a contenedorUsers_js en todas las páginas
-        contenedorUsers_js();
-
+        // Verificar si configUsersAutofill está en localStorage y su valor es "true"
+        if (localStorage.getItem('configUsersAutofill') === 'true') {
+            // Ejecutar la función contenedorUsers_js
+            contenedorUsers_js();
+        }
         // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-         if (esMoodle && url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php'   )|| url.includes('http://127.0.0.1:5500/dist/index.html') ) ;
+        if (esMoodle && url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php') || url.includes('http://127.0.0.1:5500/dist/index.html')) ;
 
         // Verificar si "switch-ruta-dinamica" no existe en localStorage
         if (!localStorage.getItem('switch-ruta-dinamica')) {
-             contenedorRuta_js$1();
-         }
+            contenedorRuta_js$1();
+        }
 
 
         // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
@@ -23231,16 +23233,16 @@
 
         // Mostrar contenedor de autosavereview si estamos en 'mod/quiz/review.php'
         if (esMoodle && url.includes('mod/quiz/review.php')) {
-        const autoSaveReviewContainer = document.getElementById('container-autosavereview');
-        autoSaveReviewContainer.style.display = 'block';
-        // contenedorAutoSaveReview_js();
+            const autoSaveReviewContainer = document.getElementById('container-autosavereview');
+            autoSaveReviewContainer.style.display = 'block';
+            // contenedorAutoSaveReview_js();
         }
 
         // Mostrar contenedor de verified si estamos en cualquiera de las páginas especificadas
         if (esMoodle && url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
-         const verifiedContainer = document.getElementById('container-verified');
-        verifiedContainer.style.display = 'block';
-        //     await opcionVerified_js();
+            const verifiedContainer = document.getElementById('container-verified');
+            verifiedContainer.style.display = 'block';
+            //     await opcionVerified_js();
         }
     }
 
