@@ -23285,6 +23285,11 @@
         <div id="selects-plataforma" class="estilo-config-item">
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
+
+        <div id="config-ruta-dinamica" class="estilo-config-item">
+            <!-- Aquí se inyectará el select dinámicamente -->
+        </div>
+
     </div>
     `;
     }
@@ -23373,6 +23378,53 @@
             } else {
                 console.log('No se encontraron plataformas en Firebase.');
             }
+
+            // Verificar si 'ConfigPlataforma' en localStorage es 'Moodle'
+        const configPlataforma = localStorage.getItem('ConfigPlataforma');
+        if (configPlataforma === 'Moodle') {
+            // Obtener el contenedor donde se inyectará el toggle
+            const container = document.getElementById('config-ruta-dinamica');
+
+            // Crear el elemento label que contendrá el switch
+            const label = document.createElement('label');
+            label.className = 'switch';
+
+            // Crear el texto de la etiqueta
+            const labelText = document.createElement('span');
+            labelText.textContent = 'Ruta Dinamica';
+            labelText.style.flex = '1'; // Para alinear el texto y el switch
+
+            // Crear el input checkbox
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'ruta-dinamica-toggle';
+
+            // Crear el span que representará el slider
+            const slider = document.createElement('span');
+            slider.className = 'slider';
+
+            // Añadir el texto, checkbox y slider al label
+            label.appendChild(labelText);
+            label.appendChild(checkbox);
+            label.appendChild(slider);
+
+            // Añadir el label al contenedor
+            container.appendChild(label);
+
+            // Obtener el estado actual de 'configRutaDinamic' desde sessionStorage
+            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+            // Establecer el estado del checkbox según el valor almacenado
+            checkbox.checked = configRutaDinamic === 'true';
+
+            // Añadir un listener para cambios en el checkbox
+            checkbox.addEventListener('change', function() {
+                // Actualizar el valor en sessionStorage
+                sessionStorage.setItem('configRutaDinamic', checkbox.checked.toString());
+                // Opcional: Puedes realizar otras acciones aquí cuando el toggle cambie
+                console.log('configRutaDinamic actualizado a:', checkbox.checked);
+            });
+        }
+        
         } catch (error) {
             console.error('Error al obtener las plataformas de Firebase:', error);
         }
