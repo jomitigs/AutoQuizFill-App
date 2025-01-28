@@ -176,7 +176,7 @@ export async function opcionAutoFillMoodle_js() {
     contenedorUsers_js();
 
     // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-     if (url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php' ) ) {
+     if (url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php'   )|| url.includes('http://127.0.0.1:5500/dist/index.html') ) {
        const rutaDinamicaContainer = document.getElementById('container-ruta-dinamica');
        rutaDinamicaContainer.style.display = 'block';
     //     await contenedorRutaDinamica_js();
@@ -189,7 +189,7 @@ export async function opcionAutoFillMoodle_js() {
 
 
     // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
-    if (url.includes('mod/quiz/attempt.php') || url.includes('/mod/quiz/view.php')) {
+    if (url.includes('mod/quiz/attempt.php') || url.includes('/mod/quiz/view.php') || url.includes('http://127.0.0.1:5500/dist/index.html')) {
         const autofillContainer = document.getElementById('container-autofill');
         const autosaveContainer = document.getElementById('container-autosave');
         autofillContainer.style.display = 'block';
