@@ -24382,7 +24382,7 @@
 
     // Exportación nombrada de la función para que pueda ser importada en otro script
     function panel_AutoFillQuizApp(barraLateral) {
-      console.log('[AutoFillQuiz-App] Creando main-panel');
+      console.log('[AutoFillQuiz-App] Creando Panel Principal.');
 
       const contenedor = document.createElement('div');
       contenedor.id = 'panel-autofillquizapp';
