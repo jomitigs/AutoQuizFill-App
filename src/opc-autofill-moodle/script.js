@@ -166,7 +166,12 @@ export function opcionAutoFillMoodle_html() {
 export async function opcionAutoFillMoodle_js() {
     const url = window.location.href;
     let esMoodle = esPaginaMoodle();
-
+    
+if (esMoodle) {
+    console.log("Esta página está construida con Moodle");
+} else {
+    console.log("Esta página no está construida con Moodle");
+}
     // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
     if (url.includes('grade/report/overview/index.php')) {
     //     extractRevision();
