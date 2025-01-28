@@ -191,7 +191,7 @@ function initOpcConfigSwitch2() {
     // Escuchar cambios en el checkbox
     checkbox.addEventListener("change", () => {
         const isChecked = checkbox.checked;
-        localStorage.setItem("configRutaDinamic", isChecked.toString());
+        localStorage.setItem("configUsersAutofill", isChecked.toString());
     });
 }
 
