@@ -119,7 +119,10 @@ export async function opcionConfig_js() {
             // Obtener el contenedor donde se inyectará el toggle
             const container = document.getElementById('opc-config-ruta-dinamica');
 
+            if (container) {
 
+                container.innerHTML = '';
+            }
 
         } else {
             // Si no es 'Moodle', limpiar el contenedor del toggle para evitar duplicados
