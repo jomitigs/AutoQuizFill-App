@@ -342,6 +342,7 @@ async function manejarSeleccionesSecuenciales() {
         return;
     }
 
+    console.log("[opc-config-ruta] Existen datos para las listas desplegables para \"opc-config-ruta\", restableciendo...");
     // Ordenar los selects por nivel para asegurar que se procesen en orden
     estadoSelects.sort((a, b) => parseInt(a.nivel) - parseInt(b.nivel));
 
