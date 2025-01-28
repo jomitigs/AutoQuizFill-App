@@ -74,16 +74,6 @@ function comprobarRutaCiclo_ConfigRuta() {
 
         if (ultimaRutaConfigruta && !document.getElementById('mensaje-ruta-invalida')) {
             ultimaRutaConfigruta.appendChild(mensaje);
-
-            // Eliminada la redeclaración de 'ultimaRutaConfigruta'
-            // const ultimaRutaConfigruta = document.getElementById('ultima-ruta-configruta');
-
-            // Verifica si el elemento existe y luego lo oculta
-            if (rutaCicloContainer) {
-                rutaCicloContainer.style.display = 'none';
-                console.log('[opc-config-ruta] Elemento ruta-ciclo-container ocultado:', rutaCicloContainer);
-            }
-
             console.log('[opc-config-ruta] Mensaje de advertencia añadido al contenido principal.');
         }
     } else {
