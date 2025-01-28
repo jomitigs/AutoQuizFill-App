@@ -24982,7 +24982,7 @@
         
         // Si no se encuentra la barra lateral, registrar un error y abortar la inicialización
         if (!barraLateral) {
-          console.error(`[AutoFillQuiz-App] startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
+          console.error(`startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
           return;
         }
       
@@ -24996,13 +24996,13 @@
         onAuthStateChanged(autenticacion, (usuario) => {
           if (usuario) {
             // Si el usuario está autenticado
-      
+            console.log(`[startAFQ] Usuario correctamente autenticado.`);
             // a. Configurar la sesión con el UID del usuario
             configurarSesion(usuario.uid);
       
             // b. Mostrar el panel principal y ocultar el contenedor de login
             toggleElementById(ID_LOGIN_CONTENEDOR, false);
-      
+            console.log(`[startAFQ] Mostrando Panel Principal.`);
             /**
              * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
              */
