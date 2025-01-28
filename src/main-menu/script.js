@@ -9,7 +9,7 @@ import { opcionAutoFillAltissia_html } from '../opc-autofill-altissia/script.js'
 
 
 export function menu_AutoFillQuizApp() {
-    console.log('[AutoQuizFill] Creando main-menu');
+    console.log('[AutoFillQuiz-App] Creando Menú Principal.');
 
     // Crear el contenedor del menú lateral
     const menu = document.createElement('div');

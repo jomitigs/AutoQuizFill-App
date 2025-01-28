@@ -19,7 +19,7 @@ import {
   remove
 } from 'firebase/database';
 
-console.log('[AutoFillQuiz-App] Iniciando login-auth');
+console.log('[AutoFillQuiz-App] Iniciando Autenticación.');
 
 const ID_BARRA_LATERAL = 'barra-lateral-autoquizfillapp';
 const ID_LOGIN_CONTENEDOR = 'login-autoquizfillapp';
@@ -103,13 +103,13 @@ function crearFormularioLogin(barraLateral) {
     const iniciarSesionHandler = () => {
       iniciarSesionAutoQuiz(inputCorreo.value, inputContrasena.value);
     };
-    
+
     inputContrasena.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         iniciarSesionHandler();
       }
     });
-    
+
     botonLogin.addEventListener('click', () => {
       iniciarSesionHandler();
     });
@@ -215,93 +215,91 @@ function mostrarPanel() {
  *      a. Mostrar el formulario de login.
  */
 function startAFQ() {
-    // Intentar obtener el elemento de la barra lateral por su ID
-    const barraLateral = document.getElementById(ID_BARRA_LATERAL);
-    
-    // Si no se encuentra la barra lateral, registrar un error y abortar la inicialización
-    if (!barraLateral) {
-      console.error(`startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
-      return;
-    }
-  
-    // Crear y agregar el formulario de login a la barra lateral
-    crearFormularioLogin(barraLateral);
-  
-    /**
-     * Verifica el estado de autenticación del usuario.
-     * Usa `onAuthStateChanged` para escuchar cambios en el estado de autenticación.
-     */
-    onAuthStateChanged(autenticacion, (usuario) => {
-      if (usuario) {
-        // Si el usuario está autenticado
-        console.log(`[startAFQ] Usuario correctamente autenticado.`);
-        // a. Configurar la sesión con el UID del usuario
-        configurarSesion(usuario.uid);
-  
-        // b. Mostrar el panel principal y ocultar el contenedor de login
-        toggleElementById(ID_LOGIN_CONTENEDOR, false);
-        /**
-         * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
-         */
-        panel_AutoFillQuizApp(barraLateral);
+  // Intentar obtener el elemento de la barra lateral por su ID
+  const barraLateral = document.getElementById(ID_BARRA_LATERAL);
 
-        toggleElementById(ID_PANEL_CONTENEDOR, true);
+  // Si no se encuentra la barra lateral, registrar un error y abortar la inicialización
+  if (!barraLateral) {
+    console.error(`startAFQ: No se encontró el elemento con ID "${ID_BARRA_LATERAL}". Abortando inicialización.`);
+    return;
+  }
 
-        
-        /**
-         * d. Crear el menú de AutoFillQuizApp
-         */
-        const menu = menu_AutoFillQuizApp();
-        
-        // Si el menú se creó correctamente, agregarlo a la barra lateral
-        if (menu) {
-          barraLateral.appendChild(menu);
-        }
-  
+  // Crear y agregar el formulario de login a la barra lateral
+  crearFormularioLogin(barraLateral);
 
-      } else {
-        // Si el usuario no está autenticado
-  
-        /**
-         * a. Mostrar el formulario de login y ocultar el panel principal
-         */
-        toggleElementById2(ID_LOGIN_CONTENEDOR, true);
-  
+  /**
+   * Verifica el estado de autenticación del usuario.
+   * Usa `onAuthStateChanged` para escuchar cambios en el estado de autenticación.
+   */
+  onAuthStateChanged(autenticacion, (usuario) => {
+    if (usuario) {
+      // Si el usuario está autenticado
+      console.log(`[startAFQ] Usuario correctamente autenticado.`);
+      // a. Configurar la sesión con el UID del usuario
+      configurarSesion(usuario.uid);
+
+      /**
+      * b. Crear el menú de AutoFillQuizApp
+      */
+      const menu = menu_AutoFillQuizApp();
+
+      // Si el menú se creó correctamente, agregarlo a la barra lateral
+      if (menu) {
+        barraLateral.appendChild(menu);
       }
-    });
-  }
-  
-  /**
-   * Alterna la visibilidad de un elemento del DOM basado en su ID.
-   * 
-   * @param {string} id - El ID del elemento a mostrar u ocultar.
-   * @param {boolean} mostrar - Si es `true`, muestra el elemento; si es `false`, lo oculta.
-   */
-  function toggleElementById2(id, mostrar) {
-    const elemento = document.getElementById(id);
-    if (elemento) {
-      elemento.style.display = mostrar ? 'block' : 'none';
+
+      // c. Mostrar el panel principal y ocultar el contenedor de login
+      toggleElementById(ID_LOGIN_CONTENEDOR, false);
+      /**
+       * c. Inicializar el panel de AutoFillQuizApp dentro de la barra lateral
+       */
+      panel_AutoFillQuizApp(barraLateral);
+
+      toggleElementById(ID_PANEL_CONTENEDOR, true);
+
     } else {
-      console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${id}".`);
+      // Si el usuario no está autenticado
+
+      /**
+       * a. Mostrar el formulario de login y ocultar el panel principal
+       */
+      toggleElementById2(ID_LOGIN_CONTENEDOR, true);
+
     }
+  });
+}
+
+/**
+ * Alterna la visibilidad de un elemento del DOM basado en su ID.
+ * 
+ * @param {string} id - El ID del elemento a mostrar u ocultar.
+ * @param {boolean} mostrar - Si es `true`, muestra el elemento; si es `false`, lo oculta.
+ */
+function toggleElementById2(id, mostrar) {
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.style.display = mostrar ? 'block' : 'none';
+  } else {
+    console.warn(`[AutoQuizFill] toggleElementById: No se encontró el elemento con ID "${id}".`);
   }
-  
-  /**
-   * Muestra el formulario de login.
-   * 
-   * Este método asume que `mostrarLogin` ya maneja la visibilidad del formulario de login.
-   */
-  
+}
+
+/**
+ * Muestra el formulario de login.
+ * 
+ * Este método asume que `mostrarLogin` ya maneja la visibilidad del formulario de login.
+ */
+
 
 // Al final de tu bundle, reemplaza el listener de DOMContentLoaded existente con lo siguiente:
 
 if (document.readyState === 'loading') { // La página aún se está cargando
-    document.addEventListener('DOMContentLoaded', () => {
-        startAFQ();
-    });
-  } else { // El DOM ya está cargado
+  document.addEventListener('DOMContentLoaded', () => {
     startAFQ();
-  }
-  
+  });
+} else { // El DOM ya está cargado
+  startAFQ();
+}
+
 // Exposición de la función de cierre de sesión para uso externo (opcional).
 window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz;
