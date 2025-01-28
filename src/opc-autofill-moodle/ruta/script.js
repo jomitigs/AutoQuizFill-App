@@ -130,7 +130,7 @@ import { database } from '.../config-firebase/script.js';
                     const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
                     console.log(`Ruta para materias generada: ${materiaRuta}`);
 
-                    const materiaData = await firebase.database().ref(materiaRuta).once('value');
+                    const materiaData = await ref(database, materiaRuta).once('value');
                     const materiaOptions = materiaData.val();
                     console.log(`Datos obtenidos de Firebase:`, materiaOptions);
 
@@ -223,7 +223,7 @@ if (quizItems.length > 0) {
     if (quizNumber !== null) {
         const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
 
-        const testData = await firebase.database().ref(testRuta).once('value');
+        const testData = await ref(database, testRuta).once('value');
         const testOptions = testData.val();
 
         if (testOptions) {
