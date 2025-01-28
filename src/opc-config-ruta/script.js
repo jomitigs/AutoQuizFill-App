@@ -341,10 +341,9 @@ function esperarYSeleccionarOpcion(selectId, valorSeleccionado) {
 
 async function manejarSeleccionesSecuenciales() {
     const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects'));
-    console.log("Estado de los selects desde localStorage:", estadoSelects);
 
     if (!estadoSelects || estadoSelects.length === 0) {
-        console.log("No hay datos en el estado de los selects.");
+        console.log("[opc-config-ruta] No existe datos para las listas desplegables para ConfigRuta");
         return;
     }
 
