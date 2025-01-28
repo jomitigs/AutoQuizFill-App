@@ -24018,7 +24018,6 @@
             mensaje.style.marginBottom = '10px';
             mensaje.id = 'mensaje-ruta-invalida';
 
-            document.querySelector('.ruta-ciclo-container');
             const ultimaRutaConfigruta = document.getElementById('ultima-ruta-configruta');
 
             if (ultimaRutaConfigruta && !document.getElementById('mensaje-ruta-invalida')) {
@@ -24064,7 +24063,6 @@
         }
 
         contenedorSelects.innerHTML = ''; // Limpia el contenedor
-        nivelActual = 1; // Inicializa el nivel actual
 
         try {
             const snapshot = await get(databaseRef); // Obtiene los datos de Firebase
@@ -24080,7 +24078,7 @@
                 const selectUniversidad = document.createElement('select');
                 selectUniversidad.id = 'select-universidad-configruta';
                 selectUniversidad.className = 'estilo-configruta-select';
-                selectUniversidad.setAttribute('data-level', nivelActual);
+                selectUniversidad.setAttribute('data-level', '1'); // Asigna nivel 1
                 selectUniversidad.setAttribute('data-path', 'ConfigRuta/universidad');
                 selectUniversidad.style.marginBottom = '10px';
 
@@ -24113,9 +24111,12 @@
                         selectUniversidad.removeChild(defaultOption);
                     }
 
-                    await limpiarSelectsDesdeNivel(2); // Limpia selects de niveles superiores
+                    const currentLevel = parseInt(selectUniversidad.getAttribute('data-level'), 10);
+                    const nextLevel = currentLevel + 1;
+
+                    await limpiarSelectsDesdeNivel(nextLevel); // Limpia selects de niveles superiores
                     if (selectedUniversity) {
-                        await cargarSelectsDinamicos(selectedUniversity, rutaFirebase, 2, selectedUniversity); // Carga selects dinámicos
+                        await cargarSelectsDinamicos(selectedUniversity, rutaFirebase, nextLevel, selectedUniversity); // Carga selects dinámicos
                     }
                     guardarEstadoSelects(); // Guarda el estado actual de los selects
                 });
@@ -24198,7 +24199,7 @@
                 const selectDinamico = document.createElement('select');
                 selectDinamico.id = `select-${keyPrincipal}`;
                 selectDinamico.className = 'estilo-configruta-select';
-                selectDinamico.setAttribute('data-level', nivel);
+                selectDinamico.setAttribute('data-level', nivel); // Asigna el nivel actual
                 selectDinamico.setAttribute('data-path', rutaOpciones);
 
                 // Opción por defecto
@@ -24228,9 +24229,12 @@
                         selectDinamico.removeChild(defaultOption);
                     }
 
-                    await limpiarSelectsDesdeNivel(nivel + 1); // Limpia selects de niveles superiores
+                    const currentLevel = parseInt(selectDinamico.getAttribute('data-level'), 10);
+                    const nextLevel = currentLevel + 1;
+
+                    await limpiarSelectsDesdeNivel(nextLevel); // Limpia selects de niveles superiores
                     if (selectedOption) {
-                        await cargarSelectsDinamicos(selectedOption, `ConfigRuta/opciones/${universidadSeleccionada}`, nivel + 1, universidadSeleccionada); // Carga más selects si es necesario
+                        await cargarSelectsDinamicos(selectedOption, `ConfigRuta/opciones/${universidadSeleccionada}`, nextLevel, universidadSeleccionada); // Carga más selects si es necesario
                     }
                     guardarEstadoSelects(); // Guarda el estado actual de los selects
                 });
@@ -24275,10 +24279,13 @@
             return;
         }
 
+        // Ordenar los selects por nivel para asegurar que se procesen en orden
+        estadoSelects.sort((a, b) => parseInt(a.nivel) - parseInt(b.nivel));
+
         // Itera sobre cada objeto selectData en el arreglo estadoSelects
         for (let selectData of estadoSelects) {
-            const { id, seleccion } = selectData; // Desestructura el ID y la selección del objeto
-            console.log(`Procesando ${id} con valor: ${seleccion}`); // Registra el proceso actual
+            const { id, seleccion, nivel } = selectData; // Desestructura el ID y la selección del objeto
+            console.log(`Procesando ${id} con valor: ${seleccion} en nivel ${nivel}`); // Registra el proceso actual
             // Espera a que se seleccione la opción correspondiente en el <select>
             await esperarYSeleccionarOpcion(id, seleccion);
         }
@@ -24331,8 +24338,6 @@
                 }
             }
         });
-        // Actualiza el nivel actual restando 1 al nivel de inicio, reflejando que los niveles a partir de nivelInicio han sido limpiados
-        nivelActual = nivelInicio - 1;
     }
 
     // Guarda la configuración de ruta y ciclo en localStorage
@@ -24379,9 +24384,6 @@
 
         comprobarRutaCiclo_ConfigRuta(); // Verifica y muestra la nueva ruta y ciclo
     }
-
-    // Variable global para llevar el conteo de niveles de select.
-    let nivelActual = 1;
 
     // Exportación nombrada de la función para que pueda ser importada en otro script
     function panel_AutoFillQuizApp(barraLateral) {
