@@ -23389,6 +23389,9 @@
                 if (container) {
 
                     container.innerHTML = '';
+
+                    const label = document.createElement('label');
+                    label.className = 'switch';
                 }
 
             } else {
