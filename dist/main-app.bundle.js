@@ -23409,6 +23409,7 @@
             checkbox.checked = configRutaDinamic === "true";
 
         } else {
+            localStorage.getItem("configRutaDinamic");
             container.style.display = "none";
         }
 

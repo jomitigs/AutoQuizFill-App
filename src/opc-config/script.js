@@ -142,6 +142,8 @@ function initOpcConfigSwitch() {
         checkbox.checked = configRutaDinamic === "true";
 
     } else {
+        const configRutaDinamic = localStorage.getItem("configRutaDinamic");
+        configRutaDinamic === "false";
         container.style.display = "none";
     }
 
