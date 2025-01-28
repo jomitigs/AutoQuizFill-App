@@ -1,5 +1,5 @@
 import { ref, get } from 'firebase/database';
-import { database } from '.../config-firebase/script.js';
+import { database } from '../../config-firebase/script.js';
 
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 

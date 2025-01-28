@@ -1,4 +1,4 @@
-(function (script_js) {
+(function () {
     'use strict';
 
     // addHead.js
@@ -23087,7 +23087,7 @@
                         const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
                         console.log(`Ruta para materias generada: ${materiaRuta}`);
 
-                        const materiaData = await ref(script_js.database, materiaRuta).once('value');
+                        const materiaData = await ref(database, materiaRuta).once('value');
                         const materiaOptions = materiaData.val();
                         console.log(`Datos obtenidos de Firebase:`, materiaOptions);
 
@@ -23180,7 +23180,7 @@
         if (quizNumber !== null) {
             const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
 
-            const testData = await ref(script_js.database, testRuta).once('value');
+            const testData = await ref(database, testRuta).once('value');
             const testOptions = testData.val();
 
             if (testOptions) {
@@ -25069,4 +25069,4 @@
     // Exposición de la función de cierre de sesión para uso externo (opcional).
     window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz$1;
 
-})(script_js);
+})();
