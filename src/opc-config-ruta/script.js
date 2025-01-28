@@ -443,8 +443,8 @@ function guardarConfigRuta() {
     localStorage.setItem("configRuta", configRuta);
     localStorage.setItem("ciclo", ciclo);
 
-    console.log("configRuta:", configRuta);
-    console.log("ciclo:", ciclo);
+    console.log(`[opc-config-ruta] Valor de nuevo de configRuta: ${configRuta}, Valor nuevo de ciclo: ${ciclo}`);
+
 
     comprobarRutaCiclo_ConfigRuta(); // Verifica y muestra la nueva ruta y ciclo
 }
