@@ -24526,9 +24526,9 @@
         }
       } else {
 
-        if (ConfigPlataforma === "Moodle") {
+        if (configPlataforma === "Moodle") {
           cargarAutoFillMoodle(); // Ejecuta la función específica para Moodle
-        } else if (ConfigPlataforma === "Altissia") ; else {
+        } else if (configPlataforma === "Altissia") ; else {
           console.log("Plataforma no soportada");
         }
       } 

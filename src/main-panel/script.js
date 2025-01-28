@@ -152,9 +152,9 @@ export function panel_AutoFillQuizApp(barraLateral) {
     }
   } else {
 
-    if (ConfigPlataforma === "Moodle") {
+    if (configPlataforma === "Moodle") {
       cargarAutoFillMoodle(); // Ejecuta la función específica para Moodle
-    } else if (ConfigPlataforma === "Altissia") {
+    } else if (configPlataforma === "Altissia") {
       // cargarAutoFillAltissia(); // Ejecuta la función específica para Altissia
     } else {
       console.log("Plataforma no soportada");
