@@ -40,6 +40,9 @@ export function panel_AutoFillQuizApp(barraLateral) {
   // Función para cargar contenido por defecto (opcionConfig)
   function cargarOpcionConfig() {
     console.log('[AutoFillQuiz-App] Iniciando Configuración.');
+    localStorage.setItem('ultimoHtml', 'opcionConfig_html');
+    localStorage.setItem('ultimoJs', 'opcionConfig_js');
+    
     contenedorContenido.innerHTML = opcionConfig_html();
 
     setTimeout(() => {
@@ -54,6 +57,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
   // Función para cargar AutoFillMoodle por defecto
   function cargarAutoFillMoodle() {
     console.log('[AutoFillQuiz-App] Cargando AutoFill: Moodle.');
+    
     contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
 
     setTimeout(() => {
