@@ -329,24 +329,8 @@
 
 
            /* Estilos para el contenedor principal que ocupa toda la ventana */
-        .container-autoquiz {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            padding: 10px;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            overflow-y: auto; /* Permite el desplazamiento vertical */
-            -ms-overflow-style: none; /* Ocultar en Internet Explorer y Edge */
-            scrollbar-width: none; /* Ocultar en Firefox */
-        }
 
         /* Ocultar la barra de desplazamiento en Chrome, Safari y Opera */
-        .container-autoquiz::-webkit-scrollbar {
-            display: none;
-        }
-
 
             /* Estilo para el contenedor que muestra los usuarios actuales y siguientes */
             .users {
