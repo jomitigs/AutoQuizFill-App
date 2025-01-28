@@ -47,7 +47,8 @@ function comprobarRutaCiclo_ConfigRuta() {
     const configRuta = localStorage.getItem('configRuta');
     const ciclo = localStorage.getItem('ciclo');
 
-    console.log('[opc-config-ruta] Valores obtenidos de localStorage:', { configRuta, ciclo });
+    console.log(`[opc-config-ruta] Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
+
 
     // Verificar si configRuta y ciclo están definidos
     if (!configRuta || !ciclo) {
@@ -56,7 +57,7 @@ function comprobarRutaCiclo_ConfigRuta() {
         // Desactivar autofill y autosave
         localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
         localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-        console.log('[opc-config-ruta] Autofill y autosave desactivados en localStorage.');
+        // Autofill y autosave desactivados en localStorage
 
         // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
         const mensaje = document.createElement('div');
