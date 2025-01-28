@@ -102,12 +102,12 @@ export async function opcionConfig_js() {
                 }
             }
 
-            // Agregar un listener para guardar la selección en localStorage cuando cambie
+            //  Agregar un listener para guardar la selección en localStorage cuando cambie
             select.addEventListener('change', (event) => {
                 const seleccion = event.target.value;
                 if (seleccion) {
                     localStorage.setItem('ConfigPlataforma', seleccion);
-                    mostrarMensaje('Configuración guardada exitosamente.', 'success');
+                   // mostrarMensaje('Configuración guardada exitosamente.', 'success');mostrarMensaje('Configuración guardada exitosamente.', 'success');
                     initOpcConfigSwitch();
                 }
             });
@@ -182,7 +182,7 @@ function mostrarMensaje(mensaje, tipo) {
         // Remover el mensaje después de 3 segundos
         setTimeout(() => {
             mensajeElemento.remove();
-        }, 3000);
+        }, 500);
     }
 }
 
