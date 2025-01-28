@@ -17,11 +17,12 @@ export function opcionConfig_html() {
         <!-- Contenedor Select Dinámico -->
         <div id="selects-plataforma" class="estilo-config-item">
             <!-- Aquí se inyectará el select dinámicamente -->
-        </div>
 
-        <div id="opc-config-ruta-dinamica" class="estilo-config-item">
-            <!-- Aquí se inyectará el select dinámicamente -->
         </div>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
 
     </div>
     `;
@@ -113,27 +114,6 @@ export async function opcionConfig_js() {
             console.log('No se encontraron plataformas en Firebase.');
         }
 
-        const configPlataforma = localStorage.getItem('ConfigPlataforma');
-
-        if (configPlataforma === 'Moodle') {
-            // Obtener el contenedor donde se inyectará el toggle
-            const container = document.getElementById('opc-config-ruta-dinamica');
-
-            if (container) {
-
-                container.innerHTML = '';
-
-                const label = document.createElement('label');
-                label.className = 'switch';
-            }
-
-        } else {
-            // Si no es 'Moodle', limpiar el contenedor del toggle para evitar duplicados
-            const container = document.getElementById('opc-config-ruta-dinamica');
-            if (container) {
-                container.innerHTML = '';
-            }
-        }
         
     } catch (error) {
         console.error('Error al obtener las plataformas de Firebase:', error);
