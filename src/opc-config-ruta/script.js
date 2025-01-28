@@ -128,8 +128,6 @@ function guardarEstadoSelects() {
 }
 
 async function SelectUniversidad_ConfigRuta() {
-    console.log("Ejecutando SelectUniversidad_ConfigRuta...");
-
     const rutaFirebase = 'ConfigRuta/universidad';
     const databaseRef = ref(database, rutaFirebase); // Usar la función `ref` importada
     const contenedorSelects = document.getElementById('selects-configruta');
@@ -140,7 +138,7 @@ async function SelectUniversidad_ConfigRuta() {
     }
 
     contenedorSelects.innerHTML = '';
-    console.log("Contenedor 'selects-configruta' limpiado.");
+    console.log("[main-panel] Listas limpiadas.");
     nivelActual = 1;
 
     try {
@@ -382,7 +380,6 @@ async function limpiarSelectsDesdeNivel(nivelInicio) {
 // Función que ejecuta todo el proceso
 export async function opcionConfigRuta_js() {
     comprobarRutaCiclo_ConfigRuta();
-    console.log("Ejecutando opcionConfigRuta_js...");
     await SelectUniversidad_ConfigRuta();
 
     // Añadir el evento para el botón dentro de la función
