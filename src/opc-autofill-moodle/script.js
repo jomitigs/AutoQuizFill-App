@@ -186,13 +186,19 @@ export async function opcionAutoFillMoodle_js() {
         // Ejecutar la función contenedorUsers_js
         contenedorUsers_js();
     }
-    // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-    if (esMoodle && ( url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php'))|| url.includes('http://127.0.0.1:5500/dist/index.html')) {
-             await contenedorRutaDinamica_js();
-    }
+    // // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
+   // if (esMoodle && ( url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php'))|| url.includes('http://127.0.0.1:5500/dist/index.html')) {
+    //         await contenedorRutaDinamica_js();
+    //}
 
     // Verificar si "switch-ruta-dinamica" no existe en localStorage
-    if (!localStorage.getItem('switch-ruta-dinamica')) {
+    //if (!localStorage.getItem('switch-ruta-dinamica')) {
+        //contenedorRuta_js();
+    //}
+
+    if ((localStorage.getItem('switch-ruta-dinamica') && esMoodle)  || url.includes('http://127.0.0.1:5500/dist/index.html') ) {
+        await contenedorRutaDinamica_js();
+    } else {
         contenedorRuta_js();
     }
 
