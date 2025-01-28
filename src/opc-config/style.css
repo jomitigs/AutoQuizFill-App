@@ -26,23 +26,44 @@
         font-family: 'Poppins', sans-serif;
 }
 
-/* The switch - the box around the slider */
-.switch {
+/* styles.css */
+
+/* Contenedor que usa Flexbox para alinear elementos */
+.opc-config-switch-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px; /* Ajusta el ancho según tus necesidades */
+    padding: 10px;
+    margin: 10px 0; /* Espaciado entre switches */
+    border: 1px solid #ddd; /* Opcional: para visualizar el contenedor */
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Opcional: fondo del contenedor */
+  }
+  
+  /* Estilo para la etiqueta de texto */
+  .opc-config-switch-label {
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* El switch - el contenedor alrededor del slider */
+  .opc-config-switch {
     position: relative;
     display: inline-block;
-    width: 40px; /* Adjusted width */
-    height: 20px; /* Adjusted height */
+    width: 40px; /* Tamaño reducido */
+    height: 20px; /* Tamaño reducido */
   }
-
-  /* Hide default HTML checkbox */
-  .switch input {
+  
+  /* Ocultar el checkbox HTML por defecto */
+  .opc-config-switch-checkbox {
     opacity: 0;
     width: 0;
     height: 0;
   }
-
-  /* The slider */
-  .slider {
+  
+  /* El slider */
+  .opc-config-slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -50,41 +71,48 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
     transition: .4s;
+    border-radius: 20px; /* Redondear el slider */
   }
-
-  .slider:before {
+  
+  .opc-config-slider:before {
     position: absolute;
     content: "";
-    height: 14px; /* Adjusted size */
-    width: 14px; /* Adjusted size */
-    left: 3px;
-    bottom: 3px;
+    height: 16px; /* Tamaño reducido */
+    width: 16px; /* Tamaño reducido */
+    left: 2px;
+    bottom: 2px;
     background-color: white;
-    -webkit-transition: .4s;
     transition: .4s;
-  }
-
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(20px); /* Adjusted transform distance */
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-  }
-
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 20px;
-  }
-
-  .slider.round:before {
     border-radius: 50%;
   }
+  
+  /* Cambiar el color del slider cuando el checkbox está marcado */
+  .opc-config-switch-checkbox:checked + .opc-config-slider {
+    background-color: #2196F3;
+  }
+  
+  /* Añadir sombra al enfocar el checkbox */
+  .opc-config-switch-checkbox:focus + .opc-config-slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  /* Mover el slider cuando el checkbox está marcado */
+  .opc-config-switch-checkbox:checked + .opc-config-slider:before {
+    transform: translateX(20px); /* Ajusta según el tamaño reducido */
+  }
+  
+  /* Cambiar el color de la etiqueta cuando el switch está activo */
+  .opc-config-switch-checkbox:checked ~ .opc-config-switch-label {
+    color: #2196F3;
+  }
+  
+  /* Redondear el slider cuando tiene la clase 'round' */
+  .opc-config-slider.round {
+    border-radius: 20px;
+  }
+  
+  .opc-config-slider.round:before {
+    border-radius: 50%;
+  }
+  
