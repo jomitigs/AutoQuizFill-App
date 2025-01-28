@@ -234,7 +234,7 @@ function startAFQ() {
   onAuthStateChanged(autenticacion, (usuario) => {
     if (usuario) {
       // Si el usuario está autenticado
-      console.log(`[startAFQ] Usuario correctamente autenticado.`);
+      console.log(`[login-auth] Usuario correctamente autenticado.`);
       // a. Configurar la sesión con el UID del usuario
       configurarSesion(usuario.uid);
 

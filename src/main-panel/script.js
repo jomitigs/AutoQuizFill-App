@@ -42,7 +42,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
     console.log('[AutoFillQuiz-App] Iniciando Configuración.');
     localStorage.setItem('ultimoHtml', 'opcionConfig_html');
     localStorage.setItem('ultimoJs', 'opcionConfig_js');
-    
+
     contenedorContenido.innerHTML = opcionConfig_html();
 
     setTimeout(() => {
@@ -71,14 +71,13 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
   // Función para cargar las últimas funciones almacenadas
   function cargarUltimasFunciones() {
-    console.log('[AutoQuizFill] Iniciando la carga de las últimas funciones desde localStorage.');
 
     // Obtener las últimas funciones almacenadas en localStorage
     const ultimoHtml = localStorage.getItem('ultimoHtml');
     const ultimoJs = localStorage.getItem('ultimoJs');
 
-    console.log(`[AutoQuizFill] ultimoHtml obtenido: "${ultimoHtml}"`);
-    console.log(`[AutoQuizFill] ultimoJs obtenido: "${ultimoJs}"`);
+    let opcion = `${ultimoJs}_aplit`.split('_')[0];
+    console.log(`[main-panel] Iniciando: "${opcion}"`);
 
     // Verificar que las variables se hayan obtenido correctamente
     if (!ultimoHtml || !ultimoJs) {

@@ -24416,7 +24416,7 @@
         console.log('[AutoFillQuiz-App] Iniciando Configuración.');
         localStorage.setItem('ultimoHtml', 'opcionConfig_html');
         localStorage.setItem('ultimoJs', 'opcionConfig_js');
-        
+
         contenedorContenido.innerHTML = opcionConfig_html();
 
         setTimeout(() => {
@@ -24445,14 +24445,13 @@
 
       // Función para cargar las últimas funciones almacenadas
       function cargarUltimasFunciones() {
-        console.log('[AutoQuizFill] Iniciando la carga de las últimas funciones desde localStorage.');
 
         // Obtener las últimas funciones almacenadas en localStorage
         const ultimoHtml = localStorage.getItem('ultimoHtml');
         const ultimoJs = localStorage.getItem('ultimoJs');
 
-        console.log(`[AutoQuizFill] ultimoHtml obtenido: "${ultimoHtml}"`);
-        console.log(`[AutoQuizFill] ultimoJs obtenido: "${ultimoJs}"`);
+        let opcion = `${ultimoJs}_aplit`.split('_')[0];
+        console.log(`[main-panel] Iniciando: "${opcion}"`);
 
         // Verificar que las variables se hayan obtenido correctamente
         if (!ultimoHtml || !ultimoJs) {
@@ -25001,7 +25000,7 @@
       onAuthStateChanged(autenticacion, (usuario) => {
         if (usuario) {
           // Si el usuario está autenticado
-          console.log(`[startAFQ] Usuario correctamente autenticado.`);
+          console.log(`[login-auth] Usuario correctamente autenticado.`);
           // a. Configurar la sesión con el UID del usuario
           configurarSesion(usuario.uid);
 
