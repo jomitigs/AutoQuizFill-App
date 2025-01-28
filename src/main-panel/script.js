@@ -51,9 +51,9 @@ export function panel_AutoFillQuizApp(barraLateral) {
     }, 100);
   }
 
-  // Función para cargar AutoQuiz por defecto
+  // Función para cargar AutoFillMoodle por defecto
   function cargarAutoFillMoodle() {
-    console.log('[AutoQuizFill] Cargando opcionAutoFillMoodle_html y opcionAutoFillMoodle_js por defecto.');
+    console.log('[AutoFillQuiz-App] Cargando AutoFill: Moodle.');
     contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
 
     setTimeout(() => {

@@ -24425,9 +24425,9 @@
         }, 100);
       }
 
-      // Función para cargar AutoQuiz por defecto
+      // Función para cargar AutoFillMoodle por defecto
       function cargarAutoFillMoodle() {
-        console.log('[AutoQuizFill] Cargando opcionAutoFillMoodle_html y opcionAutoFillMoodle_js por defecto.');
+        console.log('[AutoFillQuiz-App] Cargando AutoFill: Moodle.');
         contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
 
         setTimeout(() => {
@@ -25033,10 +25033,7 @@
 
     /**
      * Alterna la visibilidad de un elemento del DOM basado en su ID.
-     * 
-     * @param {string} id - El ID del elemento a mostrar u ocultar.
-     * @param {boolean} mostrar - Si es `true`, muestra el elemento; si es `false`, lo oculta.
-     */
+    */
     function toggleElementById2(id, mostrar) {
       const elemento = document.getElementById(id);
       if (elemento) {
