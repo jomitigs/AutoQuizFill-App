@@ -468,7 +468,7 @@ import { database } from '../../config-firebase/script.js';
         }
 
         else {
-            // console.log('configRuta y ciclo están definidos. Mostrando contenedores.');
+            console.log('[contenedorRuta_js] configRuta y ciclo están definidos. Mostrando contenedores.');
 
             // Mostrar los contenedores si configRuta y ciclo están definidos
             containerAutoQuiz.forEach(container => {
