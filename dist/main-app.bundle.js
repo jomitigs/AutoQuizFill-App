@@ -24019,7 +24019,10 @@
             // Mostrar los contenedores si configRuta y ciclo están definidos
             if (rutaCicloContainer) {
                 rutaCicloContainer.style.display = 'block';
+                console.log('[opc-config-ruta] Mostrando .rutaCicloContainer.');
             }
+
+            
 
             // Eliminar el mensaje si existe
             const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
