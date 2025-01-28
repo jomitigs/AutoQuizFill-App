@@ -23337,7 +23337,7 @@
 <div id="users-autofill-switch" class="opc-config-switch-container" style="display: none">
   <span class="opc-config-switch-label">Users AutoFill</span>
   <label class="opc-config-switch">
-    <input type="checkbox" class="opc-config-switch-checkbox">
+    <input type="checkbox" id="users-autofill-switch-checkbox" class="opc-config-switch-checkbox">
     <span class="opc-config-slider round"></span>
   </label>
 </div>
@@ -23425,6 +23425,7 @@
                         localStorage.setItem('ConfigPlataforma', seleccion);
                        // mostrarMensaje('Configuración guardada exitosamente.', 'success');mostrarMensaje('Configuración guardada exitosamente.', 'success');
                         initOpcConfigSwitch();
+                        initOpcConfigSwitch2();
                     }
                 });
 
@@ -23436,6 +23437,7 @@
             }
 
             initOpcConfigSwitch();
+            initOpcConfigSwitch2();
 
 
         } catch (error) {
@@ -23448,6 +23450,33 @@
     function initOpcConfigSwitch() {
         const container = document.getElementById("dynamic-route-switch");
         const checkbox = document.getElementById("dynamic-route-switch-checkbox");
+
+        // Mostrar el contenedor si ConfigPlataforma es "Moodle"
+        const configPlataforma = localStorage.getItem("ConfigPlataforma");
+        if (configPlataforma === "Moodle") {
+            container.style.display = "flex";
+
+            const configRutaDinamic = localStorage.getItem("configRutaDinamic");
+            checkbox.checked = configRutaDinamic === "true";
+
+        } else {
+            localStorage.setItem("configRutaDinamic", "false");
+            container.style.display = "none";
+        }
+
+        // Establecer el estado inicial del checkbox desde configRutaDinamic
+
+
+        // Escuchar cambios en el checkbox
+        checkbox.addEventListener("change", () => {
+            const isChecked = checkbox.checked;
+            localStorage.setItem("configRutaDinamic", isChecked.toString());
+        });
+    }
+
+    function initOpcConfigSwitch2() {
+        const container = document.getElementById("users-autofill-switch");
+        const checkbox = document.getElementById("users-autofill-switch-checkbox");
 
         // Mostrar el contenedor si ConfigPlataforma es "Moodle"
         const configPlataforma = localStorage.getItem("ConfigPlataforma");
