@@ -20,10 +20,13 @@ export function opcionConfig_html() {
             </div>
 
             <!-- Switch -->
-<label class="switch">
-  <input type="checkbox">
-  <span class="slider round"></span>
-</label>
+<div style="display: flex; align-items: center; justify-content: space-between; width: 200px;">
+  <label style="font-size: 14px; font-weight: bold;">Ruta Dinámica</label>
+  <label class="switch">
+    <input type="checkbox">
+    <span class="slider round"></span>
+  </label>
+</div>
 
         </div>
 

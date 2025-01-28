@@ -23267,7 +23267,7 @@
 `;
     }
 
-    var css_248z$2 = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* The switch - the box around the slider */\r\n.switch {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 60px;\r\n    height: 34px;\r\n  }\r\n  \r\n  /* Hide default HTML checkbox */\r\n  .switch input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n  }\r\n  \r\n  /* The slider */\r\n  .slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    -webkit-transition: .4s;\r\n    transition: .4s;\r\n  }\r\n  \r\n  .slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 26px;\r\n    width: 26px;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    -webkit-transition: .4s;\r\n    transition: .4s;\r\n  }\r\n  \r\n  input:checked + .slider {\r\n    background-color: #2196F3;\r\n  }\r\n  \r\n  input:focus + .slider {\r\n    box-shadow: 0 0 1px #2196F3;\r\n  }\r\n  \r\n  input:checked + .slider:before {\r\n    -webkit-transform: translateX(26px);\r\n    -ms-transform: translateX(26px);\r\n    transform: translateX(26px);\r\n  }\r\n  \r\n  /* Rounded sliders */\r\n  .slider.round {\r\n    border-radius: 34px;\r\n  }\r\n  \r\n  .slider.round:before {\r\n    border-radius: 50%;\r\n  }";
+    var css_248z$2 = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* The switch - the box around the slider */\r\n.switch {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 40px; /* Adjusted width */\r\n    height: 20px; /* Adjusted height */\r\n  }\r\n\r\n  /* Hide default HTML checkbox */\r\n  .switch input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n  }\r\n\r\n  /* The slider */\r\n  .slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    -webkit-transition: .4s;\r\n    transition: .4s;\r\n  }\r\n\r\n  .slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 14px; /* Adjusted size */\r\n    width: 14px; /* Adjusted size */\r\n    left: 3px;\r\n    bottom: 3px;\r\n    background-color: white;\r\n    -webkit-transition: .4s;\r\n    transition: .4s;\r\n  }\r\n\r\n  input:checked + .slider {\r\n    background-color: #2196F3;\r\n  }\r\n\r\n  input:focus + .slider {\r\n    box-shadow: 0 0 1px #2196F3;\r\n  }\r\n\r\n  input:checked + .slider:before {\r\n    -webkit-transform: translateX(20px); /* Adjusted transform distance */\r\n    -ms-transform: translateX(20px);\r\n    transform: translateX(20px);\r\n  }\r\n\r\n  /* Rounded sliders */\r\n  .slider.round {\r\n    border-radius: 20px;\r\n  }\r\n\r\n  .slider.round:before {\r\n    border-radius: 50%;\r\n  }";
     styleInject(css_248z$2);
 
     // configuracion.js
@@ -23287,10 +23287,13 @@
             </div>
 
             <!-- Switch -->
-<label class="switch">
-  <input type="checkbox">
-  <span class="slider round"></span>
-</label>
+<div style="display: flex; align-items: center; justify-content: space-between; width: 200px;">
+  <label style="font-size: 14px; font-weight: bold;">Ruta Dinámica</label>
+  <label class="switch">
+    <input type="checkbox">
+    <span class="slider round"></span>
+  </label>
+</div>
 
         </div>
 
