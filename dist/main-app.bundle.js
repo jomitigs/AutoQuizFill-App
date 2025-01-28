@@ -24014,21 +24014,17 @@
                 console.log('[opc-config-ruta] No ha seleccionado una ruta o ciclo.');
             }
         } else {
-            console.log('[opc-config-ruta] configRuta y ciclo están definidos. Mostrando contenedores.');
-
             const rutaCicloContainer = document.querySelector('.ruta-ciclo-container');
 
             // Mostrar los contenedores si configRuta y ciclo están definidos
             if (rutaCicloContainer) {
                 rutaCicloContainer.style.display = 'block';
-                console.log('[opc-config-ruta] Elemento ruta-ciclo-container mostrado:', rutaCicloContainer);
             }
 
             // Eliminar el mensaje si existe
             const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
             if (mensajeExistente) {
                 mensajeExistente.remove();
-                console.log('[opc-config-ruta] Mensaje de advertencia eliminado.');
             }
 
             // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
@@ -24039,7 +24035,6 @@
                 // Asignar los valores de configRuta y ciclo en los elementos del DOM
                 rutaElemento.innerHTML = `<span class="ruta-configruta">Ruta:</span> ${configRuta}`;
                 cicloElemento.innerHTML = `<span class="ciclo-configruta">Ciclo:</span> ${ciclo}`;
-                console.log(`[opc-config-ruta] Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
             }
         }
     }
