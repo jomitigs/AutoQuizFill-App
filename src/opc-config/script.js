@@ -20,7 +20,7 @@ export function opcionConfig_html() {
             </div>
 
             <!-- Switch -->
-  <div class="opc-config-switch-container">
+  <div class="opc-config-switch-container" style="display: none">
     <span class="opc-config-switch-label">Ruta Dinámica</span>
     <label class="opc-config-switch">
       <input type="checkbox" class="opc-config-switch-checkbox">
