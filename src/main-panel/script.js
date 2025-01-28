@@ -39,7 +39,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
   // Función para cargar contenido por defecto (opcionConfig)
   function cargarOpcionConfig() {
-    console.log('[AutoQuizFill] Cargando opcionConfig_html y opcionConfig_js.');
+    console.log('[AutoFillQuiz-App] Iniciando Configuración.');
     contenedorContenido.innerHTML = opcionConfig_html();
 
     setTimeout(() => {
