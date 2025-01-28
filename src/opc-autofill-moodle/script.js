@@ -173,7 +173,7 @@ if (esMoodle) {
     console.log("Esta página no está construida con Moodle");
 }
     // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
-    if (url.includes('grade/report/overview/index.php')) {
+    if (esMoodle && url.includes('grade/report/overview/index.php')) {
     //     extractRevision();
     //     viewRevisiones();
     }
@@ -182,7 +182,7 @@ if (esMoodle) {
     contenedorUsers_js();
 
     // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-     if (url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php'   )|| url.includes('http://127.0.0.1:5500/dist/index.html') ) {
+     if (esMoodle && url.includes('mod/quiz') || url.includes('grade/report/overview/index.php' ) || url.includes('login/index.php'   )|| url.includes('http://127.0.0.1:5500/dist/index.html') ) {
        const rutaDinamicaContainer = document.getElementById('container-ruta-dinamica');
        rutaDinamicaContainer.style.display = 'block';
     //     await contenedorRutaDinamica_js();
@@ -205,14 +205,14 @@ if (esMoodle) {
     }
 
     // Mostrar contenedor de autosavereview si estamos en 'mod/quiz/review.php'
-    if (url.includes('mod/quiz/review.php')) {
+    if (esMoodle && url.includes('mod/quiz/review.php')) {
     const autoSaveReviewContainer = document.getElementById('container-autosavereview');
     autoSaveReviewContainer.style.display = 'block';
     // contenedorAutoSaveReview_js();
     }
 
     // Mostrar contenedor de verified si estamos en cualquiera de las páginas especificadas
-    if (url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
+    if (esMoodle || url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
      const verifiedContainer = document.getElementById('container-verified');
     verifiedContainer.style.display = 'block';
     //     await opcionVerified_js();
