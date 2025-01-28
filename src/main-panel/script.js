@@ -78,9 +78,8 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
     // Verificar que las variables se hayan obtenido correctamente
     if (!ultimoHtml || !ultimoJs) {
-        console.warn('[AutoQuizFill] No se encontraron las últimas funciones en localStorage.');
-        cargarAutoFillMoodle(); // Carga por defecto
-        return;
+      console.warn('[AutoQuizFill] No se encontraron las últimas funciones en localStorage.');
+      return;
     }
 
     // Mapeo de las posibles funciones HTML y JS
@@ -107,36 +106,34 @@ export function panel_AutoFillQuizApp(barraLateral) {
     console.log(`[AutoQuizFill] Función HTML seleccionada: "${ultimoHtml}"`);
 
     if (funcionHtml) {
-        try {
-            contenedorContenido.innerHTML = funcionHtml();
-            console.log('[AutoQuizFill] HTML cargado exitosamente.');
-        } catch (error) {
-            console.error('[AutoQuizFill] Error al ejecutar la función HTML:', error);
-            cargarAutoFillMoodle(); // Carga por defecto en caso de error
-            return;
-        }
-    } else {
-        console.warn(`[AutoQuizFill] La función HTML "${ultimoHtml}" no está definida.`);
-        cargarAutoFillMoodle(); // Carga por defecto si no se encuentra
+      try {
+        contenedorContenido.innerHTML = funcionHtml();
+        console.log('[AutoQuizFill] HTML cargado exitosamente.');
+      } catch (error) {
+        console.error('[AutoQuizFill] Error al ejecutar la función HTML:', error);
         return;
+      }
+    } else {
+      console.warn(`[AutoQuizFill] La función HTML "${ultimoHtml}" no está definida.`);
+      return;
     }
 
     // Ejecutar la función JS correspondiente
     setTimeout(() => {
-        console.log(`[AutoQuizFill] Intentando ejecutar la función JS: "${ultimoJs}"`);
-        const funcionJs = funcionesJs[ultimoJs];
-        if (typeof funcionJs === 'function') {
-            try {
-                funcionJs();
-                console.log('[AutoQuizFill] Función JS ejecutada exitosamente.');
-            } catch (error) {
-                console.error('[AutoQuizFill] Error al ejecutar la función JS:', error);
-            }
-        } else {
-            console.warn(`[AutoQuizFill] La función JS "${ultimoJs}" no está definida.`);
+      console.log(`[AutoQuizFill] Intentando ejecutar la función JS: "${ultimoJs}"`);
+      const funcionJs = funcionesJs[ultimoJs];
+      if (typeof funcionJs === 'function') {
+        try {
+          funcionJs();
+          console.log('[AutoQuizFill] Función JS ejecutada exitosamente.');
+        } catch (error) {
+          console.error('[AutoQuizFill] Error al ejecutar la función JS:', error);
         }
+      } else {
+        console.warn(`[AutoQuizFill] La función JS "${ultimoJs}" no está definida.`);
+      }
     }, 100);
-}
+  }
 
 
   // Lógica principal para determinar qué contenido cargar
@@ -154,9 +151,15 @@ export function panel_AutoFillQuizApp(barraLateral) {
       cargarOpcionConfig();
     }
   } else {
-    // Caso 3: Existe ConfigPlataforma pero no existen ultimoHtml y ultimoJs
-    cargarAutoFillMoodle();
-  }
+
+    if (ConfigPlataforma === "Moodle") {
+      cargarAutoFillMoodle(); // Ejecuta la función específica para Moodle
+    } else if (ConfigPlataforma === "Altissia") {
+      // cargarAutoFillAltissia(); // Ejecuta la función específica para Altissia
+    } else {
+      console.log("Plataforma no soportada");
+    }
+  } 
 
 
   panelHeader.appendChild(botonMenu);
