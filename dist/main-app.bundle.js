@@ -24075,7 +24075,6 @@
         }
 
         contenedorSelects.innerHTML = '';
-        console.log("[opc-config-ruta] Listas limpiadas.");
         nivelActual = 1;
 
         try {
