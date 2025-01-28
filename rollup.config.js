@@ -23,33 +23,33 @@ export default {
       extensions: ['.css'],
       inject: true,
     }),
-    terser({
-      format: {
-        comments: false, // Elimina todos los comentarios
-      },
-      compress: {
-        drop_console: true, // Elimina los mensajes de consola
-      },
-    }),
-    obfuscator({
-      compact: true,
-      controlFlowFlattening: true,
-      controlFlowFlatteningThreshold: 0.80,
-      deadCodeInjection: true,
-      deadCodeInjectionThreshold: 0.6,
-      debugProtection: false,
-      debugProtectionInterval: false,
-      disableConsoleOutput: true, // Elimina cualquier mensaje de consola que sobreviva
-      identifierNamesGenerator: 'hexadecimal',
-      renameGlobals: false,
-      selfDefending: true,
-      splitStrings: true,
-      stringArray: true,
-      stringArrayEncoding: ['base64'], // Opcional: base64 o rc4
-      stringArrayThreshold: 0.75,
-      transformObjectKeys: true,
-      unicodeEscapeSequence: false,
-    }),
+    //terser({
+      //format: {
+        //comments: false, // Elimina todos los comentarios
+      //},
+      //compress: {
+        //drop_console: true, // Elimina los mensajes de consola
+      //},
+    //}),
+    //obfuscator({
+      //compact: true,
+      //controlFlowFlattening: true,
+      //controlFlowFlatteningThreshold: 0.80,
+      //deadCodeInjection: true,
+      //deadCodeInjectionThreshold: 0.6,
+      //debugProtection: false,
+      //debugProtectionInterval: false,
+      //disableConsoleOutput: true, // Elimina cualquier mensaje de consola que sobreviva
+      //identifierNamesGenerator: 'hexadecimal',
+      //renameGlobals: false,
+      //selfDefending: true,
+      //splitStrings: true,
+      //stringArray: true,
+      //stringArrayEncoding: ['base64'], // Opcional: base64 o rc4
+      //stringArrayThreshold: 0.75,
+      //transformObjectKeys: true,
+      //unicodeEscapeSequence: false,
+    //}),
     html({
       include: '**/*.html',
     }),
