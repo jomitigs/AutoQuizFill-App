@@ -23629,6 +23629,8 @@
             const autofillUsers = document.getElementById('users-autofill-moodle');
             autofillUsers.style.display = 'flex';
             contenedorUsers_js();
+        } else {
+            console.log("[opc-autofill-moodle: main] AutoFill Users no ejecutado porque, no es Moodle");
         }
 
         // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
