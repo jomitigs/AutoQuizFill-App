@@ -23372,10 +23372,7 @@
                 // Agregar un listener para guardar la selección en localStorage cuando cambie
                 select.addEventListener('change', (event) => {
                     const seleccion = event.target.value;
-                    if (seleccion) {
-                        localStorage.setItem('ConfigPlataforma', seleccion);
-                        mostrarMensaje('Configuración guardada exitosamente.', 'success');
-                    }
+                    initOpcConfigSwitch();
                 });
 
                 // Agregar la etiqueta y el select al contenedor
@@ -23415,33 +23412,6 @@
           localStorage.setItem("configRutaDinamic", isChecked.toString());
         });
       }
-
-    /**
-     * Función para mostrar mensajes al usuario
-     * @param {string} mensaje - El mensaje a mostrar
-     * @param {string} tipo - El tipo de mensaje ('success', 'warning', 'error')
-     */
-    function mostrarMensaje(mensaje, tipo) {
-        // Crear un elemento para el mensaje
-        const mensajeElemento = document.createElement('div');
-        mensajeElemento.textContent = mensaje;
-        mensajeElemento.classList.add('mensaje'); // Clase base para mensajes
-
-        // Añadir clase según el tipo de mensaje
-        {
-            mensajeElemento.classList.add('mensaje-exito');
-        }
-
-        // Insertar el mensaje en el DOM, por ejemplo, al final del contenedor de configuración
-        const contenidoConfig = document.querySelector('.contenido-config');
-        if (contenidoConfig) {
-            contenidoConfig.appendChild(mensajeElemento);
-            // Remover el mensaje después de 3 segundos
-            setTimeout(() => {
-                mensajeElemento.remove();
-            }, 3000);
-        }
-    }
 
     var css_248z$1 = "\r\n/* Estilo para el Contenedor Principal */\r\n#titulo-configruta {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n/* Estilo para Ruta y Ciclo (apilados verticalmente) */\r\n.ruta-ciclo-container {\r\n    display: flex;\r\n    flex-direction: column; /* Cambiado a columna para apilar */\r\n    align-items: flex-start; /* Alinea los elementos al inicio horizontalmente */\r\n    margin-bottom: 0; /* Espacio entre Ciclo y Mensaje Combinado */\r\n    color: #34495e;\r\n}\r\n\r\n/* Estilo para Ruta */\r\n.title-configruta-ruta {\r\n    padding: 0; /* Espacio vertical entre Ruta y Ciclo */\r\n    font-size: 14px; /* Tamaño de fuente para Ruta */\r\n    color: #333; /* Color del texto */\r\n    font-family: 'Poppins', sans-serif;\r\n    margin-bottom: -5px;\r\n}\r\n\r\n/* Estilo para Ciclo */\r\n.title-configruta-ciclo {\r\n    padding: 5px 0; /* Espacio vertical */\r\n    font-size: 14px; /* Tamaño de fuente para Ciclo */\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n.label-configruta {\r\n    font-weight: 600;\r\n    color: #34495e; /* Color más oscuro para destacar */\r\n    font-size: 14px; /* Ligero aumento en tamaño */\r\n}\r\n\r\n.ciclo-configruta,\r\n.ruta-configruta {\r\n    font-weight: 600;\r\n    color: #34495e; /* Color más oscuro para destacar */\r\n    font-size: 14px; /* Ligero aumento en tamaño */\r\n}\r\n\r\n/* Título estilizado */\r\n.title-optionmenu {\r\n    font-size: 22px;\r\n    font-weight: 700;\r\n    color: #34495e;\r\n    margin-bottom: 20px;\r\n    text-align: left;\r\n}\r\n\r\n/* Contenedores de elementos */\r\n.estilo-configruta-item {\r\n    margin-bottom: 10px;\r\n    font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* Estilo para el Mensaje Combinado */\r\n.title-configruta-no-seleccionado {\r\n    display: none; /* Oculto por defecto */\r\n    width: 100%;\r\n    text-align: center;\r\n    margin-top: 10px;\r\n    color: red; /* Color del mensaje */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 10px; /* Tamaño de fuente para el mensaje combinado */\r\n}\r\n\r\n/* Opcional: Mostrar el mensaje cuando ambos no están seleccionados */\r\n.no-seleccionado .title-configruta-no-seleccionado {\r\n    display: block;\r\n}\r\n\r\n/* Estilos para los selects */\r\n.estilo-configruta-select {\r\n    width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */\r\n    padding: 12px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff; /* Fondo blanco */\r\n    color: #2c3e50; /* Texto oscuro para mayor legibilidad */\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */\r\n    transition: border 0.3s ease, box-shadow 0.3s ease; /* Transición suave */\r\n}\r\n\r\n/* Efecto hover y foco en los selects */\r\n.estilo-configruta-select:hover,\r\n.estilo-configruta-select:focus {\r\n    border-color: #0072c5;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);\r\n    outline: none;\r\n}\r\n\r\n/* Botones estilizados */\r\n.estilo-configruta-boton {\r\n    width: 100%;\r\n    padding: 12px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins */\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n/* Efecto hover en los botones */\r\n.estilo-configruta-boton:hover {\r\n    background-color: #002c67;\r\n    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);\r\n}";
     styleInject(css_248z$1);
