@@ -56,7 +56,7 @@ export function panel_AutoFillQuizApp(barraLateral) {
 
   // Función para cargar AutoFillMoodle por defecto
   function cargarAutoFillMoodle() {
-    console.log('[main-panel] Cargando AutoFill: Moodle.');
+    console.log('[main-panel] Cargando AutoFill Moodle.');
     
     if (opcionAutoFillMoodle_html) {
       try {
