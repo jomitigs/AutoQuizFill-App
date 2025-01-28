@@ -136,7 +136,7 @@ function initOpcConfigSwitch() {
     // Mostrar el contenedor si ConfigPlataforma es "Moodle"
     const configPlataforma = localStorage.getItem("ConfigPlataforma");
     if (configPlataforma === "Moodle") {
-      container.style.display = "block";
+      container.style.display = "flex";
     }
   
     // Establecer el estado inicial del checkbox desde configRutaDinamic
