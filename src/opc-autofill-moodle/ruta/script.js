@@ -325,7 +325,7 @@ if (quizItems.length > 0) {
         for (const selectInfo of selectsNivel5) {
             try {
                 // Obtener datos de Firebase para la ruta especificada
-                const optionsData = await firebase.database().ref(selectInfo.ruta).once('value');
+                const optionsData = await ref(database, selectInfo.ruta).once('value');
                 if (!optionsData.exists()) {
                     console.warn(`No se encontraron datos en la ruta: ${selectInfo.ruta}`);
                     continue;
