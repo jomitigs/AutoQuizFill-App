@@ -1,7 +1,7 @@
 import './style.css';
 
 import { contenedorUsers_js } from '../opc-autofill-moodle/users/script.js';
-import { contenedorRuta_js } from '../opc-autofill-moodle/ruta/script.js';
+import { contenedorRuta_js, contenedorRutaDinamica_js } from '../opc-autofill-moodle/ruta/script.js';
 
 export function opcionAutoFillMoodle_html() {
     return `
@@ -187,8 +187,8 @@ export async function opcionAutoFillMoodle_js() {
         contenedorUsers_js();
     }
     // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-    if (esMoodle && url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php') || url.includes('http://127.0.0.1:5500/dist/index.html')) {
-        //     await contenedorRutaDinamica_js();
+    if (esMoodle && ( url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php'))|| url.includes('http://127.0.0.1:5500/dist/index.html')) {
+             await contenedorRutaDinamica_js();
     }
 
     // Verificar si "switch-ruta-dinamica" no existe en localStorage

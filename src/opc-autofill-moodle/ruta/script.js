@@ -1,6 +1,6 @@
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
-    async function contenedorRutaDinamica_js() {
+    export async function contenedorRutaDinamica_js() {
         const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
