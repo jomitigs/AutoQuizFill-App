@@ -22965,7 +22965,7 @@
             const configRuta = localStorage.getItem('configRuta');
             const ciclo = localStorage.getItem('ciclo');
 
-            // console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
+            console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
 
             // Verificar si configRuta y ciclo están definidos
             if (!configRuta || !ciclo) {
