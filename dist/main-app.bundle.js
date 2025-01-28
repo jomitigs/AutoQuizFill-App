@@ -23286,7 +23286,7 @@
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
-        <div id="config-ruta-dinamica" class="estilo-config-item">
+        <div id="config-ruta-dinamica">
             <!-- Aquí se inyectará el select dinámicamente -->
         </div>
 
@@ -23375,12 +23375,14 @@
                 // Agregar la etiqueta y el select al contenedor
                 selectsContainer.appendChild(label);
                 selectsContainer.appendChild(select);
-            } else {
+            } 
+            else {
                 console.log('No se encontraron plataformas en Firebase.');
             }
 
             // Verificar si 'ConfigPlataforma' en localStorage es 'Moodle'
         const configPlataforma = localStorage.getItem('ConfigPlataforma');
+
         if (configPlataforma === 'Moodle') {
             // Obtener el contenedor donde se inyectará el toggle
             const container = document.getElementById('config-ruta-dinamica');
@@ -23424,7 +23426,7 @@
                 console.log('configRutaDinamic actualizado a:', checkbox.checked);
             });
         }
-        
+
         } catch (error) {
             console.error('Error al obtener las plataformas de Firebase:', error);
         }
