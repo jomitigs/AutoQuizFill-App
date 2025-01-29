@@ -111,7 +111,7 @@ import { database } from '../../config-firebase/script.js';
                     console.warn('[opc-autifill-moodle: ruta] No se encontraron coincidencias en el título del breadcrumb.');
                 }
             } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontraron elementos breadcrumb en la página.');
+                console.warn('[opc-autifill-moodle: ruta] No se encontro materia.');
             }
     
             // ** 5. Obtener Test **
@@ -183,7 +183,7 @@ import { database } from '../../config-firebase/script.js';
                     console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
                 }
             } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontraron elementos quizItems en la página.');
+                console.warn('[opc-autifill-moodle: ruta] No se encontro quiz.');
             }
     
             // ** 6. Verificar y Actualizar ConfigRutaDinamic **
