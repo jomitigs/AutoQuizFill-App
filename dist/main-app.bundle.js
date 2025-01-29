@@ -23170,7 +23170,7 @@
                 return updatedConfigRuta;
             }
 
-            else if (materiaValor && !testClave) {
+            else if ( (!testClave || !materiaValor) && window.location.href.includes("mod/quiz/") ) {
                 // Obtener la configuración de ruta dinámica almacenada en sessionStorage
                 const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
 
@@ -23188,7 +23188,7 @@
                 }
             }
 
-            else {
+            else if ( (!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/") ) {
                 sessionStorage.setItem('configRutaDinamic', "dinámica");
 
                 // Actualizar el elemento HTML con la ruta 'dinamica'
