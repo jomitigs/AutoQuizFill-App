@@ -23265,7 +23265,7 @@
             }
 
         } else {
-            console.log('[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para esta Ruta');
+            console.log(`[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
             contenedorRuta_js$1();
         }
     }
