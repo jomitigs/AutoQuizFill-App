@@ -267,10 +267,8 @@ import { database } from '../../config-firebase/script.js';
                 }
     
                 return updatedConfigRuta;
-            }
-    
-            // ** 7. Caso Especial para la Página de Reportes de Calificaciones **
-            if (window.location.href.includes('grade/report/overview/index.php')) {
+
+            } else { // ** 7. Caso Especial para la Página de Reportes de Calificaciones **
                 const rutaElement = document.getElementById('ruta-configruta');
                 if (rutaElement) {
                     rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span>`;
@@ -278,7 +276,6 @@ import { database } from '../../config-firebase/script.js';
                 } else {
                     console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
                 }
-                return null;
             }
     
             // ** 8. Manejar Casos donde No se Pueden Determinar materiaValor o testClave **
