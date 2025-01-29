@@ -157,6 +157,23 @@ export async function opcionAutoFillMoodle_js() {
         console.log("[opc-autofill-moodle: main] AutoFill Users no ejecutado porque, no es Moodle");
     }
 
+    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
+
+    if (!switchRutaDinamica || switchRutaDinamica === "false") {
+        console.log('[opc-autifill-moodle: main] Ruta Dinamica desactivada');
+    } else {
+        console.log('[opc-autifill-moodle: main] Ruta Dinamica activada');
+    }
+
+    if (switchRutaDinamica === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
+        console.log('[opc-autifill-moodle: main] Cargando Ruta Dinamica...');
+        await contenedorRutaDinamica_js();
+    } else {
+        console.log('[opc-autifill-moodle: main] Cargando Ruta...');
+        contenedorRuta_js();
+    }
+
+
     // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
     // if (esMoodle && url.includes('grade/report/overview/index.php')) {
         //     extractRevision();
@@ -173,22 +190,7 @@ export async function opcionAutoFillMoodle_js() {
         //contenedorRuta_js();
     //}
 
-    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
-
-    if (!switchRutaDinamica || switchRutaDinamica === "false") {
-        console.log('[opc-autifill-moodle: main] Ruta Dinamica desactivada');
-    } else {
-        console.log('[opc-autifill-moodle: main] Ruta Dinamica activada');
-    }
-
-    if (  localStorage.getItem('switch-ruta-dinamica') === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
-        
-        console.log('[opc-autifill-moodle: main] Cargando Ruta Dinamica...');
-        await contenedorRutaDinamica_js();
-    } else {
-        console.log('[opc-autifill-moodle: main] Cargando Ruta...');
-        contenedorRuta_js();
-    }
+    
     
 
 

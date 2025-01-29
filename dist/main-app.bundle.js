@@ -22961,95 +22961,33 @@
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
         async function contenedorRutaDinamica_js() {
-            const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
+            // Obtiene los valores 'configRuta' y 'ciclo' del almacenamiento local
             const configRuta = localStorage.getItem('configRuta');
             const ciclo = localStorage.getItem('ciclo');
-
-            // Verificar si configRuta y ciclo están definidos
+        
+            // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
             if (!configRuta || !ciclo) {
-                // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
-
-                // Ocultar todos los elementos con la clase 'container-autoquiz'
-                containerAutoQuiz.forEach(container => {
-                    if (container) {
-                        container.style.display = 'none';
-                        // console.log('Contenedor .container-autoquiz ocultado:', container);
-                    }
-                });
-
-                // Desactivar autofill y autosave
-                localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
-                localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-                console.log('Autofill y autosave desactivados en localStorage.');
-
-                // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
-                const mensaje = document.createElement('div');
-                mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
-                mensaje.style.color = 'red';
-                mensaje.style.fontWeight = '500';
-                mensaje.style.fontSize = '0.95em';
-                mensaje.style.fontStyle = 'italic';
-                mensaje.style.textAlign = 'center';
-                mensaje.id = 'mensaje-ruta-invalida';
-
-                const contenidoPrincipal = document.getElementById('contenido-principal');
-                if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
-                    contenidoPrincipal.appendChild(mensaje);
-                    console.log('Mensaje de advertencia añadido al contenido principal.');
-                }
-            }
-            else {
+                // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
+                contenedorRuta_js$1();
+                return;
+            } else {
+                // Obtiene el elemento con el ID 'ciclo-configruta' del DOM
                 const cicloElemento = document.getElementById('ciclo-configruta');
                 if (cicloElemento) {
-                    // Asignar los valores de ciclo en los elementos del DOM
+                    // Asigna el valor de 'ciclo' al contenido HTML del elemento, mostrando una etiqueta y el valor
                     cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
+                    await actualizaConfigRutaDinamic();
                 }
-            }
-
-            document.getElementById('switch-ruta-dinamica');
-            const contenedorSelects = document.getElementById('selects-subject-dinamic');
-
-            // Lee o inicializa el estado del switch desde localStorage
-            let switchState = JSON.parse(localStorage.getItem('switch-ruta-dinamica')) ?? false;
-            localStorage.setItem('switch-ruta-dinamica', JSON.stringify(switchState)); // Asegura un valor almacenado
-
-            const url = window.location.href;
-
-            // Verifica si la URL actual incluye 'grade/report/overview/index.php'
-            if (url.includes('grade/report/overview/index.php')) {
-                const rutaElemento = document.getElementById('ruta-configruta');
-
-                if (rutaElemento) {
-                    console.log("la ruta es", rutaElemento);
-                    // Asignar los valores de configRuta y ciclo en los elementos del DOM
-                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span> `;
-                    console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-
-                } else {
-                    console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-
-                }
-                return; // Termina la ejecución
-            }
-
-            // Ejecuta la lógica principal
-            if (contenedorSelects) {
-                await actualizaConfigRutaDinamic(contenedorSelects);
-            } else {
-                console.warn('El elemento "selects-subject-dinamic" no existe.');
             }
         }
+        
 
-        async function actualizaConfigRutaDinamic(contenedorSelects) {
+        async function actualizaConfigRutaDinamic() {
             const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
 
             try {
                 // ** 1. Recuperar la configuración de ruta desde localStorage **
                 const configRuta = localStorage.getItem('configRuta');
-                if (!configRuta) {
-                    console.error('No se encontró configRuta en localStorage.');
-                    return null;
-                }
         
                 // ** 2. Extraer la universidad de la configuración de ruta **
                 const universidad = configRuta.split('/')[0];
@@ -23201,6 +23139,8 @@
                     } else {
                         console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
                     }
+                } else {
+                    console.warn('[opc-autifill-moodle: ruta] No se encontraron elementos quizItems en la página.');
                 }
         
                 // ** 6. Verificar y Actualizar ConfigRutaDinamic **
@@ -23274,8 +23214,6 @@
                 return null;
             }
         }
-        
-
         
         async function crearSelectsDinamicos() {
             const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
@@ -23646,6 +23584,23 @@
             console.log("[opc-autofill-moodle: main] AutoFill Users no ejecutado porque, no es Moodle");
         }
 
+        const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
+
+        if (!switchRutaDinamica || switchRutaDinamica === "false") {
+            console.log('[opc-autifill-moodle: main] Ruta Dinamica desactivada');
+        } else {
+            console.log('[opc-autifill-moodle: main] Ruta Dinamica activada');
+        }
+
+        if (switchRutaDinamica === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
+            console.log('[opc-autifill-moodle: main] Cargando Ruta Dinamica...');
+            await contenedorRutaDinamica_js();
+        } else {
+            console.log('[opc-autifill-moodle: main] Cargando Ruta...');
+            contenedorRuta_js$1();
+        }
+
+
         // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
         // if (esMoodle && url.includes('grade/report/overview/index.php')) {
             //     extractRevision();
@@ -23662,22 +23617,7 @@
             //contenedorRuta_js();
         //}
 
-        const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
-
-        if (!switchRutaDinamica || switchRutaDinamica === "false") {
-            console.log('[opc-autifill-moodle: main] Ruta Dinamica desactivada');
-        } else {
-            console.log('[opc-autifill-moodle: main] Ruta Dinamica activada');
-        }
-
-        if (  localStorage.getItem('switch-ruta-dinamica') === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
-            
-            console.log('[opc-autifill-moodle: main] Cargando Ruta Dinamica...');
-            await contenedorRutaDinamica_js();
-        } else {
-            console.log('[opc-autifill-moodle: main] Cargando Ruta...');
-            contenedorRuta_js$1();
-        }
+        
         
 
 
