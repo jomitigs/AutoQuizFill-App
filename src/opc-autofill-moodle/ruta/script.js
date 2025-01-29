@@ -231,20 +231,8 @@ async function actualizaConfigRutaDinamic() {
 
         else if ( (!testClave || !materiaValor) && window.location.href.includes("mod/quiz/") ) {
             // Obtener la configuración de ruta dinámica almacenada en sessionStorage
-            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-
-            if (!configRutaDinamic) {
-                console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
-                await crearSelectsDinamicos(contenedorSelects);
-            } else {
-                const rutaElemento = document.getElementById('ruta-configruta');
-                if (rutaElemento) {
-                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
-                    console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-                } else {
-                    console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-                }
-            }
+            console.log('[opc-autifill-moodle: ruta] No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/" ');
+            await crearSelectsDinamicos(contenedorSelects);
         }
 
 
