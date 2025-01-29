@@ -232,7 +232,7 @@ async function actualizaConfigRutaDinamic() {
         else if ( (!testClave || !materiaValor) && window.location.href.includes("mod/quiz/") ) {
             // Obtener la configuración de ruta dinámica almacenada en sessionStorage
             console.log('[opc-autifill-moodle: ruta] No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/" ');
-            await crearSelectsDinamicos(contenedorSelects);
+            await crearSelectsDinamicos();
         }
 
 
