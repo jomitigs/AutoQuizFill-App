@@ -284,7 +284,7 @@ async function crearSelectsDinamicos() {
                 const optionElement = document.createElement('option');
                 optionElement.value = key;
                 optionElement.textContent = value;
-                if (key === selectInfo.seleccion) optionElement.selected = true;
+                //  if (key === selectInfo.seleccion) optionElement.selected = true;
                 selectElement.appendChild(optionElement);
             }
 
