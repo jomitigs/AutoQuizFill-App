@@ -473,8 +473,8 @@ const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
         }
 
         else {
-            console.log('[opc-autofill-moodle: ruta] configRuta y ciclo están definidos. Mostrando contenedores.');
-
+            console.log(`[opc-autofill-moodle: ruta] Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
+           
 
             // Verifica si el elemento existe antes de modificar su estilo
             if (containerCicloContainer) {
@@ -499,6 +499,7 @@ const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
             // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
             const rutaElemento = document.getElementById('ruta-configruta');
             const cicloElemento = document.getElementById('ciclo-configruta');
+            console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`)
 
             if (rutaElemento && cicloElemento) {
                 // Asignar los valores de configRuta y ciclo en los elementos del DOM
