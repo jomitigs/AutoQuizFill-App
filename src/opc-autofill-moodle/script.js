@@ -210,7 +210,7 @@ export async function opcionAutoFillMoodle_js() {
         console.log('[opc-autifill-moodle: main] Cargando contenedorRutaDinamica_js...');
         await contenedorRutaDinamica_js();
     } else {
-        console.log('[opc-autifill-moodle: main] Cargando Ruta');
+        console.log('[opc-autifill-moodle: main] Cargando Ruta...');
         contenedorRuta_js();
     }
     
