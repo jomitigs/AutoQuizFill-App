@@ -244,14 +244,14 @@ async function actualizaConfigRutaDinamic() {
 }
 
 async function crearSelectsDinamicos() {
-    const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
+    const contenedorSelects = document.getElementById('subject-dinamic');
 
     // Asegurarse de limpiar completamente el contenedor
     if (contenedorSelects) {
         console.log('Limpiando todos los elementos existentes en el contenedor.');
         contenedorSelects.innerHTML = ''; // Elimina todo el contenido del contenedor
     } else {
-        console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
+        console.error('No se encontró el contenedor con id="subject-dinamic".');
         return;
     }
 
@@ -356,13 +356,13 @@ function guardarRutaDinamica() {
 
     }
 
-    // Ocultar el contenedor con id "body-autoquiz-autosavereview-subject-dinamic"
-    const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
+    // Ocultar el contenedor con id "subject-dinamic"
+    const contenedorSelects = document.getElementById('subject-dinamic');
     if (contenedorSelects) {
         contenedorSelects.style.display = 'none';
-        console.log('Contenedor "body-autoquiz-autosavereview-subject-dinamic" ocultado.');
+        console.log('Contenedor "subject-dinamic" ocultado.');
     } else {
-        console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
+        console.error('No se encontró el contenedor con id="subject-dinamic".');
     }
 
     AutoSaveReview_LocalStorage();

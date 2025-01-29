@@ -51,7 +51,7 @@ export function opcionAutoFillMoodle_html() {
 
         <div id="container-ruta-dinamica" class="subcontainer-autoquiz-autosavereview" style="display: block;" >
 
-            <div id="body-autoquiz-autosavereview-subject-dinamic" class="body-autoquiz">
+            <div id="subject-dinamic" class="body-autoquiz">
 
                 <div id="selects-subject-dinamic" >
                 </div>
