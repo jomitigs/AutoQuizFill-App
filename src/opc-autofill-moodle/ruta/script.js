@@ -263,6 +263,14 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
     if (rutaLista.includes('UNEMI')) {
         console.log('Procesando ruta que incluye UNEMI');
 
+            // Verifica si el elemento existe antes de modificar su estilo
+            if (containerCicloContainer) {
+                containerCicloContainer.style.display = 'block';
+            } else {
+                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
+            }
+
+
         if (rutaLista.includes('niv')) {
             console.log('Procesando ruta que incluye niv');
 
@@ -366,12 +374,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
         contenedorRuta_js();
     }
 
-    // Verifica si el elemento existe antes de modificar su estilo
-    if (containerCicloContainer) {
-        containerCicloContainer.style.display = 'block';
-    } else {
-        console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-    }
+
 
 }
 
