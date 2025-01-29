@@ -23170,7 +23170,7 @@
                 return updatedConfigRuta;
             }
 
-            else if ( (!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/") ) {
+            else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
                 sessionStorage.setItem('configRutaDinamic', "dinámica");
 
                 // Actualizar el elemento HTML con la ruta 'dinamica'
@@ -23186,7 +23186,7 @@
                 return null;
             }
 
-            else if ( (!testClave || !materiaValor) && window.location.href.includes("mod/quiz/") ) {
+            else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
                 // Obtener la configuración de ruta dinámica almacenada en sessionStorage
                 console.log('[opc-autifill-moodle: ruta] No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/" ');
                 await crearSelectsDinamicos();
@@ -23247,27 +23247,27 @@
 
                 // Agregar el select al contenedor
                 contenedorSelects.appendChild(selectElement);
-               
+
+                // Crear el botón "Guardar ruta" después de todos los select
+                const botonGuardarRuta = document.createElement('button');
+                botonGuardarRuta.textContent = 'Guardar Ruta';
+                botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
+                botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
+
+                // Agregar el botón al contenedor
+                contenedorSelects.appendChild(botonGuardarRuta);
+                console.log('Botón "Guardar ruta" agregado.');
+
+                actualizarVisibilidadSelects(true);
+
             } catch (error) {
                 console.error(`Error al procesar el select:`, error);
             }
 
         } else {
-            console.log('Ruta Dinámica no disponible para esta Ruta');
+            console.log('[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para esta Ruta');
             contenedorRuta_js$1();
         }
-
-        // Crear el botón "Guardar ruta" después de todos los select
-        const botonGuardarRuta = document.createElement('button');
-        botonGuardarRuta.textContent = 'Guardar Ruta';
-        botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
-        botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
-
-        // Agregar el botón al contenedor
-        contenedorSelects.appendChild(botonGuardarRuta);
-        console.log('Botón "Guardar ruta" agregado.');
-
-        actualizarVisibilidadSelects();
     }
 
 
