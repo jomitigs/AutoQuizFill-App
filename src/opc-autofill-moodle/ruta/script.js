@@ -260,57 +260,95 @@ async function crearSelectsDinamicos() {
     if (rutaLista.includes('UNEMI') && rutaLista.includes('niv')) {
 
         console.log('Ejecutando porque contiene UNEMI y niv');
-
-        const rutaSelectDinamic = "ConfigRuta/opciones/UNEMI/unemi:niv-test";
-
+    
+        // Definir las rutas dinámicas en un arreglo
+        const rutasSelectDinamics = [
+            {
+                path: "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
+                label: "Materias de Nivelación"
+            },
+            {
+                path: "ConfigRuta/opciones/UNEMI/unemi:niv-test",
+                label: "Test de Nivelación"
+            }
+        ];
+    
         try {
-            // Obtener datos de Firebase para la ruta especificada
-            const optionsSnapshot = await get(ref(database, rutaSelectDinamic));
-            if (!optionsSnapshot.exists()) {
-                console.warn(`No se encontraron datos en la ruta: ${rutaSelectDinamic}`);
-                return; // Reemplazado 'continue;' por 'return;'
+            // Iterar sobre cada ruta dinámica
+            for (const ruta of rutasSelectDinamics) {
+                const { path, label } = ruta;
+    
+                // Obtener datos de Firebase para la ruta actual
+                const optionsSnapshot = await get(ref(database, path));
+                if (!optionsSnapshot.exists()) {
+                    console.warn(`No se encontraron datos en la ruta: ${path}`);
+                    continue; // Saltar a la siguiente ruta si no hay datos
+                }
+    
+                const options = optionsSnapshot.val();
+                console.log(`Opciones obtenidas para ${label}:`, options);
+    
+                // Crear un contenedor para cada select con su etiqueta
+                const selectContainer = document.createElement('div');
+                selectContainer.classList.add('select-container');
+    
+                // Crear y añadir una etiqueta para el select
+                const selectLabel = document.createElement('label');
+                selectLabel.textContent = label;
+                selectLabel.setAttribute('for', `select-${label.replace(/\s+/g, '-').toLowerCase()}`);
+                selectContainer.appendChild(selectLabel);
+    
+                // Crear el elemento select
+                const selectElement = document.createElement('select');
+                selectElement.classList.add('dynamic-select');
+                selectElement.id = `select-${label.replace(/\s+/g, '-').toLowerCase()}`;
+                selectElement.style.display = 'block'; // Mostrar el select
+    
+                // Añadir una opción por defecto
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = `Seleccione una opción de ${label}`;
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                selectElement.appendChild(defaultOption);
+    
+                // Añadir opciones al select
+                for (const [key, value] of Object.entries(options)) {
+                    const optionElement = document.createElement('option');
+                    optionElement.value = key;
+                    optionElement.textContent = value;
+                    selectElement.appendChild(optionElement);
+                }
+    
+                // Añadir el select al contenedor del select
+                selectContainer.appendChild(selectElement);
+    
+                // Agregar el contenedor del select al contenedor principal
+                contenedorSelects.appendChild(selectContainer);
             }
-
-            const options = optionsSnapshot.val();
-            console.log(`Opciones obtenidas:`, options);
-
-            // Crear el select dinámico
-            const selectElement = document.createElement('select');
-            selectElement.classList.add('dynamic-select');
-            selectElement.style.display = 'none';
-
-            // Añadir opciones al select
-            for (const [key, value] of Object.entries(options)) {
-                const optionElement = document.createElement('option');
-                optionElement.value = key;
-                optionElement.textContent = value;
-                //  if (key === selectInfo.seleccion) optionElement.selected = true;
-                selectElement.appendChild(optionElement);
-            }
-
-            // Agregar el select al contenedor
-            contenedorSelects.appendChild(selectElement);
-
-            // Crear el botón "Guardar ruta" después de todos los select
+    
+            // Crear el botón "Guardar Ruta" después de todos los selects
             const botonGuardarRuta = document.createElement('button');
             botonGuardarRuta.textContent = 'Guardar Ruta';
             botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
             botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
-
+    
             // Agregar el botón al contenedor
             contenedorSelects.appendChild(botonGuardarRuta);
             console.log('Botón "Guardar ruta" agregado.');
-
+    
+            // Actualizar la visibilidad de los selects si es necesario
             actualizarVisibilidadSelects(true);
-
+    
         } catch (error) {
-            console.error(`Error al procesar el select:`, error);
+            console.error(`Error al procesar los selects dinámicos:`, error);
         }
-
+    
     } else {
         console.log(`[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
         contenedorRuta_js();
     }
+    
 }
 
 
