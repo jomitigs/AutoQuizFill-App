@@ -479,8 +479,11 @@ import { database } from '../../config-firebase/script.js';
                 console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
             }
 
-            // Mostrar los contenedores si configRuta y ciclo están definidos
-
+            if (containerAutoQuiz) {
+                containerAutoQuiz.style.display = 'block';
+            } else {
+                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
+            }
 
             // Eliminar el mensaje si existe
             const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
