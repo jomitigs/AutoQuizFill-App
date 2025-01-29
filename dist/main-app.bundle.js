@@ -23229,7 +23229,7 @@
             let rutasSelectDinamics = [];
 
             if (!hasMateriaValor && !hasTestClave) {
-                // Si existen ambos valores, utilizar ambas rutas
+                // Si no existen ambos valores, utilizar ambas rutas
                 rutasSelectDinamics = [
                     "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
                     "ConfigRuta/opciones/UNEMI/unemi:niv-test"
@@ -23247,14 +23247,7 @@
                     "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion"
                 ];
                 console.log('Solo existe testClave. Usando ruta para materias de nivelación.');
-            } else {
-                // Si no existen ninguno de los dos
-                rutasSelectDinamics = [
-                    "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
-                    "ConfigRuta/opciones/UNEMI/unemi:niv-test"
-                ];
-                console.log('No existen materiaValor ni testClave. Usando ambas rutas por defecto.');
-            }
+            } 
 
             try {
                 // Iterar sobre cada ruta dinámica seleccionada
