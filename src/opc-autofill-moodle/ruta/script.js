@@ -203,9 +203,9 @@ async function actualizaConfigRutaDinamic() {
             const rutaElement = document.getElementById('ruta-configruta');
             if (rutaElement) {
                 rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
-                console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la nueva ruta.");
+                console.log(`[opc-autifill-moodle: ruta] Ruta actualizada a: ${updatedConfigRuta}`);
             } else {
-                console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+                console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
             }
 
             containerCicloContainer.style.display = 'block';
