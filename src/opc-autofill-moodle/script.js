@@ -207,7 +207,7 @@ export async function opcionAutoFillMoodle_js() {
 
     if (  localStorage.getItem('switch-ruta-dinamica') === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
         
-        console.log('[opc-autifill-moodle: main] Cargando contenedorRutaDinamica_js...');
+        console.log('[opc-autifill-moodle: main] Cargando Ruta Dinamica...');
         await contenedorRutaDinamica_js();
     } else {
         console.log('[opc-autifill-moodle: main] Cargando Ruta...');
