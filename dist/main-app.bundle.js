@@ -23384,8 +23384,12 @@
         // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
 
         function contenedorRuta_js$1() {
-            const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
-            const containerCicloContainer = document.querySelectorAll('. ruta-ciclo-container');
+    // Selecciona todos los elementos con la clase 'container-autoquiz'
+    const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
+
+    // Selecciona el único elemento con la clase 'ruta-ciclo-container'
+    const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+
             const configRuta = localStorage.getItem('configRuta');
             const ciclo = localStorage.getItem('ciclo');
 
