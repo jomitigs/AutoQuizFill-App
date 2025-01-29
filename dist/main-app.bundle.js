@@ -23220,12 +23220,14 @@
         if (rutaLista.includes('UNEMI')) {
             console.log('Procesando ruta que incluye UNEMI');
 
-                // Verifica si el elemento existe antes de modificar su estilo
-                if (containerCicloContainer) {
-                    containerCicloContainer.style.display = 'block';
-                } else {
-                    console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-                }
+            // Verifica si el elemento existe antes de modificar su estilo
+            if (containerCicloContainer) {
+                containerCicloContainer.style.display = 'block';
+
+                console.log('Mostrando cicloContainer');
+            } else {
+                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
+            }
 
 
             if (rutaLista.includes('niv')) {
