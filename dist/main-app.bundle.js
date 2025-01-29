@@ -23122,7 +23122,7 @@
                         console.warn('No se encontraron coincidencias en el título del breadcrumb.');
                     }
                 } else {
-                    console.warn('No se encontraron elementos breadcrumb en la página.');
+                    console.warn('[opc-autifill-moodle: ruta] No se encontraron elementos breadcrumb en la página.');
                 }
         
                 // Obtener Test
@@ -23200,7 +23200,7 @@
         
                 }
                 else {
-                    console.warn('No se pudieron determinar materiaValor o testClave. No se actualizó ConfigRutaDinamic.');
+                    console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. No se actualizó ConfigRutaDinamic.');
         
                     contenedorRuta_js$1();
         
