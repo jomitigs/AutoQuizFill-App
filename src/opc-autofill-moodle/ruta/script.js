@@ -366,6 +366,13 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
         contenedorRuta_js();
     }
 
+    // Verifica si el elemento existe antes de modificar su estilo
+    if (containerCicloContainer) {
+        containerCicloContainer.style.display = 'block';
+    } else {
+        console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
+    }
+
 }
 
 

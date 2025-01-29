@@ -23202,7 +23202,7 @@
 
     async function crearSelectsDinamicos(materiaValor, testClave) {
 
-        document.querySelector('.ruta-ciclo-container');
+        const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
         const contenedorSelects = document.getElementById('subject-dinamic');
 
         // Asegurarse de limpiar completamente el contenedor
@@ -23321,6 +23321,13 @@
             // Si 'UNEMI' no está presente en rutaLista
             console.log(`[opc-autifill-moodle: ruta] Ruta no incluye UNEMI`);
             contenedorRuta_js$1();
+        }
+
+        // Verifica si el elemento existe antes de modificar su estilo
+        if (containerCicloContainer) {
+            containerCicloContainer.style.display = 'block';
+        } else {
+            console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
         }
 
     }
