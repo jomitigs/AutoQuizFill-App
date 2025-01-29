@@ -23385,8 +23385,7 @@
 
         function contenedorRuta_js$1() {
     // Selecciona todos los elementos con la clase 'container-autoquiz'
-    const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
-
+    const containerAutoQuiz = document.querySelector('.container-autoquiz');
     // Selecciona el único elemento con la clase 'ruta-ciclo-container'
     const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
 

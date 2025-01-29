@@ -428,8 +428,7 @@ import { database } from '../../config-firebase/script.js';
 
     export function contenedorRuta_js() {
 // Selecciona todos los elementos con la clase 'container-autoquiz'
-const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
-
+const containerAutoQuiz = document.querySelector('.container-autoquiz');
 // Selecciona el único elemento con la clase 'ruta-ciclo-container'
 const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
 
