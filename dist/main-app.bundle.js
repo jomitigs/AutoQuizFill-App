@@ -23002,7 +23002,7 @@
             if (breadcrumbItems.length > 0) {
                 // Obtener el atributo 'title' del primer elemento del breadcrumb
                 const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
-                console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
+                //console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
 
                 // Extraer las claves entre corchetes del título del breadcrumb
                 const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
@@ -23010,7 +23010,7 @@
                 if (matches && matches.length > 0) {
                     // Limpiar los corchetes para obtener la clave de búsqueda
                     const searchKey = matches[0].replace(/[\[\]]/g, '');
-                    console.log(`[opc-autifill-moodle: ruta] Clave: ${searchKey}`);
+                    //console.log(`[opc-autifill-moodle: ruta] Materia de la página: "${searchKey}"`);
 
                     // Definir la ruta en Firebase para obtener las opciones de materias
                     const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
@@ -23037,7 +23037,7 @@
                                         // y verificar si el título del breadcrumb contiene la segunda parte
                                         if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
                                             materiaValor = key;
-                                            console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
+                                            console.log(`[opc-autifill-moodle: ruta] Materia encontrada: "${materiaValor}"`);
                                             found = true;
                                             break; // Salir del bucle interno si se encuentra una coincidencia
                                         }
@@ -23045,7 +23045,7 @@
                                         // Si el valor no contiene ":", comparar directamente con la clave de búsqueda
                                         if (val === searchKey) {
                                             materiaValor = key;
-                                            console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
+                                            console.log(`[opc-autifill-moodle: ruta] Materia encontrada: "${materiaValor}"`);
                                             found = true;
                                             break; // Salir del bucle interno si se encuentra una coincidencia
                                         }
