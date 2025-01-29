@@ -23306,7 +23306,7 @@
             // Asignar los valores de configRuta y ciclo en los elementos del DOM
             rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span> `;
             console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-
+            containerCicloContainer.style.display = 'block';
         }
         else {
             console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
