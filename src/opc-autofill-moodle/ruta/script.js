@@ -302,7 +302,9 @@ import { database } from '../../config-firebase/script.js';
                     }
                 }
             }
-    
+
+            const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+            containerCicloContainer.style.display = 'block';
             return null;
     
         } catch (error) {

@@ -23259,7 +23259,9 @@
                         }
                     }
                 }
-        
+
+                const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+                containerCicloContainer.style.display = 'block';
                 return null;
         
             } catch (error) {
