@@ -428,6 +428,7 @@ import { database } from '../../config-firebase/script.js';
 
     export function contenedorRuta_js() {
         const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
+        const containerCicloContainer = document.querySelectorAll('. ruta-ciclo-container');
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
 
@@ -470,13 +471,16 @@ import { database } from '../../config-firebase/script.js';
         else {
             console.log('[opc-autofill-moodle: ruta] configRuta y ciclo están definidos. Mostrando contenedores.');
 
+
+            // Verifica si el elemento existe antes de modificar su estilo
+            if (containerCicloContainer) {
+                containerCicloContainer.style.display = 'block';
+            } else {
+                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
+            }
+
             // Mostrar los contenedores si configRuta y ciclo están definidos
-            containerAutoQuiz.forEach(container => {
-                if (container) {
-                    container.style.display = 'block';
-                    // console.log('Contenedor .container-autoquiz mostrado:', container);
-                }
-            });
+
 
             // Eliminar el mensaje si existe
             const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
