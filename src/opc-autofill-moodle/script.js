@@ -46,30 +46,6 @@ export function opcionAutoFillMoodle_html() {
         </div>
     </div>
 
-            <!-- Contenedor para Subject Dinamic -->
-<div id="container-ruta-dinamica" class="subcontainer-autoquiz-autosavereview" style="display: none;" >
-
-
-        <div class="header-autoquiz">
-            <!-- Título y Switch -->
-            <h3 id="titulo-autoquiz-subject-dinamic">Ruta Dinámica</h3>
-
-            <label class="switch-autoquiz">
-                <input type="checkbox" id="switch-ruta-dinamica">
-                <span class="slider round"></span>
-            </label>
-
-        </div>
-
-        <div id="body-autoquiz-autosavereview-subject-dinamic" class="body-autoquiz">
-
-<div id="selects-subject-dinamic" >
-</div>
-
-        </div>
-    </div>
-
-
     <!-- Nuevo contenedor para AutoFill-->
     <div id="container-autofill" class="subcontainer-autoquiz-autofill" style="display: none;">
 
