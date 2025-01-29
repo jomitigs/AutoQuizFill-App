@@ -8,8 +8,6 @@ import { database } from '../../config-firebase/script.js';
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
 
-        console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
-
         // Verificar si configRuta y ciclo están definidos
         if (!configRuta || !ciclo) {
             // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
@@ -422,8 +420,6 @@ const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
 
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
-
-        // console.log('Valores obtenidos de localStorage:', { configRuta, ciclo });
 
         // Verificar si configRuta y ciclo están definidos
         if (!configRuta || !ciclo) {
