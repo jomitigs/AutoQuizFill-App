@@ -23057,32 +23057,30 @@
         
                 if (breadcrumbItems.length > 0) {
                     const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
-                    console.log(`Título del breadcrumb encontrado: ${breadcrumbTitle}`);
+                    console.log(`[opc-autifill-moodle: ruta] Título de encontrado: ${breadcrumbTitle}`);
         
                     // Extraer claves entre corchetes del atributo title
                     const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
-                    console.log(`Coincidencias encontradas en el título del breadcrumb: ${matches}`);
         
                     if (matches && matches.length > 0) {
                         const searchKey = matches[0].replace(/[\[\]]/g, '');
-                        console.log(`Clave de búsqueda extraída: ${searchKey}`);
+                        console.log(`[opc-autifill-moodle: ruta] Clave: ${searchKey}`);
         
                         const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
-                        console.log(`Ruta para materias generada: ${materiaRuta}`);
         
                         const materiaSnapshot = await get(ref(database, materiaRuta));
                         const materiaOptions = materiaSnapshot.val();
-                        console.log(`Datos obtenidos de Firebase:`, materiaOptions);
+                         // console.log(`[opc-autifill-moodle: ruta] Datos obtenidos de Firebase:`, materiaOptions);
         
                         if (materiaOptions) {
                             let found = false; // Bandera para saber si se encuentra alguna coincidencia
         
                             // Iterar por cada clave en materiaOptions
                             for (const [key, value] of Object.entries(materiaOptions)) {
-                                console.log(`Analizando clave: "${key}" con valores contenidos: "${value}"`);
+                                 // console.log(`Analizando clave: "${key}" con valores contenidos: "${value}"`);
         
                                 const values = value.split(',').map(item => item.trim());
-                                console.log(`Valores separados:`, values);
+                                 // console.log(`Valores separados:`, values);
         
                                 for (const val of values) {
                                     if (val.includes(':')) {
