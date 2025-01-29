@@ -244,7 +244,7 @@ import { database } from '../../config-firebase/script.js';
                 }
             }
     
-            // ** 6. Actualizar ConfigRutaDinamic **
+            // ** 6. Verificar y Actualizar ConfigRutaDinamic **
             if (materiaValor && testClave) {
                 // Dividir la configuración de ruta en partes
                 const configRutaParts = configRuta.split('/');
@@ -267,36 +267,39 @@ import { database } from '../../config-firebase/script.js';
                 }
     
                 return updatedConfigRuta;
-
-            } else { // ** 7. Caso Especial para la Página de Reportes de Calificaciones **
-                const rutaElement = document.getElementById('ruta-configruta');
-                if (rutaElement) {
-                    rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span>`;
-                    console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la ruta 'dinamic'.");
-                } else {
-                    console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-                }
             }
     
-            // ** 8. Manejar Casos donde No se Pueden Determinar materiaValor o testClave **
-            console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. No se actualizó ConfigRutaDinamic.');
+            // ** 7. Caso cuando materiaValor o testClave no están definidos **
+            // Establecer 'configRutaDinamic' como 'dinamic'
+            sessionStorage.setItem('configRutaDinamic', "dinamic");
     
-            // Llamar a una función para manejar la ruta (presumiblemente definida en otro lugar)
-            contenedorRuta_js();
-    
-            // Obtener la configuración de ruta dinámica almacenada en sessionStorage
-            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-    
-            if (!configRutaDinamic) {
-                console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
-                await crearSelectsDinamicos(contenedorSelects);
+            // Actualizar el elemento HTML con la ruta 'dinamic'
+            const rutaElement = document.getElementById('ruta-configruta');
+            if (rutaElement) {
+                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span>`;
+                console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la ruta 'dinamic'.");
             } else {
-                const rutaElemento = document.getElementById('ruta-configruta');
-                if (rutaElemento) {
-                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
-                    console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
+                console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+            }
+    
+            console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. Se ha establecido la ruta como "dinamic".');
+    
+            // ** 8. Manejar Casos cuando solo falta testClave pero existe materiaValor **
+            if (materiaValor && !testClave) {
+                // Obtener la configuración de ruta dinámica almacenada en sessionStorage
+                const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+    
+                if (!configRutaDinamic) {
+                    console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
+                    await crearSelectsDinamicos(contenedorSelects);
                 } else {
-                    console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+                    const rutaElemento = document.getElementById('ruta-configruta');
+                    if (rutaElemento) {
+                        rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
+                        console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
+                    } else {
+                        console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+                    }
                 }
             }
     
@@ -308,6 +311,7 @@ import { database } from '../../config-firebase/script.js';
             return null;
         }
     }
+    
 
     
     async function crearSelectsDinamicos() {
