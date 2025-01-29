@@ -60,18 +60,6 @@ import { database } from '../../config-firebase/script.js';
 
         const url = window.location.href;
 
-        // Configura visualmente el estado del switch en el DOM
-        if (switchElement) switchElement.checked = switchState;
-
-        // Verifica si el switch está desactivado (!switchState)
-        if (!switchState) {
-            console.log("El switch está desactivado.");
-            return; // Termina la ejecución
-        }
-
-        // El switch está activado
-        console.log("El switch está activado.");
-
         // Verifica si la URL actual incluye 'grade/report/overview/index.php'
         if (url.includes('grade/report/overview/index.php')) {
             const rutaElemento = document.getElementById('ruta-configruta');
@@ -360,7 +348,6 @@ import { database } from '../../config-firebase/script.js';
         actualizarVisibilidadSelects(true);
     }
     
-
     function guardarRutaDinamica() {
         console.log('Guardando ruta...');
 

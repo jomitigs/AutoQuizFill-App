@@ -23008,7 +23008,7 @@
                 }
             }
 
-            const switchElement = document.getElementById('switch-ruta-dinamica');
+            document.getElementById('switch-ruta-dinamica');
             const contenedorSelects = document.getElementById('selects-subject-dinamic');
 
             // Lee o inicializa el estado del switch desde localStorage
@@ -23016,18 +23016,6 @@
             localStorage.setItem('switch-ruta-dinamica', JSON.stringify(switchState)); // Asegura un valor almacenado
 
             const url = window.location.href;
-
-            // Configura visualmente el estado del switch en el DOM
-            if (switchElement) switchElement.checked = switchState;
-
-            // Verifica si el switch está desactivado (!switchState)
-            if (!switchState) {
-                console.log("El switch está desactivado.");
-                return; // Termina la ejecución
-            }
-
-            // El switch está activado
-            console.log("El switch está activado.");
 
             // Verifica si la URL actual incluye 'grade/report/overview/index.php'
             if (url.includes('grade/report/overview/index.php')) {
@@ -23317,7 +23305,6 @@
             actualizarVisibilidadSelects();
         }
         
-
         function guardarRutaDinamica() {
             console.log('Guardando ruta...');
 
