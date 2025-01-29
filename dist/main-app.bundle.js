@@ -23461,9 +23461,9 @@
 
              <!-- Contenedor para Subject Dinamic -->
 
-        <div id="container-ruta-dinamica" class="subcontainer-autoquiz-autosavereview" style="display: block;" >
+        <div id="container-ruta-dinamica" style="display: block;" >
 
-            <div id="subject-dinamic" class="body-autoquiz">
+            <div id="subject-dinamic" class="subject-dinamic">
 
                 <div id="selects-subject-dinamic" >
                 </div>
