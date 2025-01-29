@@ -100,7 +100,7 @@ import { database } from '../../config-firebase/script.js';
     
             if (breadcrumbItems.length > 0) {
                 const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
-                console.log(`[opc-autifill-moodle: ruta] Título de encontrado: ${breadcrumbTitle}`);
+                console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
     
                 // Extraer claves entre corchetes del atributo title
                 const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
@@ -128,10 +128,10 @@ import { database } from '../../config-firebase/script.js';
                             for (const val of values) {
                                 if (val.includes(':')) {
                                     const [firstPart, secondPart] = val.split(':').map(part => part.trim());
-                                    console.log(`Valor con ":", Parte 1: "${firstPart}", Parte 2: "${secondPart}"`);
+                                    //console.log(`Valor con ":", Parte 1: "${firstPart}", Parte 2: "${secondPart}"`);
     
-                                    console.log(`Comparando "${firstPart}" con "${searchKey}"`);
-                                    console.log(`Comparando "${breadcrumbTitle}" con "${secondPart}"`);
+                                    //console.log(`Comparando "${firstPart}" con "${searchKey}"`);
+                                    //console.log(`Comparando "${breadcrumbTitle}" con "${secondPart}"`);
     
                                     if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
                                         materiaValor = key;
@@ -153,14 +153,14 @@ import { database } from '../../config-firebase/script.js';
                         }
     
                         if (!found) {
-                            console.warn(`No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
+                            console.warn(`[opc-autifill-moodle: ruta] No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
                         }
     
                     } else {
-                        console.warn(`No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
+                        console.warn(`[opc-autifill-moodle: ruta] No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
                     }
                 } else {
-                    console.warn('No se encontraron coincidencias en el título del breadcrumb.');
+                    console.warn('[opc-autifill-moodle: ruta] No se encontraron coincidencias en el título del breadcrumb.');
                 }
             } else {
                 console.warn('[opc-autifill-moodle: ruta] No se encontraron elementos breadcrumb en la página.');
