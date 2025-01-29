@@ -177,7 +177,7 @@ async function actualizaConfigRutaDinamic() {
                         console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
                     }
                 } else {
-                    console.warn(`[opc-autifill-moodle: ruta] No se encontro número de test.`);
+                    console.warn(`[opc-autifill-moodle: ruta] No se encontro número del test.`);
                 }
             } else {
                 console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
