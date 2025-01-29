@@ -1,474 +1,470 @@
 import { ref, get } from 'firebase/database';
 import { database } from '../../config-firebase/script.js';
 
-    // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
+// <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
-    export async function contenedorRutaDinamica_js() {
-        // Obtiene los valores 'configRuta' y 'ciclo' del almacenamiento local
-        const configRuta = localStorage.getItem('configRuta');
-        const ciclo = localStorage.getItem('ciclo');
-    
-        // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
-        if (!configRuta || !ciclo) {
-            // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
-            contenedorRuta_js();
-            return;
-        } else {
-            // Obtiene el elemento con el ID 'ciclo-configruta' del DOM
-            const cicloElemento = document.getElementById('ciclo-configruta');
-            if (cicloElemento) {
-                // Asigna el valor de 'ciclo' al contenido HTML del elemento, mostrando una etiqueta y el valor
-                cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
-                await actualizaConfigRutaDinamic();
-            }
+export async function contenedorRutaDinamica_js() {
+    // Obtiene los valores 'configRuta' y 'ciclo' del almacenamiento local
+    const configRuta = localStorage.getItem('configRuta');
+    const ciclo = localStorage.getItem('ciclo');
+
+    // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
+    if (!configRuta || !ciclo) {
+        // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
+        contenedorRuta_js();
+        return;
+    } else {
+        // Obtiene el elemento con el ID 'ciclo-configruta' del DOM
+        const cicloElemento = document.getElementById('ciclo-configruta');
+        if (cicloElemento) {
+            // Asigna el valor de 'ciclo' al contenido HTML del elemento, mostrando una etiqueta y el valor
+            cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
+            await actualizaConfigRutaDinamic();
         }
     }
-    
+}
 
-    async function actualizaConfigRutaDinamic() {
-        const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
 
-        try {
-            // ** 1. Recuperar la configuración de ruta desde localStorage **
-            const configRuta = localStorage.getItem('configRuta');
-    
-            // ** 2. Extraer la universidad de la configuración de ruta **
-            const universidad = configRuta.split('/')[0];
-    
-            // ** 3. Seleccionar los elementos del breadcrumb relacionados con cursos y quizzes **
-            const breadcrumbItems = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
-            const quizItems = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
-    
-            // ** 4. Obtener Materia **
-            let materiaValor = null;
-    
-            if (breadcrumbItems.length > 0) {
-                // Obtener el atributo 'title' del primer elemento del breadcrumb
-                const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
-                console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
-    
-                // Extraer las claves entre corchetes del título del breadcrumb
-                const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
-    
-                if (matches && matches.length > 0) {
-                    // Limpiar los corchetes para obtener la clave de búsqueda
-                    const searchKey = matches[0].replace(/[\[\]]/g, '');
-                    console.log(`[opc-autifill-moodle: ruta] Clave: ${searchKey}`);
-    
-                    // Definir la ruta en Firebase para obtener las opciones de materias
-                    const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
-    
-                    try {
-                        // Obtener los datos de materias desde Firebase
-                        const materiaSnapshot = await get(ref(database, materiaRuta));
-                        const materiaOptions = materiaSnapshot.val();
-    
-                        if (materiaOptions) {
-                            let found = false; // Bandera para indicar si se encontró una coincidencia
-    
-                            // Iterar sobre cada clave y valor en las opciones de materias
-                            for (const [key, value] of Object.entries(materiaOptions)) {
-                                // Separar los valores por comas y eliminar espacios
-                                const values = value.split(',').map(item => item.trim());
-    
-                                for (const val of values) {
-                                    if (val.includes(':')) {
-                                        // Si el valor contiene ":", dividirlo en dos partes
-                                        const [firstPart, secondPart] = val.split(':').map(part => part.trim());
-    
-                                        // Comparar la primera parte con la clave de búsqueda
-                                        // y verificar si el título del breadcrumb contiene la segunda parte
-                                        if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
-                                            materiaValor = key;
-                                            console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
-                                            found = true;
-                                            break; // Salir del bucle interno si se encuentra una coincidencia
-                                        }
-                                    } else {
-                                        // Si el valor no contiene ":", comparar directamente con la clave de búsqueda
-                                        if (val === searchKey) {
-                                            materiaValor = key;
-                                            console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
-                                            found = true;
-                                            break; // Salir del bucle interno si se encuentra una coincidencia
-                                        }
+async function actualizaConfigRutaDinamic() {
+    const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+
+    try {
+        // ** 1. Recuperar la configuración de ruta desde localStorage **
+        const configRuta = localStorage.getItem('configRuta');
+
+        // ** 2. Extraer la universidad de la configuración de ruta **
+        const universidad = configRuta.split('/')[0];
+
+        // ** 3. Seleccionar los elementos del breadcrumb relacionados con cursos y quizzes **
+        const breadcrumbItems = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
+        const quizItems = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
+
+        // ** 4. Obtener Materia **
+        let materiaValor = null;
+
+        if (breadcrumbItems.length > 0) {
+            // Obtener el atributo 'title' del primer elemento del breadcrumb
+            const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
+            console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
+
+            // Extraer las claves entre corchetes del título del breadcrumb
+            const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
+
+            if (matches && matches.length > 0) {
+                // Limpiar los corchetes para obtener la clave de búsqueda
+                const searchKey = matches[0].replace(/[\[\]]/g, '');
+                console.log(`[opc-autifill-moodle: ruta] Clave: ${searchKey}`);
+
+                // Definir la ruta en Firebase para obtener las opciones de materias
+                const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
+
+                try {
+                    // Obtener los datos de materias desde Firebase
+                    const materiaSnapshot = await get(ref(database, materiaRuta));
+                    const materiaOptions = materiaSnapshot.val();
+
+                    if (materiaOptions) {
+                        let found = false; // Bandera para indicar si se encontró una coincidencia
+
+                        // Iterar sobre cada clave y valor en las opciones de materias
+                        for (const [key, value] of Object.entries(materiaOptions)) {
+                            // Separar los valores por comas y eliminar espacios
+                            const values = value.split(',').map(item => item.trim());
+
+                            for (const val of values) {
+                                if (val.includes(':')) {
+                                    // Si el valor contiene ":", dividirlo en dos partes
+                                    const [firstPart, secondPart] = val.split(':').map(part => part.trim());
+
+                                    // Comparar la primera parte con la clave de búsqueda
+                                    // y verificar si el título del breadcrumb contiene la segunda parte
+                                    if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
+                                        materiaValor = key;
+                                        console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
+                                        found = true;
+                                        break; // Salir del bucle interno si se encuentra una coincidencia
+                                    }
+                                } else {
+                                    // Si el valor no contiene ":", comparar directamente con la clave de búsqueda
+                                    if (val === searchKey) {
+                                        materiaValor = key;
+                                        console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
+                                        found = true;
+                                        break; // Salir del bucle interno si se encuentra una coincidencia
                                     }
                                 }
-    
-                                if (found) break; // Salir del bucle externo si se encontró una coincidencia
                             }
-    
-                            if (!found) {
-                                console.warn(`[opc-autifill-moodle: ruta] No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
-                            }
-                        } else {
-                            console.warn(`[opc-autifill-moodle: ruta] No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
+
+                            if (found) break; // Salir del bucle externo si se encontró una coincidencia
                         }
-                    } catch (firebaseError) {
-                        console.error(`Error al obtener datos de Firebase en la ruta ${materiaRuta}:`, firebaseError);
-                    }
-                } else {
-                    console.warn('[opc-autifill-moodle: ruta] No se encontraron coincidencias en el título del breadcrumb.');
-                }
-            } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontro materia.');
-            }
-    
-            // ** 5. Obtener Test **
-            let testClave = null;
-    
-            if (quizItems.length > 0) {
-                // Obtener el texto del quiz desde el primer elemento del breadcrumb
-                const quizTextElement = quizItems[0].querySelector('span.text-truncate');
-                if (quizTextElement) {
-                    const quizText = quizTextElement.textContent.trim();
-                    // Buscar números en formato numérico en el texto del quiz
-                    const quizNumberMatch = quizText.match(/\d+/);
-    
-                    let quizNumber = null;
-    
-                    if (quizNumberMatch) {
-                        // Convertir el número encontrado a entero
-                        quizNumber = parseInt(quizNumberMatch[0], 10);
-                    } else {
-                        // Si no se encuentran números, buscar números escritos en palabras
-                        const numWords = {
-                            'uno': 1,
-                            'dos': 2,
-                            'tres': 3,
-                            'cuatro': 4,
-                            'cinco': 5,
-                            'seis': 6,
-                            'siete': 7,
-                            'ocho': 8,
-                            'nueve': 9,
-                            'diez': 10
-                            // Puedes agregar más si lo necesitas
-                        };
-    
-                        // Convertir el texto a minúsculas y buscar una palabra numérica
-                        const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
-                        if (wordMatch) {
-                            quizNumber = numWords[wordMatch[0]];
-                        }
-                    }
-    
-                    if (quizNumber !== null) {
-                        // Definir la ruta en Firebase para obtener las opciones de tests
-                        const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
-    
-                        try {
-                            // Obtener los datos de tests desde Firebase
-                            const testSnapshot = await get(ref(database, testRuta));
-                            const testOptions = testSnapshot.val();
-    
-                            if (testOptions) {
-                                // Buscar la clave que incluye "Test" seguido del número del quiz
-                                testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
-                                if (testClave) {
-                                    console.log(`Test clave encontrado: "${testClave}" para Test ${quizNumber}`);
-                                } else {
-                                    console.warn(`[opc-autifill-moodle: ruta] No se encontró una clave para Test ${quizNumber}`);
-                                }
-                            } else {
-                                console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
-                            }
-                        } catch (firebaseError) {
-                            console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
+
+                        if (!found) {
+                            console.warn(`[opc-autifill-moodle: ruta] No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
                         }
                     } else {
-                        console.warn(`No se encontraron números en el texto: ${quizText}`);
+                        console.warn(`[opc-autifill-moodle: ruta] No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
                     }
-                } else {
-                    console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
+                } catch (firebaseError) {
+                    console.error(`Error al obtener datos de Firebase en la ruta ${materiaRuta}:`, firebaseError);
                 }
             } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontro quiz.');
+                console.warn('[opc-autifill-moodle: ruta] No se encontraron coincidencias en el título del breadcrumb.');
             }
-    
-            // ** 6. Verificar y Actualizar ConfigRutaDinamic **
-            if (materiaValor && testClave) {
-                // Dividir la configuración de ruta en partes
-                const configRutaParts = configRuta.split('/');
-                // Reemplazar las últimas dos partes con materiaValor y testClave
-                configRutaParts[configRutaParts.length - 2] = materiaValor;
-                configRutaParts[configRutaParts.length - 1] = testClave;
-    
-                // Unir las partes para formar la nueva configuración de ruta
-                const updatedConfigRuta = configRutaParts.join('/');
-                // Almacenar la configuración actualizada en sessionStorage
-                sessionStorage.setItem('configRutaDinamic', updatedConfigRuta);
-    
-                // Actualizar el elemento HTML con la nueva ruta
-                const rutaElement = document.getElementById('ruta-configruta');
-                if (rutaElement) {
-                    rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
-                    console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la nueva ruta.");
+        } else {
+            console.warn('[opc-autifill-moodle: ruta] No se encontro materia.');
+        }
+
+        // ** 5. Obtener Test **
+        let testClave = null;
+
+        if (quizItems.length > 0) {
+            // Obtener el texto del quiz desde el primer elemento del breadcrumb
+            const quizTextElement = quizItems[0].querySelector('span.text-truncate');
+            if (quizTextElement) {
+                const quizText = quizTextElement.textContent.trim();
+                // Buscar números en formato numérico en el texto del quiz
+                const quizNumberMatch = quizText.match(/\d+/);
+
+                let quizNumber = null;
+
+                if (quizNumberMatch) {
+                    // Convertir el número encontrado a entero
+                    quizNumber = parseInt(quizNumberMatch[0], 10);
                 } else {
-                    console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+                    // Si no se encuentran números, buscar números escritos en palabras
+                    const numWords = {
+                        'uno': 1,
+                        'dos': 2,
+                        'tres': 3,
+                        'cuatro': 4,
+                        'cinco': 5,
+                        'seis': 6,
+                        'siete': 7,
+                        'ocho': 8,
+                        'nueve': 9,
+                        'diez': 10
+                        // Puedes agregar más si lo necesitas
+                    };
+
+                    // Convertir el texto a minúsculas y buscar una palabra numérica
+                    const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
+                    if (wordMatch) {
+                        quizNumber = numWords[wordMatch[0]];
+                    }
                 }
 
-                containerCicloContainer.style.display = 'block';
-    
-                return updatedConfigRuta;
+                if (quizNumber !== null) {
+                    // Definir la ruta en Firebase para obtener las opciones de tests
+                    const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
+
+                    try {
+                        // Obtener los datos de tests desde Firebase
+                        const testSnapshot = await get(ref(database, testRuta));
+                        const testOptions = testSnapshot.val();
+
+                        if (testOptions) {
+                            // Buscar la clave que incluye "Test" seguido del número del quiz
+                            testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
+                            if (testClave) {
+                                console.log(`Test clave encontrado: "${testClave}" para Test ${quizNumber}`);
+                            } else {
+                                console.warn(`[opc-autifill-moodle: ruta] No se encontró una clave para Test ${quizNumber}`);
+                            }
+                        } else {
+                            console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
+                        }
+                    } catch (firebaseError) {
+                        console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
+                    }
+                } else {
+                    console.warn(`No se encontraron números en el texto: ${quizText}`);
+                }
+            } else {
+                console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
             }
-    
-            // ** 7. Caso cuando materiaValor o testClave no están definidos **
-            // Establecer 'configRutaDinamic' como 'dinamic'
-            sessionStorage.setItem('configRutaDinamic', "dinamic");
-    
-            // Actualizar el elemento HTML con la ruta 'dinamic'
+        } else {
+            console.warn('[opc-autifill-moodle: ruta] No se encontro quiz.');
+        }
+
+        // ** 6. Verificar y Actualizar ConfigRutaDinamic **
+        if (materiaValor && testClave) {
+            // Dividir la configuración de ruta en partes
+            const configRutaParts = configRuta.split('/');
+            // Reemplazar las últimas dos partes con materiaValor y testClave
+            configRutaParts[configRutaParts.length - 2] = materiaValor;
+            configRutaParts[configRutaParts.length - 1] = testClave;
+
+            // Unir las partes para formar la nueva configuración de ruta
+            const updatedConfigRuta = configRutaParts.join('/');
+            // Almacenar la configuración actualizada en sessionStorage
+            sessionStorage.setItem('configRutaDinamic', updatedConfigRuta);
+
+            // Actualizar el elemento HTML con la nueva ruta
             const rutaElement = document.getElementById('ruta-configruta');
             if (rutaElement) {
-                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span>`;
-                console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la ruta 'dinamic'.");
+                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
+                console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la nueva ruta.");
             } else {
                 console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
             }
-    
-            console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. Se ha establecido la ruta como "dinamic".');
+
             containerCicloContainer.style.display = 'block';
-            // ** 8. Manejar Casos cuando solo falta testClave pero existe materiaValor **
-            if (materiaValor && !testClave) {
-                // Obtener la configuración de ruta dinámica almacenada en sessionStorage
-                const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-    
-                if (!configRutaDinamic) {
-                    console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
-                    await crearSelectsDinamicos(contenedorSelects);
+
+            return updatedConfigRuta;
+        }
+
+        else if (materiaValor && !testClave) {
+            // Obtener la configuración de ruta dinámica almacenada en sessionStorage
+            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+
+            if (!configRutaDinamic) {
+                console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
+                await crearSelectsDinamicos(contenedorSelects);
+            } else {
+                const rutaElemento = document.getElementById('ruta-configruta');
+                if (rutaElemento) {
+                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
+                    console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
                 } else {
-                    const rutaElemento = document.getElementById('ruta-configruta');
-                    if (rutaElemento) {
-                        rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
-                        console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-                    } else {
-                        console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-                    }
+                    console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
                 }
             }
+        }
 
-            
+        else {
+            sessionStorage.setItem('configRutaDinamic', "dinámica");
+
+            // Actualizar el elemento HTML con la ruta 'dinamica'
+            const rutaElement = document.getElementById('ruta-configruta');
+            if (rutaElement) {
+                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span>`;
+            } else {
+                console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+            }
+
+            console.log('[opc-autifill-moodle: ruta] No se pudieron determinar Materia y Quiz. Se ha establecido la ruta como "dinamic".');
             containerCicloContainer.style.display = 'block';
             return null;
-    
+        }
+
+    } catch (error) {
+        // Manejo de errores generales en la función
+        console.error('Error en actualizaConfigRutaDinamic:', error);
+        return null;
+    }
+}
+
+async function crearSelectsDinamicos() {
+    const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
+
+    // Asegurarse de limpiar completamente el contenedor
+    if (contenedorSelects) {
+        console.log('Limpiando todos los elementos existentes en el contenedor.');
+        contenedorSelects.innerHTML = ''; // Elimina todo el contenido del contenedor
+    } else {
+        console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
+        return;
+    }
+
+    // Leer los datos del localStorage
+    const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects')) || [];
+    console.log('Datos obtenidos de estadoSelects:', estadoSelects);
+
+    // Filtrar solo los selects de nivel 5
+    const selectsNivel5 = estadoSelects.filter(select => select.nivel === "5");
+    console.log('Selects nivel 5:', selectsNivel5);
+
+    for (const selectInfo of selectsNivel5) {
+        try {
+            // Obtener datos de Firebase para la ruta especificada
+            const optionsSnapshot = await get(ref(database, selectInfo.ruta));
+            if (!optionsSnapshot.exists()) {
+                console.warn(`No se encontraron datos en la ruta: ${selectInfo.ruta}`);
+                continue;
+            }
+
+            const options = optionsSnapshot.val();
+            console.log(`Opciones obtenidas para ${selectInfo.id}:`, options);
+
+            // Crear el select dinámico
+            const selectElement = document.createElement('select');
+            selectElement.id = selectInfo.id;
+            selectElement.classList.add('dynamic-select');
+            selectElement.style.display = 'none';
+
+            // Añadir opciones al select
+            for (const [key, value] of Object.entries(options)) {
+                const optionElement = document.createElement('option');
+                optionElement.value = key;
+                optionElement.textContent = value;
+                if (key === selectInfo.seleccion) optionElement.selected = true;
+                selectElement.appendChild(optionElement);
+            }
+
+            // Agregar el select al contenedor
+            contenedorSelects.appendChild(selectElement);
+            console.log(`Select creado para: ${selectInfo.id}`);
         } catch (error) {
-            // Manejo de errores generales en la función
-            console.error('Error en actualizaConfigRutaDinamic:', error);
-            return null;
+            console.error(`Error al procesar el select con ID ${selectInfo.id}:`, error);
         }
     }
-    
-    async function crearSelectsDinamicos() {
-        const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
-    
-        // Asegurarse de limpiar completamente el contenedor
-        if (contenedorSelects) {
-            console.log('Limpiando todos los elementos existentes en el contenedor.');
-            contenedorSelects.innerHTML = ''; // Elimina todo el contenido del contenedor
-        } else {
-            console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
-            return;
-        }
-    
-        // Leer los datos del localStorage
-        const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects')) || [];
-        console.log('Datos obtenidos de estadoSelects:', estadoSelects);
-    
-        // Filtrar solo los selects de nivel 5
-        const selectsNivel5 = estadoSelects.filter(select => select.nivel === "5");
-        console.log('Selects nivel 5:', selectsNivel5);
-    
-        for (const selectInfo of selectsNivel5) {
-            try {
-                // Obtener datos de Firebase para la ruta especificada
-                const optionsSnapshot = await get(ref(database, selectInfo.ruta));
-                if (!optionsSnapshot.exists()) {
-                    console.warn(`No se encontraron datos en la ruta: ${selectInfo.ruta}`);
-                    continue;
-                }
-    
-                const options = optionsSnapshot.val();
-                console.log(`Opciones obtenidas para ${selectInfo.id}:`, options);
-    
-                // Crear el select dinámico
-                const selectElement = document.createElement('select');
-                selectElement.id = selectInfo.id;
-                selectElement.classList.add('dynamic-select');
-                selectElement.style.display = 'none';
-    
-                // Añadir opciones al select
-                for (const [key, value] of Object.entries(options)) {
-                    const optionElement = document.createElement('option');
-                    optionElement.value = key;
-                    optionElement.textContent = value;
-                    if (key === selectInfo.seleccion) optionElement.selected = true;
-                    selectElement.appendChild(optionElement);
-                }
-    
-                // Agregar el select al contenedor
-                contenedorSelects.appendChild(selectElement);
-                console.log(`Select creado para: ${selectInfo.id}`);
-            } catch (error) {
-                console.error(`Error al procesar el select con ID ${selectInfo.id}:`, error);
+
+    // Crear el botón "Guardar ruta" después de todos los select
+    const botonGuardarRuta = document.createElement('button');
+    botonGuardarRuta.textContent = 'Guardar Ruta';
+    botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
+    botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
+
+    // Agregar el botón al contenedor
+    contenedorSelects.appendChild(botonGuardarRuta);
+    console.log('Botón "Guardar ruta" agregado.');
+
+    actualizarVisibilidadSelects(true);
+}
+
+function guardarRutaDinamica() {
+    console.log('Guardando ruta...');
+
+    // Obtener todos los select creados dinámicamente
+    const dynamicSelects = document.querySelectorAll('.dynamic-select');
+
+    // Obtener los valores seleccionados en cada select
+    const selectedValues = Array.from(dynamicSelects).map(select => select.value);
+    console.log('Valores seleccionados:', selectedValues);
+
+    // Obtener configRuta desde localStorage
+    const configRuta = localStorage.getItem('configRuta');
+    if (!configRuta) {
+        console.error('No se encontró configRuta en localStorage.');
+        return;
+    }
+
+    // Dividir la ruta por "/" y eliminar los últimos dos elementos
+    const configRutaParts = configRuta.split('/');
+    configRutaParts.splice(-2); // Elimina los últimos dos elementos
+    console.log('Partes de configRuta después de eliminar los últimos dos elementos:', configRutaParts);
+
+    // Combinar las partes de configRuta con los valores seleccionados
+    const newRuta = [...configRutaParts, ...selectedValues].join('/');
+    console.log('Nueva ruta construida:', newRuta);
+
+    // Guardar la nueva ruta en sessionStorage
+    sessionStorage.setItem('configRutaDinamic', newRuta);
+    console.log('Ruta dinámica guardada en sessionStorage:', newRuta);
+
+    const rutaElemento = document.getElementById('ruta-configruta');
+    const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+
+    if (rutaElemento) {
+        console.log("la ruta es", rutaElemento);
+        // Asignar los valores de configRuta y ciclo en los elementos del DOM
+        rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span> `;
+        console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
+
+    }
+    else {
+        console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+
+    }
+
+    // Ocultar el contenedor con id "body-autoquiz-autosavereview-subject-dinamic"
+    const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
+    if (contenedorSelects) {
+        contenedorSelects.style.display = 'none';
+        console.log('Contenedor "body-autoquiz-autosavereview-subject-dinamic" ocultado.');
+    } else {
+        console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
+    }
+
+    AutoSaveReview_LocalStorage();
+}
+
+function actualizarVisibilidadSelects(isVisible) {
+    const selects = document.querySelectorAll('.dynamic-select');
+    selects.forEach(select => select.style.display = isVisible ? 'block' : 'none');
+    console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
+}
+
+// <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
+
+export function contenedorRuta_js() {
+    // Selecciona todos los elementos con la clase 'container-autoquiz'
+
+    const containerAutoQuiz = document.querySelector('.container-autoquiz');
+    // Selecciona el único elemento con la clase 'ruta-ciclo-container'
+    const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+
+    const configRuta = localStorage.getItem('configRuta');
+    const ciclo = localStorage.getItem('ciclo');
+
+    // Verificar si configRuta y ciclo están definidos
+    if (!configRuta || !ciclo) {
+        // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
+
+        // Ocultar todos los elementos con la clase 'container-autoquiz'
+        containerAutoQuiz.forEach(container => {
+            if (container) {
+                container.style.display = 'none';
+                // console.log('Contenedor .container-autoquiz ocultado:', container);
             }
+        });
+
+        // Desactivar autofill y autosave
+        localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
+        localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
+        console.log('Autofill y autosave desactivados en localStorage.');
+
+        // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
+        const mensaje = document.createElement('div');
+        mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
+        mensaje.style.color = 'red';
+        mensaje.style.fontWeight = '500';
+        mensaje.style.fontSize = '0.95em';
+        mensaje.style.fontStyle = 'italic';
+        mensaje.style.textAlign = 'center';
+        mensaje.id = 'mensaje-ruta-invalida';
+
+        const contenidoPrincipal = document.getElementById('contenido-principal');
+        if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
+            contenidoPrincipal.appendChild(mensaje);
+            console.log('Mensaje de advertencia añadido al contenido principal.');
         }
-    
-        // Crear el botón "Guardar ruta" después de todos los select
-        const botonGuardarRuta = document.createElement('button');
-        botonGuardarRuta.textContent = 'Guardar Ruta';
-        botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
-        botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
-    
-        // Agregar el botón al contenedor
-        contenedorSelects.appendChild(botonGuardarRuta);
-        console.log('Botón "Guardar ruta" agregado.');
-    
-        actualizarVisibilidadSelects(true);
     }
-    
-    function guardarRutaDinamica() {
-        console.log('Guardando ruta...');
 
-        // Obtener todos los select creados dinámicamente
-        const dynamicSelects = document.querySelectorAll('.dynamic-select');
+    else {
+        console.log(`[opc-autofill-moodle: ruta] Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
 
-        // Obtener los valores seleccionados en cada select
-        const selectedValues = Array.from(dynamicSelects).map(select => select.value);
-        console.log('Valores seleccionados:', selectedValues);
 
-        // Obtener configRuta desde localStorage
-        const configRuta = localStorage.getItem('configRuta');
-        if (!configRuta) {
-            console.error('No se encontró configRuta en localStorage.');
-            return;
+        // Verifica si el elemento existe antes de modificar su estilo
+        if (containerCicloContainer) {
+            containerCicloContainer.style.display = 'block';
+        } else {
+            console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
         }
 
-        // Dividir la ruta por "/" y eliminar los últimos dos elementos
-        const configRutaParts = configRuta.split('/');
-        configRutaParts.splice(-2); // Elimina los últimos dos elementos
-        console.log('Partes de configRuta después de eliminar los últimos dos elementos:', configRutaParts);
+        if (containerAutoQuiz) {
+            containerAutoQuiz.style.display = 'block';
+        } else {
+            console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
+        }
 
-        // Combinar las partes de configRuta con los valores seleccionados
-        const newRuta = [...configRutaParts, ...selectedValues].join('/');
-        console.log('Nueva ruta construida:', newRuta);
+        // Eliminar el mensaje si existe
+        const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
+        if (mensajeExistente) {
+            mensajeExistente.remove();
+            console.log('Mensaje de advertencia eliminado.');
+        }
 
-        // Guardar la nueva ruta en sessionStorage
-        sessionStorage.setItem('configRutaDinamic', newRuta);
-        console.log('Ruta dinámica guardada en sessionStorage:', newRuta);
-
+        // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
         const rutaElemento = document.getElementById('ruta-configruta');
-        const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+        const cicloElemento = document.getElementById('ciclo-configruta');
+        console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`)
 
-        if (rutaElemento) {
-            console.log("la ruta es", rutaElemento);
+        if (rutaElemento && cicloElemento) {
             // Asignar los valores de configRuta y ciclo en los elementos del DOM
-            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span> `;
-            console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-
-        }
-        else {
-            console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-
-        }
-
-        // Ocultar el contenedor con id "body-autoquiz-autosavereview-subject-dinamic"
-        const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
-        if (contenedorSelects) {
-            contenedorSelects.style.display = 'none';
-            console.log('Contenedor "body-autoquiz-autosavereview-subject-dinamic" ocultado.');
-        } else {
-            console.error('No se encontró el contenedor con id="body-autoquiz-autosavereview-subject-dinamic".');
-        }
-
-        AutoSaveReview_LocalStorage();
-    }
-
-    function actualizarVisibilidadSelects(isVisible) {
-        const selects = document.querySelectorAll('.dynamic-select');
-        selects.forEach(select => select.style.display = isVisible ? 'block' : 'none');
-        console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
-    }
-
-    // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
-
-    export function contenedorRuta_js() {
-// Selecciona todos los elementos con la clase 'container-autoquiz'
-
-const containerAutoQuiz = document.querySelector('.container-autoquiz');
-// Selecciona el único elemento con la clase 'ruta-ciclo-container'
-const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
-
-        const configRuta = localStorage.getItem('configRuta');
-        const ciclo = localStorage.getItem('ciclo');
-
-        // Verificar si configRuta y ciclo están definidos
-        if (!configRuta || !ciclo) {
-            // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
-
-            // Ocultar todos los elementos con la clase 'container-autoquiz'
-            containerAutoQuiz.forEach(container => {
-                if (container) {
-                    container.style.display = 'none';
-                    // console.log('Contenedor .container-autoquiz ocultado:', container);
-                }
-            });
-
-            // Desactivar autofill y autosave
-            localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
-            localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-            console.log('Autofill y autosave desactivados en localStorage.');
-
-            // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
-            const mensaje = document.createElement('div');
-            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
-            mensaje.style.color = 'red';
-            mensaje.style.fontWeight = '500';
-            mensaje.style.fontSize = '0.95em';
-            mensaje.style.fontStyle = 'italic';
-            mensaje.style.textAlign = 'center';
-            mensaje.id = 'mensaje-ruta-invalida';
-
-            const contenidoPrincipal = document.getElementById('contenido-principal');
-            if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
-                contenidoPrincipal.appendChild(mensaje);
-                console.log('Mensaje de advertencia añadido al contenido principal.');
-            }
-        }
-
-        else {
-            console.log(`[opc-autofill-moodle: ruta] Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
-           
-
-            // Verifica si el elemento existe antes de modificar su estilo
-            if (containerCicloContainer) {
-                containerCicloContainer.style.display = 'block';
-            } else {
-                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-            }
-
-            if (containerAutoQuiz) {
-                containerAutoQuiz.style.display = 'block';
-            } else {
-                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-            }
-
-            // Eliminar el mensaje si existe
-            const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
-            if (mensajeExistente) {
-                mensajeExistente.remove();
-                console.log('Mensaje de advertencia eliminado.');
-            }
-
-            // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
-            const rutaElemento = document.getElementById('ruta-configruta');
-            const cicloElemento = document.getElementById('ciclo-configruta');
-            console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`)
-
-            if (rutaElemento && cicloElemento) {
-                // Asignar los valores de configRuta y ciclo en los elementos del DOM
-                rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> ${configRuta}`;
-                cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
-                // console.log(`Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
-            }
+            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> ${configRuta}`;
+            cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
+            // console.log(`Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
         }
     }
+}
