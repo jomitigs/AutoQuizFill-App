@@ -225,7 +225,7 @@
 
 
         /* Estilos para el contenedor de Verificar */
-        .subcontainer-autoquiz-verificar {
+        .subcontainer-opc-autofill-moodle-verificar {
             margin-top: 10px; /* Espaciado superior para separar del contenido anterior */
             margin-bottom: 10px; /* Espaciado inferior */
             background-color: #f4f4f4; /* Color de fondo suave */
@@ -259,7 +259,7 @@
         }
 
         /* Estilos para el contenedor de cada pregunta */
-        .question-container-autoquiz {
+        .question-container-opc-autofill-moodle {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -400,7 +400,7 @@
             }
 
         /* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */
-        .subcontainer-autoquiz-autofill {
+        .subcontainer-opc-autofill-moodle-autofill {
                 margin-top: 10px;
             margin-bottom: 10px;
             background-color: #f4f4f4;
@@ -412,26 +412,26 @@
 
         }
         /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar {
+        .subcontainer-opc-autofill-moodle-autofill::-webkit-scrollbar {
             width: 3px; /* Ancho del scrollbar */
         height: 3px; /* Alto del scrollbar horizontal */
         }
 
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar-track {
+        .subcontainer-opc-autofill-moodle-autofill::-webkit-scrollbar-track {
             background: transparent; /* Fondo del track transparente */
         }
 
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
+        .subcontainer-opc-autofill-moodle-autofill::-webkit-scrollbar-thumb {
             background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
             border-radius: 10px; /* Bordes redondeados */
         }
 
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb:hover {
+        .subcontainer-opc-autofill-moodle-autofill::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
         }
 
         /* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */
-        .subcontainer-autoquiz-autosave {
+        .subcontainer-opc-autofill-moodle-autosave {
             margin-top: 10px;
             margin-bottom: 10px;
             background-color: #f4f4f4;
@@ -443,25 +443,25 @@
         }
 
         /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar {
+        .subcontainer-opc-autofill-moodle-autosave::-webkit-scrollbar {
             width: 3px; /* Ancho del scrollbar */
             height: 3px; /* Alto del scrollbar horizontal */
         }
 
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar-track {
+        .subcontainer-opc-autofill-moodle-autosave::-webkit-scrollbar-track {
             background: transparent; /* Fondo del track transparente */
         }
 
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb {
+        .subcontainer-opc-autofill-moodle-autosave::-webkit-scrollbar-thumb {
             background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
             border-radius: 10px; /* Bordes redondeados */
         }
 
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb:hover {
+        .subcontainer-opc-autofill-moodle-autosave::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
         }
 
-        .subcontainer-autoquiz-verified {
+        .subcontainer-opc-autofill-moodle-verified {
             margin-top: 10px;
             margin-bottom: 10px;
             background-color: #f4f4f4;
@@ -473,25 +473,25 @@
         }
 
         /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-verified::-webkit-scrollbar {
+        .subcontainer-opc-autofill-moodle-verified::-webkit-scrollbar {
             width: 3px; /* Ancho del scrollbar */
             height: 3px; /* Alto del scrollbar horizontal */
         }
 
-        .subcontainer-autoquiz-verified::-webkit-scrollbar-track {
+        .subcontainer-opc-autofill-moodle-verified::-webkit-scrollbar-track {
             background: transparent; /* Fondo del track transparente */
         }
 
-        .subcontainer-autoquiz-verified::-webkit-scrollbar-thumb {
+        .subcontainer-opc-autofill-moodle-verified::-webkit-scrollbar-thumb {
             background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
             border-radius: 10px; /* Bordes redondeados */
         }
 
-        .subcontainer-autoquiz-verified::-webkit-scrollbar-thumb:hover {
+        .subcontainer-opc-autofill-moodle-verified::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
         }
 
-        .subcontainer-autoquiz-autosavereview {
+        .subcontainer-opc-autofill-moodle-autosavereview {
             margin-top: 10px;
             margin-bottom: 10px;
             background-color: #f4f4f4;
@@ -503,21 +503,21 @@
         }
 
         /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar {
+        .subcontainer-opc-autofill-moodle-autosavereview::-webkit-scrollbar {
             width: 3px; /* Ancho del scrollbar */
             height: 3px; /* Alto del scrollbar horizontal */
         }
 
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-track {
+        .subcontainer-opc-autofill-moodle-autosavereview::-webkit-scrollbar-track {
             background: transparent; /* Fondo del track transparente */
         }
 
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb {
+        .subcontainer-opc-autofill-moodle-autosavereview::-webkit-scrollbar-thumb {
             background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
             border-radius: 10px; /* Bordes redondeados */
         }
 
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb:hover {
+        .subcontainer-opc-autofill-moodle-autosavereview::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
         }
 

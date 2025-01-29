@@ -4,7 +4,7 @@ import { database } from '../../config-firebase/script.js';
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
     export async function contenedorRutaDinamica_js() {
-        const containerAutoQuiz = document.querySelectorAll('.container-autoquiz');
+        const containerAutoQuiz = document.querySelectorAll('.container-opc-autofill-moodle');
         const configRuta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
 
@@ -14,11 +14,11 @@ import { database } from '../../config-firebase/script.js';
         if (!configRuta || !ciclo) {
             // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
 
-            // Ocultar todos los elementos con la clase 'container-autoquiz'
+            // Ocultar todos los elementos con la clase 'container-opc-autofill-moodle'
             containerAutoQuiz.forEach(container => {
                 if (container) {
                     container.style.display = 'none';
-                    // console.log('Contenedor .container-autoquiz ocultado:', container);
+                    // console.log('Contenedor .container-opc-autofill-moodle ocultado:', container);
                 }
             });
 
@@ -427,8 +427,8 @@ import { database } from '../../config-firebase/script.js';
     // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
 
     export function contenedorRuta_js() {
-// Selecciona todos los elementos con la clase 'container-autoquiz'
-const containerAutoQuiz = document.querySelector('.container-autoquiz');
+// Selecciona todos los elementos con la clase 'container-opc-autofill-moodle'
+const containerAutoQuiz = document.querySelector('.container-opc-autofill-moodle');
 // Selecciona el único elemento con la clase 'ruta-ciclo-container'
 const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
 
@@ -441,11 +441,11 @@ const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
         if (!configRuta || !ciclo) {
             // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
 
-            // Ocultar todos los elementos con la clase 'container-autoquiz'
+            // Ocultar todos los elementos con la clase 'container-opc-autofill-moodle'
             containerAutoQuiz.forEach(container => {
                 if (container) {
                     container.style.display = 'none';
-                    // console.log('Contenedor .container-autoquiz ocultado:', container);
+                    // console.log('Contenedor .container-opc-autofill-moodle ocultado:', container);
                 }
             });
 
