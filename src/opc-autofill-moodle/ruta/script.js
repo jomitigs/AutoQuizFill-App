@@ -177,7 +177,7 @@ async function actualizaConfigRutaDinamic() {
                         console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
                     }
                 } else {
-                    console.warn(`No se encontraron números en el texto: ${quizText}`);
+                    console.warn(`[opc-autifill-moodle: ruta] No se encontro número de test.`);
                 }
             } else {
                 console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
@@ -203,7 +203,7 @@ async function actualizaConfigRutaDinamic() {
             const rutaElement = document.getElementById('ruta-configruta');
             if (rutaElement) {
                 rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
-                console.log(`[opc-autifill-moodle: ruta] Ruta actualizada a: ${updatedConfigRuta}`);
+                console.log(`[opc-autifill-moodle: ruta] Ruta actualizada: ${updatedConfigRuta}`);
             } else {
                 console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
             }
@@ -211,6 +211,22 @@ async function actualizaConfigRutaDinamic() {
             containerCicloContainer.style.display = 'block';
 
             return updatedConfigRuta;
+        }
+
+        else if ( (!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/") ) {
+            sessionStorage.setItem('configRutaDinamic', "dinámica");
+
+            // Actualizar el elemento HTML con la ruta 'dinamica'
+            const rutaElement = document.getElementById('ruta-configruta');
+            if (rutaElement) {
+                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span>`;
+            } else {
+                console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+            }
+
+            console.log('[opc-autifill-moodle: ruta] No se pudieron determinar materia ni quiz. Se ha establecido la ruta como "dinámica".');
+            containerCicloContainer.style.display = 'block';
+            return null;
         }
 
         else if ( (!testClave || !materiaValor) && window.location.href.includes("mod/quiz/") ) {
@@ -231,21 +247,6 @@ async function actualizaConfigRutaDinamic() {
             }
         }
 
-        else if ( (!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/") ) {
-            sessionStorage.setItem('configRutaDinamic', "dinámica");
-
-            // Actualizar el elemento HTML con la ruta 'dinamica'
-            const rutaElement = document.getElementById('ruta-configruta');
-            if (rutaElement) {
-                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span>`;
-            } else {
-                console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-            }
-
-            console.log('[opc-autifill-moodle: ruta] No se pudieron determinar materia ni quiz. Se ha establecido la ruta como "dinámica".');
-            containerCicloContainer.style.display = 'block';
-            return null;
-        }
 
     } catch (error) {
         // Manejo de errores generales en la función
