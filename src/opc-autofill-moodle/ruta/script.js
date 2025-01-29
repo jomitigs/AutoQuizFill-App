@@ -244,6 +244,8 @@ async function actualizaConfigRutaDinamic() {
 }
 
 async function crearSelectsDinamicos(materiaValor, testClave) {
+
+    const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
     const contenedorSelects = document.getElementById('subject-dinamic');
 
     // Asegurarse de limpiar completamente el contenedor
@@ -368,6 +370,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
 
 
 function guardarRutaDinamica() {
+    const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
     console.log('Guardando ruta...');
 
     // Obtener todos los select creados dinámicamente
