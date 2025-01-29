@@ -47,7 +47,7 @@ export function opcionAutoFillMoodle_html() {
     </div>
 
             <!-- Contenedor para Subject Dinamic -->
-<div id="container-ruta-dinamica" class="subcontainer-opc-autofill-moodle-autosavereview" style="display: none;" >
+<div id="container-ruta-dinamica" class="subcontainer-autoquiz-autosavereview" style="display: none;" >
 
 
         <div class="header-autoquiz">
