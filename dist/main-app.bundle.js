@@ -23199,7 +23199,7 @@
                     console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
                 }
 
-                console.log('[opc-autifill-moodle: ruta] No se pudieron determinar Materia y Quiz. Se ha establecido la ruta como "dinamic".');
+                console.log('[opc-autifill-moodle: ruta] No se pudieron determinar materia ni quiz. Se ha establecido la ruta como "dinámica".');
                 containerCicloContainer.style.display = 'block';
                 return null;
             }
