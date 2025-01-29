@@ -23041,6 +23041,8 @@
         }
 
         async function actualizaConfigRutaDinamic(contenedorSelects) {
+            const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+
             try {
                 // ** 1. Recuperar la configuración de ruta desde localStorage **
                 const configRuta = localStorage.getItem('configRuta');
@@ -23222,6 +23224,8 @@
                     } else {
                         console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
                     }
+
+                    containerCicloContainer.style.display = 'block';
         
                     return updatedConfigRuta;
                 }
@@ -23240,7 +23244,7 @@
                 }
         
                 console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. Se ha establecido la ruta como "dinamic".');
-        
+                containerCicloContainer.style.display = 'block';
                 // ** 8. Manejar Casos cuando solo falta testClave pero existe materiaValor **
                 if (materiaValor && !testClave) {
                     // Obtener la configuración de ruta dinámica almacenada en sessionStorage
@@ -23260,7 +23264,7 @@
                     }
                 }
 
-                const containerCicloContainer = document.querySelector('.ruta-ciclo-container');
+                
                 containerCicloContainer.style.display = 'block';
                 return null;
         
