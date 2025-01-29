@@ -23673,7 +23673,7 @@
             console.log('[opc-autifill-moodle: main] Cargando contenedorRutaDinamica_js...');
             await contenedorRutaDinamica_js();
         } else {
-            console.log('[opc-autifill-moodle: main] Cargando contenedorRuta_js...');
+            console.log('[opc-autifill-moodle: main] Cargando Ruta');
             contenedorRuta_js$1();
         }
         
