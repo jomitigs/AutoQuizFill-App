@@ -85,79 +85,87 @@ import { database } from '../../config-firebase/script.js';
 
     async function actualizaConfigRutaDinamic(contenedorSelects) {
         try {
+            // ** 1. Recuperar la configuración de ruta desde localStorage **
             const configRuta = localStorage.getItem('configRuta');
             if (!configRuta) {
                 console.error('No se encontró configRuta en localStorage.');
                 return null;
             }
+    
+            // ** 2. Extraer la universidad de la configuración de ruta **
             const universidad = configRuta.split('/')[0];
     
+            // ** 3. Seleccionar los elementos del breadcrumb relacionados con cursos y quizzes **
             const breadcrumbItems = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
             const quizItems = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
     
-            // Obtener Materia
+            // ** 4. Obtener Materia **
             let materiaValor = null;
     
             if (breadcrumbItems.length > 0) {
+                // Obtener el atributo 'title' del primer elemento del breadcrumb
                 const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
                 console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
     
-                // Extraer claves entre corchetes del atributo title
+                // Extraer las claves entre corchetes del título del breadcrumb
                 const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
     
                 if (matches && matches.length > 0) {
+                    // Limpiar los corchetes para obtener la clave de búsqueda
                     const searchKey = matches[0].replace(/[\[\]]/g, '');
                     console.log(`[opc-autifill-moodle: ruta] Clave: ${searchKey}`);
     
+                    // Definir la ruta en Firebase para obtener las opciones de materias
                     const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
     
-                    const materiaSnapshot = await get(ref(database, materiaRuta));
-                    const materiaOptions = materiaSnapshot.val();
-                     // console.log(`[opc-autifill-moodle: ruta] Datos obtenidos de Firebase:`, materiaOptions);
+                    try {
+                        // Obtener los datos de materias desde Firebase
+                        const materiaSnapshot = await get(ref(database, materiaRuta));
+                        const materiaOptions = materiaSnapshot.val();
     
-                    if (materiaOptions) {
-                        let found = false; // Bandera para saber si se encuentra alguna coincidencia
+                        if (materiaOptions) {
+                            let found = false; // Bandera para indicar si se encontró una coincidencia
     
-                        // Iterar por cada clave en materiaOptions
-                        for (const [key, value] of Object.entries(materiaOptions)) {
-                             // console.log(`Analizando clave: "${key}" con valores contenidos: "${value}"`);
+                            // Iterar sobre cada clave y valor en las opciones de materias
+                            for (const [key, value] of Object.entries(materiaOptions)) {
+                                // Separar los valores por comas y eliminar espacios
+                                const values = value.split(',').map(item => item.trim());
     
-                            const values = value.split(',').map(item => item.trim());
-                             // console.log(`Valores separados:`, values);
+                                for (const val of values) {
+                                    if (val.includes(':')) {
+                                        // Si el valor contiene ":", dividirlo en dos partes
+                                        const [firstPart, secondPart] = val.split(':').map(part => part.trim());
     
-                            for (const val of values) {
-                                if (val.includes(':')) {
-                                    const [firstPart, secondPart] = val.split(':').map(part => part.trim());
-                                    //console.log(`Valor con ":", Parte 1: "${firstPart}", Parte 2: "${secondPart}"`);
-    
-                                    //console.log(`Comparando "${firstPart}" con "${searchKey}"`);
-                                    //console.log(`Comparando "${breadcrumbTitle}" con "${secondPart}"`);
-    
-                                    if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
-                                        materiaValor = key;
-                                        console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
-                                        found = true;
-                                        break;
-                                    }
-                                } else {
-                                    if (val === searchKey) {
-                                        materiaValor = key;
-                                        console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
-                                        found = true;
-                                        break;
+                                        // Comparar la primera parte con la clave de búsqueda
+                                        // y verificar si el título del breadcrumb contiene la segunda parte
+                                        if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
+                                            materiaValor = key;
+                                            console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
+                                            found = true;
+                                            break; // Salir del bucle interno si se encuentra una coincidencia
+                                        }
+                                    } else {
+                                        // Si el valor no contiene ":", comparar directamente con la clave de búsqueda
+                                        if (val === searchKey) {
+                                            materiaValor = key;
+                                            console.log(`Coincidencia encontrada en clave: "${key}". materiaValor ahora es: "${materiaValor}"`);
+                                            found = true;
+                                            break; // Salir del bucle interno si se encuentra una coincidencia
+                                        }
                                     }
                                 }
+    
+                                if (found) break; // Salir del bucle externo si se encontró una coincidencia
                             }
     
-                            if (found) break;
+                            if (!found) {
+                                console.warn(`[opc-autifill-moodle: ruta] No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
+                            }
+                        } else {
+                            console.warn(`[opc-autifill-moodle: ruta] No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
                         }
-    
-                        if (!found) {
-                            console.warn(`[opc-autifill-moodle: ruta] No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
-                        }
-    
-                    } else {
-                        console.warn(`[opc-autifill-moodle: ruta] No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
+                    } catch (firebaseError) {
+                        console.error(`Error al obtener datos de Firebase en la ruta ${materiaRuta}:`, firebaseError);
                     }
                 } else {
                     console.warn('[opc-autifill-moodle: ruta] No se encontraron coincidencias en el título del breadcrumb.');
@@ -166,115 +174,144 @@ import { database } from '../../config-firebase/script.js';
                 console.warn('[opc-autifill-moodle: ruta] No se encontraron elementos breadcrumb en la página.');
             }
     
-            // Obtener Test
+            // ** 5. Obtener Test **
             let testClave = null;
+    
             if (quizItems.length > 0) {
-                const quizText = quizItems[0].querySelector('span.text-truncate').textContent.trim();
-                const quizNumberMatch = quizText.match(/\d+/); // Buscar números en formato numérico
+                // Obtener el texto del quiz desde el primer elemento del breadcrumb
+                const quizTextElement = quizItems[0].querySelector('span.text-truncate');
+                if (quizTextElement) {
+                    const quizText = quizTextElement.textContent.trim();
+                    // Buscar números en formato numérico en el texto del quiz
+                    const quizNumberMatch = quizText.match(/\d+/);
     
-                let quizNumber = null;
+                    let quizNumber = null;
     
-                if (quizNumberMatch) {
-                    quizNumber = parseInt(quizNumberMatch[0]);
-                } else {
-                    // Si no se encuentran números, buscar números escritos en palabras
-                    const numWords = {
-                        'uno': 1,
-                        'dos': 2,
-                        'tres': 3,
-                        'cuatro': 4,
-                        'cinco': 5,
-                        'seis': 6,
-                        'siete': 7,
-                        'ocho': 8,
-                        'nueve': 9,
-                        'diez': 10
-                        // Puedes agregar más si lo necesitas
-                    };
-    
-                    // Convertir texto a minúsculas y buscar la palabra
-                    const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
-                    if (wordMatch) {
-                        quizNumber = numWords[wordMatch[0].toLowerCase()];
-                    }
-                }
-    
-                if (quizNumber !== null) {
-                    const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
-    
-                    const testSnapshot = await get(ref(database, testRuta));
-                    const testOptions = testSnapshot.val();
-    
-                    if (testOptions) {
-                        testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
+                    if (quizNumberMatch) {
+                        // Convertir el número encontrado a entero
+                        quizNumber = parseInt(quizNumberMatch[0], 10);
                     } else {
-                        console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
+                        // Si no se encuentran números, buscar números escritos en palabras
+                        const numWords = {
+                            'uno': 1,
+                            'dos': 2,
+                            'tres': 3,
+                            'cuatro': 4,
+                            'cinco': 5,
+                            'seis': 6,
+                            'siete': 7,
+                            'ocho': 8,
+                            'nueve': 9,
+                            'diez': 10
+                            // Puedes agregar más si lo necesitas
+                        };
+    
+                        // Convertir el texto a minúsculas y buscar una palabra numérica
+                        const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
+                        if (wordMatch) {
+                            quizNumber = numWords[wordMatch[0]];
+                        }
+                    }
+    
+                    if (quizNumber !== null) {
+                        // Definir la ruta en Firebase para obtener las opciones de tests
+                        const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
+    
+                        try {
+                            // Obtener los datos de tests desde Firebase
+                            const testSnapshot = await get(ref(database, testRuta));
+                            const testOptions = testSnapshot.val();
+    
+                            if (testOptions) {
+                                // Buscar la clave que incluye "Test" seguido del número del quiz
+                                testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
+                                if (testClave) {
+                                    console.log(`Test clave encontrado: "${testClave}" para Test ${quizNumber}`);
+                                } else {
+                                    console.warn(`[opc-autifill-moodle: ruta] No se encontró una clave para Test ${quizNumber}`);
+                                }
+                            } else {
+                                console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
+                            }
+                        } catch (firebaseError) {
+                            console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
+                        }
+                    } else {
+                        console.warn(`No se encontraron números en el texto: ${quizText}`);
                     }
                 } else {
-                    console.warn(`No se encontraron números en el texto: ${quizText}`);
+                    console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
                 }
             }
     
-            // Actualizar ConfigRutaDinamic
+            // ** 6. Actualizar ConfigRutaDinamic **
             if (materiaValor && testClave) {
+                // Dividir la configuración de ruta en partes
                 const configRutaParts = configRuta.split('/');
+                // Reemplazar las últimas dos partes con materiaValor y testClave
                 configRutaParts[configRutaParts.length - 2] = materiaValor;
                 configRutaParts[configRutaParts.length - 1] = testClave;
     
+                // Unir las partes para formar la nueva configuración de ruta
                 const updatedConfigRuta = configRutaParts.join('/');
+                // Almacenar la configuración actualizada en sessionStorage
                 sessionStorage.setItem('configRutaDinamic', updatedConfigRuta);
     
-                // Actualizar el elemento HTML con la ruta creada
+                // Actualizar el elemento HTML con la nueva ruta
                 const rutaElement = document.getElementById('ruta-configruta');
                 if (rutaElement) {
                     rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
+                    console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la nueva ruta.");
+                } else {
+                    console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
                 }
     
                 return updatedConfigRuta;
+            }
     
-            } else if (window.location.href.includes('grade/report/overview/index.php')) {
+            // ** 7. Caso Especial para la Página de Reportes de Calificaciones **
+            if (window.location.href.includes('grade/report/overview/index.php')) {
                 const rutaElement = document.getElementById('ruta-configruta');
-    
                 if (rutaElement) {
                     rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinamic</span>`;
-                }
-    
-            }
-            else {
-                console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. No se actualizó ConfigRutaDinamic.');
-    
-                contenedorRuta_js();
-    
-                // Crear selects dinámicos si no se encontraron datos
-                const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-    
-                if (!configRutaDinamic) {
-                    console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
-                    await crearSelectsDinamicos(contenedorSelects);
-    
+                    console.log("Se ha actualizado el elemento con ID 'ruta-configruta' con la ruta 'dinamic'.");
                 } else {
-                    const rutaElemento = document.getElementById('ruta-configruta');
-                    const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-    
-                    if (rutaElemento) {
-                        console.log("la ruta es", rutaElemento);
-                        // Asignar los valores de configRuta y ciclo en los elementos del DOM
-                        rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span> `;
-                        console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-                    }
-                    else {
-                        console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-                    }
+                    console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
                 }
-    
                 return null;
             }
     
+            // ** 8. Manejar Casos donde No se Pueden Determinar materiaValor o testClave **
+            console.warn('[opc-autifill-moodle: ruta] No se pudieron determinar materiaValor o testClave. No se actualizó ConfigRutaDinamic.');
+    
+            // Llamar a una función para manejar la ruta (presumiblemente definida en otro lugar)
+            contenedorRuta_js();
+    
+            // Obtener la configuración de ruta dinámica almacenada en sessionStorage
+            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+    
+            if (!configRutaDinamic) {
+                console.log('configRutaDinamic no existe en sessionStorage. Creando selects dinámicos...');
+                await crearSelectsDinamicos(contenedorSelects);
+            } else {
+                const rutaElemento = document.getElementById('ruta-configruta');
+                if (rutaElemento) {
+                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
+                    console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
+                } else {
+                    console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
+                }
+            }
+    
+            return null;
+    
         } catch (error) {
+            // Manejo de errores generales en la función
             console.error('Error en actualizaConfigRutaDinamic:', error);
             return null;
         }
     }
+
     
     async function crearSelectsDinamicos() {
         const contenedorSelects = document.getElementById('body-autoquiz-autosavereview-subject-dinamic');
