@@ -23123,7 +23123,7 @@
                                 // Buscar la clave que incluye "Test" seguido del número del quiz
                                 testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
                                 if (testClave) {
-                                    console.log(`Test clave encontrado: "${testClave}" para Test ${quizNumber}`);
+                                    console.log(`[opc-autifill-moodle: ruta] Test encontrado: "${testClave}"`);
                                 } else {
                                     console.warn(`[opc-autifill-moodle: ruta] No se encontró una clave para Test ${quizNumber}`);
                                 }
@@ -23140,7 +23140,7 @@
                     console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
                 }
             } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontro quiz.');
+                console.warn('[opc-autifill-moodle: ruta] No se encontro test.');
             }
 
             // ** 6. Verificar y Actualizar ConfigRutaDinamic **
