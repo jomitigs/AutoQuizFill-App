@@ -257,61 +257,74 @@ async function crearSelectsDinamicos() {
 
     const rutaLista = (localStorage.getItem('configRuta') || '').split('/');
 
-    if (rutaLista.includes('UNEMI') && rutaLista.includes('niv')) {
+// Asumiendo que estás dentro de una función async o que manejas las promesas adecuadamente
+if (rutaLista.includes('UNEMI')) {
+    console.log('Procesando ruta que incluye UNEMI');
 
-        console.log('Ejecutando porque contiene UNEMI y niv');
-    
-        // Definir las rutas dinámicas en un arreglo
-        const rutasSelectDinamics = [
-            {
-                path: "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
-                label: "Materias de Nivelación"
-            },
-            {
-                path: "ConfigRuta/opciones/UNEMI/unemi:niv-test",
-                label: "Test de Nivelación"
-            }
-        ];
-    
+    if (rutaLista.includes('niv')) {
+        console.log('Procesando ruta que incluye niv');
+
+        // Verificar la existencia de materiaValor y testClave
+        const hasMateriaValor = Boolean(materiaValor); // Asegúrate de que materiaValor esté definido
+        const hasTestClave = Boolean(testClave);       // Asegúrate de que testClave esté definido
+
+        // Determinar las rutas dinámicas basadas en las condiciones
+        let rutasSelectDinamics = [];
+
+        if (!hasMateriaValor && !hasTestClave) {
+            // Si existen ambos valores, utilizar ambas rutas
+            rutasSelectDinamics = [
+                "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
+                "ConfigRuta/opciones/UNEMI/unemi:niv-test"
+            ];
+            console.log('Ambos valores existen: materiaValor y testClave. Usando ambas rutas.');
+        } else if (hasMateriaValor) {
+            // Si solo existe materiaValor
+            rutasSelectDinamics = [
+                "ConfigRuta/opciones/UNEMI/unemi:niv-test"
+            ];
+            console.log('Solo existe materiaValor. Usando ruta para test.');
+        } else if (hasTestClave) {
+            // Si solo existe testClave
+            rutasSelectDinamics = [
+                "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion"
+            ];
+            console.log('Solo existe testClave. Usando ruta para materias de nivelación.');
+        } else {
+            // Si no existen ninguno de los dos
+            rutasSelectDinamics = [
+                "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
+                "ConfigRuta/opciones/UNEMI/unemi:niv-test"
+            ];
+            console.log('No existen materiaValor ni testClave. Usando ambas rutas por defecto.');
+        }
+
         try {
-            // Iterar sobre cada ruta dinámica
-            for (const ruta of rutasSelectDinamics) {
-                const { path, label } = ruta;
-    
+            // Iterar sobre cada ruta dinámica seleccionada
+            for (const path of rutasSelectDinamics) {
                 // Obtener datos de Firebase para la ruta actual
                 const optionsSnapshot = await get(ref(database, path));
                 if (!optionsSnapshot.exists()) {
                     console.warn(`No se encontraron datos en la ruta: ${path}`);
                     continue; // Saltar a la siguiente ruta si no hay datos
                 }
-    
+
                 const options = optionsSnapshot.val();
-                console.log(`Opciones obtenidas para ${label}:`, options);
-    
-                // Crear un contenedor para cada select con su etiqueta
-                const selectContainer = document.createElement('div');
-                selectContainer.classList.add('select-container');
-    
-                // Crear y añadir una etiqueta para el select
-                const selectLabel = document.createElement('label');
-                selectLabel.textContent = label;
-                selectLabel.setAttribute('for', `select-${label.replace(/\s+/g, '-').toLowerCase()}`);
-                selectContainer.appendChild(selectLabel);
-    
+                console.log(`Opciones obtenidas para la ruta ${path}:`, options);
+
                 // Crear el elemento select
                 const selectElement = document.createElement('select');
                 selectElement.classList.add('dynamic-select');
-                selectElement.id = `select-${label.replace(/\s+/g, '-').toLowerCase()}`;
-                selectElement.style.display = 'block'; // Mostrar el select
-    
+                selectElement.style.display = 'block'; // Asegura que el select sea visible
+
                 // Añadir una opción por defecto
                 const defaultOption = document.createElement('option');
                 defaultOption.value = "";
-                defaultOption.textContent = `Seleccione una opción de ${label}`;
+                defaultOption.textContent = `Seleccione una opción`;
                 defaultOption.disabled = true;
                 defaultOption.selected = true;
                 selectElement.appendChild(defaultOption);
-    
+
                 // Añadir opciones al select
                 for (const [key, value] of Object.entries(options)) {
                     const optionElement = document.createElement('option');
@@ -319,36 +332,45 @@ async function crearSelectsDinamicos() {
                     optionElement.textContent = value;
                     selectElement.appendChild(optionElement);
                 }
-    
-                // Añadir el select al contenedor del select
-                selectContainer.appendChild(selectElement);
-    
-                // Agregar el contenedor del select al contenedor principal
-                contenedorSelects.appendChild(selectContainer);
+
+                // Añadir el select al contenedor principal
+                contenedorSelects.appendChild(selectElement);
+                console.log(`Select creado y agregado para la ruta: ${path}`);
             }
-    
+
             // Crear el botón "Guardar Ruta" después de todos los selects
             const botonGuardarRuta = document.createElement('button');
             botonGuardarRuta.textContent = 'Guardar Ruta';
             botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
             botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
-    
+
             // Agregar el botón al contenedor
             contenedorSelects.appendChild(botonGuardarRuta);
             console.log('Botón "Guardar ruta" agregado.');
-    
+
             // Actualizar la visibilidad de los selects si es necesario
             actualizarVisibilidadSelects(true);
-    
+
         } catch (error) {
             console.error(`Error al procesar los selects dinámicos:`, error);
         }
-    
+
+    } else if (rutaLista.includes('adm')) {
+        console.log(`[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
+        contenedorRuta_js();
+       
     } else {
+        // Si 'UNEMI' está presente pero no incluye 'niv' ni 'adm'
         console.log(`[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
         contenedorRuta_js();
     }
-    
+
+} else {
+    // Si 'UNEMI' no está presente en rutaLista
+    console.log(`[opc-autifill-moodle: ruta] Ruta no incluye UNEMI`);
+    contenedorRuta_js();
+}
+
 }
 
 
