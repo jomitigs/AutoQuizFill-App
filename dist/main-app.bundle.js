@@ -23205,36 +23205,34 @@
 
         // Asegurarse de limpiar completamente el contenedor
         if (contenedorSelects) {
-            console.log('Limpiando todos los elementos existentes en el contenedor.');
+            //console.log('Limpiando todos los elementos existentes en el contenedor.');
             contenedorSelects.innerHTML = ''; // Elimina todo el contenido del contenedor
         } else {
             console.error('No se encontró el contenedor con id="subject-dinamic".');
             return;
         }
 
-        // Leer los datos del localStorage
-        const estadoSelects = JSON.parse(localStorage.getItem('estadoSelects')) || [];
-        console.log('Datos obtenidos de estadoSelects:', estadoSelects);
+        const rutaLista = (localStorage.getItem('configRuta') || '').split('/');
 
-        // Filtrar solo los selects de nivel 5
-        const selectsNivel5 = estadoSelects.filter(select => select.nivel === "5");
-        console.log('Selects nivel 5:', selectsNivel5);
+        if (rutaLista.includes('UNEMI') && rutaLista.includes('niv')) {
 
-        for (const selectInfo of selectsNivel5) {
+            console.log('Ejecutando porque contiene UNEMI y niv');
+
+            const rutaSelectDinamic = "ConfigRuta/opciones/UNEMI/unemi:niv-test";
+
             try {
                 // Obtener datos de Firebase para la ruta especificada
-                const optionsSnapshot = await get(ref(database, selectInfo.ruta));
+                const optionsSnapshot = await get(ref(database, rutaSelectDinamic));
                 if (!optionsSnapshot.exists()) {
-                    console.warn(`No se encontraron datos en la ruta: ${selectInfo.ruta}`);
-                    continue;
+                    console.warn(`No se encontraron datos en la ruta: ${rutaSelectDinamic}`);
+                    return; // Reemplazado 'continue;' por 'return;'
                 }
 
                 const options = optionsSnapshot.val();
-                console.log(`Opciones obtenidas para ${selectInfo.id}:`, options);
+                console.log(`Opciones obtenidas:`, options);
 
                 // Crear el select dinámico
                 const selectElement = document.createElement('select');
-                selectElement.id = selectInfo.id;
                 selectElement.classList.add('dynamic-select');
                 selectElement.style.display = 'none';
 
@@ -23249,10 +23247,14 @@
 
                 // Agregar el select al contenedor
                 contenedorSelects.appendChild(selectElement);
-                console.log(`Select creado para: ${selectInfo.id}`);
+               
             } catch (error) {
-                console.error(`Error al procesar el select con ID ${selectInfo.id}:`, error);
+                console.error(`Error al procesar el select:`, error);
             }
+
+        } else {
+            console.log('Ruta Dinámica no disponible para esta Ruta');
+            contenedorRuta_js$1();
         }
 
         // Crear el botón "Guardar ruta" después de todos los select
@@ -23267,6 +23269,7 @@
 
         actualizarVisibilidadSelects();
     }
+
 
     function guardarRutaDinamica() {
         console.log('Guardando ruta...');
