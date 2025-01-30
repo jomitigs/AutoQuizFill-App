@@ -26,14 +26,16 @@ export function contenedorAutoSave_js() {
 
     // Función para actualizar la visibilidad del body
     const actualizarVisibilidadBody = () => {
-        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php') || 
-                             window.location.href.includes('/mod/quiz/view.php?');
+        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php') || window.location.href.includes('/mod/quiz/view.php?');
+
         if (esPaginaQuiz && interruptorAutoSave.checked) {
             if (bodyAutoSave) {
                 bodyAutoSave.style.display = 'flex';
                 console.log("Mostrando el elemento body-autoquiz-autosave.");
             }
-        } 
+        } else {
+            console.log(`[opc-autofill-autosave-moodle: autosave] Página, no adecuada para AutoSave`);
+        }
         // No es necesario ocultar el body aquí ya que está oculto por defecto
     };
 
@@ -49,5 +51,4 @@ export function contenedorAutoSave_js() {
         actualizarVisibilidadBody();
     });
 
-    console.log("Evento de cambio agregado al interruptor de AutoSave.");
 }
