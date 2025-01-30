@@ -23,7 +23,6 @@ export function contenedorAutoSave_js() {
 
     // Configurar el estado inicial del interruptor
     interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
-    console.log(`Estado inicial del interruptor: ${interruptorAutoSave.checked}`);
 
     // Función para actualizar la visibilidad del body
     const actualizarVisibilidadBody = () => {
@@ -45,7 +44,7 @@ export function contenedorAutoSave_js() {
     interruptorAutoSave.addEventListener('change', () => {
         const estadoNuevo = interruptorAutoSave.checked ? ACTIVADO : DESACTIVADO;
         localStorage.setItem(STORAGE_KEY, estadoNuevo);
-        console.log(`Estado actualizado en localStorage: ${estadoNuevo}`);
+        console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoNuevo}`);
 
         actualizarVisibilidadBody();
     });
