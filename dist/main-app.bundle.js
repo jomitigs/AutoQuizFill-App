@@ -24608,7 +24608,7 @@
                 console.log('Cambio detectado en elemento:', event.target);
                 
                 // Verificamos si 'questions-AutoSave' existe en localStorage
-                let questionsAutoSaveStr = localStorage.getItem('questions-AutoSave');
+                let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
                 console.log('questions-AutoSave en localStorage:', questionsAutoSaveStr);
 
                 if (!questionsAutoSaveStr) {
