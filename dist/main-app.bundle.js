@@ -23996,6 +23996,18 @@
         return content;
     }
 
+    function getQuestionNumber(formulation_clearfix) {
+        let contenedorPadre = formulation_clearfix.closest('.content');
+        if (contenedorPadre) {
+            let infoHermanos = contenedorPadre.parentElement.querySelector('.info');
+            if (infoHermanos) {
+                let numeroPreguntaSpan = infoHermanos.querySelector('.rui-qno');
+                return numeroPreguntaSpan ? numeroPreguntaSpan.textContent.trim() : null; // Retornar número
+            }
+        }
+        return null; // Sin número
+    }
+
     // Manejar respuestas tipo 'draganddrop' (image)
      async function draganddrop_image(originalFormulationClearfix, questionsAutoSave) {
         const tipo = 'draganddrop_image';
@@ -24345,8 +24357,6 @@
 
 
     async function AutoSave_LocalStorage() {
-
-        console.log('::::::Iniciando AutoSave_LocalStorage::::::');
 
         let contadorPreguntas = 0; // Contador de preguntas
         const todasLasPreguntas = {}; // Objeto para almacenar todas las preguntas

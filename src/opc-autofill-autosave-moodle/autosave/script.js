@@ -5,6 +5,8 @@ import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/inpu
 import { inputtext_respuestacorta } from './questions-types/inputtext_respuestacorta.js';
 import { select_emparejamiento } from './questions-types/select_emparejamiento.js';
 
+import { getQuestionNumber } from './helpers.js';
+
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
     const SWITCH_ID = 'switch-autosave';
@@ -57,8 +59,6 @@ export function contenedorAutoSave_js() {
 
 
 async function AutoSave_LocalStorage() {
-
-    console.log('::::::Iniciando AutoSave_LocalStorage::::::');
 
     let contadorPreguntas = 0; // Contador de preguntas
     const todasLasPreguntas = {}; // Objeto para almacenar todas las preguntas

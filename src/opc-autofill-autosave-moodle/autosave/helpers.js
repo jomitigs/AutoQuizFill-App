@@ -180,4 +180,15 @@ export async function extractContentInOrder(node) {
     return content;
 }
 
+export function getQuestionNumber(formulation_clearfix) {
+    let contenedorPadre = formulation_clearfix.closest('.content');
+    if (contenedorPadre) {
+        let infoHermanos = contenedorPadre.parentElement.querySelector('.info');
+        if (infoHermanos) {
+            let numeroPreguntaSpan = infoHermanos.querySelector('.rui-qno');
+            return numeroPreguntaSpan ? numeroPreguntaSpan.textContent.trim() : null; // Retornar número
+        }
+    }
+    return null; // Sin número
+} 
 
