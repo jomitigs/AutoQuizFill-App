@@ -23761,7 +23761,7 @@
             // Desactivar autofill y autosave
             localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
             localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-            console.log('Autofill y autosave desactivados en localStorage.');
+            //console.log('Autofill y autosave desactivados en localStorage.');
 
             // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
             const mensaje = document.createElement('div');
@@ -23776,7 +23776,7 @@
             const contenidoPrincipal = document.getElementById('contenido-principal');
             if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
                 contenidoPrincipal.appendChild(mensaje);
-                console.log('Mensaje de advertencia añadido al contenido principal.');
+                console.log('[opc-autifill-moodle: ruta] No ha seleccionado una ruta o ciclo');
             }
         }
 
