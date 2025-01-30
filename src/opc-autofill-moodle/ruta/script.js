@@ -286,10 +286,10 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
             if (rutaElemento) {
                 // Actualiza el contenido HTML del elemento
                 rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
-            } else  {
+            } 
+        }else  {
             rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span> `;
             }
-        }
 
         if (rutaLista.includes('niv')) {
 
@@ -306,19 +306,19 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
                     "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
                     "ConfigRuta/opciones/UNEMI/unemi:niv-test"
                 ];
-                console.log('[opc-autifill-moodle: ruta] generando select dinamico para Materia y Test');
+                console.log('[opc-autifill-moodle: ruta] Generando select dinamico para Materia y Test');
             } else if (hasMateriaValor) {
                 // Si solo existe materiaValor
                 rutasSelectDinamics = [
                     "ConfigRuta/opciones/UNEMI/unemi:niv-test"
                 ];
-                console.log('[opc-autifill-moodle: ruta] generando select dinamico para Materia');
+                console.log('[opc-autifill-moodle: ruta] Generando select dinamico para Materia');
             } else if (hasTestClave) {
                 // Si solo existe testClave
                 rutasSelectDinamics = [
                     "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion"
                 ];
-                console.log('[opc-autifill-moodle: ruta] generando select dinamico para Test');
+                console.log('[opc-autifill-moodle: ruta] Generando select dinamico para Test');
             }
 
             try {
