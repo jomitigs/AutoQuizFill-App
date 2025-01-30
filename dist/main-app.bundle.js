@@ -38,7 +38,7 @@
     var html = "<div id=\"barra-lateral-autoquizfillapp\">\r\n</div>\r\n<button id=\"boton-mostrar-ocultar-autoquizfillapp\">\r\n  <i class=\"fa-solid fa-angles-right\"></i>\r\n</button>\r\n";
 
     function styleInject(css, ref) {
-      if ( ref === void 0 ) ref = {};
+      if ( ref === undefined ) ref = {};
       var insertAt = ref.insertAt;
 
       if (!css || typeof document === 'undefined') { return; }
@@ -746,7 +746,7 @@
      * @returns a URL host formatted like `127.0.0.1:9999` or `[::1]:4000` if available
      * @public
      */
-    const getDefaultEmulatorHost = (productName) => { var _a, _b; return (_b = (_a = getDefaults()) === null || _a === void 0 ? void 0 : _a.emulatorHosts) === null || _b === void 0 ? void 0 : _b[productName]; };
+    const getDefaultEmulatorHost = (productName) => { var _a, _b; return (_b = (_a = getDefaults()) === null || _a === undefined ? undefined : _a.emulatorHosts) === null || _b === undefined ? undefined : _b[productName]; };
     /**
      * Returns emulator hostname and port stored in the __FIREBASE_DEFAULTS__ object
      * for the given product.
@@ -776,13 +776,13 @@
      * Returns Firebase app config stored in the __FIREBASE_DEFAULTS__ object.
      * @public
      */
-    const getDefaultAppConfig = () => { var _a; return (_a = getDefaults()) === null || _a === void 0 ? void 0 : _a.config; };
+    const getDefaultAppConfig = () => { var _a; return (_a = getDefaults()) === null || _a === undefined ? undefined : _a.config; };
     /**
      * Returns an experimental setting on the __FIREBASE_DEFAULTS__ object (properties
      * prefixed by "_")
      * @public
      */
-    const getExperimentalSetting = (name) => { var _a; return (_a = getDefaults()) === null || _a === void 0 ? void 0 : _a[`_${name}`]; };
+    const getExperimentalSetting = (name) => { var _a; return (_a = getDefaults()) === null || _a === undefined ? undefined : _a[`_${name}`]; };
 
     /**
      * @license
@@ -2056,8 +2056,8 @@
         getImmediate(options) {
             var _a;
             // if multipleInstances is not supported, use the default name
-            const normalizedIdentifier = this.normalizeInstanceIdentifier(options === null || options === void 0 ? void 0 : options.identifier);
-            const optional = (_a = options === null || options === void 0 ? void 0 : options.optional) !== null && _a !== void 0 ? _a : false;
+            const normalizedIdentifier = this.normalizeInstanceIdentifier(options === null || options === undefined ? undefined : options.identifier);
+            const optional = (_a = options === null || options === undefined ? undefined : options.optional) !== null && _a !== undefined ? _a : false;
             if (this.isInitialized(normalizedIdentifier) ||
                 this.shouldAutoInitialize()) {
                 try {
@@ -2191,7 +2191,7 @@
         onInit(callback, identifier) {
             var _a;
             const normalizedIdentifier = this.normalizeInstanceIdentifier(identifier);
-            const existingCallbacks = (_a = this.onInitCallbacks.get(normalizedIdentifier)) !== null && _a !== void 0 ? _a : new Set();
+            const existingCallbacks = (_a = this.onInitCallbacks.get(normalizedIdentifier)) !== null && _a !== undefined ? _a : new Set();
             existingCallbacks.add(callback);
             this.onInitCallbacks.set(normalizedIdentifier, existingCallbacks);
             const existingInstance = this.instances.get(normalizedIdentifier);
@@ -2371,7 +2371,7 @@
      * you set the log level to `INFO`, errors will still be logged, but `DEBUG` and
      * `VERBOSE` logs will not)
      */
-    var LogLevel;
+    var LogLevel$2;
     (function (LogLevel) {
         LogLevel[LogLevel["DEBUG"] = 0] = "DEBUG";
         LogLevel[LogLevel["VERBOSE"] = 1] = "VERBOSE";
@@ -2379,43 +2379,43 @@
         LogLevel[LogLevel["WARN"] = 3] = "WARN";
         LogLevel[LogLevel["ERROR"] = 4] = "ERROR";
         LogLevel[LogLevel["SILENT"] = 5] = "SILENT";
-    })(LogLevel || (LogLevel = {}));
-    const levelStringToEnum = {
-        'debug': LogLevel.DEBUG,
-        'verbose': LogLevel.VERBOSE,
-        'info': LogLevel.INFO,
-        'warn': LogLevel.WARN,
-        'error': LogLevel.ERROR,
-        'silent': LogLevel.SILENT
+    })(LogLevel$2 || (LogLevel$2 = {}));
+    const levelStringToEnum$2 = {
+        'debug': LogLevel$2.DEBUG,
+        'verbose': LogLevel$2.VERBOSE,
+        'info': LogLevel$2.INFO,
+        'warn': LogLevel$2.WARN,
+        'error': LogLevel$2.ERROR,
+        'silent': LogLevel$2.SILENT
     };
     /**
      * The default log level
      */
-    const defaultLogLevel = LogLevel.INFO;
+    const defaultLogLevel$2 = LogLevel$2.INFO;
     /**
      * By default, `console.debug` is not displayed in the developer console (in
      * chrome). To avoid forcing users to have to opt-in to these logs twice
      * (i.e. once for firebase, and once in the console), we are sending `DEBUG`
      * logs to the `console.log` function.
      */
-    const ConsoleMethod = {
-        [LogLevel.DEBUG]: 'log',
-        [LogLevel.VERBOSE]: 'log',
-        [LogLevel.INFO]: 'info',
-        [LogLevel.WARN]: 'warn',
-        [LogLevel.ERROR]: 'error'
+    const ConsoleMethod$2 = {
+        [LogLevel$2.DEBUG]: 'log',
+        [LogLevel$2.VERBOSE]: 'log',
+        [LogLevel$2.INFO]: 'info',
+        [LogLevel$2.WARN]: 'warn',
+        [LogLevel$2.ERROR]: 'error'
     };
     /**
      * The default log handler will forward DEBUG, VERBOSE, INFO, WARN, and ERROR
      * messages on to their corresponding console counterparts (if the log method
      * is supported by the current log level)
      */
-    const defaultLogHandler = (instance, logType, ...args) => {
+    const defaultLogHandler$2 = (instance, logType, ...args) => {
         if (logType < instance.logLevel) {
             return;
         }
         const now = new Date().toISOString();
-        const method = ConsoleMethod[logType];
+        const method = ConsoleMethod$2[logType];
         if (method) {
             console[method](`[${now}]  ${instance.name}:`, ...args);
         }
@@ -2423,7 +2423,7 @@
             throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
         }
     };
-    class Logger {
+    let Logger$2 = class Logger {
         /**
          * Gives you an instance of a Logger to capture messages according to
          * Firebase's logging scheme.
@@ -2435,12 +2435,12 @@
             /**
              * The log level of the given Logger instance.
              */
-            this._logLevel = defaultLogLevel;
+            this._logLevel = defaultLogLevel$2;
             /**
              * The main (internal) log handler for the Logger instance.
              * Can be set to a new function in internal package code but not by user.
              */
-            this._logHandler = defaultLogHandler;
+            this._logHandler = defaultLogHandler$2;
             /**
              * The optional, additional, user-defined log handler for the Logger instance.
              */
@@ -2450,14 +2450,14 @@
             return this._logLevel;
         }
         set logLevel(val) {
-            if (!(val in LogLevel)) {
+            if (!(val in LogLevel$2)) {
                 throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
             }
             this._logLevel = val;
         }
         // Workaround for setter/getter having to be the same type.
         setLogLevel(val) {
-            this._logLevel = typeof val === 'string' ? levelStringToEnum[val] : val;
+            this._logLevel = typeof val === 'string' ? levelStringToEnum$2[val] : val;
         }
         get logHandler() {
             return this._logHandler;
@@ -2478,27 +2478,27 @@
          * The functions below are all based on the `console` interface
          */
         debug(...args) {
-            this._userLogHandler && this._userLogHandler(this, LogLevel.DEBUG, ...args);
-            this._logHandler(this, LogLevel.DEBUG, ...args);
+            this._userLogHandler && this._userLogHandler(this, LogLevel$2.DEBUG, ...args);
+            this._logHandler(this, LogLevel$2.DEBUG, ...args);
         }
         log(...args) {
             this._userLogHandler &&
-                this._userLogHandler(this, LogLevel.VERBOSE, ...args);
-            this._logHandler(this, LogLevel.VERBOSE, ...args);
+                this._userLogHandler(this, LogLevel$2.VERBOSE, ...args);
+            this._logHandler(this, LogLevel$2.VERBOSE, ...args);
         }
         info(...args) {
-            this._userLogHandler && this._userLogHandler(this, LogLevel.INFO, ...args);
-            this._logHandler(this, LogLevel.INFO, ...args);
+            this._userLogHandler && this._userLogHandler(this, LogLevel$2.INFO, ...args);
+            this._logHandler(this, LogLevel$2.INFO, ...args);
         }
         warn(...args) {
-            this._userLogHandler && this._userLogHandler(this, LogLevel.WARN, ...args);
-            this._logHandler(this, LogLevel.WARN, ...args);
+            this._userLogHandler && this._userLogHandler(this, LogLevel$2.WARN, ...args);
+            this._logHandler(this, LogLevel$2.WARN, ...args);
         }
         error(...args) {
-            this._userLogHandler && this._userLogHandler(this, LogLevel.ERROR, ...args);
-            this._logHandler(this, LogLevel.ERROR, ...args);
+            this._userLogHandler && this._userLogHandler(this, LogLevel$2.ERROR, ...args);
+            this._logHandler(this, LogLevel$2.ERROR, ...args);
         }
-    }
+    };
 
     const instanceOfAny = (object, constructors) => constructors.some((c) => object instanceof c);
 
@@ -2811,7 +2811,7 @@
      */
     function isVersionServiceProvider(provider) {
         const component = provider.getComponent();
-        return (component === null || component === void 0 ? void 0 : component.type) === "VERSION" /* ComponentType.VERSION */;
+        return (component === null || component === undefined ? undefined : component.type) === "VERSION" /* ComponentType.VERSION */;
     }
 
     const name$q = "@firebase/app";
@@ -2833,7 +2833,7 @@
      * See the License for the specific language governing permissions and
      * limitations under the License.
      */
-    const logger$1 = new Logger('@firebase/app');
+    const logger$1 = new Logger$2('@firebase/app');
 
     const name$p = "@firebase/app-compat";
 
@@ -3250,7 +3250,7 @@
         var _a;
         // TODO: We can use this check to whitelist strings when/if we set up
         // a good whitelist system.
-        let library = (_a = PLATFORM_LOG_STRING[libraryKeyOrName]) !== null && _a !== void 0 ? _a : libraryKeyOrName;
+        let library = (_a = PLATFORM_LOG_STRING[libraryKeyOrName]) !== null && _a !== undefined ? _a : libraryKeyOrName;
         if (variant) {
             library += `-${variant}`;
         }
@@ -3341,7 +3341,7 @@
             }
             else {
                 const idbGetError = ERROR_FACTORY.create("idb-get" /* AppError.IDB_GET */, {
-                    originalErrorMessage: e === null || e === void 0 ? void 0 : e.message
+                    originalErrorMessage: e === null || e === undefined ? undefined : e.message
                 });
                 logger$1.warn(idbGetError.message);
             }
@@ -3361,7 +3361,7 @@
             }
             else {
                 const idbGetError = ERROR_FACTORY.create("idb-set" /* AppError.IDB_WRITE */, {
-                    originalErrorMessage: e === null || e === void 0 ? void 0 : e.message
+                    originalErrorMessage: e === null || e === undefined ? undefined : e.message
                 });
                 logger$1.warn(idbGetError.message);
             }
@@ -3572,7 +3572,7 @@
             }
             else {
                 const idbHeartbeatObject = await readHeartbeatsFromIndexedDB(this.app);
-                if (idbHeartbeatObject === null || idbHeartbeatObject === void 0 ? void 0 : idbHeartbeatObject.heartbeats) {
+                if (idbHeartbeatObject === null || idbHeartbeatObject === undefined ? undefined : idbHeartbeatObject.heartbeats) {
                     return idbHeartbeatObject;
                 }
                 else {
@@ -3590,7 +3590,7 @@
             else {
                 const existingHeartbeatsObject = await this.read();
                 return writeHeartbeatsToIndexedDB(this.app, {
-                    lastSentHeartbeatDate: (_a = heartbeatsObject.lastSentHeartbeatDate) !== null && _a !== void 0 ? _a : existingHeartbeatsObject.lastSentHeartbeatDate,
+                    lastSentHeartbeatDate: (_a = heartbeatsObject.lastSentHeartbeatDate) !== null && _a !== undefined ? _a : existingHeartbeatsObject.lastSentHeartbeatDate,
                     heartbeats: heartbeatsObject.heartbeats
                 });
             }
@@ -3605,7 +3605,7 @@
             else {
                 const existingHeartbeatsObject = await this.read();
                 return writeHeartbeatsToIndexedDB(this.app, {
-                    lastSentHeartbeatDate: (_a = heartbeatsObject.lastSentHeartbeatDate) !== null && _a !== void 0 ? _a : existingHeartbeatsObject.lastSentHeartbeatDate,
+                    lastSentHeartbeatDate: (_a = heartbeatsObject.lastSentHeartbeatDate) !== null && _a !== undefined ? _a : existingHeartbeatsObject.lastSentHeartbeatDate,
                     heartbeats: [
                         ...existingHeartbeatsObject.heartbeats,
                         ...heartbeatsObject.heartbeats
@@ -3682,6 +3682,165 @@
      */
     registerVersion(name$2, version$2, 'app');
 
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * A container for all of the Logger instances
+     */
+    /**
+     * The JS SDK supports 5 log levels and also allows a user the ability to
+     * silence the logs altogether.
+     *
+     * The order is a follows:
+     * DEBUG < VERBOSE < INFO < WARN < ERROR
+     *
+     * All of the log types above the current log level will be captured (i.e. if
+     * you set the log level to `INFO`, errors will still be logged, but `DEBUG` and
+     * `VERBOSE` logs will not)
+     */
+    var LogLevel$1;
+    (function (LogLevel) {
+        LogLevel[LogLevel["DEBUG"] = 0] = "DEBUG";
+        LogLevel[LogLevel["VERBOSE"] = 1] = "VERBOSE";
+        LogLevel[LogLevel["INFO"] = 2] = "INFO";
+        LogLevel[LogLevel["WARN"] = 3] = "WARN";
+        LogLevel[LogLevel["ERROR"] = 4] = "ERROR";
+        LogLevel[LogLevel["SILENT"] = 5] = "SILENT";
+    })(LogLevel$1 || (LogLevel$1 = {}));
+    const levelStringToEnum$1 = {
+        'debug': LogLevel$1.DEBUG,
+        'verbose': LogLevel$1.VERBOSE,
+        'info': LogLevel$1.INFO,
+        'warn': LogLevel$1.WARN,
+        'error': LogLevel$1.ERROR,
+        'silent': LogLevel$1.SILENT
+    };
+    /**
+     * The default log level
+     */
+    const defaultLogLevel$1 = LogLevel$1.INFO;
+    /**
+     * By default, `console.debug` is not displayed in the developer console (in
+     * chrome). To avoid forcing users to have to opt-in to these logs twice
+     * (i.e. once for firebase, and once in the console), we are sending `DEBUG`
+     * logs to the `console.log` function.
+     */
+    const ConsoleMethod$1 = {
+        [LogLevel$1.DEBUG]: 'log',
+        [LogLevel$1.VERBOSE]: 'log',
+        [LogLevel$1.INFO]: 'info',
+        [LogLevel$1.WARN]: 'warn',
+        [LogLevel$1.ERROR]: 'error'
+    };
+    /**
+     * The default log handler will forward DEBUG, VERBOSE, INFO, WARN, and ERROR
+     * messages on to their corresponding console counterparts (if the log method
+     * is supported by the current log level)
+     */
+    const defaultLogHandler$1 = (instance, logType, ...args) => {
+        if (logType < instance.logLevel) {
+            return;
+        }
+        const now = new Date().toISOString();
+        const method = ConsoleMethod$1[logType];
+        if (method) {
+            console[method](`[${now}]  ${instance.name}:`, ...args);
+        }
+        else {
+            throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
+        }
+    };
+    let Logger$1 = class Logger {
+        /**
+         * Gives you an instance of a Logger to capture messages according to
+         * Firebase's logging scheme.
+         *
+         * @param name The name that the logs will be associated with
+         */
+        constructor(name) {
+            this.name = name;
+            /**
+             * The log level of the given Logger instance.
+             */
+            this._logLevel = defaultLogLevel$1;
+            /**
+             * The main (internal) log handler for the Logger instance.
+             * Can be set to a new function in internal package code but not by user.
+             */
+            this._logHandler = defaultLogHandler$1;
+            /**
+             * The optional, additional, user-defined log handler for the Logger instance.
+             */
+            this._userLogHandler = null;
+        }
+        get logLevel() {
+            return this._logLevel;
+        }
+        set logLevel(val) {
+            if (!(val in LogLevel$1)) {
+                throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
+            }
+            this._logLevel = val;
+        }
+        // Workaround for setter/getter having to be the same type.
+        setLogLevel(val) {
+            this._logLevel = typeof val === 'string' ? levelStringToEnum$1[val] : val;
+        }
+        get logHandler() {
+            return this._logHandler;
+        }
+        set logHandler(val) {
+            if (typeof val !== 'function') {
+                throw new TypeError('Value assigned to `logHandler` must be a function');
+            }
+            this._logHandler = val;
+        }
+        get userLogHandler() {
+            return this._userLogHandler;
+        }
+        set userLogHandler(val) {
+            this._userLogHandler = val;
+        }
+        /**
+         * The functions below are all based on the `console` interface
+         */
+        debug(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel$1.DEBUG, ...args);
+            this._logHandler(this, LogLevel$1.DEBUG, ...args);
+        }
+        log(...args) {
+            this._userLogHandler &&
+                this._userLogHandler(this, LogLevel$1.VERBOSE, ...args);
+            this._logHandler(this, LogLevel$1.VERBOSE, ...args);
+        }
+        info(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel$1.INFO, ...args);
+            this._logHandler(this, LogLevel$1.INFO, ...args);
+        }
+        warn(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel$1.WARN, ...args);
+            this._logHandler(this, LogLevel$1.WARN, ...args);
+        }
+        error(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel$1.ERROR, ...args);
+            this._logHandler(this, LogLevel$1.ERROR, ...args);
+        }
+    };
+
     /******************************************************************************
     Copyright (c) Microsoft Corporation.
 
@@ -3752,14 +3911,14 @@
      * See the License for the specific language governing permissions and
      * limitations under the License.
      */
-    const logClient$1 = new Logger('@firebase/auth');
+    const logClient$1 = new Logger$1('@firebase/auth');
     function _logWarn(msg, ...args) {
-        if (logClient$1.logLevel <= LogLevel.WARN) {
+        if (logClient$1.logLevel <= LogLevel$1.WARN) {
             logClient$1.warn(`Auth (${SDK_VERSION$1}): ${msg}`, ...args);
         }
     }
     function _logError(msg, ...args) {
-        if (logClient$1.logLevel <= LogLevel.ERROR) {
+        if (logClient$1.logLevel <= LogLevel$1.ERROR) {
             logClient$1.error(`Auth (${SDK_VERSION$1}): ${msg}`, ...args);
         }
     }
@@ -3859,14 +4018,14 @@
      */
     function _getCurrentUrl() {
         var _a;
-        return (typeof self !== 'undefined' && ((_a = self.location) === null || _a === void 0 ? void 0 : _a.href)) || '';
+        return (typeof self !== 'undefined' && ((_a = self.location) === null || _a === undefined ? undefined : _a.href)) || '';
     }
     function _isHttpOrHttps() {
         return _getCurrentScheme() === 'http:' || _getCurrentScheme() === 'https:';
     }
     function _getCurrentScheme() {
         var _a;
-        return (typeof self !== 'undefined' && ((_a = self.location) === null || _a === void 0 ? void 0 : _a.protocol)) || null;
+        return (typeof self !== 'undefined' && ((_a = self.location) === null || _a === undefined ? undefined : _a.protocol)) || null;
     }
 
     /**
@@ -4462,7 +4621,7 @@
         const claims = _parseToken(token);
         _assert(claims && claims.exp && claims.auth_time && claims.iat, userInternal.auth, "internal-error" /* AuthErrorCode.INTERNAL_ERROR */);
         const firebase = typeof claims.firebase === 'object' ? claims.firebase : undefined;
-        const signInProvider = firebase === null || firebase === void 0 ? void 0 : firebase['sign_in_provider'];
+        const signInProvider = firebase === null || firebase === undefined ? undefined : firebase['sign_in_provider'];
         return {
             claims,
             token,
@@ -4470,7 +4629,7 @@
             issuedAtTime: utcTimestampToDateString(secondsStringToMilliseconds(claims.iat)),
             expirationTime: utcTimestampToDateString(secondsStringToMilliseconds(claims.exp)),
             signInProvider: signInProvider || null,
-            signInSecondFactor: (firebase === null || firebase === void 0 ? void 0 : firebase['sign_in_second_factor']) || null
+            signInSecondFactor: (firebase === null || firebase === undefined ? undefined : firebase['sign_in_second_factor']) || null
         };
     }
     function secondsStringToMilliseconds(seconds) {
@@ -4493,7 +4652,7 @@
             return JSON.parse(decoded);
         }
         catch (e) {
-            _logError('Caught error parsing JWT payload as JSON', e === null || e === void 0 ? void 0 : e.toString());
+            _logError('Caught error parsing JWT payload as JSON', e === null || e === undefined ? undefined : e.toString());
             return null;
         }
     }
@@ -4598,7 +4757,7 @@
             else {
                 // Reset the error backoff
                 this.errorBackoff = 30000 /* Duration.RETRY_BACKOFF_MIN */;
-                const expTime = (_a = this.user.stsTokenManager.expirationTime) !== null && _a !== void 0 ? _a : 0;
+                const expTime = (_a = this.user.stsTokenManager.expirationTime) !== null && _a !== undefined ? _a : 0;
                 const interval = expTime - Date.now() - 300000 /* Duration.OFFSET */;
                 return Math.max(0, interval);
             }
@@ -4619,7 +4778,7 @@
             }
             catch (e) {
                 // Only retry on network errors
-                if ((e === null || e === void 0 ? void 0 : e.code) ===
+                if ((e === null || e === undefined ? undefined : e.code) ===
                     `auth/${"network-request-failed" /* AuthErrorCode.NETWORK_REQUEST_FAILED */}`) {
                     this.schedule(/* wasError */ true);
                 }
@@ -4689,10 +4848,10 @@
         const auth = user.auth;
         const idToken = await user.getIdToken();
         const response = await _logoutIfInvalidated(user, getAccountInfo(auth, { idToken }));
-        _assert(response === null || response === void 0 ? void 0 : response.users.length, auth, "internal-error" /* AuthErrorCode.INTERNAL_ERROR */);
+        _assert(response === null || response === undefined ? undefined : response.users.length, auth, "internal-error" /* AuthErrorCode.INTERNAL_ERROR */);
         const coreAccount = response.users[0];
         user._notifyReloadListener(coreAccount);
-        const newProviderData = ((_a = coreAccount.providerUserInfo) === null || _a === void 0 ? void 0 : _a.length)
+        const newProviderData = ((_a = coreAccount.providerUserInfo) === null || _a === undefined ? undefined : _a.length)
             ? extractProviderData(coreAccount.providerUserInfo)
             : [];
         const providerData = mergeProviderData(user.providerData, newProviderData);
@@ -4702,7 +4861,7 @@
         // On the other hand, if it was not anonymous before, it should never be
         // considered anonymous now.
         const oldIsAnonymous = user.isAnonymous;
-        const newIsAnonymous = !(user.email && coreAccount.passwordHash) && !(providerData === null || providerData === void 0 ? void 0 : providerData.length);
+        const newIsAnonymous = !(user.email && coreAccount.passwordHash) && !(providerData === null || providerData === undefined ? undefined : providerData.length);
         const isAnonymous = !oldIsAnonymous ? false : newIsAnonymous;
         const updates = {
             uid: coreAccount.localId,
@@ -5048,14 +5207,14 @@
         }
         static _fromJSON(auth, object) {
             var _a, _b, _c, _d, _e, _f, _g, _h;
-            const displayName = (_a = object.displayName) !== null && _a !== void 0 ? _a : undefined;
-            const email = (_b = object.email) !== null && _b !== void 0 ? _b : undefined;
-            const phoneNumber = (_c = object.phoneNumber) !== null && _c !== void 0 ? _c : undefined;
-            const photoURL = (_d = object.photoURL) !== null && _d !== void 0 ? _d : undefined;
-            const tenantId = (_e = object.tenantId) !== null && _e !== void 0 ? _e : undefined;
-            const _redirectEventId = (_f = object._redirectEventId) !== null && _f !== void 0 ? _f : undefined;
-            const createdAt = (_g = object.createdAt) !== null && _g !== void 0 ? _g : undefined;
-            const lastLoginAt = (_h = object.lastLoginAt) !== null && _h !== void 0 ? _h : undefined;
+            const displayName = (_a = object.displayName) !== null && _a !== undefined ? _a : undefined;
+            const email = (_b = object.email) !== null && _b !== undefined ? _b : undefined;
+            const phoneNumber = (_c = object.phoneNumber) !== null && _c !== undefined ? _c : undefined;
+            const photoURL = (_d = object.photoURL) !== null && _d !== undefined ? _d : undefined;
+            const tenantId = (_e = object.tenantId) !== null && _e !== undefined ? _e : undefined;
+            const _redirectEventId = (_f = object._redirectEventId) !== null && _f !== undefined ? _f : undefined;
+            const createdAt = (_g = object.createdAt) !== null && _g !== undefined ? _g : undefined;
+            const lastLoginAt = (_h = object.lastLoginAt) !== null && _h !== undefined ? _h : undefined;
             const { uid, emailVerified, isAnonymous, providerData, stsTokenManager: plainObjectTokenManager } = object;
             _assert(uid && plainObjectTokenManager, auth, "internal-error" /* AuthErrorCode.INTERNAL_ERROR */);
             const stsTokenManager = StsTokenManager.fromJSON(this.name, plainObjectTokenManager);
@@ -5122,7 +5281,7 @@
             const providerData = coreAccount.providerUserInfo !== undefined
                 ? extractProviderData(coreAccount.providerUserInfo)
                 : [];
-            const isAnonymous = !(coreAccount.email && coreAccount.passwordHash) && !(providerData === null || providerData === void 0 ? void 0 : providerData.length);
+            const isAnonymous = !(coreAccount.email && coreAccount.passwordHash) && !(providerData === null || providerData === undefined ? undefined : providerData.length);
             const stsTokenManager = new StsTokenManager();
             stsTokenManager.updateFromIdToken(idToken);
             // Initialize the Firebase Auth user.
@@ -5144,7 +5303,7 @@
                 providerData,
                 metadata: new UserMetadata(coreAccount.createdAt, coreAccount.lastLoginAt),
                 isAnonymous: !(coreAccount.email && coreAccount.passwordHash) &&
-                    !(providerData === null || providerData === void 0 ? void 0 : providerData.length)
+                    !(providerData === null || providerData === undefined ? undefined : providerData.length)
             };
             Object.assign(user, updates);
             return user;
@@ -5414,7 +5573,7 @@
             // Most modern browsers have name/version at end of user agent string.
             const re = /([a-zA-Z\d\.]+)\/[a-zA-Z\d\.]*$/;
             const matches = userAgent.match(re);
-            if ((matches === null || matches === void 0 ? void 0 : matches.length) === 2) {
+            if ((matches === null || matches === undefined ? undefined : matches.length) === 2) {
                 return matches[1];
             }
         }
@@ -5451,7 +5610,7 @@
     }
     function _isIOSStandalone(ua = getUA()) {
         var _a;
-        return _isIOS(ua) && !!((_a = window.navigator) === null || _a === void 0 ? void 0 : _a.standalone);
+        return _isIOS(ua) && !!((_a = window.navigator) === null || _a === undefined ? undefined : _a.standalone);
     }
     function _isIE10() {
         return isIE() && document.documentMode === 10;
@@ -5582,7 +5741,7 @@
                     }
                 }
                 throw this.auth._errorFactory.create("login-blocked" /* AuthErrorCode.LOGIN_BLOCKED */, {
-                    originalMessage: e === null || e === void 0 ? void 0 : e.message
+                    originalMessage: e === null || e === undefined ? undefined : e.message
                 });
             }
         }
@@ -5646,7 +5805,7 @@
             this.customStrengthOptions = {};
             // TODO: Remove once the backend is updated to include the minimum min password length instead of undefined when there is no minimum length set.
             this.customStrengthOptions.minPasswordLength =
-                (_a = responseOptions.minPasswordLength) !== null && _a !== void 0 ? _a : MINIMUM_MIN_PASSWORD_LENGTH;
+                (_a = responseOptions.minPasswordLength) !== null && _a !== undefined ? _a : MINIMUM_MIN_PASSWORD_LENGTH;
             if (responseOptions.maxPasswordLength) {
                 this.customStrengthOptions.maxPasswordLength =
                     responseOptions.maxPasswordLength;
@@ -5673,8 +5832,8 @@
             }
             // Use an empty string if no non-alphanumeric characters are specified in the response.
             this.allowedNonAlphanumericCharacters =
-                (_c = (_b = response.allowedNonAlphanumericCharacters) === null || _b === void 0 ? void 0 : _b.join('')) !== null && _c !== void 0 ? _c : '';
-            this.forceUpgradeOnSignin = (_d = response.forceUpgradeOnSignin) !== null && _d !== void 0 ? _d : false;
+                (_c = (_b = response.allowedNonAlphanumericCharacters) === null || _b === undefined ? undefined : _b.join('')) !== null && _c !== undefined ? _c : '';
+            this.forceUpgradeOnSignin = (_d = response.forceUpgradeOnSignin) !== null && _d !== undefined ? _d : false;
             this.schemaVersion = response.schemaVersion;
         }
         validatePassword(password) {
@@ -5687,12 +5846,12 @@
             this.validatePasswordLengthOptions(password, status);
             this.validatePasswordCharacterOptions(password, status);
             // Combine the status into single isValid property.
-            status.isValid && (status.isValid = (_a = status.meetsMinPasswordLength) !== null && _a !== void 0 ? _a : true);
-            status.isValid && (status.isValid = (_b = status.meetsMaxPasswordLength) !== null && _b !== void 0 ? _b : true);
-            status.isValid && (status.isValid = (_c = status.containsLowercaseLetter) !== null && _c !== void 0 ? _c : true);
-            status.isValid && (status.isValid = (_d = status.containsUppercaseLetter) !== null && _d !== void 0 ? _d : true);
-            status.isValid && (status.isValid = (_e = status.containsNumericCharacter) !== null && _e !== void 0 ? _e : true);
-            status.isValid && (status.isValid = (_f = status.containsNonAlphanumericCharacter) !== null && _f !== void 0 ? _f : true);
+            status.isValid && (status.isValid = (_a = status.meetsMinPasswordLength) !== null && _a !== undefined ? _a : true);
+            status.isValid && (status.isValid = (_b = status.meetsMaxPasswordLength) !== null && _b !== undefined ? _b : true);
+            status.isValid && (status.isValid = (_c = status.containsLowercaseLetter) !== null && _c !== undefined ? _c : true);
+            status.isValid && (status.isValid = (_d = status.containsUppercaseLetter) !== null && _d !== undefined ? _d : true);
+            status.isValid && (status.isValid = (_e = status.containsNumericCharacter) !== null && _e !== undefined ? _e : true);
+            status.isValid && (status.isValid = (_f = status.containsNonAlphanumericCharacter) !== null && _f !== undefined ? _f : true);
             return status;
         }
         /**
@@ -5835,7 +5994,7 @@
                 }
                 // Initialize the resolver early if necessary (only applicable to web:
                 // this will cause the iframe to load immediately in certain cases)
-                if ((_a = this._popupRedirectResolver) === null || _a === void 0 ? void 0 : _a._shouldInitProactively) {
+                if ((_a = this._popupRedirectResolver) === null || _a === undefined ? undefined : _a._shouldInitProactively) {
                     // If this fails, don't halt auth loading
                     try {
                         await this._popupRedirectResolver._initialize(this);
@@ -5845,7 +6004,7 @@
                     }
                 }
                 await this.initializeCurrentUser(popupRedirectResolver);
-                this.lastNotifiedUid = ((_b = this.currentUser) === null || _b === void 0 ? void 0 : _b.uid) || null;
+                this.lastNotifiedUid = ((_b = this.currentUser) === null || _b === undefined ? undefined : _b.uid) || null;
                 if (this._deleted) {
                     return;
                 }
@@ -5910,15 +6069,15 @@
             let needsTocheckMiddleware = false;
             if (popupRedirectResolver && this.config.authDomain) {
                 await this.getOrInitRedirectPersistenceManager();
-                const redirectUserEventId = (_a = this.redirectUser) === null || _a === void 0 ? void 0 : _a._redirectEventId;
-                const storedUserEventId = futureCurrentUser === null || futureCurrentUser === void 0 ? void 0 : futureCurrentUser._redirectEventId;
+                const redirectUserEventId = (_a = this.redirectUser) === null || _a === undefined ? undefined : _a._redirectEventId;
+                const storedUserEventId = futureCurrentUser === null || futureCurrentUser === undefined ? undefined : futureCurrentUser._redirectEventId;
                 const result = await this.tryRedirectSignIn(popupRedirectResolver);
                 // If the stored user (i.e. the old "currentUser") has a redirectId that
                 // matches the redirect user, then we want to initially sign in with the
                 // new user object from result.
                 // TODO(samgho): More thoroughly test all of this
                 if ((!redirectUserEventId || redirectUserEventId === storedUserEventId) &&
-                    (result === null || result === void 0 ? void 0 : result.user)) {
+                    (result === null || result === undefined ? undefined : result.user)) {
                     futureCurrentUser = result.user;
                     needsTocheckMiddleware = true;
                 }
@@ -5993,7 +6152,7 @@
                 await _reloadWithoutSaving(user);
             }
             catch (e) {
-                if ((e === null || e === void 0 ? void 0 : e.code) !==
+                if ((e === null || e === undefined ? undefined : e.code) !==
                     `auth/${"network-request-failed" /* AuthErrorCode.NETWORK_REQUEST_FAILED */}`) {
                     // Something's wrong with the user's token. Log them out and remove
                     // them from storage
@@ -6152,7 +6311,7 @@
                 apiKey: this.config.apiKey,
                 authDomain: this.config.authDomain,
                 appName: this.name,
-                currentUser: (_a = this._currentUser) === null || _a === void 0 ? void 0 : _a.toJSON()
+                currentUser: (_a = this._currentUser) === null || _a === undefined ? undefined : _a.toJSON()
             };
         }
         async _setRedirectUser(user, popupRedirectResolver) {
@@ -6179,10 +6338,10 @@
             if (this._isInitialized) {
                 await this.queue(async () => { });
             }
-            if (((_a = this._currentUser) === null || _a === void 0 ? void 0 : _a._redirectEventId) === id) {
+            if (((_a = this._currentUser) === null || _a === undefined ? undefined : _a._redirectEventId) === id) {
                 return this._currentUser;
             }
-            if (((_b = this.redirectUser) === null || _b === void 0 ? void 0 : _b._redirectEventId) === id) {
+            if (((_b = this.redirectUser) === null || _b === undefined ? undefined : _b._redirectEventId) === id) {
                 return this.redirectUser;
             }
             return null;
@@ -6223,7 +6382,7 @@
                 return;
             }
             this.idTokenSubscription.next(this.currentUser);
-            const currentUid = (_b = (_a = this.currentUser) === null || _a === void 0 ? void 0 : _a.uid) !== null && _b !== void 0 ? _b : null;
+            const currentUid = (_b = (_a = this.currentUser) === null || _a === undefined ? undefined : _a.uid) !== null && _b !== undefined ? _b : null;
             if (this.lastNotifiedUid !== currentUid) {
                 this.lastNotifiedUid = currentUid;
                 this.authStateSubscription.next(this.currentUser);
@@ -6320,7 +6479,7 @@
             const heartbeatsHeader = await ((_a = this.heartbeatServiceProvider
                 .getImmediate({
                 optional: true
-            })) === null || _a === void 0 ? void 0 : _a.getHeartbeatsHeader());
+            })) === null || _a === undefined ? undefined : _a.getHeartbeatsHeader());
             if (heartbeatsHeader) {
                 headers["X-Firebase-Client" /* HttpHeader.X_FIREBASE_CLIENT */] = heartbeatsHeader;
             }
@@ -6334,15 +6493,15 @@
         async _getAppCheckToken() {
             var _a;
             const appCheckTokenResult = await ((_a = this.appCheckServiceProvider
-                .getImmediate({ optional: true })) === null || _a === void 0 ? void 0 : _a.getToken());
-            if (appCheckTokenResult === null || appCheckTokenResult === void 0 ? void 0 : appCheckTokenResult.error) {
+                .getImmediate({ optional: true })) === null || _a === undefined ? undefined : _a.getToken());
+            if (appCheckTokenResult === null || appCheckTokenResult === undefined ? undefined : appCheckTokenResult.error) {
                 // Context: appCheck.getToken() will never throw even if an error happened.
                 // In the error case, a dummy token will be returned along with an error field describing
                 // the error. In general, we shouldn't care about the error condition and just use
                 // the token (actual or dummy) to send requests.
                 _logWarn(`Error while retrieving App Check token: ${appCheckTokenResult.error}`);
             }
-            return appCheckTokenResult === null || appCheckTokenResult === void 0 ? void 0 : appCheckTokenResult.token;
+            return appCheckTokenResult === null || appCheckTokenResult === undefined ? undefined : appCheckTokenResult.token;
         }
     }
     /**
@@ -6609,7 +6768,7 @@
         var _a;
         {
             if ((_a = authInstance
-                ._getRecaptchaConfig()) === null || _a === void 0 ? void 0 : _a.isProviderEnabled("EMAIL_PASSWORD_PROVIDER" /* RecaptchaAuthProvider.EMAIL_PASSWORD_PROVIDER */)) {
+                ._getRecaptchaConfig()) === null || _a === undefined ? undefined : _a.isProviderEnabled("EMAIL_PASSWORD_PROVIDER" /* RecaptchaAuthProvider.EMAIL_PASSWORD_PROVIDER */)) {
                 const requestWithRecaptcha = await injectRecaptchaFields(authInstance, request, actionName, actionName === "getOobCode" /* RecaptchaActionName.GET_OOB_CODE */);
                 return actionMethod(authInstance, requestWithRecaptcha);
             }
@@ -6674,7 +6833,7 @@
         if (provider.isInitialized()) {
             const auth = provider.getImmediate();
             const initialOptions = provider.getOptions();
-            if (deepEqual(initialOptions, deps !== null && deps !== void 0 ? deps : {})) {
+            if (deepEqual(initialOptions, deps !== null && deps !== undefined ? deps : {})) {
                 return auth;
             }
             else {
@@ -6685,15 +6844,15 @@
         return auth;
     }
     function _initializeAuthInstance(auth, deps) {
-        const persistence = (deps === null || deps === void 0 ? void 0 : deps.persistence) || [];
+        const persistence = (deps === null || deps === undefined ? undefined : deps.persistence) || [];
         const hierarchy = (Array.isArray(persistence) ? persistence : [persistence]).map(_getInstance);
-        if (deps === null || deps === void 0 ? void 0 : deps.errorMap) {
+        if (deps === null || deps === undefined ? undefined : deps.errorMap) {
             auth._updateErrorMap(deps.errorMap);
         }
         // This promise is intended to float; auth initialization happens in the
         // background, meanwhile the auth object may be used by the app.
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        auth._initializeWithPersistence(hierarchy, deps === null || deps === void 0 ? void 0 : deps.popupRedirectResolver);
+        auth._initializeWithPersistence(hierarchy, deps === null || deps === undefined ? undefined : deps.popupRedirectResolver);
     }
 
     /**
@@ -6722,7 +6881,7 @@
         const authInternal = _castAuth(auth);
         _assert(authInternal._canInitEmulator, authInternal, "emulator-config-failed" /* AuthErrorCode.EMULATOR_CONFIG_FAILED */);
         _assert(/^https?:\/\//.test(url), authInternal, "invalid-emulator-scheme" /* AuthErrorCode.INVALID_EMULATOR_SCHEME */);
-        const disableWarnings = !!(void 0 );
+        const disableWarnings = false;
         const protocol = extractProtocol(url);
         const { host, port } = extractHostAndPort(url);
         const portStr = port === null ? '' : `:${port}`;
@@ -6987,7 +7146,7 @@
          */
         static fromJSON(json) {
             const obj = typeof json === 'string' ? JSON.parse(json) : json;
-            if ((obj === null || obj === void 0 ? void 0 : obj.email) && (obj === null || obj === void 0 ? void 0 : obj.password)) {
+            if ((obj === null || obj === undefined ? undefined : obj.email) && (obj === null || obj === undefined ? undefined : obj.password)) {
                 if (obj.signInMethod === "password" /* SignInMethod.EMAIL_PASSWORD */) {
                     return this._fromEmailAndPassword(obj.email, obj.password);
                 }
@@ -7278,17 +7437,17 @@
         constructor(actionLink) {
             var _a, _b, _c, _d, _e, _f;
             const searchParams = querystringDecode(extractQuerystring(actionLink));
-            const apiKey = (_a = searchParams["apiKey" /* QueryField.API_KEY */]) !== null && _a !== void 0 ? _a : null;
-            const code = (_b = searchParams["oobCode" /* QueryField.CODE */]) !== null && _b !== void 0 ? _b : null;
-            const operation = parseMode((_c = searchParams["mode" /* QueryField.MODE */]) !== null && _c !== void 0 ? _c : null);
+            const apiKey = (_a = searchParams["apiKey" /* QueryField.API_KEY */]) !== null && _a !== undefined ? _a : null;
+            const code = (_b = searchParams["oobCode" /* QueryField.CODE */]) !== null && _b !== undefined ? _b : null;
+            const operation = parseMode((_c = searchParams["mode" /* QueryField.MODE */]) !== null && _c !== undefined ? _c : null);
             // Validate API key, code and mode.
             _assert(apiKey && code && operation, "argument-error" /* AuthErrorCode.ARGUMENT_ERROR */);
             this.apiKey = apiKey;
             this.operation = operation;
             this.code = code;
-            this.continueUrl = (_d = searchParams["continueUrl" /* QueryField.CONTINUE_URL */]) !== null && _d !== void 0 ? _d : null;
-            this.languageCode = (_e = searchParams["languageCode" /* QueryField.LANGUAGE_CODE */]) !== null && _e !== void 0 ? _e : null;
-            this.tenantId = (_f = searchParams["tenantId" /* QueryField.TENANT_ID */]) !== null && _f !== void 0 ? _f : null;
+            this.continueUrl = (_d = searchParams["continueUrl" /* QueryField.CONTINUE_URL */]) !== null && _d !== undefined ? _d : null;
+            this.languageCode = (_e = searchParams["languageCode" /* QueryField.LANGUAGE_CODE */]) !== null && _e !== undefined ? _e : null;
+            this.tenantId = (_f = searchParams["tenantId" /* QueryField.TENANT_ID */]) !== null && _f !== undefined ? _f : null;
         }
         /**
          * Parses the email action link string and returns an {@link ActionCodeURL} if the link is valid,
@@ -8054,7 +8213,7 @@
             Object.setPrototypeOf(this, MultiFactorError.prototype);
             this.customData = {
                 appName: auth.name,
-                tenantId: (_a = auth.tenantId) !== null && _a !== void 0 ? _a : undefined,
+                tenantId: (_a = auth.tenantId) !== null && _a !== undefined ? _a : undefined,
                 _serverResponse: error.customData._serverResponse,
                 operationType
             };
@@ -8112,7 +8271,7 @@
         }
         catch (e) {
             // Convert user deleted error into user mismatch
-            if ((e === null || e === void 0 ? void 0 : e.code) === `auth/${"user-not-found" /* AuthErrorCode.USER_DELETED */}`) {
+            if ((e === null || e === undefined ? undefined : e.code) === `auth/${"user-not-found" /* AuthErrorCode.USER_DELETED */}`) {
                 _fail(auth, "user-mismatch" /* AuthErrorCode.USER_MISMATCH */);
             }
             throw e;
@@ -8675,7 +8834,7 @@
             const messageEvent = event;
             const { eventId, eventType, data } = messageEvent.data;
             const handlers = this.handlersMap[eventType];
-            if (!(handlers === null || handlers === void 0 ? void 0 : handlers.size)) {
+            if (!(handlers === null || handlers === undefined ? undefined : handlers.size)) {
                 return;
             }
             messageEvent.ports[0].postMessage({
@@ -8911,7 +9070,7 @@
             typeof _window()['importScripts'] === 'function');
     }
     async function _getActiveServiceWorker() {
-        if (!(navigator === null || navigator === void 0 ? void 0 : navigator.serviceWorker)) {
+        if (!(navigator === null || navigator === undefined ? undefined : navigator.serviceWorker)) {
             return null;
         }
         try {
@@ -8924,7 +9083,7 @@
     }
     function _getServiceWorkerController() {
         var _a;
-        return ((_a = navigator === null || navigator === void 0 ? void 0 : navigator.serviceWorker) === null || _a === void 0 ? void 0 : _a.controller) || null;
+        return ((_a = navigator === null || navigator === undefined ? undefined : navigator.serviceWorker) === null || _a === undefined ? undefined : _a.controller) || null;
     }
     function _getWorkerGlobalScope() {
         return _isWorker() ? self : null;
@@ -9119,8 +9278,8 @@
             if (!results) {
                 return;
             }
-            if (((_a = results[0]) === null || _a === void 0 ? void 0 : _a.fulfilled) &&
-                ((_b = results[0]) === null || _b === void 0 ? void 0 : _b.value.includes("keyChanged" /* _EventType.KEY_CHANGED */))) {
+            if (((_a = results[0]) === null || _a === undefined ? undefined : _a.fulfilled) &&
+                ((_b = results[0]) === null || _b === undefined ? undefined : _b.value.includes("keyChanged" /* _EventType.KEY_CHANGED */))) {
                 this.serviceWorkerReceiverAvailable = true;
             }
         }
@@ -9531,7 +9690,7 @@
         }
         get eventId() {
             var _a;
-            return ((_a = this.authWindow) === null || _a === void 0 ? void 0 : _a.associatedEvent) || null;
+            return ((_a = this.authWindow) === null || _a === undefined ? undefined : _a.associatedEvent) || null;
         }
         cancel() {
             this.reject(_createError(this.auth, "cancelled-popup-request" /* AuthErrorCode.EXPIRED_POPUP_REQUEST */));
@@ -9550,7 +9709,7 @@
         pollUserCancellation() {
             const poll = () => {
                 var _a, _b;
-                if ((_b = (_a = this.authWindow) === null || _a === void 0 ? void 0 : _a.window) === null || _b === void 0 ? void 0 : _b.closed) {
+                if ((_b = (_a = this.authWindow) === null || _a === undefined ? undefined : _a.window) === null || _b === undefined ? undefined : _b.closed) {
                     // Make sure that there is sufficient time for whatever action to
                     // complete. The window could have closed but the sign in network
                     // call could still be in flight. This is specifically true for
@@ -9752,7 +9911,7 @@
         sendToConsumer(event, consumer) {
             var _a;
             if (event.error && !isNullRedirectEvent(event)) {
-                const code = ((_a = event.error.code) === null || _a === void 0 ? void 0 : _a.split('auth/')[1]) ||
+                const code = ((_a = event.error.code) === null || _a === undefined ? undefined : _a.split('auth/')[1]) ||
                     "internal-error" /* AuthErrorCode.INTERNAL_ERROR */;
                 consumer.onError(_createError(this.auth, code));
             }
@@ -9782,7 +9941,7 @@
     }
     function isNullRedirectEvent({ type, error }) {
         return (type === "unknown" /* AuthEventType.UNKNOWN */ &&
-            (error === null || error === void 0 ? void 0 : error.code) === `auth/${"no-auth-event" /* AuthErrorCode.NO_AUTH_EVENT */}`);
+            (error === null || error === undefined ? undefined : error.code) === `auth/${"no-auth-event" /* AuthErrorCode.NO_AUTH_EVENT */}`);
     }
     function isRedirectEvent(event) {
         switch (event.type) {
@@ -9910,7 +10069,7 @@
         // Get gapix.beacon context.
         const beacon = _window().___jsl;
         // Get current hint.
-        if (beacon === null || beacon === void 0 ? void 0 : beacon.H) {
+        if (beacon === null || beacon === undefined ? undefined : beacon.H) {
             // Get gapi hint.
             for (const hint of Object.keys(beacon.H)) {
                 // Requested modules.
@@ -9954,11 +10113,11 @@
                     timeout: NETWORK_TIMEOUT.get()
                 });
             }
-            if ((_b = (_a = _window().gapi) === null || _a === void 0 ? void 0 : _a.iframes) === null || _b === void 0 ? void 0 : _b.Iframe) {
+            if ((_b = (_a = _window().gapi) === null || _a === undefined ? undefined : _a.iframes) === null || _b === undefined ? undefined : _b.Iframe) {
                 // If gapi.iframes.Iframe available, resolve.
                 resolve(gapi.iframes.getContext());
             }
-            else if (!!((_c = _window().gapi) === null || _c === void 0 ? void 0 : _c.load)) {
+            else if (!!((_c = _window().gapi) === null || _c === undefined ? undefined : _c.load)) {
                 // Gapi loader ready, load gapi.iframes.
                 loadGapiIframe();
             }
@@ -10293,7 +10452,7 @@
         // to make sure errors are raised as promise rejections
         async _openPopup(auth, provider, authType, eventId) {
             var _a;
-            debugAssert((_a = this.eventManagers[auth._key()]) === null || _a === void 0 ? void 0 : _a.manager, '_initialize() not called before _openPopup()');
+            debugAssert((_a = this.eventManagers[auth._key()]) === null || _a === undefined ? undefined : _a.manager, '_initialize() not called before _openPopup()');
             const url = await _getRedirectUrl(auth, provider, authType, _getCurrentUrl(), eventId);
             return _open(auth, url, _generateEventId());
         }
@@ -10328,7 +10487,7 @@
             const iframe = await _openIframe(auth);
             const manager = new AuthEventManager(auth);
             iframe.register('authEvent', (iframeEvent) => {
-                _assert(iframeEvent === null || iframeEvent === void 0 ? void 0 : iframeEvent.authEvent, auth, "invalid-auth-event" /* AuthErrorCode.INVALID_AUTH_EVENT */);
+                _assert(iframeEvent === null || iframeEvent === undefined ? undefined : iframeEvent.authEvent, auth, "invalid-auth-event" /* AuthErrorCode.INVALID_AUTH_EVENT */);
                 // TODO: Consider splitting redirect and popup events earlier on
                 const handled = manager.onEvent(iframeEvent.authEvent);
                 return { status: handled ? "ACK" /* GapiOutcome.ACK */ : "ERROR" /* GapiOutcome.ERROR */ };
@@ -10341,7 +10500,7 @@
             const iframe = this.iframes[auth._key()];
             iframe.send(WEB_STORAGE_SUPPORT_KEY, { type: WEB_STORAGE_SUPPORT_KEY }, result => {
                 var _a;
-                const isSupported = (_a = result === null || result === void 0 ? void 0 : result[0]) === null || _a === void 0 ? void 0 : _a[WEB_STORAGE_SUPPORT_KEY];
+                const isSupported = (_a = result === null || result === undefined ? undefined : result[0]) === null || _a === undefined ? undefined : _a[WEB_STORAGE_SUPPORT_KEY];
                 if (isSupported !== undefined) {
                     cb(!!isSupported);
                 }
@@ -10398,7 +10557,7 @@
         getUid() {
             var _a;
             this.assertAuthConfigured();
-            return ((_a = this.auth.currentUser) === null || _a === void 0 ? void 0 : _a.uid) || null;
+            return ((_a = this.auth.currentUser) === null || _a === undefined ? undefined : _a.uid) || null;
         }
         async getToken(forceRefresh) {
             this.assertAuthConfigured();
@@ -10415,7 +10574,7 @@
                 return;
             }
             const unsubscribe = this.auth.onIdTokenChanged(user => {
-                listener((user === null || user === void 0 ? void 0 : user.stsTokenManager.accessToken) || null);
+                listener((user === null || user === undefined ? undefined : user.stsTokenManager.accessToken) || null);
             });
             this.internalListeners.set(listener, unsubscribe);
             this.updateProactiveRefresh();
@@ -10545,7 +10704,7 @@
             return;
         }
         // Specifically trip null => undefined when logged out, to delete any existing cookie
-        const idToken = idTokenResult === null || idTokenResult === void 0 ? void 0 : idTokenResult.token;
+        const idToken = idTokenResult === null || idTokenResult === undefined ? undefined : idTokenResult.token;
         if (lastPostedIdToken === idToken) {
             return;
         }
@@ -10601,7 +10760,7 @@
     }
     function getScriptParentElement() {
         var _a, _b;
-        return (_b = (_a = document.getElementsByTagName('head')) === null || _a === void 0 ? void 0 : _a[0]) !== null && _b !== void 0 ? _b : document;
+        return (_b = (_a = document.getElementsByTagName('head')) === null || _a === undefined ? undefined : _a[0]) !== null && _b !== undefined ? _b : document;
     }
     _setExternalJSProvider({
         loadJS(url) {
@@ -10625,6 +10784,165 @@
         recaptchaEnterpriseScript: 'https://www.google.com/recaptcha/enterprise.js?render='
     });
     registerAuth("Browser" /* ClientPlatform.BROWSER */);
+
+    /**
+     * @license
+     * Copyright 2017 Google LLC
+     *
+     * Licensed under the Apache License, Version 2.0 (the "License");
+     * you may not use this file except in compliance with the License.
+     * You may obtain a copy of the License at
+     *
+     *   http://www.apache.org/licenses/LICENSE-2.0
+     *
+     * Unless required by applicable law or agreed to in writing, software
+     * distributed under the License is distributed on an "AS IS" BASIS,
+     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     * See the License for the specific language governing permissions and
+     * limitations under the License.
+     */
+    /**
+     * A container for all of the Logger instances
+     */
+    /**
+     * The JS SDK supports 5 log levels and also allows a user the ability to
+     * silence the logs altogether.
+     *
+     * The order is a follows:
+     * DEBUG < VERBOSE < INFO < WARN < ERROR
+     *
+     * All of the log types above the current log level will be captured (i.e. if
+     * you set the log level to `INFO`, errors will still be logged, but `DEBUG` and
+     * `VERBOSE` logs will not)
+     */
+    var LogLevel;
+    (function (LogLevel) {
+        LogLevel[LogLevel["DEBUG"] = 0] = "DEBUG";
+        LogLevel[LogLevel["VERBOSE"] = 1] = "VERBOSE";
+        LogLevel[LogLevel["INFO"] = 2] = "INFO";
+        LogLevel[LogLevel["WARN"] = 3] = "WARN";
+        LogLevel[LogLevel["ERROR"] = 4] = "ERROR";
+        LogLevel[LogLevel["SILENT"] = 5] = "SILENT";
+    })(LogLevel || (LogLevel = {}));
+    const levelStringToEnum = {
+        'debug': LogLevel.DEBUG,
+        'verbose': LogLevel.VERBOSE,
+        'info': LogLevel.INFO,
+        'warn': LogLevel.WARN,
+        'error': LogLevel.ERROR,
+        'silent': LogLevel.SILENT
+    };
+    /**
+     * The default log level
+     */
+    const defaultLogLevel = LogLevel.INFO;
+    /**
+     * By default, `console.debug` is not displayed in the developer console (in
+     * chrome). To avoid forcing users to have to opt-in to these logs twice
+     * (i.e. once for firebase, and once in the console), we are sending `DEBUG`
+     * logs to the `console.log` function.
+     */
+    const ConsoleMethod = {
+        [LogLevel.DEBUG]: 'log',
+        [LogLevel.VERBOSE]: 'log',
+        [LogLevel.INFO]: 'info',
+        [LogLevel.WARN]: 'warn',
+        [LogLevel.ERROR]: 'error'
+    };
+    /**
+     * The default log handler will forward DEBUG, VERBOSE, INFO, WARN, and ERROR
+     * messages on to their corresponding console counterparts (if the log method
+     * is supported by the current log level)
+     */
+    const defaultLogHandler = (instance, logType, ...args) => {
+        if (logType < instance.logLevel) {
+            return;
+        }
+        const now = new Date().toISOString();
+        const method = ConsoleMethod[logType];
+        if (method) {
+            console[method](`[${now}]  ${instance.name}:`, ...args);
+        }
+        else {
+            throw new Error(`Attempted to log a message with an invalid logType (value: ${logType})`);
+        }
+    };
+    class Logger {
+        /**
+         * Gives you an instance of a Logger to capture messages according to
+         * Firebase's logging scheme.
+         *
+         * @param name The name that the logs will be associated with
+         */
+        constructor(name) {
+            this.name = name;
+            /**
+             * The log level of the given Logger instance.
+             */
+            this._logLevel = defaultLogLevel;
+            /**
+             * The main (internal) log handler for the Logger instance.
+             * Can be set to a new function in internal package code but not by user.
+             */
+            this._logHandler = defaultLogHandler;
+            /**
+             * The optional, additional, user-defined log handler for the Logger instance.
+             */
+            this._userLogHandler = null;
+        }
+        get logLevel() {
+            return this._logLevel;
+        }
+        set logLevel(val) {
+            if (!(val in LogLevel)) {
+                throw new TypeError(`Invalid value "${val}" assigned to \`logLevel\``);
+            }
+            this._logLevel = val;
+        }
+        // Workaround for setter/getter having to be the same type.
+        setLogLevel(val) {
+            this._logLevel = typeof val === 'string' ? levelStringToEnum[val] : val;
+        }
+        get logHandler() {
+            return this._logHandler;
+        }
+        set logHandler(val) {
+            if (typeof val !== 'function') {
+                throw new TypeError('Value assigned to `logHandler` must be a function');
+            }
+            this._logHandler = val;
+        }
+        get userLogHandler() {
+            return this._userLogHandler;
+        }
+        set userLogHandler(val) {
+            this._userLogHandler = val;
+        }
+        /**
+         * The functions below are all based on the `console` interface
+         */
+        debug(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel.DEBUG, ...args);
+            this._logHandler(this, LogLevel.DEBUG, ...args);
+        }
+        log(...args) {
+            this._userLogHandler &&
+                this._userLogHandler(this, LogLevel.VERBOSE, ...args);
+            this._logHandler(this, LogLevel.VERBOSE, ...args);
+        }
+        info(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel.INFO, ...args);
+            this._logHandler(this, LogLevel.INFO, ...args);
+        }
+        warn(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel.WARN, ...args);
+            this._logHandler(this, LogLevel.WARN, ...args);
+        }
+        error(...args) {
+            this._userLogHandler && this._userLogHandler(this, LogLevel.ERROR, ...args);
+            this._logHandler(this, LogLevel.ERROR, ...args);
+        }
+    }
 
     const name = "@firebase/database";
     const version = "1.0.11";
@@ -10889,7 +11207,7 @@
      * @param persistent - Whether or not to persist logging settings across refreshes
      */
     const enableLogging$1 = function (logger_, persistent) {
-        assert(!persistent, "Can't turn on custom loggers persistently.");
+        assert(true, "Can't turn on custom loggers persistently.");
         {
             logClient.logLevel = LogLevel.VERBOSE;
             logger = logClient.log.bind(logClient);
@@ -11327,9 +11645,9 @@
         constructor(appName_, appCheckProvider) {
             this.appName_ = appName_;
             this.appCheckProvider = appCheckProvider;
-            this.appCheck = appCheckProvider === null || appCheckProvider === void 0 ? void 0 : appCheckProvider.getImmediate({ optional: true });
+            this.appCheck = appCheckProvider === null || appCheckProvider === undefined ? undefined : appCheckProvider.getImmediate({ optional: true });
             if (!this.appCheck) {
-                appCheckProvider === null || appCheckProvider === void 0 ? void 0 : appCheckProvider.get().then(appCheck => (this.appCheck = appCheck));
+                appCheckProvider === null || appCheckProvider === undefined ? undefined : appCheckProvider.get().then(appCheck => (this.appCheck = appCheck));
             }
         }
         getToken(forceRefresh) {
@@ -11353,7 +11671,7 @@
         }
         addTokenChangeListener(listener) {
             var _a;
-            (_a = this.appCheckProvider) === null || _a === void 0 ? void 0 : _a.get().then(appCheck => appCheck.addTokenListener(listener));
+            (_a = this.appCheckProvider) === null || _a === undefined ? undefined : _a.get().then(appCheck => appCheck.addTokenListener(listener));
         }
         notifyForInvalidToken() {
             warn(`Provided AppCheck credentials for the app named "${this.appName_}" ` +
@@ -13435,7 +13753,7 @@
          * tokens array
          */
         constructor(pathOrString, pieceNum) {
-            if (pieceNum === void 0) {
+            if (pieceNum === undefined) {
                 this.pieces_ = pathOrString.split('/');
                 // Remove empty pieces.
                 let copyTo = 0;
@@ -13805,7 +14123,7 @@
             this.firstConnection_ = true;
             this.lastConnectionAttemptTime_ = null;
             this.lastConnectionEstablishedTime_ = null;
-            if (authOverride_ && !isNodeSdk()) {
+            if (authOverride_ && true) {
                 throw new Error('Auth override specified in options, but not supported on non Node.js platforms');
             }
             VisibilityMonitor.getInstance().on('visible', this.onVisible_, this);
@@ -20742,11 +21060,11 @@
      *   parent.
      */
     function treeForEachDescendant(tree, action, includeSelf, childrenFirst) {
-        if (includeSelf && !childrenFirst) {
+        if (includeSelf && true) {
             action(tree);
         }
         treeForEachChild(tree, child => {
-            treeForEachDescendant(child, action, true, childrenFirst);
+            treeForEachDescendant(child, action, true);
         });
     }
     /**

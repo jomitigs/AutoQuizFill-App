@@ -7,12 +7,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
-    "build:watch": "nodemon --watch src --ext js,jsx,ts,tsx --exec \"npm run build\""
+    "build:watch": "nodemon --watch src --ext js,jsx,ts,tsx --exec \"npm run build\"",
+    "build:prod": "cross-env BUILD_PROD=true rollup -c"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-html": "^1.1.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
