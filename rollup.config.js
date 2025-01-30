@@ -18,7 +18,7 @@ export default {
     name: 'AutoQuizFillApp',
   },
   plugins: [
-    // Resuelve imports en un entorno de navegador
+    // Resuelve imports para navegador
     resolve({ browser: true }),
     // Permite usar CommonJS
     commonjs(),
@@ -29,10 +29,9 @@ export default {
       extensions: ['.css'],
       inject: true,
       minimize: isProduction,
+      // Se eliminó el uso de generateScopedName()
       modules: isProduction
-        ? {
-            generateScopedName: () => generateRandomName(), // Renombra las clases de CSS solo en prod
-          }
+        ? true // o simplemente false si no quieres módulos en producción
         : false,
       plugins: isProduction
         ? [
@@ -58,18 +57,18 @@ export default {
       obfuscator({
         compact: true,
         controlFlowFlattening: true,
-        controlFlowFlatteningThreshold: 0.80,
+        controlFlowFlatteningThreshold: 0.8,
         deadCodeInjection: true,
         deadCodeInjectionThreshold: 0.6,
         disableConsoleOutput: true,
         identifierNamesGenerator: 'hexadecimal',
         renameGlobals: true,
-        renameProperties: true,
+        // Se eliminó renameProperties: true
         selfDefending: true,
         splitStrings: true,
         stringArray: true,
         stringArrayEncoding: ['base64'],
-        stringArrayThreshold: 0.90,
+        stringArrayThreshold: 0.9,
         transformObjectKeys: true,
         unicodeEscapeSequence: false,
         rotateStringArray: true,
@@ -77,5 +76,5 @@ export default {
       }),
     // Genera/inyecta un HTML si lo necesitas
     html({ include: '**/*.html' }),
-  ].filter(Boolean), // Filtra cualquier false
+  ].filter(Boolean), // Filtra plugins "falsos"
 };
