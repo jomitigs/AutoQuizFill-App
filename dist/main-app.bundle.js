@@ -23230,7 +23230,7 @@
             // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
             const rutaElemento = document.getElementById('ruta-configruta');
 
-            console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`);
+            console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainerDinamic".`);
 
             const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
 
