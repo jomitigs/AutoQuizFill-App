@@ -45,7 +45,7 @@ async function actualizaConfigRutaDinamic() {
         if (breadcrumbItems.length > 0) {
             // Obtener el atributo 'title' del primer elemento del breadcrumb
             const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
-            //console.log(`[opc-autifill-moodle: ruta] Título encontrado: ${breadcrumbTitle}`);
+            //console.log(`[opc-autofill-autosave-moodle: ruta]  Título encontrado: ${breadcrumbTitle}`);
 
             // Extraer las claves entre corchetes del título del breadcrumb
             const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
@@ -53,7 +53,7 @@ async function actualizaConfigRutaDinamic() {
             if (matches && matches.length > 0) {
                 // Limpiar los corchetes para obtener la clave de búsqueda
                 const searchKey = matches[0].replace(/[\[\]]/g, '');
-                //console.log(`[opc-autifill-moodle: ruta] Materia de la página: "${searchKey}"`);
+                //console.log(`[opc-autofill-autosave-moodle: ruta]  Materia de la página: "${searchKey}"`);
 
                 // Definir la ruta en Firebase para obtener las opciones de materias
                 const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
@@ -80,7 +80,7 @@ async function actualizaConfigRutaDinamic() {
                                     // y verificar si el título del breadcrumb contiene la segunda parte
                                     if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
                                         materiaValor = key;
-                                        console.log(`[opc-autifill-moodle: ruta] Materia encontrada: "${materiaValor}"`);
+                                        console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
                                         found = true;
                                         break; // Salir del bucle interno si se encuentra una coincidencia
                                     }
@@ -88,7 +88,7 @@ async function actualizaConfigRutaDinamic() {
                                     // Si el valor no contiene ":", comparar directamente con la clave de búsqueda
                                     if (val === searchKey) {
                                         materiaValor = key;
-                                        console.log(`[opc-autifill-moodle: ruta] Materia encontrada: "${materiaValor}"`);
+                                        console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
                                         found = true;
                                         break; // Salir del bucle interno si se encuentra una coincidencia
                                     }
@@ -99,19 +99,19 @@ async function actualizaConfigRutaDinamic() {
                         }
 
                         if (!found) {
-                            console.warn(`[opc-autifill-moodle: ruta] No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
+                            console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
                         }
                     } else {
-                        console.warn(`[opc-autifill-moodle: ruta] No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
+                        console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
                     }
                 } catch (firebaseError) {
                     console.error(`Error al obtener datos de Firebase en la ruta ${materiaRuta}:`, firebaseError);
                 }
             } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontraron coincidencias en el título del breadcrumb.');
+                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontraron coincidencias en el título del breadcrumb.');
             }
         } else {
-            console.warn('[opc-autifill-moodle: ruta] No se encontro materia.');
+            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontro materia.');
         }
 
         // ** 5. Obtener Test **
@@ -166,9 +166,9 @@ async function actualizaConfigRutaDinamic() {
                             // Buscar la clave que incluye "Test" seguido del número del quiz
                             testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
                             if (testClave) {
-                                console.log(`[opc-autifill-moodle: ruta] Test encontrado: "${testClave}"`);
+                                console.log(`[opc-autofill-autosave-moodle: ruta]  Test encontrado: "${testClave}"`);
                             } else {
-                                console.warn(`[opc-autifill-moodle: ruta] No se encontró una clave para Test ${quizNumber}`);
+                                console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró una clave para Test ${quizNumber}`);
                             }
                         } else {
                             console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
@@ -177,13 +177,13 @@ async function actualizaConfigRutaDinamic() {
                         console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
                     }
                 } else {
-                    console.warn(`[opc-autifill-moodle: ruta] No se encontro número del test.`);
+                    console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontro número del test.`);
                 }
             } else {
-                console.warn('[opc-autifill-moodle: ruta] No se encontró el elemento de texto del quiz.');
+                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró el elemento de texto del quiz.');
             }
         } else {
-            console.warn('[opc-autifill-moodle: ruta] No se encontro test.');
+            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontro test.');
         }
 
         // ** 6. Verificar y Actualizar ConfigRutaDinamic **
@@ -203,7 +203,7 @@ async function actualizaConfigRutaDinamic() {
             const rutaElement = document.getElementById('ruta-configruta');
             if (rutaElement) {
                 rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
-                console.log(`[opc-autifill-moodle: ruta] Ruta actualizada: ${updatedConfigRuta}`);
+                console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta actualizada: ${updatedConfigRuta}`);
             } else {
                 console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
             }
@@ -224,14 +224,14 @@ async function actualizaConfigRutaDinamic() {
                 console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
             }
 
-            console.log('[opc-autifill-moodle: ruta] No se pudieron determinar materia ni quiz. Se ha establecido la ruta como "dinámica".');
+            console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar materia ni quiz. Se ha establecido la ruta como "dinámica".');
             containerCicloContainer.style.display = 'block';
             return null;
         }
 
         else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
             // Obtener la configuración de ruta dinámica almacenada en sessionStorage
-            console.log('[opc-autifill-moodle: ruta] No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/" ');
+            console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/" ');
             await crearSelectsDinamicos(materiaValor, testClave);
         }
 
@@ -273,7 +273,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
         // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
         const rutaElemento = document.getElementById('ruta-configruta');
 
-        console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainerDinamic".`)
+        console.log(`[opc-autofill-autosave-moodle: ruta]  Mostrando "rutaCicloContainerDinamic".`)
 
         const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
 
@@ -300,7 +300,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
                 "ConfigRuta/opciones/UNEMI/unemi:niv-test"
             ];
 
-            console.log('[opc-autifill-moodle: ruta] Generando select dinamico para Materia y Test');
+            console.log('[opc-autofill-autosave-moodle: ruta]  Generando select dinamico para Materia y Test');
 
             try {
                 // Iterar sobre cada ruta dinámica seleccionada
@@ -380,18 +380,18 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
             }
 
         } else if (rutaLista.includes('adm')) {
-            console.log(`[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
+            console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
             contenedorRuta_js();
 
         } else {
             // Si 'UNEMI' está presente pero no incluye 'niv' ni 'adm'
-            console.log(`[opc-autifill-moodle: ruta] Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
+            console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta Dinámica no disponible para ${localStorage.getItem('configRuta')}`);
             contenedorRuta_js();
         }
 
     } else {
         // Si 'UNEMI' no está presente en rutaLista
-        console.log(`[opc-autifill-moodle: ruta] Ruta no incluye UNEMI`);
+        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta no incluye UNEMI`);
         contenedorRuta_js();
     }
 
@@ -501,12 +501,12 @@ export function contenedorRuta_js() {
         const contenidoPrincipal = document.getElementById('contenido-principal');
         if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
             contenidoPrincipal.appendChild(mensaje);
-            console.log('[opc-autifill-moodle: ruta] No ha seleccionado una ruta o ciclo');
+            console.log('[opc-autofill-autosave-moodle: ruta]  No ha seleccionado una ruta o ciclo');
         }
     }
 
     else {
-        console.log(`[opc-autofill-moodle: ruta] Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
+        console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de configRuta: ${configRuta}, Valor de ciclo: ${ciclo}`);
 
 
         // Verifica si el elemento existe antes de modificar su estilo
@@ -532,7 +532,7 @@ export function contenedorRuta_js() {
         // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
         const rutaElemento = document.getElementById('ruta-configruta');
         const cicloElemento = document.getElementById('ciclo-configruta');
-        console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`)
+        console.log(`[opc-autofill-autosave-moodle: ruta]  Mostrando "rutaCicloContainer".`)
 
         if (rutaElemento && cicloElemento) {
             // Asignar los valores de configRuta y ciclo en los elementos del DOM

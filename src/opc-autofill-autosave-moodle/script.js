@@ -158,9 +158,9 @@ export async function opcionAutoFillMoodle_js() {
     let esMoodle = esPaginaMoodle();
 
     if (esMoodle) {
-        console.log("[opc-autofill-moodle: main] Esta página está construida con Moodle");
+        console.log("[opc-autofill-autosave-moodle: main]  Esta página está construida con Moodle");
     } else {
-        console.log("[opc-autofill-moodle: main] Esta página no está construida con Moodle");
+        console.log("[opc-autofill-autosave-moodle: main]  Esta página no está construida con Moodle");
     }
 
     if (localStorage.getItem('configUsersAutofill') === 'true' && esMoodle) {
@@ -168,22 +168,22 @@ export async function opcionAutoFillMoodle_js() {
         autofillUsers.style.display = 'flex';
         contenedorUsers_js();
     } else {
-        console.log("[opc-autofill-moodle: main] AutoFill Users no ejecutado porque, no es Moodle");
+        console.log("[opc-autofill-autosave-moodle: main]  AutoFill Users no ejecutado porque, no es Moodle");
     }
 
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
 
     if (!switchRutaDinamica || switchRutaDinamica === "false") {
-        console.log('[opc-autifill-moodle: main] Ruta Dinamica desactivada');
+        console.log('[opc-autofill-autosave-moodle: main]  Ruta Dinamica desactivada');
     } else {
-        console.log('[opc-autifill-moodle: main] Ruta Dinamica activada');
+        console.log('[opc-autofill-autosave-moodle: main]  Ruta Dinamica activada');
     }
 
     if (switchRutaDinamica === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
-        console.log('[opc-autifill-moodle: main] Cargando Ruta Dinamica...');
+        console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta Dinamica...');
         await contenedorRutaDinamica_js();
     } else {
-        console.log('[opc-autifill-moodle: main] Cargando Ruta...');
+        console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta...');
         contenedorRuta_js();
     }
 
