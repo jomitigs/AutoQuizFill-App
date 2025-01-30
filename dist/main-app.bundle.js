@@ -24497,7 +24497,7 @@
             };
 
             const tipoPregunta = determinarTipoPregunta(formulation);
-            console.log('[opc-autofill-autosave-moodle: ruta] Tipo de pregunta:', tipoPregunta);
+            console.log(`[opc-autofill-autosave-moodle: ruta] Pregunta ${numeroPregunta}, tipo: ${tipoPregunta}`);
 
             const func = tipoFunciones[tipoPregunta];
             let seEjecutaFuncion = false;
