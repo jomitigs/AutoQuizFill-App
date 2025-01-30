@@ -1,41 +1,52 @@
+// rollup-plugin-random-class-id.js
 import { createFilter } from '@rollup/pluginutils';
 
+// Expresión regular para encontrar class="..." o class='...'
+const classRegex = /class=["']([^"']+)["']/g;
+// Expresión regular para encontrar id="..." o id='...'
+const idRegex = /id=["']([^"']+)["']/g;
+
 export default function randomClassId() {
-  const filter = createFilter(['**/*.js']); // Asegurarnos de incluir JS
-  const regexClass = /class=["']([^"']+)["']/g;
-  const regexId = /id=["']([^"']+)["']/g;
-  const generateRandomName = () => '_' + Math.random().toString(36).substring(2, 6);
+  // Filtra sólo los archivos .js (o .ts si usas TypeScript)
+  const filter = createFilter(['**/*.js', '**/*.ts']);
 
   return {
     name: 'random-class-id',
     transform(code, id) {
+      // Si no es un archivo JS/TS que cumpla el filtro, no lo modifica
       if (!filter(id)) return null;
 
-      let renamed = {};
-      
+      // Mapeo de nombres originales → nuevos nombres
+      const renameMap = {};
+      // Generar un nombre aleatorio
+      const generateName = () => '_' + Math.random().toString(36).substr(2, 6);
+
       // Renombrar clases
-      code = code.replace(regexClass, (_, classNames) => {
-        const newNames = classNames
-          .split(/\s+/) // separar múltiples clases
+      code = code.replace(classRegex, (_, classList) => {
+        // Dividir por espacios para manejar múltiples clases
+        const newClasses = classList
+          .split(/\s+/)
           .map(cls => {
-            if (!renamed[cls]) {
-              renamed[cls] = generateRandomName();
+            // Si no está en el mapa, crearlo
+            if (!renameMap[cls]) {
+              renameMap[cls] = generateName();
             }
-            return renamed[cls];
+            return renameMap[cls];
           })
           .join(' ');
-        return `class="${newNames}"`;
+
+        return `class="${newClasses}"`;
       });
 
       // Renombrar IDs
-      code = code.replace(regexId, (_, oldId) => {
-        if (!renamed[oldId]) {
-          renamed[oldId] = generateRandomName();
+      code = code.replace(idRegex, (_, oldId) => {
+        if (!renameMap[oldId]) {
+          renameMap[oldId] = generateName();
         }
-        return `id="${renamed[oldId]}"`;
+        return `id="${renameMap[oldId]}"`;
       });
 
       return { code, map: null };
-    }
+    },
   };
 }
