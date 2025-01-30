@@ -21,6 +21,7 @@
     "cross-env": "^7.0.3",
     "cssnano": "^7.0.6",
     "nodemon": "^3.1.9",
+    "postcss-modules": "^6.0.1",
     "rollup": "^4.29.1",
     "rollup-plugin-obfuscator": "^1.1.0",
     "rollup-plugin-postcss": "^4.0.2",
