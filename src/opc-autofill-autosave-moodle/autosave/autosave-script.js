@@ -198,8 +198,7 @@ async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
 // Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
 // -----------------------------------------------------------------------
 function detectarCambiosPreguntas() {
-    console.log('--- Iniciando detectarCambiosPreguntas ---');
-
+ 
     // Selecciona todos los inputs y selects que quieres escuchar
     const elementos = document.querySelectorAll(
         'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
@@ -207,26 +206,22 @@ function detectarCambiosPreguntas() {
 
     elementos.forEach(el => {
         el.addEventListener('change', async (event) => {
-            console.log('Cambio detectado en elemento:', event.target);
+            console.log('[opc-autofill-autosave-moodle: autosave] Cambio detectado');
             
             // Verificamos si 'questions-AutoSave' existe en localStorage
             let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
-            console.log('questions-AutoSave en sessionStorage:', questionsAutoSaveStr);
-
+           
             if (!questionsAutoSaveStr) {
                 console.log("'questions-AutoSave' no existe. Llamando a AutoSave_LocalStorage por primera vez.");
                 // Si NO existe, llamamos la función general y guardamos todo por primera vez
                 await AutoSave_LocalStorage();
-                console.log('AutoSave_LocalStorage ejecutado para la primera vez.');
             } else {
-                console.log("'questions-AutoSave' existe. Parseando el contenido.");
                 // Si SÍ existe, lo parseamos
                 const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
-                console.log('questionsAutoSave parseado:', questionsAutoSave);
 
                 // Ubicamos la .formulation.clearfix donde ocurrió el cambio
                 const formulation = event.target.closest('.formulation.clearfix');
-                console.log('Formulation encontrada:', formulation);
+                
                 if (!formulation) {
                     console.warn('No se encontró el elemento .formulation.clearfix cercano. Saliendo.');
                     return; // Si por algún motivo no lo encuentra, salimos
@@ -234,7 +229,8 @@ function detectarCambiosPreguntas() {
 
                 // Obtenemos el número de la pregunta (por ejemplo con getQuestionNumber)
                 const numeroPregunta = getQuestionNumber(formulation);
-                console.log('Número de pregunta obtenido:', numeroPregunta);
+
+                console.log('[opc-autofill-autosave-moodle: autosave] Actualizando Pregunta', numeroPregunta);
                 if (!numeroPregunta) {
                     console.warn('No se pudo obtener el número de pregunta. Saliendo.');
                     return; // Si no lo obtienes, salimos
