@@ -173,40 +173,13 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
 
-    if (!switchRutaDinamica || switchRutaDinamica === "false") {
-        console.log('[opc-autofill-autosave-moodle: main]  Ruta Dinamica desactivada');
-    } else {
-        console.log('[opc-autofill-autosave-moodle: main]  Ruta Dinamica activada');
-    }
-
-    if (switchRutaDinamica === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) ) {
+    if (switchRutaDinamica === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html'))) {
         console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta Dinamica...');
         await contenedorRutaDinamica_js();
     } else {
         console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta...');
         contenedorRuta_js();
     }
-
-
-    // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
-    // if (esMoodle && url.includes('grade/report/overview/index.php')) {
-        //     extractRevision();
-        //     viewRevisiones();
-    // }
-
-    // // // Mostrar contenedor de ruta dinámica si el URL coincide con ciertas páginas
-   // if (esMoodle && ( url.includes('mod/quiz') || url.includes('grade/report/overview/index.php') || url.includes('login/index.php'))|| url.includes('http://127.0.0.1:5500/dist/index.html')) {
-    //         await contenedorRutaDinamica_js();
-    //}
-
-    // Verificar si "switch-ruta-dinamica" no existe en localStorage
-    //if (!localStorage.getItem('switch-ruta-dinamica')) {
-        //contenedorRuta_js();
-    //}
-
-    
-    
-
 
     // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
     if (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) {
@@ -218,19 +191,25 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         //contenedorAutoSave_js();
     }
 
+    // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
+    // if (esMoodle && url.includes('grade/report/overview/index.php')) {
+    //     extractRevision();
+    //     viewRevisiones();
+    // }
+
     // Mostrar contenedor de autosavereview si estamos en 'mod/quiz/review.php'
-    if (esMoodle && url.includes('mod/quiz/review.php')) {
-        const autoSaveReviewContainer = document.getElementById('container-autosavereview');
-        autoSaveReviewContainer.style.display = 'block';
+    //if (esMoodle && url.includes('mod/quiz/review.php')) {
+        // const autoSaveReviewContainer = document.getElementById('container-autosavereview');
+        // autoSaveReviewContainer.style.display = 'block';
         // contenedorAutoSaveReview_js();
-    }
+    //}
 
     // Mostrar contenedor de verified si estamos en cualquiera de las páginas especificadas
-    if (esMoodle && url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
-        const verifiedContainer = document.getElementById('container-verified');
-        verifiedContainer.style.display = 'block';
+    //if (esMoodle && url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
+        //const verifiedContainer = document.getElementById('container-verified');
+       // verifiedContainer.style.display = 'block';
         //     await opcionVerified_js();
-    }
+    //}
 }
 
 // Función para verificar si la página está construida con Moodle
