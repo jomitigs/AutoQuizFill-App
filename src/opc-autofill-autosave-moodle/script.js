@@ -1,7 +1,7 @@
 import './style.css';
 
-import { contenedorUsers_js } from '../opc-autofill-moodle/users/script.js';
-import { contenedorRuta_js, contenedorRutaDinamica_js } from '../opc-autofill-moodle/ruta/script.js';
+import { contenedorUsers_js } from '../opc-autofill-autosave-moodle/users/script.js';
+import { contenedorRuta_js, contenedorRutaDinamica_js } from '../opc-autofill-autosave-moodle/ruta/script.js';
 
 export function opcionAutoFillMoodle_html() {
     return `
