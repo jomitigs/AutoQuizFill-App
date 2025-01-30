@@ -80,7 +80,8 @@ async function AutoSave_LocalStorage() {
         let tipoPregunta = determinarTipoPregunta(formulation)
 
         console.log('[opc-autofill-autosave-moodle: ruta] Tipo de pregunta:', tipoPregunta);
-
+         
+        let seEjecutaFuncion = false;
 
         // Definir una lista de condiciones y sus correspondientes funciones
         const condiciones = [
