@@ -1,57 +1,54 @@
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
+    // Constantes para los IDs de los elementos y valores de estado
+    const SWITCH_ID = 'switch-autosave';
+    const BODY_ID = 'body-autoquiz-autosave';
+    const STORAGE_KEY = 'autosave-autoquizfillapp';
+    const ACTIVADO = 'activado';
+    const DESACTIVADO = 'desactivado';
 
-    // Obtiene el elemento del interruptor de AutoSave por su ID
-    const interruptorAutoSave = document.getElementById('switch-autosave');
+    // Obtener elementos del DOM
+    const interruptorAutoSave = document.getElementById(SWITCH_ID);
+    const bodyAutoSave = document.getElementById(BODY_ID);
 
-    // Si el elemento no existe, muestra un error en la consola y termina la ejecución
+    // Verificar la existencia del interruptor
     if (!interruptorAutoSave) {
-        console.error("Error: No se encontró el elemento con ID 'switch-autosave'");
+        console.error(`Error: No se encontró el elemento con ID '${SWITCH_ID}'`);
         return;
     }
 
-    // Obtiene el estado guardado en localStorage o asigna 'desactivado' si no existe
-    let estadoInterruptorAutoSave = localStorage.getItem('autosave-autoquizfillapp') || 'desactivado';
-    console.log("Estado guardado en localStorage:", estadoInterruptorAutoSave);
+    // Obtener el estado guardado en localStorage
+    const estadoGuardado = localStorage.getItem(STORAGE_KEY) || DESACTIVADO;
+    console.log(`Estado guardado en localStorage: ${estadoGuardado}`);
 
-    // Configura el estado del interruptor basado en el valor guardado en localStorage
-    interruptorAutoSave.checked = (estadoInterruptorAutoSave === 'activado');
-    console.log("Estado inicial del interruptor:", interruptorAutoSave.checked);
+    // Configurar el estado inicial del interruptor
+    interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
+    console.log(`Estado inicial del interruptor: ${interruptorAutoSave.checked}`);
 
-    // Agrega un evento que escucha cambios en el interruptor de AutoSave
-    interruptorAutoSave.addEventListener('change', function() {
-        console.log("Cambio detectado en el interruptor. Nuevo estado:", this.checked);
+    // Función para actualizar la visibilidad del body
+    const actualizarVisibilidadBody = () => {
+        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php') || 
+                             window.location.href.includes('/mod/quiz/view.php?');
+        if (esPaginaQuiz && interruptorAutoSave.checked) {
+            if (bodyAutoSave) {
+                bodyAutoSave.style.display = 'flex';
+                console.log("Mostrando el elemento body-autoquiz-autosave.");
+            }
+        } 
+        // No es necesario ocultar el body aquí ya que está oculto por defecto
+    };
 
-        // Guarda en localStorage el nuevo estado del interruptor
-        estadoInterruptorAutoSave = this.checked ? 'activado' : 'desactivado';
-        localStorage.setItem('autosave-autoquizfillapp', estadoInterruptorAutoSave);
+    // Inicializar la visibilidad del body al cargar
+    actualizarVisibilidadBody();
 
-        console.log("Estado actualizado en localStorage:", estadoInterruptorAutoSave);
+    // Evento para manejar cambios en el interruptor
+    interruptorAutoSave.addEventListener('change', () => {
+        const estadoNuevo = interruptorAutoSave.checked ? ACTIVADO : DESACTIVADO;
+        localStorage.setItem(STORAGE_KEY, estadoNuevo);
+        console.log(`Estado actualizado en localStorage: ${estadoNuevo}`);
+
+        actualizarVisibilidadBody();
     });
-
-    // Obtiene el elemento body-autoquiz-autosave por su ID
-    const bodyAutoSave = document.getElementById('body-autoquiz-autosave');
-
-    // Si el elemento no existe, muestra un mensaje en la consola
-    if (!bodyAutoSave) {
-        console.warn("Advertencia: No se encontró el elemento con ID 'body-autoquiz-autosave'");
-        return;
-    }
-
-    // Verifica si la URL actual pertenece a las páginas del quiz para mostrar el body
-    if (window.location.href.includes('/mod/quiz/attempt.php') || window.location.href.includes('/mod/quiz/view.php?')) {
-        if (estadoInterruptorAutoSave === 'activado') {
-            bodyAutoSave.style.display = 'flex';
-            console.log("Mostrando el elemento body-autoquiz-autosave.");
-        } else {
-            bodyAutoSave.style.display = 'none';
-            console.log("Ocultando el elemento body-autoquiz-autosave.");
-        }
-    } else {
-        // Siempre oculta el body si no está en la URL correcta
-        bodyAutoSave.style.display = 'none';
-        console.log("URL no válida para AutoSave. Ocultando body-autoquiz-autosave.");
-    }
 
     console.log("Evento de cambio agregado al interruptor de AutoSave.");
 }
