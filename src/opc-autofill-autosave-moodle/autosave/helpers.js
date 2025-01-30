@@ -190,5 +190,41 @@ export function getQuestionNumber(formulation_clearfix) {
         }
     }
     return null; // Sin número
-} 
+}
 
+// Función auxiliar para determinar el tipo de pregunta
+export function determinarTipoPregunta(formulation_clearfix) {
+    const hayUnSoloQtext = formulation_clearfix.querySelectorAll('.qtext').length === 1;
+    const dropzonesElement = formulation_clearfix.querySelector('.dropzones') !== null;
+    const draghomesElement = formulation_clearfix.querySelector('.draghome') !== null;
+
+    const inputTextCount = formulation_clearfix.querySelectorAll('input[type="text"]').length;
+    const inputRadioCount = formulation_clearfix.querySelectorAll('input[type="radio"]').length;
+    const inputCheckboxCount = formulation_clearfix.querySelectorAll('input[type="checkbox"]').length;
+    const selectCount = formulation_clearfix.querySelectorAll('select').length;
+
+    if (hayUnSoloQtext) {
+        if (inputRadioCount > 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
+            return 'inputradio_opcionmultiple_verdaderofalso';
+        }
+        if (inputCheckboxCount > 0 && inputRadioCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
+            return 'inputchecked_opcionmultiple';
+        }
+        if (selectCount > 0 && inputRadioCount === 0 && inputCheckboxCount === 0 && !dropzonesElement && !draghomesElement) {
+            return 'select_emparejamiento';
+        }
+        if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
+            return 'inputtext_respuestacorta';
+        }
+    }
+
+    if (draghomesElement && !dropzonesElement) {
+        return 'draganddrop_text';
+    }
+
+    if (draghomesElement && dropzonesElement) {
+        return 'draganddrop_image';
+    }
+
+    return 'otroscasos';
+}

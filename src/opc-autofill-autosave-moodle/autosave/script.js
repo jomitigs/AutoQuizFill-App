@@ -5,7 +5,7 @@ import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/inpu
 import { inputtext_respuestacorta } from './questions-types/inputtext_respuestacorta.js';
 import { select_emparejamiento } from './questions-types/select_emparejamiento.js';
 
-import { getQuestionNumber } from './helpers.js';
+import { getQuestionNumber, determinarTipoPregunta } from './helpers.js';
 
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
@@ -76,75 +76,12 @@ async function AutoSave_LocalStorage() {
             enunciados: [],
             tipo: ''
         };
-
-        // Verifica si solo existe un elemento con la clase '.qtext' en 'clonFormulation'
-        const soloUnQtext = formulation.querySelectorAll('.qtext').length === 1;
-
-        // Verifica si hay un radio button seleccionado con un valor distinto de "-1" y si solo hay un '.qtext'
-        const inputRadioValido =
-              soloUnQtext &&
-              formulation.querySelector('input[type="radio"]:checked') !== null && // Verifica si hay un radio button seleccionado
-              formulation.querySelector('input[type="radio"]:checked').value !== "-1"; // El valor del radio button no debe ser "-1"
-
-        // Verifica si hay al menos un checkbox seleccionado y si no hay otros tipos de inputs o selects
-        const inputsCheckboxValido =
-              soloUnQtext &&
-              formulation.querySelectorAll('input[type="checkbox"]:checked').length > 0 && // Al menos un checkbox está seleccionado
-              !formulation.querySelector('input:not([type="checkbox"]):not([type="hidden"]), select'); // No debe haber otros inputs o selects
-
-        // Verifica si hay algún select con un valor válido seleccionado, y si no hay otros tipos de inputs, botones o selects vacíos
-        const selectsValido =
-              soloUnQtext &&
-              !formulation.querySelector('input:not([type="hidden"]), textarea, button, [type="radio"], [type="text"], [type="checkbox"]') && // No debe haber otros elementos
-              Array.from(formulation.querySelectorAll("select")).some(select => { // Recorre todos los elementos select
-                  const valor = select.value;
-                  const texto = select.options[select.selectedIndex].text.trim().toLowerCase(); // Texto del select seleccionado en minúsculas
-                  return valor !== "" && valor !== "0" && texto !== "elegir..." && texto !== "seleccionar..."; // Verifica que el valor no sea vacío o inválido
-              });
-
-        // Verifica si hay exactamente un input de tipo texto con contenido válido y sin otros inputs o selects presentes
-        const inputTextValido =
-              !formulation.querySelector('input[type="radio"], input[type="checkbox"], select') && // No debe haber radio, checkbox o selects
-              formulation.querySelectorAll('input[type="text"]').length === 1 && // Debe haber solo un input de tipo texto
-              Array.from(formulation.querySelectorAll('input[type="text"]')).some(input => input.value.trim() !== ""); // El valor del input de texto no debe estar vacío
-
-        // Verifica si hay más de un input de tipo texto con contenido válido y sin otros inputs o selects presentes
-        const inputsTextsValido =
-              !formulation.querySelector('input[type="radio"], input[type="checkbox"], select') && // No debe haber radio, checkbox o selects
-              formulation.querySelectorAll('input[type="text"]').length > 1 && // Debe haber más de un input de tipo texto
-              Array.from(formulation.querySelectorAll('input[type="text"]')).some(input => input.value.trim() !== ""); // Al menos un input de texto debe tener valor
-
-        // Verifica si hay varios inputs de texto o selects con valores válidos, sin otros tipos de inputs presentes
-        const inputsTextsySelectValido =
-              !formulation.querySelector('input[type="radio"], input[type="checkbox"]') && // No debe haber radio ni checkbox
-              formulation.querySelectorAll('input[type="text"]').length > 1 && // Debe haber más de un input de texto
-              Array.from(formulation.querySelectorAll('input[type="text"]')).some(input => input.value.trim() !== "") || // Al menos un input de texto debe tener valor
-              Array.from(formulation.querySelectorAll("select")).some(select => { // O al menos un select debe tener valor válido
-                  const valor = select.value;
-                  const texto = select.options[select.selectedIndex].text.trim().toLowerCase(); // Texto del select seleccionado en minúsculas
-                  return valor !== "" && valor !== "0" && texto !== "elegir..." && texto !== "seleccionar..."; // Verifica que el valor no sea vacío o inválido
-              });
-
-        const hasDraghome = formulation.querySelector('.draghome') !== null;
-        const hasDropzones = formulation.querySelector('.dropzones') !== null;
-
-        let seEjecutaFuncion = false;
-
-        const condicionesPrint = {
-            'inputradio_opcionmultiple_verdaderofalso': inputRadioValido,
-            'inputchecked_opcionmultiple': inputsCheckboxValido,
-            'select_emparejamiento': selectsValido,
-            'inputtext_respuestacorta': inputTextValido,
-            'inputtext_multiple_respuestacorta': inputsTextsValido,
-            'inputtext_multiple_respuestacorta_select': inputsTextsySelectValido
-        };
         
-        for (const [clave, valor] of Object.entries(condicionesPrint)) {
-            if (valor) {
-                console.log(`[opc-autofill-autosave-moodle: autosave] Tipo de pregunta: '${clave}': ${valor}`);
-            }
-        }
+        let tipoPregunta = determinarTipoPregunta(formulation)
         
+        console.log('[opc-autofill-autosave-moodle: ruta] Tipo de pregunta:',tipoPregunta);
+        
+
         // Definir una lista de condiciones y sus correspondientes funciones
         const condiciones = [
             {
