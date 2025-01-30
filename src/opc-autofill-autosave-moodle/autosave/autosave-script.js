@@ -216,9 +216,6 @@ function detectarCambiosPreguntas() {
                 } else {
                     console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
                     // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
-                    // o agregarla manualmente. Aquí se deja la forma genérica:
-                    await AutoSave_SessionStorage();
-                    console.log('AutoSave_SessionStorage ejecutado para agregar la nueva pregunta.');
                 }
             }
         });
