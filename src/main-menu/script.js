@@ -3,7 +3,7 @@ import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/s
 
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js';
 
-import { opcionAutoFillMoodle_html, opcionAutoFillMoodle_js } from '../opc-autofill-autosave-moodle/script.js';
+import { opcion_AutoFillAutoSave_Moodle_html, opcion_AutoFillAutoSave_Moodle_js } from '../opc-autofill-autosave-moodle/main-script.js';
 
 import { opcionAutoFillAltissia_html } from '../opc-autofill-altissia/script.js';
 
@@ -87,15 +87,15 @@ export function menu_AutoFillQuizApp() {
                 
                     // Verificar la plataforma configurada y ejecutar el código correspondiente
                     if (configPlataforma === 'Moodle') {
-                        localStorage.setItem('ultimoHtml', 'opcionAutoFillMoodle_html');
-                        localStorage.setItem('ultimoJs', 'opcionAutoFillMoodle_js');
+                        localStorage.setItem('ultimoHtml', 'opcion_AutoFillAutoSave_Moodle_html');
+                        localStorage.setItem('ultimoJs', 'opcion_AutoFillAutoSave_Moodle_js');
                 
-                        contenedorContenido.innerHTML = opcionAutoFillMoodle_html(); // Mostrar contenido de AutoFill & AutoSavel para Moodle
+                        contenedorContenido.innerHTML = opcion_AutoFillAutoSave_Moodle_html(); // Mostrar contenido de AutoFill & AutoSavel para Moodle
                 
                         try {
-                            await opcionAutoFillMoodle_js(); // Ejecutar el script de AutoFill & AutoSave para Moodle y esperar su finalización
+                            await opcion_AutoFillAutoSave_Moodle_js(); // Ejecutar el script de AutoFill & AutoSave para Moodle y esperar su finalización
                         } catch (error) {
-                            console.error('Error al ejecutar opcionAutoFillMoodle_js:', error);
+                            console.error('Error al ejecutar opcion_AutoFillAutoSave_Moodle_js:', error);
                         }
                     } else if (configPlataforma === 'Altissia') {
                         localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');

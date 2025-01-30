@@ -1,9 +1,9 @@
 import './style.css';
 
-import { contenedorUsers_js } from '../opc-autofill-autosave-moodle/users/script.js';
-import { contenedorRuta_js, contenedorRutaDinamica_js } from '../opc-autofill-autosave-moodle/ruta/script.js';
+import { contenedorUsers_js } from './users/script.js';
+import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
-export function opcionAutoFillMoodle_html() {
+export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
      <div class="body-autoquiz">
 
@@ -153,7 +153,7 @@ export function opcionAutoFillMoodle_html() {
 `;
 }
 
-export async function opcionAutoFillMoodle_js() {
+export async function opcion_AutoFillAutoSave_Moodle_js() {
     const url = window.location.href;
     let esMoodle = esPaginaMoodle();
 

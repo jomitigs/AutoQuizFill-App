@@ -1,6 +1,6 @@
 import './style.css';
 
-import { opcionAutoFillMoodle_html, opcionAutoFillMoodle_js } from '../opc-autofill-autosave-moodle/script.js';
+import { opcion_AutoFillAutoSave_Moodle_html, opcion_AutoFillAutoSave_Moodle_js } from '../opc-autofill-autosave-moodle/main-script.js';
 import { opcionAutoFillAltissia_html, opcionAutoFillAltissia_js } from '../opc-autofill-altissia/script.js';
 
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js'; // Asegúrate de importar las funciones de configuración
@@ -58,30 +58,30 @@ export function panel_AutoFillQuizApp(barraLateral) {
   function cargarAutoFillMoodle() {
     console.log('[main-panel] Cargando AutoFill Moodle.');
     
-    if (opcionAutoFillMoodle_html) {
+    if (opcion_AutoFillAutoSave_Moodle_html) {
       try {
-        contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
+        contenedorContenido.innerHTML = opcion_AutoFillAutoSave_Moodle_html();
         console.log('[main-panel] HTML cargado exitosamente.');
       } catch (error) {
         console.error('[main-panel] Error al ejecutar la función HTML:', error);
         return;
       }
     } else {
-      console.error('[main-panel] La función HTML "opcionAutoFillMoodle_html" no está definida.');
+      console.error('[main-panel] La función HTML "opcion_AutoFillAutoSave_Moodle_html" no está definida.');
       return;
     }
     
     // Ejecutar la función JS correspondiente
     setTimeout(() => {
-      if (typeof opcionAutoFillMoodle_js === 'function') {
+      if (typeof opcion_AutoFillAutoSave_Moodle_js === 'function') {
         try {
-          opcionAutoFillMoodle_js();
+          opcion_AutoFillAutoSave_Moodle_js();
           console.log('[main-panel] JS ejecutada exitosamente.');
         } catch (error) {
           console.error('[main-panel] Error al ejecutar la función JS:', error);
         }
       } else {
-        console.warn('[main-panel] La función JS "opcionAutoFillMoodle_js" no está definida.');
+        console.warn('[main-panel] La función JS "opcion_AutoFillAutoSave_Moodle_js" no está definida.');
       }
     }, 100);
   }
@@ -102,14 +102,14 @@ export function panel_AutoFillQuizApp(barraLateral) {
     // Mapeo de las posibles funciones HTML y JS
     const funcionesHtml = {
       'opcionConfigRuta_html': opcionConfigRuta_html,
-      'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, 
+      'opcion_AutoFillAutoSave_Moodle_html': opcion_AutoFillAutoSave_Moodle_html, 
       'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html, 
       'opcionConfig_html': opcionConfig_html  
     };
 
     const funcionesJs = {
       'opcionConfigRuta_js': opcionConfigRuta_js,
-      'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, 
+      'opcion_AutoFillAutoSave_Moodle_js': opcion_AutoFillAutoSave_Moodle_js, 
       'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js,  
       'opcionConfig_js': opcionConfig_js 
     };

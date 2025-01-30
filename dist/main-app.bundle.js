@@ -23818,7 +23818,7 @@
         }
     }
 
-    function opcionAutoFillMoodle_html() {
+    function opcion_AutoFillAutoSave_Moodle_html() {
         return `
      <div class="body-autoquiz">
 
@@ -23968,7 +23968,7 @@
 `;
     }
 
-    async function opcionAutoFillMoodle_js() {
+    async function opcion_AutoFillAutoSave_Moodle_js() {
         const url = window.location.href;
         let esMoodle = esPaginaMoodle();
 
@@ -24802,7 +24802,7 @@
         
         {
           try {
-            contenedorContenido.innerHTML = opcionAutoFillMoodle_html();
+            contenedorContenido.innerHTML = opcion_AutoFillAutoSave_Moodle_html();
             console.log('[main-panel] HTML cargado exitosamente.');
           } catch (error) {
             console.error('[main-panel] Error al ejecutar la función HTML:', error);
@@ -24812,15 +24812,15 @@
         
         // Ejecutar la función JS correspondiente
         setTimeout(() => {
-          if (typeof opcionAutoFillMoodle_js === 'function') {
+          if (typeof opcion_AutoFillAutoSave_Moodle_js === 'function') {
             try {
-              opcionAutoFillMoodle_js();
+              opcion_AutoFillAutoSave_Moodle_js();
               console.log('[main-panel] JS ejecutada exitosamente.');
             } catch (error) {
               console.error('[main-panel] Error al ejecutar la función JS:', error);
             }
           } else {
-            console.warn('[main-panel] La función JS "opcionAutoFillMoodle_js" no está definida.');
+            console.warn('[main-panel] La función JS "opcion_AutoFillAutoSave_Moodle_js" no está definida.');
           }
         }, 100);
       }
@@ -24841,14 +24841,14 @@
         // Mapeo de las posibles funciones HTML y JS
         const funcionesHtml = {
           'opcionConfigRuta_html': opcionConfigRuta_html,
-          'opcionAutoFillMoodle_html': opcionAutoFillMoodle_html, 
+          'opcion_AutoFillAutoSave_Moodle_html': opcion_AutoFillAutoSave_Moodle_html, 
           'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html, 
           'opcionConfig_html': opcionConfig_html  
         };
 
         const funcionesJs = {
           'opcionConfigRuta_js': opcionConfigRuta_js,
-          'opcionAutoFillMoodle_js': opcionAutoFillMoodle_js, 
+          'opcion_AutoFillAutoSave_Moodle_js': opcion_AutoFillAutoSave_Moodle_js, 
           'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js$1,  
           'opcionConfig_js': opcionConfig_js 
         };
@@ -25015,15 +25015,15 @@
                     
                         // Verificar la plataforma configurada y ejecutar el código correspondiente
                         if (configPlataforma === 'Moodle') {
-                            localStorage.setItem('ultimoHtml', 'opcionAutoFillMoodle_html');
-                            localStorage.setItem('ultimoJs', 'opcionAutoFillMoodle_js');
+                            localStorage.setItem('ultimoHtml', 'opcion_AutoFillAutoSave_Moodle_html');
+                            localStorage.setItem('ultimoJs', 'opcion_AutoFillAutoSave_Moodle_js');
                     
-                            contenedorContenido.innerHTML = opcionAutoFillMoodle_html(); // Mostrar contenido de AutoFill & AutoSavel para Moodle
+                            contenedorContenido.innerHTML = opcion_AutoFillAutoSave_Moodle_html(); // Mostrar contenido de AutoFill & AutoSavel para Moodle
                     
                             try {
-                                await opcionAutoFillMoodle_js(); // Ejecutar el script de AutoFill & AutoSave para Moodle y esperar su finalización
+                                await opcion_AutoFillAutoSave_Moodle_js(); // Ejecutar el script de AutoFill & AutoSave para Moodle y esperar su finalización
                             } catch (error) {
-                                console.error('Error al ejecutar opcionAutoFillMoodle_js:', error);
+                                console.error('Error al ejecutar opcion_AutoFillAutoSave_Moodle_js:', error);
                             }
                         } else if (configPlataforma === 'Altissia') {
                             localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');
