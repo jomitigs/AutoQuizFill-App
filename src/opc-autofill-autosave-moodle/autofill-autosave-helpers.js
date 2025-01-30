@@ -85,27 +85,6 @@ export async function feedbackQuestion(originalFormulationClearfix) {
     return textoFeedback;
 }
 
-export function convertImageToDataUri(src) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-
-        img.onload = function () {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            context.drawImage(img, 0, 0);
-            const dataUri = canvas.toDataURL();
-            resolve(dataUri);
-        };
-
-        img.onerror = function () {
-            reject('Error en la conversión a Data URI');
-        };
-    });
-}
-
 export async function extractContentInOrder(node) {
     let content = '';
 
@@ -268,4 +247,25 @@ export async function convertImgToDataUri(clonFormulation) {
             // console.log('La imagen no se convierte:', img.src);
         }
     }
+}
+
+export function convertImageToDataUri(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+
+        img.onload = function () {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            context.drawImage(img, 0, 0);
+            const dataUri = canvas.toDataURL();
+            resolve(dataUri);
+        };
+
+        img.onerror = function () {
+            reject('Error en la conversión a Data URI');
+        };
+    });
 }

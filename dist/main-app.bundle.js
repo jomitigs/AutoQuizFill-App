@@ -23901,27 +23901,6 @@
         return textoFeedback;
     }
 
-    function convertImageToDataUri(src) {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = src;
-
-            img.onload = function () {
-                const canvas = document.createElement('canvas');
-                const context = canvas.getContext('2d');
-                canvas.width = img.naturalWidth;
-                canvas.height = img.naturalHeight;
-                context.drawImage(img, 0, 0);
-                const dataUri = canvas.toDataURL();
-                resolve(dataUri);
-            };
-
-            img.onerror = function () {
-                reject('Error en la conversión a Data URI');
-            };
-        });
-    }
-
     async function extractContentInOrder(node) {
         let content = '';
 
@@ -24081,6 +24060,27 @@
                 }
             } else ;
         }
+    }
+
+    function convertImageToDataUri(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                context.drawImage(img, 0, 0);
+                const dataUri = canvas.toDataURL();
+                resolve(dataUri);
+            };
+
+            img.onerror = function () {
+                reject('Error en la conversión a Data URI');
+            };
+        });
     }
 
     // Manejar respuestas tipo 'draganddrop' (image)
