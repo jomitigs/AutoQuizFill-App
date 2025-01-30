@@ -23229,6 +23229,24 @@
                 console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
             }
 
+            // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
+            document.getElementById('ruta-configruta');
+
+            console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`);
+           
+            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
+
+            // Verifica si 'configRutaDinamic' existe y no está vacío
+            if (configRutaDinamic) {
+                // Obtiene el elemento con el ID 'ruta-configruta'
+                const rutaElemento = document.getElementById('ruta-configruta');
+        
+                // Verifica que el elemento exista en el DOM
+                if (rutaElemento) {
+                    // Actualiza el contenido HTML del elemento
+                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> ${configRutaDinamic}`;
+                }
+            }
 
             if (rutaLista.includes('niv')) {
                 console.log('Procesando ruta que incluye niv');
