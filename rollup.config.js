@@ -47,7 +47,7 @@ export default {
         : [],
     }),
     // Solo minifica JS en producción
-    isProduction &&
+    !isProduction &&
       terser({
         format: { comments: false },
         compress: { drop_console: true },
