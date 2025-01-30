@@ -1,4 +1,4 @@
-import { feedbackQuestion, convertImageToDataUri, extractContentInOrder } from '../helpers.js';
+import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '../helpers.js';
 
 // Manejar respuestas tipo 'input text' (respuesta corta)
  export async function inputtext_respuestacorta(originalFormulationClearfix, questionsAutoSave) {
