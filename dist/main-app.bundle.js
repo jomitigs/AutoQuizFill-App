@@ -24321,24 +24321,31 @@
     // Manejar respuestas tipo 'select'
     async function select_emparejamiento(originalFormulationClearfix, questionsAutoSave) {
         const tipo = 'select_emparejamiento'; // Define el tipo de pregunta como "select_emparejamiento"
-        questionsAutoSave.respuestas = []; // Inicializa el array respuestas como vacío
-        questionsAutoSave.enunciados = []; // Inicializa el array enunciados como vacío
+        questionsAutoSave.respuestas = [];    // Inicializa el array respuestas como vacío
+        questionsAutoSave.enunciados = [];    // Inicializa el array enunciados como vacío
 
-        const clonFormulation = originalFormulationClearfix.cloneNode(true); // Crea un clon de la estructura HTML de la pregunta
+        // Crea un clon de la estructura HTML de la pregunta
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+
         // Convierte las imágenes dentro del clon a formato Data URI para almacenar todo el contenido en texto
         await convertImgToDataUri(clonFormulation);
 
-        const allSelects = originalFormulationClearfix.querySelectorAll('select'); // Obtiene todos los elementos <select> en la pregunta original
+        // Obtiene todos los elementos <select> en la pregunta original
+        const allSelects = originalFormulationClearfix.querySelectorAll('select');
 
         // Itera sobre cada elemento <select> encontrado
         allSelects.forEach(async (selectElement) => {
-            let opcionSeleccionada = selectElement.options[selectElement.selectedIndex]; // Obtiene la opción seleccionada
+            // Obtiene la opción seleccionada
+            let opcionSeleccionada = selectElement.options[selectElement.selectedIndex];
 
-            if (opcionSeleccionada) { // Verifica que haya una opción seleccionada distinta de "0"
-                let textoRespuesta = opcionSeleccionada.textContent.trim(); // Obtiene el texto de la opción seleccionada sin espacios adicionales
-                if (textoRespuesta) {
-                    questionsAutoSave.respuestas.push(textoRespuesta); // Almacena el texto de la respuesta seleccionada
-                }
+            if (opcionSeleccionada) {
+                // Si el valor es "0", la respuesta será una cadena vacía, de lo contrario, es el texto de la opción
+                let textoRespuesta = (opcionSeleccionada.value === "0")
+                    ? ""
+                    : opcionSeleccionada.textContent.trim();
+
+                // Almacena la respuesta (vacía o con texto, según corresponda)
+                questionsAutoSave.respuestas.push(textoRespuesta);
 
                 // Extrae el enunciado relacionado de la celda <td> más cercana que contiene el texto o una imagen
                 let textoPregunta;
@@ -24348,38 +24355,23 @@
                     if (textoElement.innerText.trim()) {
                         textoPregunta = textoElement.innerText.trim();
                     } else {
-                        // Si no contiene texto, intenta procesar las imágenes
+                        // Si no contiene texto, intenta procesar la(s) imagen(es)
                         const imgElement = textoElement.querySelector('img');
                         if (imgElement) {
+                            // Si la imagen proviene de 'pluginfile.php', la convertimos a Data URI
                             if (imgElement.src.includes('pluginfile.php')) {
                                 try {
-                                    // Convertir a Data URI las imágenes que contienen 'pluginfile.php'
                                     console.log('Convirtiendo imagen (pluginfile.php):', imgElement.src);
-
-                                    await new Promise((resolve, reject) => {
-                                        if (imgElement.complete) {
-                                            resolve();
-                                        } else {
-                                            imgElement.onload = resolve;
-                                            imgElement.onerror = reject;
-                                        }
-                                    });
-
-                                    const canvas = document.createElement('canvas');
-                                    const context = canvas.getContext('2d');
-                                    canvas.width = imgElement.naturalWidth;
-                                    canvas.height = imgElement.naturalHeight;
-
-                                    context.drawImage(imgElement, 0, 0);
-                                    const dataUri = canvas.toDataURL();
-                                    imgElement.src = dataUri; // Actualiza la fuente de la imagen al Data URI
-                                    textoPregunta = dataUri; // Usa el Data URI como textoPregunta
+                                    const dataUri = await convertImageToDataUri(imgElement);
+                                    imgElement.src = dataUri;
+                                    textoPregunta = dataUri;
                                     console.log('Imagen convertida a Data URI:', imgElement.src);
                                 } catch (error) {
                                     console.error('Error en la conversión de la imagen:', error);
                                 }
                             } else {
-                                textoPregunta = imgElement.src; // Usa la URL de la imagen como textoPregunta
+                                // Si la imagen no está en pluginfile.php, usamos su URL como textoPregunta
+                                textoPregunta = imgElement.src;
                                 console.log('La imagen no se convierte:', imgElement.src);
                             }
                         }
@@ -24388,7 +24380,7 @@
                     // Almacena el enunciado en questionsAutoSave.enunciados
                     if (textoPregunta) {
                         questionsAutoSave.enunciados.push(textoPregunta);
-                        // console.log(`Enunciado almacenado: ${textoPregunta}`);
+                        console.log(`Enunciado almacenado: ${textoPregunta}`);
                     }
                 }
             }
