@@ -83,7 +83,7 @@ async function AutoSave_LocalStorage() {
                 resolve();
             }, 1000)); // Retraso de 1 segundo
         }
-       //  'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
+        // 'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
         // 'inputtext_multiple_respuestacorta_select': inputtext_multiple_respuestacorta_select
     };
 
@@ -124,7 +124,105 @@ async function AutoSave_LocalStorage() {
     // Guardar todas las preguntas en sessionStorage
     try {
         sessionStorage.setItem('questions-AutoSave', JSON.stringify(todasLasPreguntas));
+        detectarCambiosEnForm();
     } catch (error) {
         console.error('Error al guardar en sessionStorage', error);
     }
 }
+
+
+// -----------------------------------------------------------------------
+// Versión reducida que SOLO actualiza UNA pregunta (sin volver a mapear todo):
+// -----------------------------------------------------------------------
+async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
+    // Funciones de mapeo (mismas que en la función "grande", pero reusadas)
+    const tipoFunciones = {
+        'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
+        'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
+        'select_emparejamiento': select_emparejamiento,
+        'inputtext_respuestacorta': inputtext_respuestacorta,
+        'draganddrop_text': async (form, obj) => {
+            await new Promise(resolve => setTimeout(() => {
+                draganddrop_text(form, obj);
+                resolve();
+            }, 1000));
+        },
+        'draganddrop_image': async (form, obj) => {
+            await new Promise(resolve => setTimeout(() => {
+                draganddrop_image(form, obj);
+                resolve();
+            }, 1000));
+        }
+    };
+
+    // Ya tenemos el tipo en preguntaObj.tipo (no usamos determinarTipoPregunta)
+    const tipo = preguntaObj.tipo;
+    const func = tipoFunciones[tipo];
+
+    if (func) {
+        // Ejecutamos la lógica específica solo para ESTE formulation
+        await func(formulation, preguntaObj);
+
+        // Ajustamos si hay un solo elemento en respuestas
+        if (Array.isArray(preguntaObj.respuestas) && preguntaObj.respuestas.length === 1) {
+            preguntaObj.respuestas = preguntaObj.respuestas[0];
+        }
+    }
+}
+
+// -----------------------------------------------------------------------
+// Función que deteca los cambios y actúa según exista o no 'questions-AutoSave'
+// -----------------------------------------------------------------------
+function detectarCambiosEnForm() {
+    // Selecciona todos los inputs y selects que quieres escuchar
+    const elementos = document.querySelectorAll(
+        'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
+    );
+
+    elementos.forEach(el => {
+        el.addEventListener('change', async (event) => {
+            // Verificamos si 'questions-AutoSave' existe en localStorage
+            let questionsAutoSaveStr = localStorage.getItem('questions-AutoSave');
+
+            if (!questionsAutoSaveStr) {
+                // Si NO existe, llamamos la función general y guardamos todo por primera vez
+                await AutoSave_LocalStorage();
+            } else {
+                // Si SÍ existe, lo parseamos
+                const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
+
+                // Ubicamos la .formulation.clearfix donde ocurrió el cambio
+                const formulation = event.target.closest('.formulation.clearfix');
+                if (!formulation) return; // Si por algún motivo no lo encuentra, salimos
+
+                // Obtenemos el número de la pregunta (por ejemplo con getQuestionNumber)
+                const numeroPregunta = getQuestionNumber(formulation);
+                if (!numeroPregunta) return; // Si no lo obtienes, salimos
+
+                // Construimos la llave, por ejemplo "Pregunta1", "Pregunta2", etc.
+                const preguntaKey = `Pregunta${numeroPregunta}`;
+
+                // Revisamos si esa pregunta ya existe en el objeto guardado
+                if (questionsAutoSave[preguntaKey]) {
+                    // Recuperamos ese objeto (ya contiene "tipo", "html", etc.)
+                    const preguntaObj = questionsAutoSave[preguntaKey];
+
+                    // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
+                    await AutoSave_LocalStorage_Simple(formulation, preguntaObj);
+
+                    // Volvemos a guardar la pregunta actualizada
+                    questionsAutoSave[preguntaKey] = preguntaObj;
+                    localStorage.setItem('questions-AutoSave', JSON.stringify(questionsAutoSave));
+                } else {
+                    // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
+                    // o agregarla manualmente. Aquí se deja la forma genérica:
+                    await AutoSave_LocalStorage();
+                }
+            }
+        });
+    });
+}
+
+
+detectarCambiosEnForm();
+
