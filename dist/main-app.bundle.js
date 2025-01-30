@@ -23284,9 +23284,9 @@
                         let isTestSelect = path === "ConfigRuta/opciones/UNEMI/unemi:niv-test";
                     
                         if (isMateriaSelect) {
-                            defaultOption.textContent = "Materia";
+                            defaultOption.textContent = "Seleccionar Materia";
                         } else if (isTestSelect) {
-                            defaultOption.textContent = "Test";
+                            defaultOption.textContent = "Seleccionar Test";
                         }
                     
                         defaultOption.disabled = true;
