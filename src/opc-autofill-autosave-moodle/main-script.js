@@ -233,7 +233,6 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
     }
 }
 
-
 // Función para verificar si la página está construida con Moodle
 function esPaginaMoodle() {
     // Método 1: Verificar la etiqueta meta "generator"
