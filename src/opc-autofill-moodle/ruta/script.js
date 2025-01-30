@@ -480,13 +480,8 @@ export function contenedorRuta_js() {
     if (!configRuta || !ciclo) {
         // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
 
-        // Ocultar todos los elementos con la clase 'container-autoquiz'
-        containerAutoQuiz.forEach(container => {
-            if (container) {
-                container.style.display = 'none';
-                // console.log('Contenedor .container-autoquiz ocultado:', container);
-            }
-        });
+        container.style.display = 'none';
+        // console.log('Contenedor .container-autoquiz ocultado:', container);
 
         // Desactivar autofill y autosave
         localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
