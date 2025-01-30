@@ -131,7 +131,7 @@ async function AutoSave_LocalStorage() {
         let seEjecutaFuncion = false;
 
         // console.log(`Condición 'inputradio_opcionmultiple_verdaderofalso': ${inputRadioValido}`);
-        console.log(`Condición 'inputchecked_opcionmultiple': ${inputsCheckboxValido}`);
+        // console.log(`Condición 'inputchecked_opcionmultiple': ${inputsCheckboxValido}`);
         // console.log(`Condición 'select_emparejamiento': ${selectsValido}`);
         // console.log(`Condición 'inputtext_respuestacorta': ${inputTextValido}`);
         // console.log(`Condición 'inputtext_multiple_respuestacorta': ${inputsTextsValido}`);
@@ -216,19 +216,19 @@ async function AutoSave_LocalStorage() {
     }
 
     // Obtener la URL actual
-    const currentUrl = window.location.pathname;
+    // const currentUrl = window.location.pathname;
 
-    if (currentUrl.includes('/mod/quiz/review.php')) {
-        console.log('Página de revisión detectada. Ejecutando AutoSaveReview_Filter...');
+    // if (currentUrl.includes('/mod/quiz/review.php')) {
+        // console.log('Página de revisión detectada. Ejecutando AutoSaveReview_Filter...');
         // Ejecuta AutoSaveReview_Filter y espera a que termine
-        await AutoSaveReview_Filter();
-    } else if (currentUrl.includes('/mod/quiz/attempt.php')) {
-        console.log('Página de intento detectada. Ejecutando mostrarRespuestas_AutoSave...');
+        //await AutoSaveReview_Filter();
+    // } else if (currentUrl.includes('/mod/quiz/attempt.php')) {
+        //console.log('Página de intento detectada. Ejecutando mostrarRespuestas_AutoSave...');
         // Ejecuta mostrarRespuestas_AutoSave directamente en modo intento
-        mostrarRespuestas_AutoSave();
-    } else {
-        console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
-    }
+        //mostrarRespuestas_AutoSave();
+    //} else {
+       // console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
+   // }
 
     console.log('::::::Finalizando AutoSave_LocalStorage::::::');
 
