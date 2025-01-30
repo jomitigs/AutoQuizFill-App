@@ -24334,7 +24334,7 @@
         allSelects.forEach(async (selectElement) => {
             let opcionSeleccionada = selectElement.options[selectElement.selectedIndex]; // Obtiene la opción seleccionada
 
-            if (opcionSeleccionada && opcionSeleccionada.value !== "0") { // Verifica que haya una opción seleccionada distinta de "0"
+            if (opcionSeleccionada) { // Verifica que haya una opción seleccionada distinta de "0"
                 let textoRespuesta = opcionSeleccionada.textContent.trim(); // Obtiene el texto de la opción seleccionada sin espacios adicionales
                 if (textoRespuesta) {
                     questionsAutoSave.respuestas.push(textoRespuesta); // Almacena el texto de la respuesta seleccionada

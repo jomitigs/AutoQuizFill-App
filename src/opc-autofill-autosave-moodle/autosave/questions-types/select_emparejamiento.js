@@ -1,34 +1,5 @@
 import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
-// Manejar respuestas tipo 'input text' (respuesta corta)
- export async function inputtext_respuestacorta(originalFormulationClearfix, questionsAutoSave) {
-    const tipo = 'inputtext_respuestacorta';
-    const respuestas = questionsAutoSave.respuestas;
-    let hayRespuestaLleno = false;
-
-    const clonFormulation = originalFormulationClearfix.cloneNode(true);
-    // Convierte las imágenes dentro del clon a formato Data URI
-    await convertImgToDataUri(clonFormulation);
-
-    const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
-
-    allInputText.forEach((inputText) => {
-        const valor = inputText.value;
-        respuestas.push(valor);
-
-        if (valor) {
-            hayRespuestaLleno = true;
-        }
-    });
-
-    if (hayRespuestaLleno) {
-        questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
-        questionsAutoSave.tipo = tipo;
-        const feedback = await feedbackQuestion(originalFormulationClearfix);
-        questionsAutoSave.feedback = feedback;
-        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
-    }
-}
 // Manejar respuestas tipo 'select'
 export async function select_emparejamiento(originalFormulationClearfix, questionsAutoSave) {
     const tipo = 'select_emparejamiento'; // Define el tipo de pregunta como "select_emparejamiento"
@@ -45,7 +16,7 @@ export async function select_emparejamiento(originalFormulationClearfix, questio
     allSelects.forEach(async (selectElement) => {
         let opcionSeleccionada = selectElement.options[selectElement.selectedIndex]; // Obtiene la opción seleccionada
 
-        if (opcionSeleccionada && opcionSeleccionada.value !== "0") { // Verifica que haya una opción seleccionada distinta de "0"
+        if (opcionSeleccionada) { // Verifica que haya una opción seleccionada distinta de "0"
             let textoRespuesta = opcionSeleccionada.textContent.trim(); // Obtiene el texto de la opción seleccionada sin espacios adicionales
             if (textoRespuesta) {
                 questionsAutoSave.respuestas.push(textoRespuesta); // Almacena el texto de la respuesta seleccionada
