@@ -6,6 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
+import cssnano from 'cssnano'; 
 
 // Determina si es una compilación de producción
 const isProduction = process.env.BUILD_PROD === 'true';
@@ -26,6 +27,16 @@ export default {
     postcss({
       extensions: ['.css'],
       inject: true,
+      minimize: isProduction, // Minimiza solo en producción
+      plugins: [
+        cssnano({
+          preset: ['default', {
+            discardComments: {
+              removeAll: true, // Elimina todos los comentarios
+            },
+          }],
+        }),
+      ],
     }),
     // Incluir terser solo en producción
     isProduction && terser({

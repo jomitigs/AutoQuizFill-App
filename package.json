@@ -14,11 +14,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-html": "^1.1.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "cross-env": "^7.0.3",
+    "cssnano": "^7.0.6",
     "glob": "^11.0.0",
     "nodemon": "^3.1.9",
     "rollup": "^4.29.1",
