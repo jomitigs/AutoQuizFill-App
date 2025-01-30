@@ -24433,7 +24433,8 @@
                 if (bodyAutoSave) {
                     bodyAutoSave.style.display = 'flex';
                     console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
-                    await AutoSave_LocalStorage(); // Espera a que termine AutoSave
+                    const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+                    await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
                     detectarCambiosPreguntas();
                     console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
                 }
@@ -24456,14 +24457,24 @@
     }
 
 
-    async function AutoSave_LocalStorage() {
+    async function AutoSave_SessionStorage(formulations, forcedQuestionNumber = null) {
         let contadorPreguntas = 0; // Contador de preguntas
         const todasLasPreguntas = {}; // Objeto para almacenar todas las preguntas
 
-        // Obtener los elementos con clase '.formulation.clearfix'
-        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+        // ——————————————————————————————————————————————————————
+        // 1) Determinar si 'formulations' es un solo elemento o una lista
+        // ——————————————————————————————————————————————————————
+        // Si NO es una NodeList / HTMLCollection, asumimos que es un solo elemento y lo metemos en un array
+        if (
+            !NodeList.prototype.isPrototypeOf(formulations) && 
+            !HTMLCollection.prototype.isPrototypeOf(formulations)
+        ) {
+            formulations = [formulations]; 
+        }
 
-        // Mapeo de tipos de pregunta a sus funciones correspondientes
+        // ——————————————————————————————————————————————————————
+        // 2) Definición de funciones por tipo de pregunta
+        // ——————————————————————————————————————————————————————
         const tipoFunciones = {
             'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
             'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
@@ -24481,14 +24492,24 @@
                     resolve();
                 }, 1000)); // Retraso de 1 segundo
             }
+            // Puedes habilitar o agregar otras funciones:
             // 'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
             // 'inputtext_multiple_respuestacorta_select': inputtext_multiple_respuestacorta_select
         };
 
-        for (const formulation of originalAllFormulations) {
-            // Obtener el número de pregunta o incrementar el contador
-            const numeroPregunta = getQuestionNumber(formulation) || ++contadorPreguntas;
+        // ——————————————————————————————————————————————————————
+        // 3) Iterar sobre los elementos (ya sea un array de uno o varios)
+        // ——————————————————————————————————————————————————————
+        for (const formulation of formulations) {
 
+            // Determinar el número de pregunta
+            //  - Si se proporciona forcedQuestionNumber, lo usamos.
+            //  - De lo contrario, usamos getQuestionNumber(formulation) o lo incrementamos.
+            const numeroPregunta = forcedQuestionNumber 
+                || getQuestionNumber(formulation) 
+                || ++contadorPreguntas;
+
+            // Objeto con la estructura para guardar datos
             const questionsAutoSave = {
                 html: '',
                 respuestas: [],
@@ -24496,12 +24517,15 @@
                 tipo: ''
             };
 
+            // Determinar el tipo de pregunta (asume que existe la función determinarTipoPregunta)
             const tipoPregunta = determinarTipoPregunta(formulation);
             console.log(`[opc-autofill-autosave-moodle: ruta] Pregunta ${numeroPregunta}, tipo: ${tipoPregunta}`);
 
+            // Tomar la función correspondiente, si existe
             const func = tipoFunciones[tipoPregunta];
             let seEjecutaFuncion = false;
 
+            // Ejecutar la función de guardado si la encontramos
             if (func) {
                 await func(formulation, questionsAutoSave);
                 seEjecutaFuncion = true;
@@ -24513,13 +24537,20 @@
                     questionsAutoSave.respuestas = questionsAutoSave.respuestas[0];
                 }
 
-                if (questionsAutoSave.html || questionsAutoSave.respuestas.length > 0 || questionsAutoSave.enunciados.length > 0) {
+                if (
+                    questionsAutoSave.html ||
+                    (Array.isArray(questionsAutoSave.respuestas) && questionsAutoSave.respuestas.length > 0) ||
+                    (!Array.isArray(questionsAutoSave.respuestas) && questionsAutoSave.respuestas) ||
+                    questionsAutoSave.enunciados.length > 0
+                ) {
                     todasLasPreguntas[`Pregunta${numeroPregunta}`] = questionsAutoSave;
                 }
             }
         }
 
-        // Guardar todas las preguntas en sessionStorage
+        // ——————————————————————————————————————————————————————
+        // 4) Guardar todas las preguntas en sessionStorage
+        // ——————————————————————————————————————————————————————
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(todasLasPreguntas));
         } catch (error) {
@@ -24527,66 +24558,6 @@
         }
     }
 
-
-    async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
-
-        // Funciones de mapeo (mismas que en la función "grande", pero reusadas)
-        const tipoFunciones = {
-            'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
-            'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
-            'select_emparejamiento': select_emparejamiento,
-            'inputtext_respuestacorta': inputtext_respuestacorta,
-            'draganddrop_text': async (form, obj) => {
-                console.log('Ejecutando draganddrop_text');
-                await new Promise(resolve => setTimeout(() => {
-                    draganddrop_text(form, obj);
-                    console.log('draganddrop_text completado');
-                    resolve();
-                }, 1000));
-            },
-            'draganddrop_image': async (form, obj) => {
-                console.log('Ejecutando draganddrop_image');
-                await new Promise(resolve => setTimeout(() => {
-                    draganddrop_image(form, obj);
-                    console.log('draganddrop_image completado');
-                    resolve();
-                }, 1000));
-            }
-        };
-        console.log('tipoFunciones definido:', tipoFunciones);
-
-        // Ya tenemos el tipo en preguntaObj.tipo (no usamos determinarTipoPregunta)
-        const tipo = preguntaObj.tipo;
-        console.log('Tipo de pregunta:', tipo);
-
-        const func = tipoFunciones[tipo];
-        console.log('Función mapeada para el tipo:', func);
-
-        if (func) {
-            console.log('Ejecutando función específica para el tipo de pregunta.');
-            // Ejecutamos la lógica específica solo para ESTE formulation
-            await func(formulation, preguntaObj);
-            console.log('Función específica ejecutada.');
-
-            // Ajustamos si hay un solo elemento en respuestas
-            if (Array.isArray(preguntaObj.respuestas)) {
-                console.log('preguntaObj.respuestas es un array:', preguntaObj.respuestas);
-                if (preguntaObj.respuestas.length === 1) {
-                    console.log('Solo hay una respuesta, ajustando preguntaObj.respuestas.');
-                    preguntaObj.respuestas = preguntaObj.respuestas[0];
-                    console.log('preguntaObj.respuestas ajustado a:', preguntaObj.respuestas);
-                } else {
-                    console.log('Múltiples respuestas, no se realiza ajuste.');
-                }
-            } else {
-                console.log('preguntaObj.respuestas no es un array, no se realiza ajuste.');
-            }
-        } else {
-            console.warn('No se encontró una función para el tipo de pregunta:', tipo);
-        }
-
-        console.log('--- Finalizando AutoSave_LocalStorage_Simple ---');
-    }
 
     // -----------------------------------------------------------------------
     // Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
@@ -24606,9 +24577,10 @@
                 let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
                
                 if (!questionsAutoSaveStr) {
-                    console.log("'questions-AutoSave' no existe. Llamando a AutoSave_LocalStorage por primera vez.");
+                    console.log("'questions-AutoSave' no existe. Llamando a AutoSave_SessionStorage por primera vez.");
                     // Si NO existe, llamamos la función general y guardamos todo por primera vez
-                    await AutoSave_LocalStorage();
+                    const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+                    await AutoSave_SessionStorage(originalAllFormulations);
                 } else {
                     // Si SÍ existe, lo parseamos
                     const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
@@ -24636,23 +24608,17 @@
                     // Revisamos si esa pregunta ya existe en el objeto guardado
                     if (questionsAutoSave[preguntaKey]) {
                         // Recuperamos ese objeto (ya contiene "tipo", "html", etc.)
-                        const preguntaObj = questionsAutoSave[preguntaKey];
+                        questionsAutoSave[preguntaKey];
                         
                         // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
-                        await AutoSave_LocalStorage_Simple(formulation, preguntaObj);
-                        console.log('AutoSave_LocalStorage_Simple ejecutado.');
+                        await AutoSave_SessionStorage(formulation,numeroPregunta);
 
-                        // Volvemos a guardar la pregunta actualizada
-                        questionsAutoSave[preguntaKey] = preguntaObj;
-                        console.log(`Actualizando questionsAutoSave[${preguntaKey}] con preguntaObj:`, preguntaObj);
-                        localStorage.setItem('questions-AutoSave', JSON.stringify(questionsAutoSave));
-                        console.log("'questions-AutoSave' actualizado en localStorage.");
                     } else {
-                        console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_LocalStorage.`);
+                        console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
                         // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
                         // o agregarla manualmente. Aquí se deja la forma genérica:
-                        await AutoSave_LocalStorage();
-                        console.log('AutoSave_LocalStorage ejecutado para agregar la nueva pregunta.');
+                        await AutoSave_SessionStorage();
+                        console.log('AutoSave_SessionStorage ejecutado para agregar la nueva pregunta.');
                     }
                 }
             });
