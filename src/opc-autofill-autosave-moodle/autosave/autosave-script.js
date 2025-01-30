@@ -82,9 +82,9 @@ async function AutoSave_LocalStorage() {
                 draganddrop_image(formulation, questionsAutoSave);
                 resolve();
             }, 1000)); // Retraso de 1 segundo
-        },
-        'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
-        'inputtext_multiple_respuestacorta_select': inputtext_multiple_respuestacorta_select
+        }
+       //  'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
+        // 'inputtext_multiple_respuestacorta_select': inputtext_multiple_respuestacorta_select
     };
 
     for (const formulation of originalAllFormulations) {
