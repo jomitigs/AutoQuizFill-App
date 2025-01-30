@@ -24428,12 +24428,12 @@
 
             let seEjecutaFuncion = false;
 
-            // console.log(`Condición 'inputradio_opcionmultiple_verdaderofalso': ${inputRadioValido}`);
-            // console.log(`Condición 'inputchecked_opcionmultiple': ${inputsCheckboxValido}`);
-            // console.log(`Condición 'select_emparejamiento': ${selectsValido}`);
-            // console.log(`Condición 'inputtext_respuestacorta': ${inputTextValido}`);
-            // console.log(`Condición 'inputtext_multiple_respuestacorta': ${inputsTextsValido}`);
-            // console.log(`Condición 'inputtext_multiple_respuestacorta_select': ${inputsTextsySelectValido}`);
+            console.log(`Condición 'inputradio_opcionmultiple_verdaderofalso': ${inputRadioValido}`);
+            console.log(`Condición 'inputchecked_opcionmultiple': ${inputsCheckboxValido}`);
+            console.log(`Condición 'select_emparejamiento': ${selectsValido}`);
+            console.log(`Condición 'inputtext_respuestacorta': ${inputTextValido}`);
+            console.log(`Condición 'inputtext_multiple_respuestacorta': ${inputsTextsValido}`);
+            console.log(`Condición 'inputtext_multiple_respuestacorta_select': ${inputsTextsySelectValido}`);
 
             // Definir una lista de condiciones y sus correspondientes funciones
             const condiciones = [
@@ -24527,8 +24527,6 @@
         //} else {
            // console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
        // }
-
-        console.log('::::::Finalizando AutoSave_LocalStorage::::::');
 
     }
 
