@@ -24664,7 +24664,6 @@
             });
         });
 
-        console.log('--- Finalizando detectarCambiosPreguntas ---');
     }
 
     function opcion_AutoFillAutoSave_Moodle_html() {

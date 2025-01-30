@@ -267,7 +267,6 @@ function detectarCambiosPreguntas() {
         });
     });
 
-    console.log('--- Finalizando detectarCambiosPreguntas ---');
 }
 
 
