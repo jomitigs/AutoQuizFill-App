@@ -25647,7 +25647,7 @@
           if (typeof opcion_AutoFillAutoSave_Moodle_js === 'function') {
             try {
               opcion_AutoFillAutoSave_Moodle_js();
-              console.log('[main-panel] JS ejecutada exitosamente.');
+              // console.log('[main-panel] JS ejecutada exitosamente.');
             } catch (error) {
               console.error('[main-panel] Error al ejecutar la función JS:', error);
             }
@@ -25712,7 +25712,7 @@
           if (typeof funcionJs === 'function') {
             try {
               funcionJs();
-              console.log('[main-panel] JS ejecutada exitosamente.');
+              // console.log('[main-panel] JS ejecutada exitosamente.');
             } catch (error) {
               console.error('[main-panel] Error al ejecutar la función JS:', error);
             }
