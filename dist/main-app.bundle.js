@@ -24609,7 +24609,7 @@
                 
                 // Verificamos si 'questions-AutoSave' existe en localStorage
                 let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
-                console.log('questions-AutoSave en localStorage:', questionsAutoSaveStr);
+                console.log('questions-AutoSave en sessionStorage:', questionsAutoSaveStr);
 
                 if (!questionsAutoSaveStr) {
                     console.log("'questions-AutoSave' no existe. Llamando a AutoSave_LocalStorage por primera vez.");
