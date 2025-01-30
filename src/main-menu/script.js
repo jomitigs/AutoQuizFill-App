@@ -46,7 +46,7 @@ export function menu_AutoFillQuizApp() {
     contenedorOpciones.classList.add('contenedor-opciones-menu');
 
     // Crear las opciones del menú, incluyendo la nueva opción "Gestion de Usuarios"
-    const opciones = ['AutoFill', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios', 'Configuración'];
+    const opciones = ['AutoFill & AutoSave', 'Configuración de Ruta', 'Generar PDF de preguntas', 'Gestión de Usuarios', 'Configuración'];
     opciones.forEach(opcion => {
         const botonOpcion = document.createElement('button');
         botonOpcion.id = `opcion-${opcion.toLowerCase().replace(/ /g, '-')}-autofillquizapp`;
@@ -55,7 +55,7 @@ export function menu_AutoFillQuizApp() {
         // Asignar el icono correspondiente
         let icono;
         switch (opcion) {
-            case 'AutoFill':
+            case 'AutoFill & AutoSave':
                 icono = 'edit';
                 break;
             case 'Configuración de Ruta':
@@ -81,7 +81,7 @@ export function menu_AutoFillQuizApp() {
             const contenedorContenido = document.getElementById('contenido-principal');
             if (contenedorContenido) {
                 // Mostrar el contenido y ejecutar el script correspondiente a la opción seleccionada
-                if (opcion === 'AutoFill') {
+                if (opcion === 'AutoFill & AutoSave') {
                     // Obtener la configuración de la plataforma desde localStorage
                     const configPlataforma = localStorage.getItem('ConfigPlataforma');
                 
@@ -90,10 +90,10 @@ export function menu_AutoFillQuizApp() {
                         localStorage.setItem('ultimoHtml', 'opcionAutoFillMoodle_html');
                         localStorage.setItem('ultimoJs', 'opcionAutoFillMoodle_js');
                 
-                        contenedorContenido.innerHTML = opcionAutoFillMoodle_html(); // Mostrar contenido de AutoFill para Moodle
+                        contenedorContenido.innerHTML = opcionAutoFillMoodle_html(); // Mostrar contenido de AutoFill & AutoSavel para Moodle
                 
                         try {
-                            await opcionAutoFillMoodle_js(); // Ejecutar el script de AutoFill para Moodle y esperar su finalización
+                            await opcionAutoFillMoodle_js(); // Ejecutar el script de AutoFill & AutoSave para Moodle y esperar su finalización
                         } catch (error) {
                             console.error('Error al ejecutar opcionAutoFillMoodle_js:', error);
                         }
