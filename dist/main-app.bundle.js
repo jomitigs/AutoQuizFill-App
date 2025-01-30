@@ -24285,7 +24285,7 @@
         // Guardar el ciclo actual desde el localStorage
         questionsAutoSave.ciclo = localStorage.getItem("ciclo");
 
-        console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
+        //console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
     }
 
     // Manejar respuestas tipo 'input text' (respuesta corta)
@@ -24405,7 +24405,7 @@
         // Guarda el valor de "ciclo" de localStorage en el objeto questionsAutoSave
         questionsAutoSave.ciclo = localStorage.getItem("ciclo");
 
-        console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
+        //console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
     }
 
     // Exporta una función llamada contenedorAutoSave_js
