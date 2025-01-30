@@ -19,7 +19,7 @@ export function contenedorAutoSave_js() {
 
     // Obtener el estado guardado en localStorage
     const estadoGuardado = localStorage.getItem(STORAGE_KEY) || DESACTIVADO;
-    console.log(`Estado guardado en localStorage: ${estadoGuardado}`);
+    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoGuardado}`);
 
     // Configurar el estado inicial del interruptor
     interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
