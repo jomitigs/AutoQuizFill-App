@@ -130,13 +130,21 @@ async function AutoSave_LocalStorage() {
 
         let seEjecutaFuncion = false;
 
-        console.log(`Condición 'inputradio_opcionmultiple_verdaderofalso': ${inputRadioValido}`);
-        console.log(`Condición 'inputchecked_opcionmultiple': ${inputsCheckboxValido}`);
-        console.log(`Condición 'select_emparejamiento': ${selectsValido}`);
-        console.log(`Condición 'inputtext_respuestacorta': ${inputTextValido}`);
-        console.log(`Condición 'inputtext_multiple_respuestacorta': ${inputsTextsValido}`);
-        console.log(`Condición 'inputtext_multiple_respuestacorta_select': ${inputsTextsySelectValido}`);
-
+        const condicionesPrint = {
+            'inputradio_opcionmultiple_verdaderofalso': inputRadioValido,
+            'inputchecked_opcionmultiple': inputsCheckboxValido,
+            'select_emparejamiento': selectsValido,
+            'inputtext_respuestacorta': inputTextValido,
+            'inputtext_multiple_respuestacorta': inputsTextsValido,
+            'inputtext_multiple_respuestacorta_select': inputsTextsySelectValido
+        };
+        
+        for (const [clave, valor] of Object.entries(condicionesPrint)) {
+            if (valor) {
+                console.log(`[opc-autofill-autosave-moodle: autosave] Tipo de pregunta: '${clave}': ${valor}`);
+            }
+        }
+        
         // Definir una lista de condiciones y sus correspondientes funciones
         const condiciones = [
             {
