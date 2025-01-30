@@ -24428,6 +24428,8 @@
 
             let seEjecutaFuncion = false;
 
+            console.log(`[opc-autofill-autosave-moodle: autosave] Holi`);
+
             const condicionesPrint = {
                 'inputradio_opcionmultiple_verdaderofalso': inputRadioValido,
                 'inputchecked_opcionmultiple': inputsCheckboxValido,
