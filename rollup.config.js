@@ -44,14 +44,14 @@ export default {
         : [],
     }),
     // Solo minifica JS en producción
-    !isProduction &&
+    isProduction &&
       terser({
         format: { comments: false },
         compress: { drop_console: true },
       }),
     // Ofuscación avanzada en producción
     
-    !isProduction &&
+    isProduction &&
       obfuscator({
         compact: true,
         controlFlowFlattening: true,
@@ -61,7 +61,6 @@ export default {
         disableConsoleOutput: true,
         identifierNamesGenerator: 'hexadecimal',
         renameGlobals: true,
-        renameProperties: true,
         selfDefending: true,
         splitStrings: true,
         stringArray: true,
