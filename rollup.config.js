@@ -7,6 +7,7 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
+import randomClassId from './rollup-plugin-random-class-id.js';
 
 // Verifica si es producción
 const isProduction = process.env.BUILD_PROD === 'true';
@@ -15,7 +16,7 @@ const isProduction = process.env.BUILD_PROD === 'true';
 const generateRandomName = () => '_' + Math.random().toString(36).substr(2, 6);
 
 export default {
-  input: 'src/main-app.js', // Archivo de entrada
+  input: 'src/main-app.js',
   output: {
     file: 'dist/main-app.bundle.js',
     format: 'iife',
@@ -28,10 +29,10 @@ export default {
     postcss({
       extensions: ['.css'],
       inject: true,
-      minimize: isProduction, // Minimiza CSS solo en producción
+      minimize: isProduction,
       modules: isProduction
         ? {
-            generateScopedName: (name, filename, css) => generateRandomName(), // Renombra clases solo en producción
+            generateScopedName: () => generateRandomName(), // Renombra clases solo en producción
           }
         : false,
       plugins: isProduction
@@ -65,6 +66,7 @@ export default {
       rotateStringArray: true,
       shuffleStringArray: true,
     }),
+    isProduction && randomClassId(), // Activa el renombrado de clases e IDs solo en producción
     html({ include: '**/*.html' }),
   ].filter(Boolean),
 };
