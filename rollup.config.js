@@ -57,15 +57,29 @@ export default {
       debugProtection: false,
       debugProtectionInterval: false,
       disableConsoleOutput: true, // Elimina cualquier mensaje de consola que sobreviva
-      identifierNamesGenerator: 'hexadecimal',
-      renameGlobals: false,
+      identifierNamesGenerator: 'hexadecimal', // Genera nombres de identificadores en hexadecimal
+      renameGlobals: true, // Renombra variables globales
+      renameProperties: true, // Renombra propiedades de objetos
       selfDefending: true,
       splitStrings: true,
       stringArray: true,
-      stringArrayEncoding: ['base64'], // Opcional: base64 o rc4
+      stringArrayEncoding: ['base64'], // Codifica el array de strings en base64
       stringArrayThreshold: 0.75,
       transformObjectKeys: true,
       unicodeEscapeSequence: false,
+      stringArrayWrappersType: 'none', // Otros tipos incluyen 'function', 'random', etc.
+      stringArrayWrappersChainedCalls: false,
+      stringArrayWrappersParametersMaxCount: 2,
+      stringArrayWrappersType: 'none',
+      stringArrayCallsTransform: true,
+      stringArrayCallsTransformThreshold: 0.75,
+      // Opciones adicionales para maximizar la ofuscación
+      rotateStringArray: true,
+      shuffleStringArray: true,
+      stringArrayRotateTwice: true,
+      stringArrayWrappersChainedCalls: true,
+      stringArrayWrappersParametersMaxCount: 3,
+      stringArrayThreshold: 0.8,
     }),
     html({
       include: '**/*.html',
