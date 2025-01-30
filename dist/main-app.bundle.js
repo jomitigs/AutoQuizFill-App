@@ -24529,9 +24529,6 @@
 
 
     async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
-        console.log('--- Iniciando AutoSave_LocalStorage_Simple ---');
-        console.log('formulation:', formulation);
-        console.log('preguntaObj:', preguntaObj);
 
         // Funciones de mapeo (mismas que en la función "grande", pero reusadas)
         const tipoFunciones = {
@@ -24635,15 +24632,12 @@
 
                     // Construimos la llave, por ejemplo "Pregunta1", "Pregunta2", etc.
                     const preguntaKey = `Pregunta${numeroPregunta}`;
-                    console.log('Llave de pregunta construida:', preguntaKey);
-
+                    
                     // Revisamos si esa pregunta ya existe en el objeto guardado
                     if (questionsAutoSave[preguntaKey]) {
-                        console.log(`La pregunta ${preguntaKey} existe en questionsAutoSave.`);
                         // Recuperamos ese objeto (ya contiene "tipo", "html", etc.)
                         const preguntaObj = questionsAutoSave[preguntaKey];
-                        console.log('preguntaObj recuperado:', preguntaObj);
-
+                        
                         // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
                         await AutoSave_LocalStorage_Simple(formulation, preguntaObj);
                         console.log('AutoSave_LocalStorage_Simple ejecutado.');
