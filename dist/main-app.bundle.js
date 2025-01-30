@@ -23267,40 +23267,56 @@
                             console.warn(`No se encontraron datos en la ruta: ${path}`);
                             continue; // Saltar a la siguiente ruta si no hay datos
                         }
-
+                    
                         const options = optionsSnapshot.val();
                         //console.log(`Opciones obtenidas para la ruta ${path}:`, options);
-
+                    
                         // Crear el elemento select
                         const selectElement = document.createElement('select');
                         selectElement.classList.add('dynamic-select');
                         selectElement.style.display = 'block'; // Asegura que el select sea visible
-
+                    
                         // Añadir una opción por defecto
                         const defaultOption = document.createElement('option');
                         defaultOption.value = "";
-                        if (path === "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion") {
+                        
+                        let isMateriaSelect = path === "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion";
+                        let isTestSelect = path === "ConfigRuta/opciones/UNEMI/unemi:niv-test";
+                    
+                        if (isMateriaSelect) {
                             defaultOption.textContent = "Materia";
-                        } else if (path === "ConfigRuta/opciones/UNEMI/unemi:niv-test") {
+                        } else if (isTestSelect) {
                             defaultOption.textContent = "Test";
                         }
-                        
+                    
                         defaultOption.disabled = true;
                         defaultOption.selected = true;
                         selectElement.appendChild(defaultOption);
-
+                    
                         // Añadir opciones al select
                         for (const [key, value] of Object.entries(options)) {
                             const optionElement = document.createElement('option');
                             optionElement.value = key;
                             optionElement.textContent = value;
+                    
+                            // Si es un select de materias y materiaValor coincide con la opción, seleccionarla
+                            if (isMateriaSelect && materiaValor !== null && key === materiaValor) {
+                                optionElement.selected = true;
+                            }
+                    
+                            // Si es un select de test y testClave coincide con la opción, seleccionarla
+                            if (isTestSelect && testClave !== null && key === testClave) {
+                                optionElement.selected = true;
+                            }
+                    
                             selectElement.appendChild(optionElement);
                         }
-
+                    
                         // Añadir el select al contenedor principal
                         contenedorSelects.appendChild(selectElement);
                         //console.log(`Select creado y agregado para la ruta: ${path}`);
                     }
+                    
 
                     // Crear el botón "Guardar Ruta" después de todos los selects
                     const botonGuardarRuta = document.createElement('button');
