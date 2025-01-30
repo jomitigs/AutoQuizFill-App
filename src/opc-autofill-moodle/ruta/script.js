@@ -345,7 +345,13 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
                     // Añadir una opción por defecto
                     const defaultOption = document.createElement('option');
                     defaultOption.value = "";
-                    defaultOption.textContent = `Seleccione una opción`;
+                    if (rutasSelectDinamics.includes("ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion")) {
+                        defaultOption.textContent = "Materia";
+                    }
+                    // Verificar si el arreglo contiene "niv-test"
+                    else if (rutasSelectDinamics.includes("ConfigRuta/opciones/UNEMI/unemi:niv-test")) {
+                        defaultOption.textContent = "Test";
+                    }
                     defaultOption.disabled = true;
                     defaultOption.selected = true;
                     selectElement.appendChild(defaultOption);
