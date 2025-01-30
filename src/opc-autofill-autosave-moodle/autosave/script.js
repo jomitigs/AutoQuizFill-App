@@ -34,7 +34,7 @@ export function contenedorAutoSave_js() {
                 console.log("Mostrando el elemento body-autoquiz-autosave.");
             }
         } else if (interruptorAutoSave.checked) {
-            console.log(`[opc-autofill-autosave-moodle: autosave] La página no es adecuada para AutoSave. La función de AutoSave no se ejecutará.`);
+            console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
         }
         // No es necesario ocultar el body aquí ya que está oculto por defecto
     };
