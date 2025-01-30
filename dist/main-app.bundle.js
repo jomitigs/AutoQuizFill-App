@@ -24434,6 +24434,7 @@
                     bodyAutoSave.style.display = 'flex';
                     console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
                     await AutoSave_LocalStorage(); // Espera a que termine AutoSave
+                    detectarCambiosEnForm();
                     console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
                 }
             } else if (interruptorAutoSave.checked) {
@@ -24521,7 +24522,6 @@
         // Guardar todas las preguntas en sessionStorage
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(todasLasPreguntas));
-            detectarCambiosEnForm();
         } catch (error) {
             console.error('Error al guardar en sessionStorage', error);
         }
