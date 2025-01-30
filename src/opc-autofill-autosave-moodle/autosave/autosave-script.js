@@ -131,10 +131,11 @@ async function AutoSave_LocalStorage() {
 }
 
 
-// -----------------------------------------------------------------------
-// Versión reducida que SOLO actualiza UNA pregunta (sin volver a mapear todo):
-// -----------------------------------------------------------------------
 async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
+    console.log('--- Iniciando AutoSave_LocalStorage_Simple ---');
+    console.log('formulation:', formulation);
+    console.log('preguntaObj:', preguntaObj);
+
     // Funciones de mapeo (mismas que en la función "grande", pero reusadas)
     const tipoFunciones = {
         'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
@@ -142,85 +143,136 @@ async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
         'select_emparejamiento': select_emparejamiento,
         'inputtext_respuestacorta': inputtext_respuestacorta,
         'draganddrop_text': async (form, obj) => {
+            console.log('Ejecutando draganddrop_text');
             await new Promise(resolve => setTimeout(() => {
                 draganddrop_text(form, obj);
+                console.log('draganddrop_text completado');
                 resolve();
             }, 1000));
         },
         'draganddrop_image': async (form, obj) => {
+            console.log('Ejecutando draganddrop_image');
             await new Promise(resolve => setTimeout(() => {
                 draganddrop_image(form, obj);
+                console.log('draganddrop_image completado');
                 resolve();
             }, 1000));
         }
     };
+    console.log('tipoFunciones definido:', tipoFunciones);
 
     // Ya tenemos el tipo en preguntaObj.tipo (no usamos determinarTipoPregunta)
     const tipo = preguntaObj.tipo;
+    console.log('Tipo de pregunta:', tipo);
+
     const func = tipoFunciones[tipo];
+    console.log('Función mapeada para el tipo:', func);
 
     if (func) {
+        console.log('Ejecutando función específica para el tipo de pregunta.');
         // Ejecutamos la lógica específica solo para ESTE formulation
         await func(formulation, preguntaObj);
+        console.log('Función específica ejecutada.');
 
         // Ajustamos si hay un solo elemento en respuestas
-        if (Array.isArray(preguntaObj.respuestas) && preguntaObj.respuestas.length === 1) {
-            preguntaObj.respuestas = preguntaObj.respuestas[0];
+        if (Array.isArray(preguntaObj.respuestas)) {
+            console.log('preguntaObj.respuestas es un array:', preguntaObj.respuestas);
+            if (preguntaObj.respuestas.length === 1) {
+                console.log('Solo hay una respuesta, ajustando preguntaObj.respuestas.');
+                preguntaObj.respuestas = preguntaObj.respuestas[0];
+                console.log('preguntaObj.respuestas ajustado a:', preguntaObj.respuestas);
+            } else {
+                console.log('Múltiples respuestas, no se realiza ajuste.');
+            }
+        } else {
+            console.log('preguntaObj.respuestas no es un array, no se realiza ajuste.');
         }
+    } else {
+        console.warn('No se encontró una función para el tipo de pregunta:', tipo);
     }
+
+    console.log('--- Finalizando AutoSave_LocalStorage_Simple ---');
 }
 
 // -----------------------------------------------------------------------
-// Función que deteca los cambios y actúa según exista o no 'questions-AutoSave'
+// Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
 // -----------------------------------------------------------------------
 function detectarCambiosEnForm() {
+    console.log('--- Iniciando detectarCambiosEnForm ---');
+
     // Selecciona todos los inputs y selects que quieres escuchar
     const elementos = document.querySelectorAll(
         'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
     );
+    console.log('Elementos seleccionados para escuchar cambios:', elementos);
 
     elementos.forEach(el => {
         el.addEventListener('change', async (event) => {
+            console.log('Cambio detectado en elemento:', event.target);
+            
             // Verificamos si 'questions-AutoSave' existe en localStorage
             let questionsAutoSaveStr = localStorage.getItem('questions-AutoSave');
+            console.log('questions-AutoSave en localStorage:', questionsAutoSaveStr);
 
             if (!questionsAutoSaveStr) {
+                console.log("'questions-AutoSave' no existe. Llamando a AutoSave_LocalStorage por primera vez.");
                 // Si NO existe, llamamos la función general y guardamos todo por primera vez
                 await AutoSave_LocalStorage();
+                console.log('AutoSave_LocalStorage ejecutado para la primera vez.');
             } else {
+                console.log("'questions-AutoSave' existe. Parseando el contenido.");
                 // Si SÍ existe, lo parseamos
                 const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
+                console.log('questionsAutoSave parseado:', questionsAutoSave);
 
                 // Ubicamos la .formulation.clearfix donde ocurrió el cambio
                 const formulation = event.target.closest('.formulation.clearfix');
-                if (!formulation) return; // Si por algún motivo no lo encuentra, salimos
+                console.log('Formulation encontrada:', formulation);
+                if (!formulation) {
+                    console.warn('No se encontró el elemento .formulation.clearfix cercano. Saliendo.');
+                    return; // Si por algún motivo no lo encuentra, salimos
+                }
 
                 // Obtenemos el número de la pregunta (por ejemplo con getQuestionNumber)
                 const numeroPregunta = getQuestionNumber(formulation);
-                if (!numeroPregunta) return; // Si no lo obtienes, salimos
+                console.log('Número de pregunta obtenido:', numeroPregunta);
+                if (!numeroPregunta) {
+                    console.warn('No se pudo obtener el número de pregunta. Saliendo.');
+                    return; // Si no lo obtienes, salimos
+                }
 
                 // Construimos la llave, por ejemplo "Pregunta1", "Pregunta2", etc.
                 const preguntaKey = `Pregunta${numeroPregunta}`;
+                console.log('Llave de pregunta construida:', preguntaKey);
 
                 // Revisamos si esa pregunta ya existe en el objeto guardado
                 if (questionsAutoSave[preguntaKey]) {
+                    console.log(`La pregunta ${preguntaKey} existe en questionsAutoSave.`);
                     // Recuperamos ese objeto (ya contiene "tipo", "html", etc.)
                     const preguntaObj = questionsAutoSave[preguntaKey];
+                    console.log('preguntaObj recuperado:', preguntaObj);
 
                     // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
                     await AutoSave_LocalStorage_Simple(formulation, preguntaObj);
+                    console.log('AutoSave_LocalStorage_Simple ejecutado.');
 
                     // Volvemos a guardar la pregunta actualizada
                     questionsAutoSave[preguntaKey] = preguntaObj;
+                    console.log(`Actualizando questionsAutoSave[${preguntaKey}] con preguntaObj:`, preguntaObj);
                     localStorage.setItem('questions-AutoSave', JSON.stringify(questionsAutoSave));
+                    console.log("'questions-AutoSave' actualizado en localStorage.");
                 } else {
+                    console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_LocalStorage.`);
                     // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
                     // o agregarla manualmente. Aquí se deja la forma genérica:
                     await AutoSave_LocalStorage();
+                    console.log('AutoSave_LocalStorage ejecutado para agregar la nueva pregunta.');
                 }
             }
         });
     });
+
+    console.log('--- Finalizando detectarCambiosEnForm ---');
 }
 
 
