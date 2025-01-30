@@ -23245,6 +23245,8 @@
                 if (rutaElemento) {
                     // Actualiza el contenido HTML del elemento
                     rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
+                } else  {
+                rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span> `;
                 }
             }
 
