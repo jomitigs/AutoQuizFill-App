@@ -37,7 +37,7 @@ export function contenedorAutoSave_js() {
                 bodyAutoSave.style.display = 'flex';
                 console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
                 await AutoSave_LocalStorage(); // Espera a que termine AutoSave
-                detectarCambiosEnForm();
+                detectarCambiosPreguntas();
                 console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
             }
         } else if (interruptorAutoSave.checked) {
@@ -197,14 +197,13 @@ async function AutoSave_LocalStorage_Simple(formulation, preguntaObj) {
 // -----------------------------------------------------------------------
 // Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
 // -----------------------------------------------------------------------
-function detectarCambiosEnForm() {
-    console.log('--- Iniciando detectarCambiosEnForm ---');
+function detectarCambiosPreguntas() {
+    console.log('--- Iniciando detectarCambiosPreguntas ---');
 
     // Selecciona todos los inputs y selects que quieres escuchar
     const elementos = document.querySelectorAll(
         'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
     );
-    console.log('Elementos seleccionados para escuchar cambios:', elementos);
 
     elementos.forEach(el => {
         el.addEventListener('change', async (event) => {
@@ -272,7 +271,7 @@ function detectarCambiosEnForm() {
         });
     });
 
-    console.log('--- Finalizando detectarCambiosEnForm ---');
+    console.log('--- Finalizando detectarCambiosPreguntas ---');
 }
 
 
