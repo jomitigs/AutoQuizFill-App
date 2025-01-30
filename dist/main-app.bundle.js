@@ -24429,8 +24429,13 @@
                     bodyAutoSave.style.display = 'flex';
                     console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
                     const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+
                     await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
+
                     detectarCambiosPreguntas();
+
+                    mostrarRespuestas_AutoSave();
+                    
                     console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
                 }
             } else if (interruptorAutoSave.checked) {
@@ -24450,7 +24455,6 @@
             actualizarVisibilidadBody(); // Llamar sin await
         });
     }
-
 
     async function AutoSave_SessionStorage(formulations, forcedQuestionNumber = null) {
         // 1) Leer si ya existe algo en sessionStorage
@@ -24547,6 +24551,153 @@
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(existingData));
         } catch (error) {
             console.error('Error al guardar en sessionStorage:', error);
+        }
+    }
+
+    function mostrarRespuestas_AutoSave() {
+        // Obtiene el elemento del DOM con el id 'respuestasautosave'
+        const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
+        // Obtiene el elemento del DOM con el id 'preguntaautosave' (aunque no se utiliza en el código proporcionado)
+        document.getElementById('preguntaautosave');
+
+        // Verifica si el elemento 'respuestasautosave' existe en el DOM
+        if (!elementoRespuestasAutoSave) {
+            // Si no existe, muestra un error en la consola y termina la función
+            console.error('El elemento con id "respuestasautosave" no existe en el DOM.');
+            return;
+        }
+
+        // Obtiene las respuestas guardadas en sessionStorage bajo la clave 'questions-AutoSave'
+        // Si no existen, asigna 'N/A'
+        const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave') || 'N/A';
+
+        // Verifica si hay respuestas guardadas diferentes a 'N/A'
+        if (respuestasGuardadas !== 'N/A') {
+            // Parsea el JSON de las respuestas guardadas a un objeto de JavaScript
+            const respuestasObj = JSON.parse(respuestasGuardadas);
+            // Inicializa una cadena para almacenar las respuestas formateadas
+            let respuestasFormateadas = '';
+
+            // Itera sobre cada par clave-valor en el objeto de respuestas
+            for (const [key, value] of Object.entries(respuestasObj)) {
+                // Solo procesa las claves que comienzan con 'Pregunta'
+                if (key.startsWith('Pregunta')) {
+                    // Extrae las respuestas y enunciados del objeto de la respuesta
+                    const respuestas = value.respuestas || [];
+                    const enunciados = value.enunciados || [];
+                    // Número de la pregunta (clave)
+                    const numeroPregunta = key;
+                    // Tipo de pregunta
+                    const tipoPregunta = value.tipo || '';
+                    // Asegura que las respuestas sean un arreglo
+                    const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
+
+                    // Inicializa una cadena para almacenar las respuestas en HTML
+                    let respuestasHTML = '';
+
+                    // Función auxiliar para procesar cada respuesta individualmente
+                    const procesarRespuesta = (respuesta) => {
+                        // Expresión regular para identificar elementos <math>...</math>
+                        const mathRegex = /<math[^>]*>[\s\S]*?<\/math>/g;
+
+                        // Expresión regular para identificar URLs de imágenes
+                        const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
+
+                        // Expresión regular para identificar Data URIs de imágenes (base64)
+                        const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg)\;base64,[a-zA-Z0-9+/=]+)/gi;
+
+                        // Reemplaza las URLs de imágenes con etiquetas <img> adecuadas
+                        let respuestaProcesada = respuesta.replace(imageRegex, (match) => {
+                            return `<img src="${match}" alt="Imagen de respuesta" style="max-width: 200px; max-height: 150px;">`;
+                        });
+
+                        // Reemplaza las imágenes en formato Data URI con etiquetas <img>
+                        respuestaProcesada = respuestaProcesada.replace(dataUriRegex, (match) => {
+                            return `<img src="${match}" alt="Imagen de respuesta" style="max-width: 200px; max-height: 150px;">`;
+                        });
+
+                        // Envuelve los elementos MathML en un <span> con un tamaño de fuente aumentado
+                        respuestaProcesada = respuestaProcesada.replace(mathRegex, (match) => {
+                            return `<span style="font-size: 1.5em;">${match}</span>`;
+                        });
+
+                        // Reemplaza los saltos de línea con <br> para mantener el formato en HTML
+                        respuestaProcesada = respuestaProcesada.replace(/(\r\n|\n|\r)/g, '<br>');
+
+                        // Retorna la respuesta procesada
+                        return respuestaProcesada;
+                    };
+
+                    // Verifica si hay enunciados y si la cantidad de enunciados coincide con la de respuestas
+                    if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
+                        // Mapea cada enunciado con su respuesta correspondiente y los formatea en HTML
+                        respuestasHTML = enunciados.map((enunciado, index) => {
+                            const respuesta = respuestasFinales[index];
+
+                            // Expresiones regulares para imágenes, similares a las usadas en procesarRespuesta
+                            const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
+                            const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi;
+
+                            // Procesa el enunciado reemplazando URLs o Data URIs con etiquetas <img>
+                            let enunciadoProcesado = enunciado.replace(imageRegex, (match) => {
+                                return `<img src="${match}" alt="Imagen de enunciado" style="max-width: 200px; max-height: 150px;">`;
+                            });
+
+                            enunciadoProcesado = enunciadoProcesado.replace(dataUriRegex, (match) => {
+                                return `<img src="${match}" alt="Imagen de enunciado" style="max-width: 200px; max-height: 150px;">`;
+                            });
+
+                            // Procesa la respuesta de manera similar
+                            let respuestaProcesada = respuesta.replace(imageRegex, (match) => {
+                                return `<img src="${match}" alt="Imagen de respuesta" style="max-width: 200px; max-height: 150px;">`;
+                            });
+
+                            respuestaProcesada = respuestaProcesada.replace(dataUriRegex, (match) => {
+                                return `<img src="${match}" alt="Imagen de respuesta" style="max-width: 200px; max-height: 150px;">`;
+                            });
+
+                            // Retorna el enunciado y la respuesta procesados en formato HTML, separados por una flecha
+                            return `${enunciadoProcesado} <strong>➔</strong> ${respuestaProcesada}`;
+                        }).join('<br>'); // Une todas las parejas enunciado-respuesta con saltos de línea
+                    }
+                    // Caso donde no hay enunciados pero hay múltiples respuestas
+                    else if (enunciados.length === 0 && respuestasFinales.length > 1) {
+                        // Verifica el tipo de pregunta para formatear adecuadamente
+                        if (tipoPregunta === 'draganddrop_text' || tipoPregunta === 'draganddrop_image') {
+                            // Si es de tipo 'draganddrop', numera las respuestas
+                            respuestasHTML = respuestasFinales.map((respuesta, index) => {
+                                return `${index + 1}. ${procesarRespuesta(respuesta)}`;
+                            }).join('<br>');
+                        } else {
+                            // Para otros tipos de preguntas, utiliza viñetas
+                            respuestasHTML = respuestasFinales.map(respuesta => {
+                                return `• ${procesarRespuesta(respuesta)}`;
+                            }).join('<br>');
+                        }
+                    } else {
+                        // Si solo hay una respuesta, la procesa directamente
+                        const respuesta = respuestasFinales[0] || '';
+                        respuestasHTML = procesarRespuesta(respuesta);
+                    }
+
+                    // Añade al contenido formateado la pregunta y sus respuestas en HTML
+                    respuestasFormateadas += `
+                    <div class="preguntaautosave">
+                        ${numeroPregunta}:
+                    </div>
+                    <div class="respuestasautosave">
+                        ${respuestasHTML}
+                    </div>`;
+                }
+            }
+
+            // Inserta el contenido formateado en el elemento del DOM correspondiente
+            elementoRespuestasAutoSave.innerHTML = respuestasFormateadas;
+
+        } else {
+            // Si no hay respuestas guardadas, muestra 'N/A' en el elemento y registra un mensaje en la consola
+            elementoRespuestasAutoSave.textContent = respuestasGuardadas;
+            console.log('No hay respuestas guardadas, mostrando "N/A".');
         }
     }
 
