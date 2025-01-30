@@ -460,7 +460,7 @@ function guardarRutaDinamica() {
 function actualizarVisibilidadSelects(isVisible) {
     const selects = document.querySelectorAll('.dynamic-select');
     selects.forEach(select => select.style.display = isVisible ? 'block' : 'none');
-    console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
+    //console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
 }
 
 // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>

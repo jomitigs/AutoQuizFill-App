@@ -23417,7 +23417,7 @@
     function actualizarVisibilidadSelects(isVisible) {
         const selects = document.querySelectorAll('.dynamic-select');
         selects.forEach(select => select.style.display = 'block' );
-        console.log(`Selects ${"mostrados" }`);
+        //console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
     }
 
     // <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
