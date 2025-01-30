@@ -23853,7 +23853,7 @@
                     bodyAutoSave.style.display = 'flex';
                     console.log("Mostrando el elemento body-autoquiz-autosave.");
                 }
-            } else {
+            } else if (interruptorAutoSave.checked) {
                 console.log(`[opc-autofill-autosave-moodle: autosave] La página no es adecuada para AutoSave. La función de AutoSave no se ejecutará.`);
             }
             // No es necesario ocultar el body aquí ya que está oculto por defecto
