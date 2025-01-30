@@ -24432,12 +24432,33 @@
 
 
     async function AutoSave_LocalStorage() {
-
         let contadorPreguntas = 0; // Contador de preguntas
         const todasLasPreguntas = {}; // Objeto para almacenar todas las preguntas
 
         // Obtener los elementos con clase '.formulation.clearfix'
         const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+
+        // Mapeo de tipos de pregunta a sus funciones correspondientes
+        const tipoFunciones = {
+            'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
+            'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
+            'select_emparejamiento': select_emparejamiento,
+            'inputtext_respuestacorta': inputtext_respuestacorta,
+            'draganddrop_text': async (formulation, questionsAutoSave) => {
+                await new Promise(resolve => setTimeout(() => {
+                    draganddrop_text(formulation, questionsAutoSave);
+                    resolve();
+                }, 1000)); // Retraso de 1 segundo
+            },
+            'draganddrop_image': async (formulation, questionsAutoSave) => {
+                await new Promise(resolve => setTimeout(() => {
+                    draganddrop_image(formulation, questionsAutoSave);
+                    resolve();
+                }, 1000)); // Retraso de 1 segundo
+            },
+            'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
+            'inputtext_multiple_respuestacorta_select': inputtext_multiple_respuestacorta_select
+        };
 
         for (const formulation of originalAllFormulations) {
             // Obtener el número de pregunta o incrementar el contador
@@ -24450,70 +24471,15 @@
                 tipo: ''
             };
 
-            let tipoPregunta = determinarTipoPregunta(formulation);
-
+            const tipoPregunta = determinarTipoPregunta(formulation);
             console.log('[opc-autofill-autosave-moodle: ruta] Tipo de pregunta:', tipoPregunta);
-             
+
+            const func = tipoFunciones[tipoPregunta];
             let seEjecutaFuncion = false;
 
-            // Definir una lista de condiciones y sus correspondientes funciones
-            const condiciones = [
-                {
-                    cond: tipoPregunta === 'inputradio_opcionmultiple_verdaderofalso',
-                    func: async () => await inputradio_opcionmultiple_verdaderofalso(formulation, questionsAutoSave)
-                },
-                {
-                    cond: tipoPregunta === 'inputchecked_opcionmultiple',
-                    func: async () => await inputchecked_opcionmultiple(formulation, questionsAutoSave)
-                },
-                {
-                    cond: tipoPregunta === 'select_emparejamiento',
-                    func: async () => await select_emparejamiento(formulation, questionsAutoSave)
-                },
-                {
-                    cond: tipoPregunta === 'inputtext_respuestacorta',
-                    func: async () => await inputtext_respuestacorta(formulation, questionsAutoSave)
-                },
-                {
-                    cond: tipoPregunta === 'draganddrop_text',
-                    func: async () => {
-                        await new Promise(resolve => {
-                            setTimeout(() => {
-                                draganddrop_text(formulation, questionsAutoSave);
-                                resolve();
-                            }, 1000); // Retraso de 1 segundo
-                        });
-                    }
-                },
-                {
-                    cond: tipoPregunta === 'draganddrop_image',
-                    func: async () => {
-                        await new Promise(resolve => {
-                            setTimeout(() => {
-                                draganddrop_image(formulation, questionsAutoSave);
-                                resolve();
-                            }, 1000); // Retraso de 1 segundo
-                        });
-                    }
-                },
-                {
-                    cond: tipoPregunta === 'inputtext_multiple_respuestacorta',
-                    func: async () => await inputtext_multiple_respuestacorta(formulation, questionsAutoSave)
-                },
-                {
-                    cond: tipoPregunta === 'inputtext_multiple_respuestacorta_select',
-                    func: async () => await inputtext_multiple_respuestacorta_select(formulation, questionsAutoSave)
-                }
-            ];
-
-
-            // Ejecutar la primera condición que se cumpla
-            for (const { cond, func } of condiciones) {
-                if (cond) {
-                    await func();
-                    seEjecutaFuncion = true;
-                    break; // Salir del bucle de condiciones una vez que se ejecuta una función
-                }
+            if (func) {
+                await func(formulation, questionsAutoSave);
+                seEjecutaFuncion = true;
             }
 
             // Convertir a string si solo hay una respuesta y agregar si hay contenido relevante
@@ -24526,15 +24492,14 @@
                     todasLasPreguntas[`Pregunta${numeroPregunta}`] = questionsAutoSave;
                 }
             }
-        } // Cierre correcto del bucle for
+        }
 
-        // Guardar todas las preguntas en localStorage
+        // Guardar todas las preguntas en sessionStorage
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(todasLasPreguntas));
         } catch (error) {
-            console.error('Error saving to sessionStorage', error);
+            console.error('Error al guardar en sessionStorage', error);
         }
-
     }
 
     function opcion_AutoFillAutoSave_Moodle_html() {
