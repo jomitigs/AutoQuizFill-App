@@ -64,7 +64,7 @@ export default {
       splitStrings: true,
       stringArray: true,
       stringArrayEncoding: ['base64'], // Codifica el array de strings en base64
-      stringArrayThreshold: 0.75,
+      stringArrayThreshold: 0.90,
       transformObjectKeys: true,
       unicodeEscapeSequence: false,
       stringArrayWrappersType: 'none', // Otros tipos incluyen 'function', 'random', etc.
