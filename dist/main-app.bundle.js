@@ -24411,32 +24411,32 @@
                 enunciados: [],
                 tipo: ''
             };
-            
+
             let tipoPregunta = determinarTipoPregunta(formulation);
-            
-            console.log('[opc-autofill-autosave-moodle: ruta] Tipo de pregunta:',tipoPregunta);
-            
+
+            console.log('[opc-autofill-autosave-moodle: ruta] Tipo de pregunta:', tipoPregunta);
+
 
             // Definir una lista de condiciones y sus correspondientes funciones
             const condiciones = [
                 {
-                    cond: inputRadioValido,
+                    cond: tipoPregunta === 'inputradio_opcionmultiple_verdaderofalso',
                     func: async () => await inputradio_opcionmultiple_verdaderofalso(formulation, questionsAutoSave)
                 },
                 {
-                    cond: inputsCheckboxValido,
+                    cond: tipoPregunta === 'inputchecked_opcionmultiple',
                     func: async () => await inputchecked_opcionmultiple(formulation, questionsAutoSave)
                 },
                 {
-                    cond: selectsValido,
+                    cond: tipoPregunta === 'select_emparejamiento',
                     func: async () => await select_emparejamiento(formulation, questionsAutoSave)
                 },
                 {
-                    cond: inputTextValido,
+                    cond: tipoPregunta === 'inputtext_respuestacorta',
                     func: async () => await inputtext_respuestacorta(formulation, questionsAutoSave)
                 },
                 {
-                    cond: hasDraghome && !hasDropzones,
+                    cond: tipoPregunta === 'draganddrop_text',
                     func: async () => {
                         await new Promise(resolve => {
                             setTimeout(() => {
@@ -24447,7 +24447,7 @@
                     }
                 },
                 {
-                    cond: hasDraghome && hasDropzones,
+                    cond: tipoPregunta === 'draganddrop_image',
                     func: async () => {
                         await new Promise(resolve => {
                             setTimeout(() => {
@@ -24458,14 +24458,15 @@
                     }
                 },
                 {
-                    cond: inputsTextsValido,
+                    cond: tipoPregunta === 'inputtext_multiple_respuestacorta',
                     func: async () => await inputtext_multiple_respuestacorta(formulation, questionsAutoSave)
                 },
                 {
-                    cond: inputsTextsySelectValido,
+                    cond: tipoPregunta === 'inputtext_multiple_respuestacorta_select',
                     func: async () => await inputtext_multiple_respuestacorta_select(formulation, questionsAutoSave)
                 }
             ];
+
 
             // Ejecutar la primera condición que se cumpla
             for (const { cond, func } of condiciones) {
@@ -24499,16 +24500,16 @@
         // const currentUrl = window.location.pathname;
 
         // if (currentUrl.includes('/mod/quiz/review.php')) {
-            // console.log('Página de revisión detectada. Ejecutando AutoSaveReview_Filter...');
-            // Ejecuta AutoSaveReview_Filter y espera a que termine
-            //await AutoSaveReview_Filter();
+        // console.log('Página de revisión detectada. Ejecutando AutoSaveReview_Filter...');
+        // Ejecuta AutoSaveReview_Filter y espera a que termine
+        //await AutoSaveReview_Filter();
         // } else if (currentUrl.includes('/mod/quiz/attempt.php')) {
-            //console.log('Página de intento detectada. Ejecutando mostrarRespuestas_AutoSave...');
-            // Ejecuta mostrarRespuestas_AutoSave directamente en modo intento
-            //mostrarRespuestas_AutoSave();
+        //console.log('Página de intento detectada. Ejecutando mostrarRespuestas_AutoSave...');
+        // Ejecuta mostrarRespuestas_AutoSave directamente en modo intento
+        //mostrarRespuestas_AutoSave();
         //} else {
-           // console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
-       // }
+        // console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
+        // }
 
     }
 
