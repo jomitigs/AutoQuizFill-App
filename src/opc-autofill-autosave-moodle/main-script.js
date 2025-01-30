@@ -3,6 +3,9 @@ import './style.css';
 import { contenedorUsers_js } from './users/script.js';
 import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
+
+import { contenedorAutoSave_js } from './autosave/script.js';
+
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
      <div class="body-autoquiz">
@@ -188,7 +191,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         autofillContainer.style.display = 'block';
         autosaveContainer.style.display = 'block';
         //contenedorAutoFill_js();
-        //contenedorAutoSave_js();
+        contenedorAutoSave_js();
     }
 
     // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
