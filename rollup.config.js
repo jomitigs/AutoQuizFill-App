@@ -63,7 +63,7 @@ export default {
         disableConsoleOutput: true,
         identifierNamesGenerator: 'hexadecimal',
         renameGlobals: true,
-        // Se eliminó renameProperties: true
+        renameProperties: true,
         selfDefending: true,
         splitStrings: true,
         stringArray: true,
