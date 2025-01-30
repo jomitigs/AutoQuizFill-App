@@ -30,9 +30,6 @@ export default {
       inject: true,
       minimize: isProduction,
       // Se eliminó el uso de generateScopedName()
-      modules: isProduction
-        ? true // o simplemente false si no quieres módulos en producción
-        : false,
       plugins: isProduction
         ? [
             cssnano({
