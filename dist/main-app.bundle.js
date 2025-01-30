@@ -23818,58 +23818,707 @@
         }
     }
 
+    async function feedbackQuestion(originalFormulationClearfix) {
+        // console.log('Iniciando feedbackQuestion');
+
+        // Encontrar el hermano de originalFormulationClearfix que tiene clase "outcome clearfix"
+        let hermano = originalFormulationClearfix.nextElementSibling;
+        // console.log('Buscando hermano con clase "outcome clearfix"');
+
+        while (hermano) {
+            // console.log('Revisando elemento:', hermano);
+            if (hermano.classList.contains('outcome') && hermano.classList.contains('clearfix')) {
+                // console.log('Hermano encontrado:', hermano);
+                break;
+            }
+            hermano = hermano.nextElementSibling;
+        }
+        if (!hermano) {
+            // console.error('No se encontró el hermano con clase "outcome clearfix"');
+            return '';
+        }
+
+        // Dentro del hermano, encontrar el elemento con clase "feedback"
+        // console.log('Buscando elemento con clase "feedback" dentro del hermano');
+        let feedback = hermano.querySelector('.feedback');
+        if (!feedback) {
+            console.error('No se encontró el elemento con clase "feedback"');
+            return '';
+        }
+
+        // Dentro de feedback, encontrar el elemento con clase "generalfeedback"
+        // console.log('Buscando elemento con clase "generalfeedback" dentro de feedback');
+        let generalFeedback = feedback.querySelector('.generalfeedback');
+        if (!generalFeedback) {
+            console.error('No se encontró el elemento con clase "generalfeedback"');
+            return '';
+        }
+
+        // Clonar el elemento generalFeedback para no modificar el original
+        // console.log('Clonando el elemento generalFeedback');
+        let generalFeedbackClone = generalFeedback.cloneNode(true);
+
+        // Procesar imágenes que contienen 'pluginfile.php' en su URL en el clon
+        // console.log('Buscando imágenes en generalFeedbackClone');
+        let images = generalFeedbackClone.querySelectorAll('img');
+        if (images.length > 0) {
+            // console.log('Se encontraron imágenes:', images.length);
+            let promises = [];
+
+            images.forEach(img => {
+                // console.log('Procesando imagen:', img.src);
+                if (img.src.includes('pluginfile.php')) {
+                    // console.log('La imagen contiene "pluginfile.php" en la URL');
+                    let promise = convertImageToDataUri(img.src).then(dataUri => {
+                        img.src = dataUri;
+                        // console.log('Imagen convertida a Data URI');
+                    }).catch(error => {
+                        console.error(error);
+                    });
+                    promises.push(promise);
+                }
+            });
+
+            // Esperar a que todas las conversiones terminen
+            await Promise.all(promises);
+        }
+
+        // Eliminar <p> vacíos o con solo <br>, espacios o <span> sin contenido
+        // console.log('Eliminando <p> vacíos de generalFeedbackClone');
+        let paragraphs = generalFeedbackClone.querySelectorAll('p');
+        paragraphs.forEach(p => {
+            if (!p.textContent.trim() && !p.querySelector('img')) {
+                // console.log('Eliminando <p> vacío o sin contenido relevante:', p);
+                p.remove();
+            }
+        });
+
+        // Extraer el contenido HTML del clon después de procesar las imágenes y eliminar <p> vacíos
+        let textoFeedback = generalFeedbackClone.innerHTML;
+        // console.log('Contenido del textoFeedback:', textoFeedback);
+
+        // Retornar el texto del feedback
+        return textoFeedback;
+    }
+
+    function convertImageToDataUri(src) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = src;
+
+            img.onload = function () {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = img.naturalWidth;
+                canvas.height = img.naturalHeight;
+                context.drawImage(img, 0, 0);
+                const dataUri = canvas.toDataURL();
+                resolve(dataUri);
+            };
+
+            img.onerror = function () {
+                reject('Error en la conversión a Data URI');
+            };
+        });
+    }
+
+    async function extractContentInOrder(node) {
+        let content = '';
+
+        for (const child of node.childNodes) {
+            if (child.nodeType === Node.TEXT_NODE) {
+                // Extraer el contenido de texto sin aplicar .trim() para preservar los espacios
+                const text = child.textContent;
+                if (text && text !== '\n') { // Evitar añadir contenido vacío o solo saltos de línea
+                    content += text;
+                }
+            } else if (child.nodeType === Node.ELEMENT_NODE) {
+                const tagName = child.tagName.toLowerCase();
+
+                if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
+                    // Ignorar los scripts de tipo MathJax
+                    continue;
+                } else if (child.classList.contains('MathJax')) {
+                    // Extraer MathML de los elementos MathJax si existen
+                    const mathml = child.getAttribute('data-mathml');
+                    if (mathml) {
+                        if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+                            content += ' ';
+                        }
+                        content += mathml;
+                    }
+                } else if (tagName === 'img') {
+                    // Extraer el atributo 'src' de las imágenes
+                    const src = child.getAttribute('src');
+                    if (src) {
+                        if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+                            content += ' ';
+                        }
+
+                        if (src.includes('pluginfile.php')) {
+                            try {
+                                // Convertir la imagen a Data URI si contiene 'pluginfile.php'
+                                const dataUri = await convertImageToDataUri(src);
+                                content += dataUri; // Añadir el Data URI en lugar de la URL original
+                            } catch (error) {
+                                console.error('Error en la conversión de la imagen:', error);
+                                content += src; // Si falla la conversión, mantener el src original
+                            }
+                        } else {
+                            content += src; // Si no contiene 'pluginfile.php', mantener el src original
+                        }
+                    }
+                } else if (tagName === 'sub' || tagName === 'sup') {
+                    // Añadir etiquetas <sub> o <sup> sin espacios adicionales
+                    content += child.outerHTML;
+                } else if (tagName === 'p') {
+                    // Procesar recursivamente el contenido del <p>
+                    const childContent = await extractContentInOrder(child);
+                    if (childContent) {
+                        if (content.length > 0 && !content.endsWith('\n')) {
+                            content += '\n'; // Añadir un salto de línea antes del nuevo párrafo
+                        }
+                        content += childContent + '\n'; // Añadir el contenido del párrafo seguido de un salto de línea
+                    }
+                } else if (tagName === 'br') {
+                    // Añadir un salto de línea por cada <br>
+                    content += '\n';
+                } else {
+                    // Procesar recursivamente otros elementos hijos
+                    const childContent = await extractContentInOrder(child);
+                    if (childContent) {
+                        content += childContent;
+                    }
+                }
+            }
+        }
+
+        return content;
+    }
+
+    // Manejar respuestas tipo 'draganddrop' (image)
+     async function draganddrop_image(originalFormulationClearfix, questionsAutoSave) {
+        const tipo = 'draganddrop_image';
+        console.log(tipo);
+
+        // Crear una lista para almacenar las respuestas directamente en questionsAutoSave
+        const respuestas = questionsAutoSave.respuestas;
+
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+        // Convierte las imágenes dentro del clon a formato Data URI
+        await convertImgToDataUri(clonFormulation);
+
+        // Seleccionar todos los elementos con la clase 'place' dentro de 'qtext' usando un selector más genérico
+        const qtextZones = originalFormulationClearfix.querySelectorAll('[class*="dropzone"][class*="group"][class*="place"]');
+
+        // Recorrer cada lugar (place) para verificar si contiene una respuesta o está vacío
+        qtextZones.forEach((zoneElement) => {
+            // Comprobar si el lugar está vacío (tiene la clase 'active')
+            if (zoneElement.classList.contains('active')) {
+                respuestas.push('n/a');
+            } else {
+                // Si el lugar no está vacío, buscar el hermano que contiene la respuesta
+                const respuestaElement = zoneElement.nextElementSibling;
+                if (respuestaElement && respuestaElement.classList.contains('draghome')) {
+                    const texto = respuestaElement.textContent.trim(); // Extraer el texto de la respuesta
+                    respuestas.push(texto || 'n/a'); // Agregar el texto o 'n/a' si el texto está vacío
+                }
+            }
+        });
+
+        // Imprimir el array de respuestas en la consola
+        console.log('Respuestas encontradas:', respuestas);
+
+        // Clonar el elemento formulation_clearfix y guardar el HTML en questionsAutoSave
+
+        questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
+        questionsAutoSave.tipo = tipo; // Guardar el tipo en el objeto questionsAutoSave
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+        questionsAutoSave.feedback = feedback;
+        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+    }
+
+    // Manejar respuestas tipo 'draganddrop' (texto)
+    async function draganddrop_text(originalFormulationClearfix, questionsAutoSave) {
+        // Agregar un retraso de 1 segundo antes de ejecutar el resto del código
+        const tipo = 'draganddrop_text';
+        console.log(tipo);
+
+        // Crear una lista para almacenar las respuestas directamente en questionsAutoSave
+        const respuestas = questionsAutoSave.respuestas;
+
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+        // Convierte las imágenes dentro del clon a formato Data URI
+        await convertImgToDataUri(clonFormulation);
+
+        // Seleccionar todos los elementos con la clase 'place' dentro de 'qtext' usando un selector más genérico
+        const qtextPlaces = originalFormulationClearfix.querySelectorAll('[class*="place"][class*="drop"][class*="group"]');
+
+        // Recorrer cada lugar (place) para verificar si contiene una respuesta o está vacío
+        qtextPlaces.forEach((placeElement) => {
+            // Comprobar si el lugar está vacío (tiene la clase 'active')
+            if (placeElement.classList.contains('active')) {
+                respuestas.push('n/a');
+            } else {
+                // Si el lugar no está vacío, buscar el hermano que contiene la respuesta
+                const respuestaElement = placeElement.nextElementSibling;
+                if (respuestaElement && respuestaElement.classList.contains('draghome')) {
+                    const texto = respuestaElement.textContent.trim(); // Extraer el texto de la respuesta
+                    respuestas.push(texto || 'n/a'); // Agregar el texto o 'n/a' si el texto está vacío
+                }
+            }
+        });
+
+        // Imprimir el array de respuestas en la consola
+        console.log('Respuestas encontradas:', respuestas);
+
+        // Clonar el elemento formulation_clearfix y guardar el HTML en questionsAutoSave
+        questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
+        questionsAutoSave.tipo = tipo; // Guardar el tipo en el objeto questionsAutoSave
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+        questionsAutoSave.feedback = feedback;
+        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+    }
+
+    // Manejar respuestas tipo 'input checkbox'
+      async function inputchecked_opcionmultiple(originalFormulationClearfix, questionsAutoSave) {
+
+        const tipo = 'inputchecked_opcionmultiple';
+        console.log(tipo);
+
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+
+        // Convierte las imágenes dentro del clon a formato Data URI
+        await convertImgToDataUri(clonFormulation);
+
+        const respuestas = [];
+        const allInputCheckbox = originalFormulationClearfix.querySelectorAll('input[type="checkbox"]');
+
+        allInputCheckbox.forEach((inputCheckbox) => {
+            if (inputCheckbox.checked) {
+                const labelId = CSS.escape(inputCheckbox.getAttribute('aria-labelledby'));
+                const labelElement = originalFormulationClearfix.querySelector(`#${labelId}`);
+
+                let textoRespuesta = '';
+                if (labelElement) {
+                    textoRespuesta = Array.from(labelElement.querySelectorAll('div, span'))
+                        .map(element => element.innerText.trim())
+                        .join(' ');
+
+                    textoRespuesta = textoRespuesta.replace(/^[a-zA-Z]\.|^[ivxlcdmIVXLCDM]+\./, '').trim();
+                }
+
+                if (textoRespuesta) {
+                    respuestas.push(textoRespuesta);
+                }
+            }
+        });
+
+        if (respuestas.length > 0) {
+            questionsAutoSave.respuestas = respuestas;
+            questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
+            questionsAutoSave.tipo = tipo;
+            const feedback = await feedbackQuestion(originalFormulationClearfix);
+            questionsAutoSave.feedback = feedback;
+            questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+        }
+    }
+
+    // Manejar respuestas tipo 'input radio'
+        async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix, questionsAutoSave) {
+            const tipo = 'inputradio_opcionmultiple_verdaderofalso';
+            const clonFormulation = originalFormulationClearfix.cloneNode(true);
+
+            // Convierte las imágenes dentro del clon a formato Data URI
+            await convertImgToDataUri(clonFormulation);
+
+            // Selecciona todos los elementos de tipo radio dentro del originalFormulationClearfix
+            const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
+
+            for (const inputRadio of allInputRadio) {
+                if (inputRadio.checked) {
+                    let labelInput = inputRadio.nextElementSibling;
+                    let textoRespuesta = '';
+
+                    if (labelInput) {
+                        const flexFillElement = labelInput.querySelector('.flex-fill');
+
+                        // Extraer contenido del elemento .flex-fill si existe
+                        if (flexFillElement) {
+                            textoRespuesta = await extractContentInOrder(flexFillElement);
+                        } else {
+                            // Si no hay .flex-fill, extraer contenido directamente del label
+                            textoRespuesta = await extractContentInOrder(labelInput);
+                        }
+
+                        // Limpiar literales iniciales solo si no hay elementos MathJax presentes
+                        const mathJaxElement = labelInput.querySelector('.MathJax');
+                        if (!mathJaxElement) {
+                            // Eliminar literales iniciales como "A." o "i."
+                            textoRespuesta = textoRespuesta.replace(/^[a-zA-Z]\.|^[ivxlcdmIVXLCDM]+\./, '');
+                            // No aplicamos trim para preservar los espacios y saltos de línea
+                        }
+
+                        if (textoRespuesta) {
+                            // Guardar la respuesta en el objeto questionsAutoSave
+                            questionsAutoSave.respuestas.push(textoRespuesta);
+                        }
+
+                        // Guardar el HTML del clon en el objeto questionsAutoSave
+                        questionsAutoSave.html = clonFormulation.outerHTML;
+                        questionsAutoSave.tipo = tipo;
+                        const feedback = await feedbackQuestion(originalFormulationClearfix);
+                        questionsAutoSave.feedback = feedback;
+                        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+                    }
+                }
+            }
+        }
+
+    // Manejar respuestas tipo 'input text' (respuesta corta)
+     async function inputtext_respuestacorta(originalFormulationClearfix, questionsAutoSave) {
+        const tipo = 'inputtext_respuestacorta';
+        const respuestas = questionsAutoSave.respuestas;
+        let hayRespuestaLleno = false;
+
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+        // Convierte las imágenes dentro del clon a formato Data URI
+        await convertImgToDataUri(clonFormulation);
+
+        const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
+
+        allInputText.forEach((inputText) => {
+            const valor = inputText.value;
+            respuestas.push(valor);
+
+            if (valor) {
+                hayRespuestaLleno = true;
+            }
+        });
+
+        if (hayRespuestaLleno) {
+            questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
+            questionsAutoSave.tipo = tipo;
+            const feedback = await feedbackQuestion(originalFormulationClearfix);
+            questionsAutoSave.feedback = feedback;
+            questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+        }
+    }
+
+    // Manejar respuestas tipo 'select'
+    async function select_emparejamiento(originalFormulationClearfix, questionsAutoSave) {
+        const tipo = 'select_emparejamiento'; // Define el tipo de pregunta como "select_emparejamiento"
+        questionsAutoSave.respuestas = []; // Inicializa el array respuestas como vacío
+        questionsAutoSave.enunciados = []; // Inicializa el array enunciados como vacío
+
+        const clonFormulation = originalFormulationClearfix.cloneNode(true); // Crea un clon de la estructura HTML de la pregunta
+        // Convierte las imágenes dentro del clon a formato Data URI para almacenar todo el contenido en texto
+        await convertImgToDataUri(clonFormulation);
+
+        const allSelects = originalFormulationClearfix.querySelectorAll('select'); // Obtiene todos los elementos <select> en la pregunta original
+
+        // Itera sobre cada elemento <select> encontrado
+        allSelects.forEach(async (selectElement) => {
+            let opcionSeleccionada = selectElement.options[selectElement.selectedIndex]; // Obtiene la opción seleccionada
+
+            if (opcionSeleccionada && opcionSeleccionada.value !== "0") { // Verifica que haya una opción seleccionada distinta de "0"
+                let textoRespuesta = opcionSeleccionada.textContent.trim(); // Obtiene el texto de la opción seleccionada sin espacios adicionales
+                if (textoRespuesta) {
+                    questionsAutoSave.respuestas.push(textoRespuesta); // Almacena el texto de la respuesta seleccionada
+                }
+
+                // Extrae el enunciado relacionado de la celda <td> más cercana que contiene el texto o una imagen
+                let textoPregunta;
+                const textoElement = selectElement.closest('tr').querySelector('td.text');
+                if (textoElement) {
+                    // Verifica si contiene texto
+                    if (textoElement.innerText.trim()) {
+                        textoPregunta = textoElement.innerText.trim();
+                    } else {
+                        // Si no contiene texto, intenta procesar las imágenes
+                        const imgElement = textoElement.querySelector('img');
+                        if (imgElement) {
+                            if (imgElement.src.includes('pluginfile.php')) {
+                                try {
+                                    // Convertir a Data URI las imágenes que contienen 'pluginfile.php'
+                                    console.log('Convirtiendo imagen (pluginfile.php):', imgElement.src);
+
+                                    await new Promise((resolve, reject) => {
+                                        if (imgElement.complete) {
+                                            resolve();
+                                        } else {
+                                            imgElement.onload = resolve;
+                                            imgElement.onerror = reject;
+                                        }
+                                    });
+
+                                    const canvas = document.createElement('canvas');
+                                    const context = canvas.getContext('2d');
+                                    canvas.width = imgElement.naturalWidth;
+                                    canvas.height = imgElement.naturalHeight;
+
+                                    context.drawImage(imgElement, 0, 0);
+                                    const dataUri = canvas.toDataURL();
+                                    imgElement.src = dataUri; // Actualiza la fuente de la imagen al Data URI
+                                    textoPregunta = dataUri; // Usa el Data URI como textoPregunta
+                                    console.log('Imagen convertida a Data URI:', imgElement.src);
+                                } catch (error) {
+                                    console.error('Error en la conversión de la imagen:', error);
+                                }
+                            } else {
+                                textoPregunta = imgElement.src; // Usa la URL de la imagen como textoPregunta
+                                console.log('La imagen no se convierte:', imgElement.src);
+                            }
+                        }
+                    }
+
+                    // Almacena el enunciado en questionsAutoSave.enunciados
+                    if (textoPregunta) {
+                        questionsAutoSave.enunciados.push(textoPregunta);
+                        console.log(`Enunciado almacenado: ${textoPregunta}`);
+                    }
+                }
+            }
+        });
+
+        // Guarda el HTML del clon y el tipo de pregunta después de procesar todas las selecciones
+        questionsAutoSave.html = clonFormulation.outerHTML;
+        questionsAutoSave.tipo = tipo;
+
+        // Llama a la función feedbackQuestion para obtener retroalimentación de la pregunta y la almacena
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+        questionsAutoSave.feedback = feedback;
+
+        // Guarda el valor de "ciclo" de localStorage en el objeto questionsAutoSave
+        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+    }
+
     // Exporta una función llamada contenedorAutoSave_js
     function contenedorAutoSave_js() {
-        // Constantes para los IDs de los elementos y valores de estado
         const SWITCH_ID = 'switch-autosave';
         const BODY_ID = 'body-autoquiz-autosave';
         const STORAGE_KEY = 'autosave-autoquizfillapp';
         const ACTIVADO = 'activado';
         const DESACTIVADO = 'desactivado';
 
-        // Obtener elementos del DOM
         const interruptorAutoSave = document.getElementById(SWITCH_ID);
         const bodyAutoSave = document.getElementById(BODY_ID);
 
-        // Verificar la existencia del interruptor
         if (!interruptorAutoSave) {
             console.error(`Error: No se encontró el elemento con ID '${SWITCH_ID}'`);
             return;
         }
 
-        // Obtener el estado guardado en localStorage
         const estadoGuardado = localStorage.getItem(STORAGE_KEY) || DESACTIVADO;
         console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoGuardado}`);
 
-        // Configurar el estado inicial del interruptor
         interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
 
-        // Función para actualizar la visibilidad del body
-        const actualizarVisibilidadBody = () => {
+        // **Hacer que actualizarVisibilidadBody sea async**
+        const actualizarVisibilidadBody = async () => {
             const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
 
             if (esPaginaQuiz && interruptorAutoSave.checked) {
                 if (bodyAutoSave) {
                     bodyAutoSave.style.display = 'flex';
                     console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
+                    await AutoSave_LocalStorage(); // Espera a que termine AutoSave
+                    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
                 }
             } else if (interruptorAutoSave.checked) {
                 console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
             }
-            // No es necesario ocultar el body aquí ya que está oculto por defecto
         };
 
-        // Inicializar la visibilidad del body al cargar
+        // **Llamar la función sin await para que no bloquee la ejecución**
         actualizarVisibilidadBody();
 
-        // Evento para manejar cambios en el interruptor
+        // **Manejar cambios en el interruptor**
         interruptorAutoSave.addEventListener('change', () => {
             const estadoNuevo = interruptorAutoSave.checked ? ACTIVADO : DESACTIVADO;
             localStorage.setItem(STORAGE_KEY, estadoNuevo);
             console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoNuevo}`);
 
-            actualizarVisibilidadBody();
+            actualizarVisibilidadBody(); // Llamar sin await
         });
+    }
+
+
+    async function AutoSave_LocalStorage() {
+
+        console.log('::::::Iniciando AutoSave_LocalStorage::::::');
+
+        let contadorPreguntas = 0; // Contador de preguntas
+        const todasLasPreguntas = {}; // Objeto para almacenar todas las preguntas
+
+        // Obtener los elementos con clase '.formulation.clearfix'
+        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+
+        for (const formulation of originalAllFormulations) {
+            // Obtener el número de pregunta o incrementar el contador
+            const numeroPregunta = getQuestionNumber(formulation) || ++contadorPreguntas;
+
+            const questionsAutoSave = {
+                html: '',
+                respuestas: [],
+                enunciados: [],
+                tipo: ''
+            };
+
+            // Verifica si solo existe un elemento con la clase '.qtext' en 'clonFormulation'
+            const soloUnQtext = formulation.querySelectorAll('.qtext').length === 1;
+
+            // Verifica si hay un radio button seleccionado con un valor distinto de "-1" y si solo hay un '.qtext'
+            const inputRadioValido =
+                  soloUnQtext &&
+                  formulation.querySelector('input[type="radio"]:checked') !== null && // Verifica si hay un radio button seleccionado
+                  formulation.querySelector('input[type="radio"]:checked').value !== "-1"; // El valor del radio button no debe ser "-1"
+
+            // Verifica si hay al menos un checkbox seleccionado y si no hay otros tipos de inputs o selects
+            const inputsCheckboxValido =
+                  soloUnQtext &&
+                  formulation.querySelectorAll('input[type="checkbox"]:checked').length > 0 && // Al menos un checkbox está seleccionado
+                  !formulation.querySelector('input:not([type="checkbox"]):not([type="hidden"]), select'); // No debe haber otros inputs o selects
+
+            // Verifica si hay algún select con un valor válido seleccionado, y si no hay otros tipos de inputs, botones o selects vacíos
+            const selectsValido =
+                  soloUnQtext &&
+                  !formulation.querySelector('input:not([type="hidden"]), textarea, button, [type="radio"], [type="text"], [type="checkbox"]') && // No debe haber otros elementos
+                  Array.from(formulation.querySelectorAll("select")).some(select => { // Recorre todos los elementos select
+                      const valor = select.value;
+                      const texto = select.options[select.selectedIndex].text.trim().toLowerCase(); // Texto del select seleccionado en minúsculas
+                      return valor !== "" && valor !== "0" && texto !== "elegir..." && texto !== "seleccionar..."; // Verifica que el valor no sea vacío o inválido
+                  });
+
+            // Verifica si hay exactamente un input de tipo texto con contenido válido y sin otros inputs o selects presentes
+            const inputTextValido =
+                  !formulation.querySelector('input[type="radio"], input[type="checkbox"], select') && // No debe haber radio, checkbox o selects
+                  formulation.querySelectorAll('input[type="text"]').length === 1 && // Debe haber solo un input de tipo texto
+                  Array.from(formulation.querySelectorAll('input[type="text"]')).some(input => input.value.trim() !== ""); // El valor del input de texto no debe estar vacío
+
+            // Verifica si hay más de un input de tipo texto con contenido válido y sin otros inputs o selects presentes
+            const inputsTextsValido =
+                  !formulation.querySelector('input[type="radio"], input[type="checkbox"], select') && // No debe haber radio, checkbox o selects
+                  formulation.querySelectorAll('input[type="text"]').length > 1 && // Debe haber más de un input de tipo texto
+                  Array.from(formulation.querySelectorAll('input[type="text"]')).some(input => input.value.trim() !== ""); // Al menos un input de texto debe tener valor
+
+            // Verifica si hay varios inputs de texto o selects con valores válidos, sin otros tipos de inputs presentes
+            const inputsTextsySelectValido =
+                  !formulation.querySelector('input[type="radio"], input[type="checkbox"]') && // No debe haber radio ni checkbox
+                  formulation.querySelectorAll('input[type="text"]').length > 1 && // Debe haber más de un input de texto
+                  Array.from(formulation.querySelectorAll('input[type="text"]')).some(input => input.value.trim() !== "") || // Al menos un input de texto debe tener valor
+                  Array.from(formulation.querySelectorAll("select")).some(select => { // O al menos un select debe tener valor válido
+                      const valor = select.value;
+                      const texto = select.options[select.selectedIndex].text.trim().toLowerCase(); // Texto del select seleccionado en minúsculas
+                      return valor !== "" && valor !== "0" && texto !== "elegir..." && texto !== "seleccionar..."; // Verifica que el valor no sea vacío o inválido
+                  });
+
+            const hasDraghome = formulation.querySelector('.draghome') !== null;
+            const hasDropzones = formulation.querySelector('.dropzones') !== null;
+
+            let seEjecutaFuncion = false;
+
+            // console.log(`Condición 'inputradio_opcionmultiple_verdaderofalso': ${inputRadioValido}`);
+            console.log(`Condición 'inputchecked_opcionmultiple': ${inputsCheckboxValido}`);
+            // console.log(`Condición 'select_emparejamiento': ${selectsValido}`);
+            // console.log(`Condición 'inputtext_respuestacorta': ${inputTextValido}`);
+            // console.log(`Condición 'inputtext_multiple_respuestacorta': ${inputsTextsValido}`);
+            // console.log(`Condición 'inputtext_multiple_respuestacorta_select': ${inputsTextsySelectValido}`);
+
+            // Definir una lista de condiciones y sus correspondientes funciones
+            const condiciones = [
+                {
+                    cond: inputRadioValido,
+                    func: async () => await inputradio_opcionmultiple_verdaderofalso(formulation, questionsAutoSave)
+                },
+                {
+                    cond: inputsCheckboxValido,
+                    func: async () => await inputchecked_opcionmultiple(formulation, questionsAutoSave)
+                },
+                {
+                    cond: selectsValido,
+                    func: async () => await select_emparejamiento(formulation, questionsAutoSave)
+                },
+                {
+                    cond: inputTextValido,
+                    func: async () => await inputtext_respuestacorta(formulation, questionsAutoSave)
+                },
+                {
+                    cond: hasDraghome && !hasDropzones,
+                    func: async () => {
+                        await new Promise(resolve => {
+                            setTimeout(() => {
+                                draganddrop_text(formulation, questionsAutoSave);
+                                resolve();
+                            }, 1000); // Retraso de 1 segundo
+                        });
+                    }
+                },
+                {
+                    cond: hasDraghome && hasDropzones,
+                    func: async () => {
+                        await new Promise(resolve => {
+                            setTimeout(() => {
+                                draganddrop_image(formulation, questionsAutoSave);
+                                resolve();
+                            }, 1000); // Retraso de 1 segundo
+                        });
+                    }
+                },
+                {
+                    cond: inputsTextsValido,
+                    func: async () => await inputtext_multiple_respuestacorta(formulation, questionsAutoSave)
+                },
+                {
+                    cond: inputsTextsySelectValido,
+                    func: async () => await inputtext_multiple_respuestacorta_select(formulation, questionsAutoSave)
+                }
+            ];
+
+            // Ejecutar la primera condición que se cumpla
+            for (const { cond, func } of condiciones) {
+                if (cond) {
+                    await func();
+                    seEjecutaFuncion = true;
+                    break; // Salir del bucle de condiciones una vez que se ejecuta una función
+                }
+            }
+
+            // Convertir a string si solo hay una respuesta y agregar si hay contenido relevante
+            if (seEjecutaFuncion) {
+                if (questionsAutoSave.respuestas.length === 1) {
+                    questionsAutoSave.respuestas = questionsAutoSave.respuestas[0];
+                }
+
+                if (questionsAutoSave.html || questionsAutoSave.respuestas.length > 0 || questionsAutoSave.enunciados.length > 0) {
+                    todasLasPreguntas[`Pregunta${numeroPregunta}`] = questionsAutoSave;
+                }
+            }
+        } // Cierre correcto del bucle for
+
+        // Guardar todas las preguntas en localStorage
+        try {
+            sessionStorage.setItem('questions-AutoSave', JSON.stringify(todasLasPreguntas));
+        } catch (error) {
+            console.error('Error saving to sessionStorage', error);
+        }
+
+        // Obtener la URL actual
+        const currentUrl = window.location.pathname;
+
+        if (currentUrl.includes('/mod/quiz/review.php')) {
+            console.log('Página de revisión detectada. Ejecutando AutoSaveReview_Filter...');
+            // Ejecuta AutoSaveReview_Filter y espera a que termine
+            await AutoSaveReview_Filter();
+        } else if (currentUrl.includes('/mod/quiz/attempt.php')) {
+            console.log('Página de intento detectada. Ejecutando mostrarRespuestas_AutoSave...');
+            // Ejecuta mostrarRespuestas_AutoSave directamente en modo intento
+            mostrarRespuestas_AutoSave();
+        } else {
+            console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
+        }
+
+        console.log('::::::Finalizando AutoSave_LocalStorage::::::');
 
     }
 
