@@ -24620,9 +24620,6 @@
         });
     }
 
-
-    detectarCambiosEnForm();
-
     function opcion_AutoFillAutoSave_Moodle_html() {
         return `
      <div class="body-autoquiz">
