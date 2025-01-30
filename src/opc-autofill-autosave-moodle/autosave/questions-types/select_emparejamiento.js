@@ -115,4 +115,6 @@ export async function select_emparejamiento(originalFormulationClearfix, questio
 
     // Guarda el valor de "ciclo" de localStorage en el objeto questionsAutoSave
     questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+
+    console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
 }

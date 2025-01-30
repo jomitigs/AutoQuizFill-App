@@ -73,4 +73,6 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
     
     // Guardar el ciclo actual desde el localStorage
     questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+
+    console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
 }
