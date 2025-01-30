@@ -24496,21 +24496,6 @@
             console.error('Error saving to sessionStorage', error);
         }
 
-        // Obtener la URL actual
-        // const currentUrl = window.location.pathname;
-
-        // if (currentUrl.includes('/mod/quiz/review.php')) {
-        // console.log('Página de revisión detectada. Ejecutando AutoSaveReview_Filter...');
-        // Ejecuta AutoSaveReview_Filter y espera a que termine
-        //await AutoSaveReview_Filter();
-        // } else if (currentUrl.includes('/mod/quiz/attempt.php')) {
-        //console.log('Página de intento detectada. Ejecutando mostrarRespuestas_AutoSave...');
-        // Ejecuta mostrarRespuestas_AutoSave directamente en modo intento
-        //mostrarRespuestas_AutoSave();
-        //} else {
-        // console.log('URL no coincide con /mod/quiz/review.php ni /mod/quiz/attempt.php. No se ejecuta ninguna acción.');
-        // }
-
     }
 
     function opcion_AutoFillAutoSave_Moodle_html() {
