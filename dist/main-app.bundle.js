@@ -23218,13 +23218,11 @@
 
         // Asumiendo que estás dentro de una función async o que manejas las promesas adecuadamente
         if (rutaLista.includes('UNEMI')) {
-            console.log('Procesando ruta que incluye UNEMI');
 
             // Verifica si el elemento existe antes de modificar su estilo
             if (containerCicloContainer) {
                 containerCicloContainer.style.display = 'block';
 
-                console.log('Mostrando cicloContainer');
             } else {
                 console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
             }
@@ -23251,7 +23249,6 @@
             }
 
             if (rutaLista.includes('niv')) {
-                console.log('Procesando ruta que incluye niv');
 
                 // Verificar la existencia de materiaValor y testClave
                 const hasMateriaValor = Boolean(materiaValor); // Asegúrate de que materiaValor esté definido
@@ -23266,19 +23263,19 @@
                         "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
                         "ConfigRuta/opciones/UNEMI/unemi:niv-test"
                     ];
-                    console.log('Ambos valores existen: materiaValor y testClave. Usando ambas rutas.');
+                    //console.log('Ambos valores existen: materiaValor y testClave. Usando ambas rutas.');
                 } else if (hasMateriaValor) {
                     // Si solo existe materiaValor
                     rutasSelectDinamics = [
                         "ConfigRuta/opciones/UNEMI/unemi:niv-test"
                     ];
-                    console.log('Solo existe materiaValor. Usando ruta para test.');
+                    //console.log('Solo existe materiaValor. Usando ruta para test.');
                 } else if (hasTestClave) {
                     // Si solo existe testClave
                     rutasSelectDinamics = [
                         "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion"
                     ];
-                    console.log('Solo existe testClave. Usando ruta para materias de nivelación.');
+                    //console.log('Solo existe testClave. Usando ruta para materias de nivelación.');
                 }
 
                 try {
@@ -23292,7 +23289,7 @@
                         }
 
                         const options = optionsSnapshot.val();
-                        console.log(`Opciones obtenidas para la ruta ${path}:`, options);
+                        //console.log(`Opciones obtenidas para la ruta ${path}:`, options);
 
                         // Crear el elemento select
                         const selectElement = document.createElement('select');
@@ -23323,7 +23320,7 @@
 
                         // Añadir el select al contenedor principal
                         contenedorSelects.appendChild(selectElement);
-                        console.log(`Select creado y agregado para la ruta: ${path}`);
+                        //console.log(`Select creado y agregado para la ruta: ${path}`);
                     }
 
                     // Crear el botón "Guardar Ruta" después de todos los selects
@@ -23334,7 +23331,7 @@
 
                     // Agregar el botón al contenedor
                     contenedorSelects.appendChild(botonGuardarRuta);
-                    console.log('Botón "Guardar ruta" agregado.');
+                    //console.log('Botón "Guardar ruta" agregado.');
 
                     // Actualizar la visibilidad de los selects si es necesario
                     actualizarVisibilidadSelects(true);
