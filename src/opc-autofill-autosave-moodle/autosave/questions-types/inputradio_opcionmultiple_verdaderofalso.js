@@ -11,6 +11,8 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
     // Selecciona todos los elementos de tipo radio dentro del originalFormulationClearfix
     const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
 
+    let isAnyChecked = false; // Bandera para verificar si algún radio está seleccionado
+
     for (const inputRadio of allInputRadio) {
         // **Condición para ignorar los elementos "Quitar mi elección"**
         // Puedes ajustar las condiciones según las características específicas de tus elementos
@@ -22,6 +24,7 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
         }
 
         if (inputRadio.checked) {
+            isAnyChecked = true; // Indica que al menos un radio está seleccionado
             let labelInput = inputRadio.nextElementSibling;
             let textoRespuesta = '';
 
@@ -49,13 +52,25 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
                     questionsAutoSave.respuestas.push(textoRespuesta);
                 }
 
-                // Guardar el HTML del clon en el objeto questionsAutoSave
-                questionsAutoSave.html = clonFormulation.outerHTML;
-                questionsAutoSave.tipo = tipo;
-                const feedback = await feedbackQuestion(originalFormulationClearfix);
-                questionsAutoSave.feedback = feedback;
-                questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+                // Dado que normalmente los radios son mutuamente excluyentes, podemos salir del ciclo
+                break;
             }
         }
     }
+
+    if (!isAnyChecked) {
+        // Si ningún radio está seleccionado, agregar una respuesta vacía
+        questionsAutoSave.respuestas.push('');
+    }
+
+    // Guardar el HTML del clon en el objeto questionsAutoSave
+    questionsAutoSave.html = clonFormulation.outerHTML;
+    questionsAutoSave.tipo = tipo;
+    
+    // Obtener y guardar el feedback
+    const feedback = await feedbackQuestion(originalFormulationClearfix);
+    questionsAutoSave.feedback = feedback;
+    
+    // Guardar el ciclo actual desde el localStorage
+    questionsAutoSave.ciclo = localStorage.getItem("ciclo");
 }
