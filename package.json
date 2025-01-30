@@ -28,8 +28,6 @@
     "rollup-plugin-string": "^3.0.0"
   },
   "dependencies": {
-    "firebase": "^11.2.0",
-    "uuid": "^11.0.5",
-    "wappalyzer": "^7.0.3"
+    "firebase": "^11.2.0"
   }
 }
