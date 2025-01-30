@@ -4,7 +4,7 @@ import { contenedorUsers_js } from './users/script.js';
 import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
 
-import { contenedorAutoSave_js } from './autosave/script.js';
+import { contenedorAutoSave_js } from './autosave/autosave-script.js';
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `

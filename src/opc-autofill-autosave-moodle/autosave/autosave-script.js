@@ -5,7 +5,7 @@ import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/inpu
 import { inputtext_respuestacorta } from './questions-types/inputtext_respuestacorta.js';
 import { select_emparejamiento } from './questions-types/select_emparejamiento.js';
 
-import { getQuestionNumber, determinarTipoPregunta } from './helpers.js';
+import { getQuestionNumber, determinarTipoPregunta } from '../autofill-autosave-helpers.js';
 
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
