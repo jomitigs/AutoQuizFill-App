@@ -23846,7 +23846,7 @@
 
         // Función para actualizar la visibilidad del body
         const actualizarVisibilidadBody = () => {
-            const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php') || window.location.href.includes('/mod/quiz/view.php?');
+            const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
 
             if (esPaginaQuiz && interruptorAutoSave.checked) {
                 if (bodyAutoSave) {
