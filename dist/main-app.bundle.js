@@ -23755,7 +23755,7 @@
         if (!configRuta || !ciclo) {
             // console.log('configRuta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
 
-            container.style.display = 'none';
+            containerCicloContainer.style.display = 'none';
             // console.log('Contenedor .container-autoquiz ocultado:', container);
 
             // Desactivar autofill y autosave
