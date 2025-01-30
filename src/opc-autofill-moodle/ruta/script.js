@@ -287,7 +287,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
             // Verifica que el elemento exista en el DOM
             if (rutaElemento) {
                 // Actualiza el contenido HTML del elemento
-                rutaElemento.innerHTML = `<span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
+                rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
             }
         }
 
