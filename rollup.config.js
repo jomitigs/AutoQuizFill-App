@@ -53,7 +53,8 @@ export default {
         compress: { drop_console: true },
       }),
     // Ofuscación avanzada en producción
-    isProduction &&
+    
+    !isProduction &&
       obfuscator({
         compact: true,
         controlFlowFlattening: true,
