@@ -23851,7 +23851,7 @@
             if (esPaginaQuiz && interruptorAutoSave.checked) {
                 if (bodyAutoSave) {
                     bodyAutoSave.style.display = 'flex';
-                    console.log("Mostrando el elemento body-autoquiz-autosave.");
+                    console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
                 }
             } else if (interruptorAutoSave.checked) {
                 console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
