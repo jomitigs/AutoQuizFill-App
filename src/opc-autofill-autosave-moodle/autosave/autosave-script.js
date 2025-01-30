@@ -61,58 +61,60 @@ export function contenedorAutoSave_js() {
 
 
 async function AutoSave_SessionStorage(formulations, forcedQuestionNumber = null) {
-    let contadorPreguntas = 0; // Contador de preguntas
-    const todasLasPreguntas = {}; // Objeto para almacenar todas las preguntas
-
-    // ——————————————————————————————————————————————————————
-    // 1) Determinar si 'formulations' es un solo elemento o una lista
-    // ——————————————————————————————————————————————————————
-    // Si NO es una NodeList / HTMLCollection, asumimos que es un solo elemento y lo metemos en un array
-    if (
-        !NodeList.prototype.isPrototypeOf(formulations) && 
-        !HTMLCollection.prototype.isPrototypeOf(formulations)
-    ) {
-        formulations = [formulations]; 
+    // 1) Leer si ya existe algo en sessionStorage
+    let existingData = {};
+    try {
+        const storageStr = sessionStorage.getItem('questions-AutoSave');
+        if (storageStr) {
+            existingData = JSON.parse(storageStr);
+        }
+    } catch (err) {
+        console.error('Error al leer/parsing sessionStorage:', err);
+        // existingData se queda como {}
     }
 
-    // ——————————————————————————————————————————————————————
-    // 2) Definición de funciones por tipo de pregunta
-    // ——————————————————————————————————————————————————————
+    // 2) Asegurarnos de que 'formulations' sea un array
+    if (
+        !NodeList.prototype.isPrototypeOf(formulations) &&
+        !HTMLCollection.prototype.isPrototypeOf(formulations)
+    ) {
+        formulations = [formulations];
+    }
+
+    // 3) Configurar un contador local (solo se usa si NO tenemos `forcedQuestionNumber`
+    //    ni un número de pregunta dentro de la etiqueta HTML)
+    let contadorPreguntas = 0;
+
+    // 4) Definir funciones por tipo de pregunta
     const tipoFunciones = {
         'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
         'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
         'select_emparejamiento': select_emparejamiento,
         'inputtext_respuestacorta': inputtext_respuestacorta,
         'draganddrop_text': async (formulation, questionsAutoSave) => {
-            await new Promise(resolve => setTimeout(() => {
+            await new Promise((resolve) => setTimeout(() => {
                 draganddrop_text(formulation, questionsAutoSave);
                 resolve();
             }, 1000)); // Retraso de 1 segundo
         },
         'draganddrop_image': async (formulation, questionsAutoSave) => {
-            await new Promise(resolve => setTimeout(() => {
+            await new Promise((resolve) => setTimeout(() => {
                 draganddrop_image(formulation, questionsAutoSave);
                 resolve();
             }, 1000)); // Retraso de 1 segundo
         }
-        // Puedes habilitar o agregar otras funciones:
-        // 'inputtext_multiple_respuestacorta': inputtext_multiple_respuestacorta,
-        // 'inputtext_multiple_respuestacorta_select': inputtext_multiple_respuestacorta_select
+        // otros tipos...
     };
 
-    // ——————————————————————————————————————————————————————
-    // 3) Iterar sobre los elementos (ya sea un array de uno o varios)
-    // ——————————————————————————————————————————————————————
+    // 5) Iterar sobre cada .formulation (sea una o varias)
     for (const formulation of formulations) {
-
         // Determinar el número de pregunta
-        //  - Si se proporciona forcedQuestionNumber, lo usamos.
-        //  - De lo contrario, usamos getQuestionNumber(formulation) o lo incrementamos.
-        const numeroPregunta = forcedQuestionNumber 
-            || getQuestionNumber(formulation) 
-            || ++contadorPreguntas;
+        const numeroPregunta =
+            forcedQuestionNumber ||
+            getQuestionNumber(formulation) ||
+            ++contadorPreguntas;
 
-        // Objeto con la estructura para guardar datos
+        // Estructura para guardar datos de ESTA pregunta
         const questionsAutoSave = {
             html: '',
             respuestas: [],
@@ -120,44 +122,39 @@ async function AutoSave_SessionStorage(formulations, forcedQuestionNumber = null
             tipo: ''
         };
 
-        // Determinar el tipo de pregunta (asume que existe la función determinarTipoPregunta)
+        // Determinar el tipo de pregunta
         const tipoPregunta = determinarTipoPregunta(formulation);
-        console.log(`[opc-autofill-autosave-moodle: ruta] Pregunta ${numeroPregunta}, tipo: ${tipoPregunta}`);
+        console.log(`[opc-autofill-autosave-moodle: autosave] Pregunta ${numeroPregunta}, tipo: ${tipoPregunta}`);
 
-        // Tomar la función correspondiente, si existe
+        // Ejecutar la función adecuada según el tipo de pregunta
         const func = tipoFunciones[tipoPregunta];
-        let seEjecutaFuncion = false;
-
-        // Ejecutar la función de guardado si la encontramos
         if (func) {
-            await func(formulation, questionsAutoSave);
-            seEjecutaFuncion = true;
+            await func(formulation, questionsAutoSave);  // se llena questionsAutoSave
         }
 
-        // Convertir a string si solo hay una respuesta y agregar si hay contenido relevante
-        if (seEjecutaFuncion) {
-            if (questionsAutoSave.respuestas.length === 1) {
-                questionsAutoSave.respuestas = questionsAutoSave.respuestas[0];
-            }
+        // Convertir a string si solo hay una respuesta
+        if (questionsAutoSave.respuestas.length === 1) {
+            questionsAutoSave.respuestas = questionsAutoSave.respuestas[0];
+        }
 
-            if (
-                questionsAutoSave.html ||
-                (Array.isArray(questionsAutoSave.respuestas) && questionsAutoSave.respuestas.length > 0) ||
-                (!Array.isArray(questionsAutoSave.respuestas) && questionsAutoSave.respuestas) ||
-                questionsAutoSave.enunciados.length > 0
-            ) {
-                todasLasPreguntas[`Pregunta${numeroPregunta}`] = questionsAutoSave;
-            }
+        // Checar si se agregó algún contenido para esta pregunta
+        const tieneContenido =
+            questionsAutoSave.html ||
+            (Array.isArray(questionsAutoSave.respuestas) && questionsAutoSave.respuestas.length > 0) ||
+            (!Array.isArray(questionsAutoSave.respuestas) && questionsAutoSave.respuestas) ||
+            questionsAutoSave.enunciados.length > 0;
+
+        if (tieneContenido) {
+            // Actualizar/Insertar la pregunta en el objeto "existingData"
+            existingData[`Pregunta${numeroPregunta}`] = questionsAutoSave;
         }
     }
 
-    // ——————————————————————————————————————————————————————
-    // 4) Guardar todas las preguntas en sessionStorage
-    // ——————————————————————————————————————————————————————
+    // 6) Guardar el objeto completo en sessionStorage (SIN reemplazar todo, sino actualizándolo)
     try {
-        sessionStorage.setItem('questions-AutoSave', JSON.stringify(todasLasPreguntas));
+        sessionStorage.setItem('questions-AutoSave', JSON.stringify(existingData));
     } catch (error) {
-        console.error('Error al guardar en sessionStorage', error);
+        console.error('Error al guardar en sessionStorage:', error);
     }
 }
 
