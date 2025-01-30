@@ -274,22 +274,22 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
         const rutaElemento = document.getElementById('ruta-configruta');
 
         console.log(`[opc-autofill-moodle: ruta] Mostrando "rutaCicloContainer".`)
-       
+
         const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
 
         // Verifica si 'configRutaDinamic' existe y no está vacío
         if (configRutaDinamic) {
             // Obtiene el elemento con el ID 'ruta-configruta'
             const rutaElemento = document.getElementById('ruta-configruta');
-    
+
             // Verifica que el elemento exista en el DOM
             if (rutaElemento) {
                 // Actualiza el contenido HTML del elemento
                 rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
-            } 
-        }else  {
-            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span> `;
             }
+        } else {
+            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span> `;
+        }
 
         if (rutaLista.includes('niv')) {
 
