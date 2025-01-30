@@ -1,5 +1,4 @@
 import postcss from 'rollup-plugin-postcss';
-import postcssModules from 'postcss-modules';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import html from '@rollup/plugin-html';
@@ -7,13 +6,9 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
-import randomClassId from './rollup-plugin-random-class-id.js'; // <--- Asegúrate de que esté en la misma carpeta y con .js
 
 // Verifica si es producción
 const isProduction = process.env.BUILD_PROD === 'true';
-
-// Función para generar nombres aleatorios
-const generateRandomName = () => '_' + Math.random().toString(36).substr(2, 6);
 
 export default {
   input: 'src/main-app.js',
@@ -80,8 +75,6 @@ export default {
         rotateStringArray: true,
         shuffleStringArray: true,
       }),
-    // Renombrado de clases e IDs en cadenas JS (solo en prod)
-    isProduction && randomClassId(),
     // Genera/inyecta un HTML si lo necesitas
     html({ include: '**/*.html' }),
   ].filter(Boolean), // Filtra cualquier false
