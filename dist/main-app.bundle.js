@@ -24171,7 +24171,6 @@
       async function inputchecked_opcionmultiple(originalFormulationClearfix, questionsAutoSave) {
 
         const tipo = 'inputchecked_opcionmultiple';
-        console.log(tipo);
 
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
