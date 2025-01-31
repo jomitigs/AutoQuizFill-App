@@ -24168,10 +24168,9 @@
     }
 
     // Manejar respuestas tipo 'input checkbox'
-      async function inputchecked_opcionmultiple(originalFormulationClearfix, questionsAutoSave) {
+    async function inputchecked_opcionmultiple(originalFormulationClearfix, questionsAutoSave) {
 
         const tipo = 'inputchecked_opcionmultiple';
-
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
         // Convierte las imágenes dentro del clon a formato Data URI
@@ -24200,14 +24199,13 @@
             }
         });
 
-        if (respuestas.length > 0) {
-            questionsAutoSave.respuestas = respuestas;
-            questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
-            questionsAutoSave.tipo = tipo;
-            const feedback = await feedbackQuestion(originalFormulationClearfix);
-            questionsAutoSave.feedback = feedback;
-            questionsAutoSave.ciclo = localStorage.getItem("ciclo");
-        }
+        // Guardar la información aunque no haya respuestas seleccionadas
+        questionsAutoSave.respuestas = respuestas; // Si no hay respuestas, quedará como un array vacío
+        questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
+        questionsAutoSave.tipo = tipo;
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+        questionsAutoSave.feedback = feedback;
+        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
     }
 
     // Manejar respuestas tipo 'input radio'
