@@ -234,7 +234,6 @@ async function AutoSave_SessionStorage(formulations, forcedQuestionNumber = null
     }
 }
 
-
 function mostrarRespuestas_AutoSave() {
     const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
 
@@ -245,7 +244,6 @@ function mostrarRespuestas_AutoSave() {
 
     const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave');
     if (!respuestasGuardadas) {
-        // Caso en que no hay nada guardado
         elementoRespuestasAutoSave.textContent = 'Sin responder';
         console.log('No hay respuestas guardadas, mostrando "Sin responder".');
         return;
@@ -276,27 +274,18 @@ function formatearRespuestas(respuestasObj) {
             const numeroPregunta = clave;
             const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
 
-            // Texto estilizado para "Sin responder"
-            const sinResponderHTML = `<span id="${numeroPregunta}" style="color: red; font-weight: 500;">Sin responder</span>`;
-
             let respuestasHTML = '';
 
-            // Si hay enunciados, se muestran enunciados emparejados con respuestas
             if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
                 respuestasHTML = enunciados.map((enunciado, index) => {
-                    const respuesta = procesarContenido(respuestasFinales[index], 'respuesta');
-                    const enun = procesarContenido(enunciado, 'enunciado');
-                    return `${enun} <strong>➔</strong> ${respuesta || sinResponderHTML}`;
+                    const respuesta = respuestasFinales[index];
+                    return `${procesarContenido(enunciado, 'enunciado')} <strong>➔</strong> ${procesarContenido(respuesta, 'respuesta')}`;
                 }).join('<br>');
-            }
-            // Si es un arreglo de varias respuestas (p. ej. Drag and Drop o selección múltiple)
-            else if (respuestasFinales.length > 1) {
-                respuestasHTML = formatearRespuestasMultiples(respuestasFinales, tipoPregunta = tipo);
-            }
-            // Única respuesta
-            else {
-                const respuesta = procesarContenido(respuestasFinales[0], 'respuesta');
-                respuestasHTML = respuesta || sinResponderHTML;
+            } else if (respuestasFinales.length > 1) {
+                respuestasHTML = formatearRespuestasMultiples(respuestasFinales, tipo);
+            } else {
+                const respuesta = respuestasFinales[0] || '';
+                respuestasHTML = procesarContenido(respuesta, 'respuesta');
             }
 
             html += `
@@ -304,7 +293,7 @@ function formatearRespuestas(respuestasObj) {
                     ${numeroPregunta}:
                 </div>
                 <div class="respuestasautosave">
-                    ${respuestasHTML || sinResponderHTML}
+                    ${respuestasHTML || 'Sin responder'}
                 </div>`;
         }
     }
@@ -313,12 +302,9 @@ function formatearRespuestas(respuestasObj) {
 }
 
 /**
- * Procesa el contenido para reemplazar imágenes, MathML y saltos de línea.
- * Si el contenido está vacío, se retorna cadena vacía (para que lo controle la capa superior).
+ * Procesa el contenido para reemplazar imágenes, MathML y saltos de línea..
  */
 function procesarContenido(contenido, tipo) {
-    if (!contenido) return '';
-
     const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
     const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi;
     const mathRegex = /<math[^>]*>[\s\S]*?<\/math>/g;
@@ -329,7 +315,7 @@ function procesarContenido(contenido, tipo) {
         .replace(mathRegex, (match) => `<span style="font-size: 1.5em;">${match}</span>`)
         .replace(/(\r\n|\n|\r)/g, '<br>');
 
-    return procesado;
+    return procesado || 'Sin responder';
 }
 
 /**
@@ -341,21 +327,13 @@ function crearEtiquetaImg(src, tipo) {
 }
 
 /**
- * Formatea múltiples respuestas según el tipo de pregunta (ejemplo Drag and Drop).
+ * Formatea múltiples respuestas según el tipo de pregunta.
  */
 function formatearRespuestasMultiples(respuestas, tipoPregunta) {
-    // Puedes ajustar estilos o formato aquí según el tipo de pregunta
     if (tipoPregunta === 'draganddrop_text' || tipoPregunta === 'draganddrop_image') {
-        return respuestas
-            .map((respuesta, index) => {
-                const respProc = procesarContenido(respuesta, 'respuesta');
-                return `${index + 1}. ${respProc || ''}`;
-            })
-            .join('<br>');
+        return respuestas.map((respuesta, index) => `${index + 1}. ${procesarContenido(respuesta, 'respuesta')}`).join('<br>');
     } else {
-        return respuestas
-            .map((respuesta) => `• ${procesarContenido(respuesta, 'respuesta') || ''}`)
-            .join('<br>');
+        return respuestas.map(respuesta => `• ${procesarContenido(respuesta, 'respuesta')}`).join('<br>');
     }
 }
 
