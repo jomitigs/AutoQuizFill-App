@@ -24634,7 +24634,9 @@
 
         const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave');
         if (!respuestasGuardadas) {
-            elementoRespuestasAutoSave.textContent = 'Sin responder';
+            // En este caso no se asocia a una pregunta en particular,
+            // pero si lo deseas podrías establecer un id por defecto.
+            elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
             console.log('No hay respuestas guardadas, mostrando "Sin responder".');
             return;
         }
@@ -24644,12 +24646,12 @@
             respuestasObj = JSON.parse(respuestasGuardadas);
         } catch (error) {
             console.error('Error al parsear las respuestas guardadas:', error);
-            elementoRespuestasAutoSave.textContent = 'Sin responder';
+            elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
             return;
         }
 
         const respuestasFormateadas = formatearRespuestas(respuestasObj);
-        elementoRespuestasAutoSave.innerHTML = respuestasFormateadas || 'Sin responder';
+        elementoRespuestasAutoSave.innerHTML = respuestasFormateadas || '<span style="font-weight:500; color:red;">Sin responder</span>';
     }
 
     /**
@@ -24661,16 +24663,18 @@
         for (const [clave, valor] of Object.entries(respuestasObj)) {
             if (clave.startsWith('Pregunta')) {
                 const { respuestas = [], enunciados = [], tipo = '' } = valor;
-                const numeroPregunta = clave;
+                const numeroPregunta = clave; // Por ejemplo "Pregunta1"
                 const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
 
                 let respuestasHTML = '';
 
                 if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
-                    respuestasHTML = enunciados.map((enunciado, index) => {
-                        const respuesta = respuestasFinales[index];
-                        return `${procesarContenido(enunciado, 'enunciado')} <strong>➔</strong> ${procesarContenido(respuesta, 'respuesta')}`;
-                    }).join('<br>');
+                    respuestasHTML = enunciados
+                        .map((enunciado, index) => {
+                            const respuesta = respuestasFinales[index];
+                            return `${procesarContenido(enunciado, 'enunciado')} <strong>➔</strong> ${procesarContenido(respuesta, 'respuesta')}`;
+                        })
+                        .join('<br>');
                 } else if (respuestasFinales.length > 1) {
                     respuestasHTML = formatearRespuestasMultiples(respuestasFinales, tipo);
                 } else {
@@ -24678,12 +24682,17 @@
                     respuestasHTML = procesarContenido(respuesta, 'respuesta');
                 }
 
+                // Si no hay respuesta, se muestra "Sin responder" con el estilo y el id de la pregunta.
+                const contenidoRespuesta = respuestasHTML
+                    ? respuestasHTML
+                    : `<span id="${numeroPregunta}" style="font-weight:500; color:red;">Sin responder</span>`;
+
                 html += `
-                <div class="preguntaautosave">
+                <div class="preguntaautosave" id="${numeroPregunta}">
                     ${numeroPregunta}:
                 </div>
                 <div class="respuestasautosave">
-                    ${respuestasHTML || 'Sin responder'}
+                    ${contenidoRespuesta}
                 </div>`;
             }
         }
@@ -24692,7 +24701,7 @@
     }
 
     /**
-     * Procesa el contenido para reemplazar imágenes, MathML y saltos de línea..
+     * Procesa el contenido para reemplazar imágenes, MathML y saltos de línea.
      */
     function procesarContenido(contenido, tipo) {
         const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
@@ -24705,7 +24714,8 @@
             .replace(mathRegex, (match) => `<span style="font-size: 1.5em;">${match}</span>`)
             .replace(/(\r\n|\n|\r)/g, '<br>');
 
-        return procesado || 'Sin responder';
+        // Si después de procesar el contenido queda vacío, se retorna "Sin responder" con el estilo indicado.
+        return procesado || `<span style="font-weight:500; color:red;">Sin responder</span>`;
     }
 
     /**
@@ -24721,11 +24731,16 @@
      */
     function formatearRespuestasMultiples(respuestas, tipoPregunta) {
         if (tipoPregunta === 'draganddrop_text' || tipoPregunta === 'draganddrop_image') {
-            return respuestas.map((respuesta, index) => `${index + 1}. ${procesarContenido(respuesta, 'respuesta')}`).join('<br>');
+            return respuestas
+                .map((respuesta, index) => `${index + 1}. ${procesarContenido(respuesta, 'respuesta')}`)
+                .join('<br>');
         } else {
-            return respuestas.map(respuesta => `• ${procesarContenido(respuesta, 'respuesta')}`).join('<br>');
+            return respuestas
+                .map(respuesta => `• ${procesarContenido(respuesta, 'respuesta')}`)
+                .join('<br>');
         }
     }
+
 
 
     // -----------------------------------------------------------------------
