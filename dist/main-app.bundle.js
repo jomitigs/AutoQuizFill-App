@@ -24438,7 +24438,7 @@
             } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
                 if (bodyAutoSave) {
                     bodyAutoSave.style.display = 'none';
-            }
+                }
 
             } else if (!esPaginaQuiz) {
                 console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
@@ -24557,9 +24557,9 @@
                 console.error('Error al guardar en sessionStorage:', error);
             }
 
-        // ——————————————————————————————————————————————————————
-        // Caso B: Si es sólo 1 pregunta => actualizamos la que ya exista
-        // ——————————————————————————————————————————————————————
+            // ——————————————————————————————————————————————————————
+            // Caso B: Si es sólo 1 pregunta => actualizamos la que ya exista
+            // ——————————————————————————————————————————————————————
         } else {
             //console.log('[AutoSave_SessionStorage] Actualizando SOLO UNA pregunta, sin borrar el resto.');
 
@@ -24760,9 +24760,14 @@
 
         elementos.forEach(el => {
             el.addEventListener('change', async (event) => {
+                // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora
+                if (event.target.closest('#barra-lateral-autoquizfillapp')) {
+                    return;
+                }
+
                 console.log('[opc-autofill-autosave-moodle: autosave] Cambio detectado');
 
-                // Verificamos si 'questions-AutoSave' existe en localStorage
+                // Verificamos si 'questions-AutoSave' existe en sessionStorage
                 let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
 
                 if (!questionsAutoSaveStr) {
