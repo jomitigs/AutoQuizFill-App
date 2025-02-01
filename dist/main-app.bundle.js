@@ -24435,7 +24435,12 @@
 
                     console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
                 }
-            } else if (interruptorAutoSave.checked) {
+            } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
+                if (bodyAutoSave) {
+                    bodyAutoSave.style.display = 'none';
+            }
+
+            } else if (!esPaginaQuiz) {
                 console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
             }
         };
