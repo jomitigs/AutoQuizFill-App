@@ -67,7 +67,7 @@ export async function select_emparejamiento(originalFormulationClearfix, questio
                 // Almacena el enunciado en questionsAutoSave.enunciados
                 if (textoPregunta) {
                     questionsAutoSave.enunciados.push(textoPregunta);
-                    console.log(`Enunciado almacenado: ${textoPregunta}`);
+                     // console.log(`Enunciado almacenado: ${textoPregunta}`);
                 }
             }
         }
