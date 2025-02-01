@@ -24556,7 +24556,7 @@
         // Caso B: Si es sólo 1 pregunta => actualizamos la que ya exista
         // ——————————————————————————————————————————————————————
         } else {
-            console.log('[AutoSave_SessionStorage] Actualizando SOLO UNA pregunta, sin borrar el resto.');
+            //console.log('[AutoSave_SessionStorage] Actualizando SOLO UNA pregunta, sin borrar el resto.');
 
             // 1) Leer lo que ya esté en sessionStorage
             let existingData = {};
