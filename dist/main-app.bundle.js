@@ -24576,7 +24576,7 @@
                     const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
 
                     await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
-                    mostrarRespuestas_AutoSave();
+                     // mostrarRespuestas_AutoSave();
 
                     detectarCambiosPreguntas();
 
@@ -24773,123 +24773,6 @@
             } catch (error) {
                 console.error('Error al guardar en sessionStorage:', error);
             }
-        }
-    }
-
-    function mostrarRespuestas_AutoSave() {
-        const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
-
-        if (!elementoRespuestasAutoSave) {
-            console.error('[mostrarRespuestas_AutoSave] El elemento con id "respuestasautosave" no existe en el DOM.');
-            return;
-        }
-
-        const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave');
-        if (!respuestasGuardadas) {
-            // En este caso no se asocia a una pregunta en particular,
-            // pero si lo deseas podrías establecer un id por defecto.
-            elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-            console.log('No hay respuestas guardadas, mostrando "Sin responder".');
-            return;
-        }
-
-        let respuestasObj;
-        try {
-            respuestasObj = JSON.parse(respuestasGuardadas);
-        } catch (error) {
-            console.error('Error al parsear las respuestas guardadas:', error);
-            elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-            return;
-        }
-
-        const respuestasFormateadas = formatearRespuestas(respuestasObj);
-        elementoRespuestasAutoSave.innerHTML = respuestasFormateadas || '<span style="font-weight:500; color:red;">Sin responder</span>';
-    }
-
-    /**
-     * Formatea las respuestas guardadas en HTML.
-     */
-    function formatearRespuestas(respuestasObj) {
-        let html = '';
-
-        for (const [clave, valor] of Object.entries(respuestasObj)) {
-            if (clave.startsWith('Pregunta')) {
-                const { respuestas = [], enunciados = [], tipo = '' } = valor;
-                const numeroPregunta = clave; // Por ejemplo "Pregunta1"
-                const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
-
-                let respuestasHTML = '';
-
-                if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
-                    respuestasHTML = enunciados
-                        .map((enunciado, index) => {
-                            const respuesta = respuestasFinales[index];
-                            return `${procesarContenido(enunciado, 'enunciado')} <strong>➔</strong> ${procesarContenido(respuesta, 'respuesta')}`;
-                        })
-                        .join('<br>');
-                } else if (respuestasFinales.length > 1) {
-                    respuestasHTML = formatearRespuestasMultiples(respuestasFinales, tipo);
-                } else {
-                    const respuesta = respuestasFinales[0] || '';
-                    respuestasHTML = procesarContenido(respuesta, 'respuesta');
-                }
-
-                // Si no hay respuesta, se muestra "Sin responder" con el estilo y el id de la pregunta.
-                const contenidoRespuesta = respuestasHTML
-                    ? respuestasHTML
-                    : `<span id="${numeroPregunta}" style="font-weight:500; color:red;">Sin responder</span>`;
-
-                html += `
-                <div class="preguntaautosave" id="${numeroPregunta}">
-                    ${numeroPregunta}:
-                </div>
-                <div class="respuestasautosave">
-                    ${contenidoRespuesta}
-                </div>`;
-            }
-        }
-
-        return html;
-    }
-
-    /**
-     * Procesa el contenido para reemplazar imágenes, MathML y saltos de línea.
-     */
-    function procesarContenido(contenido, tipo) {
-        const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
-        const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi;
-        const mathRegex = /<math[^>]*>[\s\S]*?<\/math>/g;
-
-        let procesado = contenido
-            .replace(imageRegex, (match) => crearEtiquetaImg(match, tipo))
-            .replace(dataUriRegex, (match) => crearEtiquetaImg(match, tipo))
-            .replace(mathRegex, (match) => `<span style="font-size: 1.5em;">${match}</span>`)
-            .replace(/(\r\n|\n|\r)/g, '<br>');
-
-        // Si después de procesar el contenido queda vacío, se retorna "Sin responder" con el estilo indicado.
-        return procesado || `<span style="font-weight:500; color:red;">Sin responder</span>`;
-    }
-
-    /**
-     * Crea una etiqueta <img> con los atributos adecuados.
-     */
-    function crearEtiquetaImg(src, tipo) {
-        const altText = tipo === 'enunciado' ? 'Imagen de enunciado' : 'Imagen de respuesta';
-        return `<img src="${src}" alt="${altText}" style="max-width: 200px; max-height: 150px;">`;
-    }
-
-    /**
-     * Formatea múltiples respuestas según el tipo de pregunta.
-     */
-    function formatearRespuestasMultiples(respuestas, tipoPregunta) {
-        if (tipoPregunta === 'draganddrop_text' || tipoPregunta === 'draganddrop_image') {
-            return respuestas
-                .map((respuesta, index) => `${index + 1}. ${procesarContenido(respuesta, 'respuesta')}`)
-                .join('<br>');
-        } else {
-            return respuestas
-                .map(respuesta => `• ${procesarContenido(respuesta, 'respuesta')}`)
-                .join('<br>');
         }
     }
 

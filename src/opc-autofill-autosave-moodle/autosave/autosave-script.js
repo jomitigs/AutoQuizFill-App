@@ -39,7 +39,7 @@ export function contenedorAutoSave_js() {
                 const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
 
                 await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
-                mostrarRespuestas_AutoSave();
+                 // mostrarRespuestas_AutoSave();
 
                 detectarCambiosPreguntas();
 
