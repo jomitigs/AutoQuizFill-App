@@ -24649,7 +24649,6 @@
             'select_emparejamiento': select_emparejamiento,
             'inputtext_respuestacorta': inputtext_respuestacorta,
             'draganddrop_text': async (formulation) => {
-                // Se simula un retardo de 1 segundo antes de retornar el objeto generado por la función.
                 return await new Promise(resolve => setTimeout(() => {
                     resolve(draganddrop_text(formulation));
                 }, 1000));
@@ -24663,11 +24662,13 @@
         };
 
         // ——————————————————————————————————————————————————————
-        // Caso A: Procesar múltiples preguntas (formulations.length > 1)
-        // Se reemplaza completamente el contenido de sessionStorage.
+        // Determinar el caso a ejecutar:
+        //   - Caso A: Si hay más de 1 elemento O si hay 1 elemento y forcedQuestionNumber es null.
+        //   - Caso B: Si hay 1 elemento y forcedQuestionNumber tiene un valor.
         // ——————————————————————————————————————————————————————
-        if (formulations.length > 1) {
-            console.log('[AutoSave_SessionStorage] Reemplazando completamente sessionStorage (varias preguntas).');
+        if (formulations.length > 1 || (formulations.length === 1 && forcedQuestionNumber === null)) {
+            // *************** Caso A ***************
+            console.log('[AutoSave_SessionStorage] Ejecutando Caso A: Reemplazando completamente sessionStorage.');
 
             // Se crea un nuevo objeto para almacenar la información de todas las preguntas.
             const nuevoObj = {};
@@ -24676,7 +24677,8 @@
             // Iterar sobre cada elemento de 'formulations'
             for (const formulation of formulations) {
                 // Determinar el número de la pregunta:
-                // - Se utiliza forcedQuestionNumber si tiene un valor.
+                // - Si forcedQuestionNumber tiene un valor, se utiliza (aunque en este caso, si es 1 elemento, 
+                //   forcedQuestionNumber sería null para permanecer en Caso A).
                 // - Si no, se intenta obtener mediante getQuestionNumber.
                 // - Finalmente, se incrementa un contador si aún no se determina.
                 const numeroPregunta =
@@ -24699,7 +24701,7 @@
                     continue;
                 }
 
-                // Se almacena directamente la información de la pregunta sin verificar contenido.
+                // Se almacena directamente la información de la pregunta sin verificaciones adicionales.
                 nuevoObj[`Pregunta${numeroPregunta}`] = questionsAutoSave;
             }
 
@@ -24711,17 +24713,10 @@
                 console.error('Error al guardar en sessionStorage:', error);
             }
 
-        // ——————————————————————————————————————————————————————
-        // Caso B: Procesar una sola pregunta (formulations.length === 1)
-        // Se actualiza la información existente en sessionStorage sin borrar las demás.
-        // En este caso, es obligatorio que forcedQuestionNumber tenga un valor.
-        // ——————————————————————————————————————————————————————
         } else {
-            // Verificar que forcedQuestionNumber tenga un valor; de lo contrario, no se puede procesar.
-            if (forcedQuestionNumber === null) {
-                console.error('Para procesar una sola pregunta (Caso B) es necesario que forcedQuestionNumber tenga un valor distinto de null.');
-                return;
-            }
+            // *************** Caso B ***************
+            // Se ejecuta cuando hay un solo elemento y forcedQuestionNumber tiene un valor.
+            console.log('[AutoSave_SessionStorage] Ejecutando Caso B: Actualizando datos existentes en sessionStorage.');
 
             // Leer la información existente en sessionStorage.
             let existingData = {};
@@ -24736,8 +24731,8 @@
             }
 
             // Procesar la única pregunta.
-            // Dado que forcedQuestionNumber debe tener un valor, éste se usará para identificar la pregunta.
             const formulation = formulations[0];
+            // En este caso, forcedQuestionNumber tiene un valor y se usa directamente.
             const numeroPregunta = forcedQuestionNumber;
             const tipoPregunta = determinarTipoPregunta(formulation);
             console.log(`[AutoSave_SessionStorage] Pregunta ${numeroPregunta}, tipo: ${tipoPregunta}`);
