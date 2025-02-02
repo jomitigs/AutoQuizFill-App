@@ -1,9 +1,9 @@
 import { draganddrop_image } from './questions-types/draganddrop_image.js';
 import { draganddrop_text } from './questions-types/draganddrop_text.js';
-import { inputchecked_opcionmultiple } from './questions-types/inputchecked_opcionmultiple.js';
-import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/inputradio_opcionmultiple_verdaderofalso.js';
+import { inputchecked_opcionmultiple } from './questions-types/2_inputchecked_opcionmultiple.js';
+import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_inputradio_opcionmultiple_verdaderofalso.js';
 import { inputtext_respuestacorta } from './questions-types/inputtext_respuestacorta.js';
-import { select_emparejamiento } from './questions-types/select_emparejamiento.js';
+import { select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
 
 import { getQuestionNumber, determinarTipoPregunta } from '../autofill-autosave-helpers.js';
 
@@ -243,7 +243,7 @@ function mostrarRespuestas_AutoSave() {
     const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
 
     if (!elementoRespuestasAutoSave) {
-        console.error('El elemento con id "respuestasautosave" no existe en el DOM.');
+        console.error('[mostrarRespuestas_AutoSave] El elemento con id "respuestasautosave" no existe en el DOM.');
         return;
     }
 

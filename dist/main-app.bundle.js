@@ -24208,82 +24208,132 @@
         questionsAutoSave.ciclo = localStorage.getItem("ciclo");
     }
 
-    // Manejar respuestas tipo 'input radio'
-    async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix, questionsAutoSave) {
+    async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
         const tipo = 'inputradio_opcionmultiple_verdaderofalso';
+
+        // Se clona el elemento original para trabajar sobre una copia y no modificar el DOM original
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
-        // Convierte las imágenes dentro del clon a formato Data URI
+        // Se convierten las imágenes del clon a Data URI
         await convertImgToDataUri(clonFormulation);
 
-        // Selecciona todos los elementos de tipo radio dentro del originalFormulationClearfix
-        const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
+        // Se extrae el enunciado utilizando la función extractEnunciado
+        const enunciado = await extractEnunciado(originalFormulationClearfix);
 
-        let isAnyChecked = false; // Bandera para verificar si algún radio está seleccionado
+        // Se extraen las opciones de respuesta y la respuesta seleccionada utilizando la función extractOpcionesYRespuesta
+        const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
+
+        // Se obtiene el feedback de la pregunta, si existe
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+
+        // Se arma la estructura final de la pregunta
+        const estructuraPreguntaHTML = {
+            enunciado,                          // Enunciado extraído del elemento .qtext
+            opcionesRespuesta,                  // Todas las opciones de respuesta
+            respuestaCorrecta,                  // La opción seleccionada (si hay) o cadena vacía
+            html: clonFormulation.outerHTML,    // HTML del clon procesado
+            tipo,                               // Tipo de la pregunta
+            ciclo: localStorage.getItem("ciclo"), // Ciclo obtenido del localStorage
+            feedback                          // Feedback de la pregunta (si existe)
+        };
+
+        return estructuraPreguntaHTML;
+    }
+
+    /**
+     * Función para extraer el enunciado de la pregunta.
+     * Se busca el contenido del elemento que tiene la clase "qtext", 
+     * ya que en el HTML de ejemplo es donde se encuentra el enunciado.
+     *
+     * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
+     * @returns {Promise<string>} El enunciado extraído.
+     */
+    async function extractEnunciado(originalFormulationClearfix) {
+        // Se selecciona el elemento con clase "qtext"
+        const enunciadoElement = originalFormulationClearfix.querySelector('.qtext');
+        let enunciado = '';
+
+        if (enunciadoElement) {
+            // Se extrae el contenido respetando el orden del DOM
+            enunciado = await extractContentInOrder(enunciadoElement);
+        }
+
+        return enunciado;
+    }
+
+    /**
+     * Función para extraer las opciones de respuesta y la respuesta seleccionada.
+     * Recorre todos los inputs de tipo radio del HTML, ignorando aquellos que
+     * correspondan a "Quitar mi elección" (o similares) según ciertas condiciones.
+     *
+     * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
+     * @returns {Promise<Object>} Un objeto con:
+     *    - opcionesRespuesta: arreglo con el texto de cada opción.
+     *    - respuestaCorrecta: texto de la opción seleccionada o cadena vacía si ninguna lo está.
+     */
+    async function extractOpcionesYRespuesta(originalFormulationClearfix) {
+        // Seleccionar todos los inputs radio
+        const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
+        let opcionesRespuesta = [];
+        let respuestaCorrecta = '';
 
         for (const inputRadio of allInputRadio) {
-            // **Condición para ignorar los elementos "Quitar mi elección"**
-            // Puedes ajustar las condiciones según las características específicas de tus elementos
+            // Condición para ignorar inputs que sean de "Quitar mi elección" o similares:
+            // - Si el input se encuentra dentro de un contenedor con clase "qtype_multichoice_clearchoice"
+            // - Si su valor es "-1"
+            // - Si tiene la clase "sr-only"
             const parentDiv = inputRadio.closest('.qtype_multichoice_clearchoice');
             const isClearChoice = parentDiv !== null || inputRadio.value === "-1" || inputRadio.classList.contains('sr-only');
-
             if (isClearChoice) {
-                continue; // Saltar este inputRadio y pasar al siguiente
+                continue;
             }
 
-            if (inputRadio.checked) {
-                isAnyChecked = true; // Indica que al menos un radio está seleccionado
-                let labelInput = inputRadio.nextElementSibling;
-                let textoRespuesta = '';
+            // Se obtiene el label asociado (se asume que es el siguiente elemento en el DOM)
+            let labelInput = inputRadio.nextElementSibling;
+            let textoOpcion = '';
 
-                if (labelInput) {
-                    const flexFillElement = labelInput.querySelector('.flex-fill');
-
-                    // Extraer contenido del elemento .flex-fill si existe
-                    if (flexFillElement) {
-                        textoRespuesta = await extractContentInOrder(flexFillElement);
-                    } else {
-                        // Si no hay .flex-fill, extraer contenido directamente del label
-                        textoRespuesta = await extractContentInOrder(labelInput);
-                    }
-
-                    // Limpiar literales iniciales solo si no hay elementos MathJax presentes
-                    const mathJaxElement = labelInput.querySelector('.MathJax');
-                    if (!mathJaxElement) {
-                        // Eliminar literales iniciales como "A." o "i."
-                        textoRespuesta = textoRespuesta.replace(/^[a-zA-Z]\.|^[ivxlcdmIVXLCDM]+\./, '');
-                        // No aplicamos trim para preservar los espacios y saltos de línea
-                    }
-
-                    if (textoRespuesta) {
-                        // Guardar la respuesta en el objeto questionsAutoSave
-                        questionsAutoSave.respuestas.push(textoRespuesta);
-                    }
-
-                    // Dado que normalmente los radios son mutuamente excluyentes, podemos salir del ciclo
-                    break;
+            if (labelInput) {
+                // Si existe un elemento con clase "flex-fill" dentro del label, se extrae desde allí
+                const flexFillElement = labelInput.querySelector('.flex-fill');
+                if (flexFillElement) {
+                    textoOpcion = await extractContentInOrder(flexFillElement);
+                } else {
+                    // Si no, se extrae directamente del label
+                    textoOpcion = await extractContentInOrder(labelInput);
+                }
+                // Si no hay un elemento MathJax, se eliminan literales iniciales como "a.", "b.", etc.
+                const mathJaxElement = labelInput.querySelector('.MathJax');
+                if (!mathJaxElement) {
+                    textoOpcion = textoOpcion.replace(/^[a-zA-Z]\.|^[ivxlcdmIVXLCDM]+\./, '');
                 }
             }
+
+            // Agregar la opción extraída al arreglo de opciones
+            opcionesRespuesta.push(textoOpcion);
+
+            // Si este input radio está marcado, se considera que es la respuesta correcta
+            if (inputRadio.checked) {
+                respuestaCorrecta = textoOpcion;
+            }
         }
 
-        if (!isAnyChecked) {
-            // Si ningún radio está seleccionado, agregar una respuesta vacía
-            questionsAutoSave.respuestas.push('');
-        }
-
-        // Guardar el HTML del clon en el objeto questionsAutoSave
-        questionsAutoSave.html = clonFormulation.outerHTML;
-        questionsAutoSave.tipo = tipo;
-        
-        // Obtener y guardar el feedback
-        const feedback = await feedbackQuestion(originalFormulationClearfix);
-        questionsAutoSave.feedback = feedback;
-        
-        // Guardar el ciclo actual desde el localStorage
-        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
-
-        //console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
+        return { opcionesRespuesta, respuestaCorrecta };
     }
+
+    /**
+     * Función principal para procesar la pregunta de opción múltiple (tipo verdadero/falso).
+     * Esta función arma la estructura final de la pregunta que contiene:
+     *   - enunciado: Texto del enunciado (extraído del elemento .qtext)
+     *   - opcionesRespuesta: Arreglo con todas las opciones disponibles.
+     *   - respuestaCorrecta: La opción seleccionada o cadena vacía si no hay selección.
+     *   - html: HTML del clon procesado (con imágenes convertidas a Data URI).
+     *   - tipo: Tipo de la pregunta.
+     *   - ciclo: Valor obtenido del localStorage.
+     *   - feedback: Feedback de la pregunta (si existe).
+     *
+     * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
+     * @returns {Promise<Object>} La estructura completa de la pregunta.
+     */
 
     // Manejar respuestas tipo 'input text' (respuesta corta)
      async function inputtext_respuestacorta(originalFormulationClearfix, questionsAutoSave) {
@@ -24633,7 +24683,7 @@
         const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
 
         if (!elementoRespuestasAutoSave) {
-            console.error('El elemento con id "respuestasautosave" no existe en el DOM.');
+            console.error('[mostrarRespuestas_AutoSave] El elemento con id "respuestasautosave" no existe en el DOM.');
             return;
         }
 
