@@ -24083,103 +24083,6 @@
         });
     }
 
-    async function File2DataUri(files) {
-        let imagenes = [];
-        let audios = [];
-      
-          if (files instanceof HTMLImageElement) {
-            imagenes = [files];
-          } else if (files instanceof HTMLAudioElement) {
-            audios = [files];
-          } else if (files instanceof HTMLElement) {
-            imagenes = Array.from(files.querySelectorAll('img'));
-            audios = Array.from(files.querySelectorAll('audio'));
-          } else {
-            // Si el tipo de entrada no es soportado, se lanza un error que se captura inmediatamente
-            console.log("Tipo de entrada no soportado. Proporcione un elemento HTML, una imagen o un audio.");
-          }
-      
-        // --- Procesar imágenes ---
-        for (const imagen of imagenes) {
-          // Procesar solo imágenes cuya URL contenga 'pluginfile.php'
-          if (imagen.src.includes('pluginfile.php')) {
-            try {
-              // Esperar a que la imagen se cargue (ya sea de caché o en tiempo real)
-              await new Promise((resolver, rechazar) => {
-                if (imagen.complete) {
-                  resolver();
-                } else {
-                  imagen.onload = resolver;
-                  imagen.onerror = rechazar;
-                }
-              });
-      
-              // Dibujar la imagen en un canvas para obtener su Data URI
-              const lienzo = document.createElement('canvas');
-              const contexto = lienzo.getContext('2d');
-              lienzo.width = imagen.naturalWidth;
-              lienzo.height = imagen.naturalHeight;
-              contexto.drawImage(imagen, 0, 0);
-      
-              const dataUriImagen = lienzo.toDataURL();
-              imagen.src = dataUriImagen;
-            } catch (error) {
-              console.error('Error en la conversión de la imagen:', error);
-            }
-          }
-          // Si la imagen no contiene 'pluginfile.php', se deja sin cambios.
-        }
-      
-        // --- Procesar audios ---
-        const umbralDuracionAudio = 60; // Duración umbral en segundos
-        const umbralTamanoAudio = 10 * 1024 * 1024; // Tamaño umbral en bytes (10 MB)
-      
-        for (const audio of audios) {
-          // Procesar solo si la URL existe y contiene 'pluginfile.php'
-          if (audio.src && audio.src.includes('pluginfile.php')) {
-            try {
-              // Esperar a que se carguen los metadatos del audio (para obtener la duración)
-              await new Promise((resolver, rechazar) => {
-                if (audio.readyState >= 1 && !isNaN(audio.duration)) {
-                  resolver();
-                } else {
-                  audio.onloadedmetadata = resolver;
-                  audio.onerror = rechazar;
-                }
-              });
-      
-              // Obtener el blob del audio para revisar el tamaño
-              const respuesta = await fetch(audio.src);
-              const blob = await respuesta.blob();
-      
-              /*  
-                Se realiza la conversión si:
-                - El audio dura menos o igual al umbral, o
-                - Si dura más, pero su tamaño es inferior al umbral.
-                Esto permite convertir audios largos que estén bien comprimidos (por ejemplo, 5 minutos y 1 MB)
-                y omitir la conversión en casos donde el audio sea extenso y pesado.
-              */
-              if (audio.duration > umbralDuracionAudio && blob.size > umbralTamanoAudio) {
-                console.log('Audio demasiado largo y pesado, se omite la conversión:', audio.src);
-                continue;
-              }
-      
-              // Convertir el blob a Data URI usando FileReader
-              const dataUriAudio = await new Promise((resolver, rechazar) => {
-                const lector = new FileReader();
-                lector.onloadend = () => resolver(lector.result);
-                lector.onerror = rechazar;
-                lector.readAsDataURL(blob);
-              });
-      
-              audio.src = dataUriAudio;
-            } catch (error) {
-              console.error('Error en la conversión del audio a Data URI:', error);
-            }
-          }
-        }
-      }
-
     // Manejar respuestas tipo 'draganddrop' (image)
      async function draganddrop_image(originalFormulationClearfix, questionsAutoSave) {
         const tipo = 'draganddrop_image';
@@ -24305,110 +24208,69 @@
         questionsAutoSave.ciclo = localStorage.getItem("ciclo");
     }
 
-    async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
-        const tipo = 'inputradio_opcionmultiple_verdaderofalso';
-
-        // Se clona el elemento original para trabajar sobre una copia y no modificar el DOM original
-        const clonFormulation = originalFormulationClearfix.cloneNode(true);
-
-        // Se convierten las imágenes del clon a Data URI
-        await File2DataUri(clonFormulation);
-
-        // Se extrae el enunciado utilizando la función extractEnunciado
-        const enunciado = await extractEnunciado(originalFormulationClearfix);
-
-        // Se extraen las opciones de respuesta y la respuesta seleccionada utilizando la función extractOpcionesYRespuesta
-        const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
-
-        // Se obtiene el feedback de la pregunta, si existe
-        const feedback = await feedbackQuestion(originalFormulationClearfix);
-
-        // Se arma la estructura final de la pregunta
-        const estructuraPreguntaHTML = {
-            enunciado,                          // Enunciado extraído del elemento .qtext
-            opcionesRespuesta,                  // Todas las opciones de respuesta
-            respuestaCorrecta,                  // La opción seleccionada (si hay) o cadena vacía
-            html: clonFormulation.outerHTML,    // HTML del clon procesado
-            tipo,                               // Tipo de la pregunta
-            ciclo: localStorage.getItem("ciclo"), // Ciclo obtenido del localStorage
-            feedback                          // Feedback de la pregunta (si existe)
-        };
-
-        return estructuraPreguntaHTML;
-    }
-
     /**
      * Función para extraer el enunciado de la pregunta.
-     * Se busca el contenido del elemento que tiene la clase "qtext", 
-     * ya que en el HTML de ejemplo es donde se encuentra el enunciado.
+     * Se obtiene el contenido del elemento con clase "qtext", que según el HTML de ejemplo
+     * es donde se encuentra el enunciado.
      *
      * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
      * @returns {Promise<string>} El enunciado extraído.
      */
     async function extractEnunciado(originalFormulationClearfix) {
-        // Se selecciona el elemento con clase "qtext"
         const enunciadoElement = originalFormulationClearfix.querySelector('.qtext');
         let enunciado = '';
-
         if (enunciadoElement) {
-            // Se extrae el contenido respetando el orden del DOM
             enunciado = await extractContentInOrder(enunciadoElement);
         }
-
         return enunciado;
     }
 
     /**
      * Función para extraer las opciones de respuesta y la respuesta seleccionada.
-     * Recorre todos los inputs de tipo radio del HTML, ignorando aquellos que
-     * correspondan a "Quitar mi elección" (o similares) según ciertas condiciones.
+     * Recorre todos los inputs de tipo radio, ignorando aquellos que correspondan a "Quitar mi elección"
+     * (identificados por estar dentro de un contenedor con clase "qtype_multichoice_clearchoice", tener valor "-1"
+     * o la clase "sr-only").
      *
      * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
-     * @returns {Promise<Object>} Un objeto con:
+     * @returns {Promise<Object>} Un objeto con dos propiedades:
      *    - opcionesRespuesta: arreglo con el texto de cada opción.
-     *    - respuestaCorrecta: texto de la opción seleccionada o cadena vacía si ninguna lo está.
+     *    - respuestaCorrecta: texto de la opción marcada o cadena vacía si ninguna está marcada.
      */
     async function extractOpcionesYRespuesta(originalFormulationClearfix) {
-        // Seleccionar todos los inputs radio
         const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
         let opcionesRespuesta = [];
         let respuestaCorrecta = '';
 
         for (const inputRadio of allInputRadio) {
-            // Condición para ignorar inputs que sean de "Quitar mi elección" o similares:
-            // - Si el input se encuentra dentro de un contenedor con clase "qtype_multichoice_clearchoice"
-            // - Si su valor es "-1"
-            // - Si tiene la clase "sr-only"
+            // Ignoramos inputs que correspondan a "Quitar mi elección" o similares.
             const parentDiv = inputRadio.closest('.qtype_multichoice_clearchoice');
             const isClearChoice = parentDiv !== null || inputRadio.value === "-1" || inputRadio.classList.contains('sr-only');
             if (isClearChoice) {
                 continue;
             }
 
-            // Se obtiene el label asociado (se asume que es el siguiente elemento en el DOM)
+            // Se asume que el label asociado es el siguiente elemento en el DOM.
             let labelInput = inputRadio.nextElementSibling;
             let textoOpcion = '';
-
             if (labelInput) {
-                // Si existe un elemento con clase "flex-fill" dentro del label, se extrae desde allí
+                // Si el label contiene un elemento con clase "flex-fill", se extrae desde allí.
                 const flexFillElement = labelInput.querySelector('.flex-fill');
                 if (flexFillElement) {
                     textoOpcion = await extractContentInOrder(flexFillElement);
                 } else {
-                    // Si no, se extrae directamente del label
+                    // Si no, se extrae directamente del label.
                     textoOpcion = await extractContentInOrder(labelInput);
                 }
-                // Si no hay un elemento MathJax, se eliminan literales iniciales como "a.", "b.", etc.
+                // Si no se encuentra un elemento MathJax, se eliminan literales iniciales (como "a.", "b.", etc.).
                 const mathJaxElement = labelInput.querySelector('.MathJax');
                 if (!mathJaxElement) {
                     textoOpcion = textoOpcion.replace(/^[a-zA-Z]\.|^[ivxlcdmIVXLCDM]+\./, '');
                 }
             }
 
-            // Agregar la opción extraída al arreglo de opciones
             opcionesRespuesta.push(textoOpcion);
 
-            // Si este input radio está marcado, se considera que es la respuesta correcta
+            // Si el input está marcado, se asigna su texto como respuesta correcta.
             if (inputRadio.checked) {
                 respuestaCorrecta = textoOpcion;
             }
@@ -24419,18 +24281,50 @@
 
     /**
      * Función principal para procesar la pregunta de opción múltiple (tipo verdadero/falso).
-     * Esta función arma la estructura final de la pregunta que contiene:
-     *   - enunciado: Texto del enunciado (extraído del elemento .qtext)
-     *   - opcionesRespuesta: Arreglo con todas las opciones disponibles.
-     *   - respuestaCorrecta: La opción seleccionada o cadena vacía si no hay selección.
-     *   - html: HTML del clon procesado (con imágenes convertidas a Data URI).
-     *   - tipo: Tipo de la pregunta.
-     *   - ciclo: Valor obtenido del localStorage.
-     *   - feedback: Feedback de la pregunta (si existe).
+     * Se actualiza el objeto que se recibe como segundo parámetro (por ejemplo, "questionsAutoSave")
+     * con la siguiente estructura:
+     *
+     * {
+     *   enunciado:           // Enunciado extraído del elemento .qtext.
+     *   opcionesRespuesta:   // Arreglo con todas las opciones válidas.
+     *   respuestaCorrecta:   // La opción marcada o cadena vacía.
+     *   html:                // HTML del clon procesado (con imágenes convertidas a Data URI).
+     *   tipo:                // Tipo de la pregunta.
+     *   ciclo:               // Valor obtenido desde localStorage.
+     *   feedback:            // Feedback de la pregunta (si existe).
+     * }
      *
      * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
-     * @returns {Promise<Object>} La estructura completa de la pregunta.
+     * @param {Object} questionsAutoSave - Objeto que se actualiza con la estructura de la pregunta.
+     * @returns {Promise<void>}
      */
+    async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix, questionsAutoSave) {
+        const tipo = 'inputradio_opcionmultiple_verdaderofalso';
+
+        // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+
+        // Convertimos las imágenes dentro del clon a Data URI.
+        await convertImgToDataUri(clonFormulation);
+
+        // Extraemos el enunciado usando la función dedicada.
+        const enunciado = await extractEnunciado(originalFormulationClearfix);
+
+        // Extraemos las opciones de respuesta y la respuesta correcta.
+        const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
+
+        // Obtenemos el feedback, si existe.
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+
+        // Actualizamos el objeto "questionsAutoSave" con la nueva estructura.
+        questionsAutoSave.enunciado = enunciado;
+        questionsAutoSave.opcionesRespuesta = opcionesRespuesta;
+        questionsAutoSave.respuestaCorrecta = respuestaCorrecta;
+        questionsAutoSave.html = clonFormulation.outerHTML;
+        questionsAutoSave.tipo = tipo;
+        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
+        questionsAutoSave.feedback = feedback;
+    }
 
     // Manejar respuestas tipo 'input text' (respuesta corta)
      async function inputtext_respuestacorta(originalFormulationClearfix, questionsAutoSave) {
