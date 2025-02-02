@@ -269,3 +269,101 @@ export function convertImageToDataUri(src) {
         };
     });
 }
+
+export async function File2DataUri(files) {
+    let imagenes = [];
+    let audios = [];
+  
+      if (files instanceof HTMLImageElement) {
+        imagenes = [files];
+      } else if (files instanceof HTMLAudioElement) {
+        audios = [files];
+      } else if (files instanceof HTMLElement) {
+        imagenes = Array.from(files.querySelectorAll('img'));
+        audios = Array.from(files.querySelectorAll('audio'));
+      } else {
+        // Si el tipo de entrada no es soportado, se lanza un error que se captura inmediatamente
+        console.log("Tipo de entrada no soportado. Proporcione un elemento HTML, una imagen o un audio.");
+      }
+  
+    // --- Procesar imágenes ---
+    for (const imagen of imagenes) {
+      // Procesar solo imágenes cuya URL contenga 'pluginfile.php'
+      if (imagen.src.includes('pluginfile.php')) {
+        try {
+          // Esperar a que la imagen se cargue (ya sea de caché o en tiempo real)
+          await new Promise((resolver, rechazar) => {
+            if (imagen.complete) {
+              resolver();
+            } else {
+              imagen.onload = resolver;
+              imagen.onerror = rechazar;
+            }
+          });
+  
+          // Dibujar la imagen en un canvas para obtener su Data URI
+          const lienzo = document.createElement('canvas');
+          const contexto = lienzo.getContext('2d');
+          lienzo.width = imagen.naturalWidth;
+          lienzo.height = imagen.naturalHeight;
+          contexto.drawImage(imagen, 0, 0);
+  
+          const dataUriImagen = lienzo.toDataURL();
+          imagen.src = dataUriImagen;
+        } catch (error) {
+          console.error('Error en la conversión de la imagen:', error);
+        }
+      }
+      // Si la imagen no contiene 'pluginfile.php', se deja sin cambios.
+    }
+  
+    // --- Procesar audios ---
+    const umbralDuracionAudio = 60; // Duración umbral en segundos
+    const umbralTamanoAudio = 10 * 1024 * 1024; // Tamaño umbral en bytes (10 MB)
+  
+    for (const audio of audios) {
+      // Procesar solo si la URL existe y contiene 'pluginfile.php'
+      if (audio.src && audio.src.includes('pluginfile.php')) {
+        try {
+          // Esperar a que se carguen los metadatos del audio (para obtener la duración)
+          await new Promise((resolver, rechazar) => {
+            if (audio.readyState >= 1 && !isNaN(audio.duration)) {
+              resolver();
+            } else {
+              audio.onloadedmetadata = resolver;
+              audio.onerror = rechazar;
+            }
+          });
+  
+          // Obtener el blob del audio para revisar el tamaño
+          const respuesta = await fetch(audio.src);
+          const blob = await respuesta.blob();
+  
+          /*  
+            Se realiza la conversión si:
+            - El audio dura menos o igual al umbral, o
+            - Si dura más, pero su tamaño es inferior al umbral.
+            Esto permite convertir audios largos que estén bien comprimidos (por ejemplo, 5 minutos y 1 MB)
+            y omitir la conversión en casos donde el audio sea extenso y pesado.
+          */
+          if (audio.duration > umbralDuracionAudio && blob.size > umbralTamanoAudio) {
+            console.log('Audio demasiado largo y pesado, se omite la conversión:', audio.src);
+            continue;
+          }
+  
+          // Convertir el blob a Data URI usando FileReader
+          const dataUriAudio = await new Promise((resolver, rechazar) => {
+            const lector = new FileReader();
+            lector.onloadend = () => resolver(lector.result);
+            lector.onerror = rechazar;
+            lector.readAsDataURL(blob);
+          });
+  
+          audio.src = dataUriAudio;
+        } catch (error) {
+          console.error('Error en la conversión del audio a Data URI:', error);
+        }
+      }
+    }
+  }
+  
