@@ -1,4 +1,4 @@
-import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
+import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
 
 export async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
@@ -8,7 +8,7 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
     const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
     // Se convierten las imágenes del clon a Data URI
-    await convertImgToDataUri(clonFormulation);
+    await File2DataUri(clonFormulation);
 
     // Se extrae el enunciado utilizando la función extractEnunciado
     const enunciado = await extractEnunciado(originalFormulationClearfix);
