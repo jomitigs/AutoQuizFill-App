@@ -317,30 +317,32 @@ function formatResponseData(responseData) {
                     </div>
                     <hr style="margin-top: 5px; margin-bottom: 0px;">
                 `;
-            } else {
-                // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
-                // Si no hay respuesta, se muestran líneas debajo del enunciado.
+            } 
+        
+        } else if (!questionData.hasOwnProperty('opcionesRespuesta')){
+            // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
+            // Si no hay respuesta, se muestran líneas debajo del enunciado.
+            htmlOutput += `
+                <div class="preguntaautosave" id="${questionKey}">
+                    <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
+                </div>
+            `;
+            if (questionData.respuestaCorrecta && questionData.respuestaCorrecta.trim() !== '') {
                 htmlOutput += `
-                    <div class="preguntaautosave" id="${questionKey}">
-                        <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
+                    <div class="respuestasautosave">
+                        ${processContent(questionData.respuestaCorrecta, 'respuesta')}
                     </div>
                 `;
-                if (questionData.respuestaCorrecta && questionData.respuestaCorrecta.trim() !== '') {
-                    htmlOutput += `
-                        <div class="respuestasautosave">
-                            ${processContent(questionData.respuestaCorrecta, 'respuesta')}
-                        </div>
-                    `;
-                } else {
-                    htmlOutput += `
-                        <div class="respuestasautosave">
-                            <em>___________</em>
-                        </div>
-                    `;
-                }
-                htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
+            } else {
+                htmlOutput += `
+                    <div class="respuestasautosave">
+                        <em>___________</em>
+                    </div>
+                `;
             }
-        } else {
+            htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
+        } 
+        else {
             // Si la estructura es la antigua, se esperan las propiedades "enunciados" y "respuestas"
             const { respuestas = [], enunciados = [], tipo = '' } = questionData;
             // Asegura que las respuestas sean un arreglo
