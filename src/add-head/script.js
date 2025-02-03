@@ -63,21 +63,24 @@ appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern, 'Font Awesome');
 // Agregar KaTeX CSS
 appendLinkIfNotExists(katexCssHref, katexCssPattern, 'KaTeX CSS');
 
-// Agregar el script de KaTeX
+// Agregar el script de KaTeX y luego el de auto-render, esperando que el contenedor esté disponible.
 appendScriptIfNotExists(katexJsSrc, katexJsPattern, 'KaTeX JS', () => {
     // Una vez cargado KaTeX, cargamos el script de auto-render.
     appendScriptIfNotExists(katexAutoRenderSrc, katexAutoRenderPattern, 'KaTeX Auto Render', () => {
-        // Cuando se cargue el auto-render, si existe el contenedor con id "contenido-principal", se renderizan las expresiones.
-        const container = document.getElementById('contenido-principal');
-        if (container && typeof renderMathInElement === 'function') {
-            renderMathInElement(container, {
-                // Configura los delimitadores que usas en tus expresiones
-                delimiters: [
-                    { left: '$$', right: '$$', display: true },
-                    { left: '\\(', right: '\\)', display: false }
-                ]
-            });
-            // console.log("KaTeX auto-render: Expresiones renderizadas en 'contenido-principal'.");
-        }
+        // Espera hasta que el contenedor "contenido-principal" esté en el DOM
+        const intervalID = setInterval(() => {
+            const container = document.getElementById('contenido-principal');
+            if (container && typeof renderMathInElement === 'function') {
+                // Cuando se encuentre el contenedor y renderMathInElement esté disponible, se renderizan las expresiones.
+                renderMathInElement(container, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '\\(', right: '\\)', display: false }
+                    ]
+                });
+                console.log("KaTeX auto-render: Expresiones renderizadas en 'contenido-principal'.");
+                clearInterval(intervalID);
+            }
+        }, 2000); // Comprueba cada 100 ms
     });
 });
