@@ -49,72 +49,7 @@
   font-family: "Font Awesome 6 Free";
 }
 
-/* Estilos Específicos para Encabezados si se desean personalizar */
-#barra-lateral-autoquizfillapp h1,
-#barra-lateral-autoquizfillapp .h1 {
-    font-size: 2em;          /* Tamaño de fuente específico */
-    margin-bottom: 0.67em;   /* Margen inferior específico */
-    font-weight: bold;       /* Peso de fuente en negrita */
-    line-height: 1.2;        /* Altura de línea */
-    color: #333;             /* Color del texto */
-}
 
-#barra-lateral-autoquizfillapp h2,
-#barra-lateral-autoquizfillapp .h2 {
-    font-size: 1.5em;
-    margin-bottom: 0.75em;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #333;
-}
-
-
-#barra-lateral-autoquizfillapp h4,
-#barra-lateral-autoquizfillapp .h4 {
-    font-size: 1em;
-    margin-bottom: 1.12em;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #333;
-}
-
-#barra-lateral-autoquizfillapp h5,
-#barra-lateral-autoquizfillapp .h5 {
-    font-size: 0.83em;
-    margin-bottom: 1.5em;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #333;
-}
-
-#barra-lateral-autoquizfillapp h6,
-#barra-lateral-autoquizfillapp .h6 {
-    font-size: 0.67em;
-    margin-bottom: 1.67em;
-    font-weight: bold;
-    line-height: 1.2;
-    color: #333;
-}
-
-/* Estilos para Párrafos dentro de la Barra Lateral */
-#barra-lateral-autoquizfillapp p {
-    font-size: 1em;
-    line-height: 1.5;
-    color: #555;
-    margin-bottom: 1em;
-}
-
-/* Estilos para Listas dentro de la Barra Lateral */
-#barra-lateral-autoquizfillapp ul {
-    list-style-type: disc;
-    padding-left: 20px;
-    margin-bottom: 1em;
-}
-
-#barra-lateral-autoquizfillapp li {
-    margin-bottom: 0.5em;
-    color: #555;
-}
 
 /* Estilos Adicionales Opcionales */
 
