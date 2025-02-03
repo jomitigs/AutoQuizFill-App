@@ -94,132 +94,7 @@ export async function feedbackQuestion(originalFormulationClearfix) {
     return textoFeedback;
 }
 
-export async function extractContentInOrder(node) {
-  let content = '';
 
-  for (const child of node.childNodes) {
-    
-    // 1) Nodos de texto
-    if (child.nodeType === Node.TEXT_NODE) {
-      const text = child.textContent;
-      if (text && text !== '\n') {
-        content += text;
-      }
-
-    // 2) Nodos de elemento
-    } else if (child.nodeType === Node.ELEMENT_NODE) {
-      const tagName = child.tagName.toLowerCase();
-
-      // ------------------------------------------------------------------------
-      // A) <script type="math/tex">
-      // ------------------------------------------------------------------------
-      if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
-        const latexCode = child.textContent.trim();
-        
-        // Buscamos si el siguiente hermano es <span class="MathJax">
-        let nextSibling = child.nextSibling;
-        let matched = false;
-        
-        // Ignorar posibles nodos de texto vacíos
-        while (nextSibling && nextSibling.nodeType === Node.TEXT_NODE) {
-          if (!nextSibling.textContent.trim()) {
-            nextSibling = nextSibling.nextSibling;
-          } else {
-            break;
-          }
-        }
-
-        // Si el siguiente es un <span class="MathJax">, asumimos que es la misma fórmula
-        if (nextSibling && nextSibling.nodeType === Node.ELEMENT_NODE) {
-          const nsTag = nextSibling.tagName.toLowerCase();
-          if (nsTag === 'span' && nextSibling.classList.contains('MathJax')) {
-            const mathml = nextSibling.getAttribute('data-mathml');
-            if (mathml) {
-              matched = true;
-              // Añadimos un espacio si es necesario
-              if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-                content += ' ';
-              }
-              // Nos quedamos con la versión MathML
-              content += mathml;
-            }
-          }
-        }
-
-        // Si no hay <span class="MathJax">, convertimos el LaTeX
-        if (!matched) {
-          if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-            content += ' ';
-          }
-          // Conversión real usando MathJax
-          const generatedMathML = convertLatexToMathML(latexCode);
-          content += generatedMathML;
-        }
-
-      // ------------------------------------------------------------------------
-      // B) <span class="MathJax" data-mathml>
-      // ------------------------------------------------------------------------
-      } else if (tagName === 'span' && child.classList.contains('MathJax')) {
-        const mathml = child.getAttribute('data-mathml');
-        if (mathml) {
-          if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-            content += ' ';
-          }
-          content += mathml;
-        }
-
-      // ------------------------------------------------------------------------
-      // C) <img>
-      // ------------------------------------------------------------------------
-      } else if (tagName === 'img') {
-        const src = child.getAttribute('src');
-        if (src) {
-          if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-            content += ' ';
-          }
-          // Ya NO convertimos a Data URI, solo conservamos el src
-          content += src;
-        }
-
-      // ------------------------------------------------------------------------
-      // D) <sub>, <sup>
-      // ------------------------------------------------------------------------
-      } else if (tagName === 'sub' || tagName === 'sup') {
-        // Conservamos las etiquetas
-        content += child.outerHTML;
-      
-      // ------------------------------------------------------------------------
-      // E) <p> (procesado recursivo + saltos de línea)
-      // ------------------------------------------------------------------------
-      } else if (tagName === 'p') {
-        const childContent = await extractContentInOrder(child);
-        if (childContent) {
-          if (content.length > 0 && !content.endsWith('\n')) {
-            content += '\n';
-          }
-          content += childContent + '\n';
-        }
-
-      // ------------------------------------------------------------------------
-      // F) <br> (salto de línea)
-      // ------------------------------------------------------------------------
-      } else if (tagName === 'br') {
-        content += '\n';
-
-      // ------------------------------------------------------------------------
-      // G) Otros elementos (recursivo)
-      // ------------------------------------------------------------------------
-      } else {
-        const childContent = await extractContentInOrder(child);
-        if (childContent) {
-          content += childContent;
-        }
-      }
-    }
-  }
-
-  return content;
-}
 
 export function getQuestionNumber(formulation_clearfix) {
     let contenedorPadre = formulation_clearfix.closest('.content');
@@ -429,7 +304,132 @@ export async function File2DataUri(files) {
     }
   }
   
-
+  export async function extractContentInOrder(node) {
+    let content = '';
+  
+    for (const child of node.childNodes) {
+      
+      // 1) Nodos de texto
+      if (child.nodeType === Node.TEXT_NODE) {
+        const text = child.textContent;
+        if (text && text !== '\n') {
+          content += text;
+        }
+  
+      // 2) Nodos de elemento
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        const tagName = child.tagName.toLowerCase();
+  
+        // ------------------------------------------------------------------------
+        // A) <script type="math/tex">
+        // ------------------------------------------------------------------------
+        if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
+          const latexCode = child.textContent.trim();
+          
+          // Buscamos si el siguiente hermano es <span class="MathJax">
+          let nextSibling = child.nextSibling;
+          let matched = false;
+          
+          // Ignorar posibles nodos de texto vacíos
+          while (nextSibling && nextSibling.nodeType === Node.TEXT_NODE) {
+            if (!nextSibling.textContent.trim()) {
+              nextSibling = nextSibling.nextSibling;
+            } else {
+              break;
+            }
+          }
+  
+          // Si el siguiente es un <span class="MathJax">, asumimos que es la misma fórmula
+          if (nextSibling && nextSibling.nodeType === Node.ELEMENT_NODE) {
+            const nsTag = nextSibling.tagName.toLowerCase();
+            if (nsTag === 'span' && nextSibling.classList.contains('MathJax')) {
+              const mathml = nextSibling.getAttribute('data-mathml');
+              if (mathml) {
+                matched = true;
+                // Añadimos un espacio si es necesario
+                if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+                  content += ' ';
+                }
+                // Nos quedamos con la versión MathML
+                content += mathml;
+              }
+            }
+          }
+  
+          // Si no hay <span class="MathJax">, convertimos el LaTeX
+          if (!matched) {
+            if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+              content += ' ';
+            }
+            // Conversión real usando MathJax
+            const generatedMathML = convertLatexToMathML(latexCode);
+            content += generatedMathML;
+          }
+  
+        // ------------------------------------------------------------------------
+        // B) <span class="MathJax" data-mathml>
+        // ------------------------------------------------------------------------
+        } else if (tagName === 'span' && child.classList.contains('MathJax')) {
+          const mathml = child.getAttribute('data-mathml');
+          if (mathml) {
+            if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+              content += ' ';
+            }
+            content += mathml;
+          }
+  
+        // ------------------------------------------------------------------------
+        // C) <img>
+        // ------------------------------------------------------------------------
+        } else if (tagName === 'img') {
+          const src = child.getAttribute('src');
+          if (src) {
+            if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+              content += ' ';
+            }
+            // Ya NO convertimos a Data URI, solo conservamos el src
+            content += src;
+          }
+  
+        // ------------------------------------------------------------------------
+        // D) <sub>, <sup>
+        // ------------------------------------------------------------------------
+        } else if (tagName === 'sub' || tagName === 'sup') {
+          // Conservamos las etiquetas
+          content += child.outerHTML;
+        
+        // ------------------------------------------------------------------------
+        // E) <p> (procesado recursivo + saltos de línea)
+        // ------------------------------------------------------------------------
+        } else if (tagName === 'p') {
+          const childContent = await extractContentInOrder(child);
+          if (childContent) {
+            if (content.length > 0 && !content.endsWith('\n')) {
+              content += '\n';
+            }
+            content += childContent + '\n';
+          }
+  
+        // ------------------------------------------------------------------------
+        // F) <br> (salto de línea)
+        // ------------------------------------------------------------------------
+        } else if (tagName === 'br') {
+          content += '\n';
+  
+        // ------------------------------------------------------------------------
+        // G) Otros elementos (recursivo)
+        // ------------------------------------------------------------------------
+        } else {
+          const childContent = await extractContentInOrder(child);
+          if (childContent) {
+            content += childContent;
+          }
+        }
+      }
+    }
+  
+    return content;
+  }
 /**
  * Configuramos MathJax para convertir LaTeX a MathML.
  * Esto se hace una sola vez, al cargar el módulo.
