@@ -140,7 +140,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
             }
 
             // Se almacena directamente la información de la pregunta, usando la clave "PreguntaNueva" seguida del número.
-            questionsHtmlObject[`PreguntaNueva${numberQuestion}`] = questionData;
+            questionsHtmlObject[`Pregunta${numberQuestion}`] = questionData;
         }
 
         // Guardar el objeto completo en sessionStorage.
