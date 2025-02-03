@@ -11,7 +11,7 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
     }
 
     // Extraemos el enunciado usando la función dedicada.
-    const enunciado = await extractEnunciado(originalFormulationClearfix);
+    const enunciado = await extractEnunciado(clonFormulation);
 
     // Extraemos las opciones de respuesta y la respuesta correcta.
     const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
@@ -35,8 +35,8 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
 }
 
 
-export async function extractEnunciado(originalFormulationClearfix) {
-    const enunciadoElement = originalFormulationClearfix.querySelector('.qtext');
+export async function extractEnunciado(clonFormulation) {
+    const enunciadoElement = clonFormulation.querySelector('.qtext');
     let enunciado = '';
     if (enunciadoElement) {
         enunciado = await extractContentInOrder(enunciadoElement);

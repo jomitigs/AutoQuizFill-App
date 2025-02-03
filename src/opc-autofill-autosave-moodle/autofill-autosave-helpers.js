@@ -431,35 +431,69 @@ export async function File2DataUri(files) {
   
     return content;
   }
-/**
- * Configuramos MathJax para convertir LaTeX a MathML.
- * Esto se hace una sola vez, al cargar el módulo.
+
+  /**
+ * Convierte LaTeX a MathML sin afectar la parte visible de la web.
+ * Detecta la versión de MathJax (v3 o v2) y utiliza el método correspondiente.
+ * Retorna una promesa que se resuelve con el MathML resultante.
+ *
+ * @param {string} latexCode - Código LaTeX a convertir.
+ * @param {boolean} [displayMode=false] - true para ecuación de bloque, false para en línea.
+ * @returns {Promise<string>} - Promesa con el MathML.
  */
-const adaptor = liteAdaptor()
-RegisterHTMLHandler(adaptor)
-
-// InputJax para procesar LaTeX
-const tex = new TeX({
-  packages: AllPackages // Incluye todos los paquetes necesarios para LaTeX
-})
-
-// OutputJax para generar MathML
-const mml = new MathML()
-
-// Creamos un documento "vacío" en MathJax
-const mjDocument = mathjax.document('', {
-  InputJax: tex,
-  OutputJax: mml
-})
-
-export function convertLatexToMathML(latexCode, displayMode = false) {
-  // Convertimos el LaTeX a un nodo interno de MathJax
-  const node = mjDocument.convert(latexCode, {
-    display: displayMode // true = \[ \], false = \( \)
-  })
+export async function convertLatexToMathML(latexCode, displayMode = false) {
+    if (!window.MathJax) {
+      throw new Error("MathJax no está cargado en la página.");
+    }
   
-  // Extraemos el MathML como cadena HTML
-  const mathml = adaptor.outerHTML(node)
-  return mathml
-}
-
+    // Si MathJax.tex2mmlPromise existe, asumimos que es v3
+    if (typeof MathJax.tex2mmlPromise === 'function') {
+      return await MathJax.tex2mmlPromise(latexCode, { display: displayMode });
+    }
+    // Si MathJax.Hub existe, asumimos que es v2
+    else if (window.MathJax.Hub) {
+      return await convertWithMathJaxV2(latexCode, displayMode);
+    }
+    else {
+      throw new Error("No se pudo determinar la versión de MathJax.");
+    }
+  }
+  
+  /**
+   * Conversión con MathJax v2.
+   * Crea un contenedor temporal oculto para procesar el LaTeX sin afectar la vista.
+   *
+   * @param {string} latexCode - Código LaTeX a convertir.
+   * @param {boolean} displayMode - true para bloque, false para en línea.
+   * @returns {Promise<string>} - Promesa con el MathML.
+   */
+  function convertWithMathJaxV2(latexCode, displayMode) {
+    return new Promise((resolve, reject) => {
+      // Crear un contenedor oculto
+      const container = document.createElement('div');
+      container.style.position = 'absolute';
+      container.style.top = '-9999px';
+      container.style.visibility = 'hidden';
+      
+      // Inserta el LaTeX con los delimitadores adecuados según el modo.
+      container.innerHTML = displayMode ? '$$' + latexCode + '$$' : '\\(' + latexCode + '\\)';
+      
+      // Agrega el contenedor al DOM (puedes insertarlo en el body sin afectar la vista)
+      document.body.appendChild(container);
+      
+      // Forzar que MathJax procese el contenedor
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+      MathJax.Hub.Queue(() => {
+        const mathElements = container.getElementsByTagName('math');
+        if (mathElements.length > 0) {
+          const mathml = mathElements[0].outerHTML;
+          document.body.removeChild(container);
+          resolve(mathml);
+        } else {
+          document.body.removeChild(container);
+          reject(new Error("No se generó MathML con MathJax v2."));
+        }
+      });
+    });
+  }
+  

@@ -1,4 +1,4 @@
-(function (mathml_js) {
+(function () {
     'use strict';
 
     // addHead.js
@@ -24026,9 +24026,9 @@
     	return mathjax;
     }
 
-    var mathjaxExports = requireMathjax();
+    requireMathjax();
 
-    var tex$1 = {};
+    var tex = {};
 
     var InputJax = {};
 
@@ -34976,9 +34976,9 @@
     var hasRequiredTex;
 
     function requireTex () {
-    	if (hasRequiredTex) return tex$1;
+    	if (hasRequiredTex) return tex;
     	hasRequiredTex = 1;
-    	var __extends = (tex$1.__extends) || (function () {
+    	var __extends = (tex.__extends) || (function () {
     	    var extendStatics = function (d, b) {
     	        extendStatics = Object.setPrototypeOf ||
     	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -34993,7 +34993,7 @@
     	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     	    };
     	})();
-    	var __assign = (tex$1.__assign) || function () {
+    	var __assign = (tex.__assign) || function () {
     	    __assign = Object.assign || function(t) {
     	        for (var s, i = 1, n = arguments.length; i < n; i++) {
     	            s = arguments[i];
@@ -35004,7 +35004,7 @@
     	    };
     	    return __assign.apply(this, arguments);
     	};
-    	var __read = (tex$1.__read) || function (o, n) {
+    	var __read = (tex.__read) || function (o, n) {
     	    var m = typeof Symbol === "function" && o[Symbol.iterator];
     	    if (!m) return o;
     	    var i = m.call(o), r, ar = [], e;
@@ -35020,11 +35020,11 @@
     	    }
     	    return ar;
     	};
-    	var __importDefault = (tex$1.__importDefault) || function (mod) {
+    	var __importDefault = (tex.__importDefault) || function (mod) {
     	    return (mod && mod.__esModule) ? mod : { "default": mod };
     	};
-    	Object.defineProperty(tex$1, "__esModule", { value: true });
-    	tex$1.TeX = undefined;
+    	Object.defineProperty(tex, "__esModule", { value: true });
+    	tex.TeX = undefined;
     	var InputJax_js_1 = requireInputJax();
     	var Options_js_1 = requireOptions();
     	var FindTeX_js_1 = requireFindTeX();
@@ -35129,12 +35129,12 @@
     	    TeX.OPTIONS = __assign(__assign({}, InputJax_js_1.AbstractInputJax.OPTIONS), { FindTeX: null, packages: ['base'], digits: /^(?:[0-9]+(?:\{,\}[0-9]{3})*(?:\.[0-9]*)?|\.[0-9]+)/, maxBuffer: 5 * 1024, formatError: function (jax, err) { return jax.formatError(err); } });
     	    return TeX;
     	}(InputJax_js_1.AbstractInputJax));
-    	tex$1.TeX = TeX;
+    	tex.TeX = TeX;
     	
-    	return tex$1;
+    	return tex;
     }
 
-    var texExports = requireTex();
+    requireTex();
 
     var liteAdaptor = {};
 
@@ -36917,7 +36917,7 @@
     	return liteAdaptor;
     }
 
-    var liteAdaptorExports = requireLiteAdaptor();
+    requireLiteAdaptor();
 
     var html = {};
 
@@ -41979,7 +41979,7 @@
     	return html;
     }
 
-    var htmlExports = requireHtml();
+    requireHtml();
 
     var AllPackages = {};
 
@@ -51567,7 +51567,7 @@
     	return AllPackages;
     }
 
-    var AllPackagesExports = requireAllPackages();
+    requireAllPackages();
 
     async function feedbackQuestion(originalFormulationClearfix) {
         // console.log('Iniciando feedbackQuestion');
@@ -51986,37 +51986,71 @@
       
         return content;
       }
-    /**
-     * Configuramos MathJax para convertir LaTeX a MathML.
-     * Esto se hace una sola vez, al cargar el módulo.
+
+      /**
+     * Convierte LaTeX a MathML sin afectar la parte visible de la web.
+     * Detecta la versión de MathJax (v3 o v2) y utiliza el método correspondiente.
+     * Retorna una promesa que se resuelve con el MathML resultante.
+     *
+     * @param {string} latexCode - Código LaTeX a convertir.
+     * @param {boolean} [displayMode=false] - true para ecuación de bloque, false para en línea.
+     * @returns {Promise<string>} - Promesa con el MathML.
      */
-    const adaptor = liteAdaptorExports.liteAdaptor();
-    htmlExports.RegisterHTMLHandler(adaptor);
-
-    // InputJax para procesar LaTeX
-    const tex = new texExports.TeX({
-      packages: AllPackagesExports.AllPackages // Incluye todos los paquetes necesarios para LaTeX
-    });
-
-    // OutputJax para generar MathML
-    const mml = new mathml_js.MathML();
-
-    // Creamos un documento "vacío" en MathJax
-    const mjDocument = mathjaxExports.mathjax.document('', {
-      InputJax: tex,
-      OutputJax: mml
-    });
-
-    function convertLatexToMathML(latexCode, displayMode = false) {
-      // Convertimos el LaTeX a un nodo interno de MathJax
-      const node = mjDocument.convert(latexCode, {
-        display: displayMode // true = \[ \], false = \( \)
-      });
+    async function convertLatexToMathML(latexCode, displayMode = false) {
+        if (!window.MathJax) {
+          throw new Error("MathJax no está cargado en la página.");
+        }
       
-      // Extraemos el MathML como cadena HTML
-      const mathml = adaptor.outerHTML(node);
-      return mathml
-    }
+        // Si MathJax.tex2mmlPromise existe, asumimos que es v3
+        if (typeof MathJax.tex2mmlPromise === 'function') {
+          return await MathJax.tex2mmlPromise(latexCode, { display: displayMode });
+        }
+        // Si MathJax.Hub existe, asumimos que es v2
+        else if (window.MathJax.Hub) {
+          return await convertWithMathJaxV2(latexCode, displayMode);
+        }
+        else {
+          throw new Error("No se pudo determinar la versión de MathJax.");
+        }
+      }
+      
+      /**
+       * Conversión con MathJax v2.
+       * Crea un contenedor temporal oculto para procesar el LaTeX sin afectar la vista.
+       *
+       * @param {string} latexCode - Código LaTeX a convertir.
+       * @param {boolean} displayMode - true para bloque, false para en línea.
+       * @returns {Promise<string>} - Promesa con el MathML.
+       */
+      function convertWithMathJaxV2(latexCode, displayMode) {
+        return new Promise((resolve, reject) => {
+          // Crear un contenedor oculto
+          const container = document.createElement('div');
+          container.style.position = 'absolute';
+          container.style.top = '-9999px';
+          container.style.visibility = 'hidden';
+          
+          // Inserta el LaTeX con los delimitadores adecuados según el modo.
+          container.innerHTML = displayMode ? '$$' + latexCode + '$$' : '\\(' + latexCode + '\\)';
+          
+          // Agrega el contenedor al DOM (puedes insertarlo en el body sin afectar la vista)
+          document.body.appendChild(container);
+          
+          // Forzar que MathJax procese el contenedor
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, container]);
+          MathJax.Hub.Queue(() => {
+            const mathElements = container.getElementsByTagName('math');
+            if (mathElements.length > 0) {
+              const mathml = mathElements[0].outerHTML;
+              document.body.removeChild(container);
+              resolve(mathml);
+            } else {
+              document.body.removeChild(container);
+              reject(new Error("No se generó MathML con MathJax v2."));
+            }
+          });
+        });
+      }
 
     // Manejar respuestas tipo 'draganddrop' (image)
      async function draganddrop_image(originalFormulationClearfix, questionsAutoSave) {
@@ -52154,7 +52188,7 @@
         }
 
         // Extraemos el enunciado usando la función dedicada.
-        const enunciado = await extractEnunciado(originalFormulationClearfix);
+        const enunciado = await extractEnunciado(clonFormulation);
 
         // Extraemos las opciones de respuesta y la respuesta correcta.
         const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
@@ -52178,8 +52212,8 @@
     }
 
 
-    async function extractEnunciado(originalFormulationClearfix) {
-        const enunciadoElement = originalFormulationClearfix.querySelector('.qtext');
+    async function extractEnunciado(clonFormulation) {
+        const enunciadoElement = clonFormulation.querySelector('.qtext');
         let enunciado = '';
         if (enunciadoElement) {
             enunciado = await extractContentInOrder(enunciadoElement);
@@ -54146,4 +54180,4 @@
     // Exposición de la función de cierre de sesión para uso externo (opcional).
     window.cerrarSesionAutoQuiz = cerrarSesionAutoQuiz$1;
 
-})(MathJax);
+})();
