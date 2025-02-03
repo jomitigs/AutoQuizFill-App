@@ -24775,7 +24775,7 @@
      * se asume la nueva estructura y se muestra:
      *    - Nombre de la pregunta (usando la clave, ej. "Pregunta 1")
      *    - Enunciado
-     *    - Opciones de respuesta (con literales a., b., c., etc.) donde la opción que coincide con la respuesta seleccionada se marca en rojo con font-weight 500.
+     *    - Opciones de respuesta (con literales a., b., c., etc.) donde la opción que coincide con la respuesta seleccionada se marca en rojo y en negrita (literal y texto).
      *
      * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
      *
@@ -24863,7 +24863,7 @@
     /**
      * Función para formatear el arreglo de opciones de respuesta.
      * Si hay más de una opción, se les asignan literales (a., b., c., …)
-     * Se resalta con color rojo y font-weight 500 la opción que coincida con la respuesta seleccionada.
+     * Se resalta (literal y texto) con color rojo y font-weight 700 la opción que coincida con la respuesta seleccionada.
      *
      * @param {Array} opciones - Arreglo de opciones de respuesta.
      * @param {string} respuestaSeleccionada - La respuesta seleccionada.
@@ -24874,16 +24874,19 @@
         return opciones
             .map((opcion, index) => {
                 // Se asigna una letra (a., b., c., …)
-                const etiqueta = opciones.length > 1 
+                const literal = opciones.length > 1 
                     ? String.fromCharCode(97 + index) + '. ' 
                     : (index + 1) + '. ';
-                // Comparamos la opción (sin procesar) con la respuesta seleccionada
-                // Se realiza un trim para evitar diferencias por espacios adicionales
+                // Se obtiene el contenido procesado de la opción
                 let opcionFormateada = processContent(opcion, 'respuesta');
+                // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
                 if (opcion.trim() === respuestaSeleccionada.trim()) {
-                    opcionFormateada = `<span style="font-weight:500; color:red;">${opcionFormateada}</span>`;
+                    opcionFormateada = `<span style="font-weight:700; color:red;">${literal}${opcionFormateada}</span>`;
+                } else {
+                    // Si no es la opción seleccionada, se muestra el literal normalmente
+                    opcionFormateada = `${literal}${opcionFormateada}`;
                 }
-                return `<div>${etiqueta}${opcionFormateada}</div>`;
+                return `<div>${opcionFormateada}</div>`;
             })
             .join('');
     }
