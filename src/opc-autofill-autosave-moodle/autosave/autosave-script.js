@@ -194,219 +194,6 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
     }
 }
 
-// Función principal para mostrar las respuestas guardadas (AutoSave)
-function AutoSave_ShowResponses() {
-    // Se obtiene el elemento del DOM con id "respuestasautosave"
-    const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
-
-    // Si el elemento no existe, se muestra un error y se detiene la ejecución
-    if (!elementoRespuestasAutoSave) {
-        console.error('El elemento con id "respuestasautosave" no existe en el DOM.');
-        return;
-    }
-
-    // Se recuperan las respuestas guardadas en sessionStorage
-    const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave');
-    if (!respuestasGuardadas) {
-        elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-        console.log('No hay respuestas guardadas, mostrando "Sin responder".');
-        return;
-    }
-
-    let respuestasObj;
-    try {
-        // Se parsea el JSON de respuestas
-        respuestasObj = JSON.parse(respuestasGuardadas);
-    } catch (error) {
-        console.error('Error al parsear las respuestas guardadas:', error);
-        elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-        return;
-    }
-
-    // Se formatean las respuestas según la estructura del objeto y se muestran en el DOM
-    const respuestasFormateadas = formatResponses(respuestasObj);
-    elementoRespuestasAutoSave.innerHTML = respuestasFormateadas || '<span style="font-weight:500; color:red;">Sin responder</span>';
-}
-
-/**
- * Función para formatear las respuestas guardadas en HTML.
- * Se itera sobre cada propiedad del objeto.
- *
- * Si el objeto (por ejemplo, "Pregunta1") contiene la propiedad "opcionesRespuesta",
- * se asume la nueva estructura y se muestra:
- *    - Nombre de la pregunta (usando la clave, ej. "Pregunta 1")
- *    - Enunciado
- *    - Opciones de respuesta (con literales a., b., c., etc.) donde la opción que coincide con la respuesta seleccionada se marca en rojo y en negrita (literal y texto).
- *
- * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
- *
- * @param {Object} respuestasObj - Objeto con las respuestas guardadas.
- * @returns {string} - HTML formateado.
- */
-function formatResponses(respuestasObj) {
-    let html = '';
-
-    // Se itera sobre cada par clave-valor del objeto de respuestas
-    for (const [clave, valor] of Object.entries(respuestasObj)) {
-        // Se extrae el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
-        let numeroPregunta = clave.replace(/[^\d]/g, '');
-        
-        if (valor.hasOwnProperty('opcionesRespuesta')) {
-            // Nueva estructura
-            html += `
-                <div class="preguntaautosave" id="${clave}">
-                    <strong>Pregunta ${numeroPregunta}:</strong> ${processContent(valor.enunciado, 'enunciado')}
-                </div>
-                <div class="respuestasautosave">
-                    ${formatOptions(valor.opcionesRespuesta, valor.respuestaCorrecta)}
-                </div>
-            `;
-        } else {
-            // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
-            const { respuestas = [], enunciados = [], tipo = '' } = valor;
-            // Se asegura que respuestasFinales sea un arreglo
-            const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
-            // Se obtiene el contenido HTML de la respuesta usando la función consolidada getResponseContent
-            const contenidoRespuesta = getResponseContent(enunciados, respuestasFinales, tipo, clave);
-
-            html += `
-                <div class="preguntaautosave" id="${clave}">
-                    <strong>Pregunta ${numeroPregunta}:</strong>
-                </div>
-                <div class="respuestasautosave">
-                    ${contenidoRespuesta}
-                </div>
-            `;
-        }
-    }
-
-    return html;
-}
-
-/**
- * Función que determina el contenido HTML de una respuesta.
- * Aquí se agrupa la lógica:
- * - Si existen enunciados y su cantidad coincide con la de respuestas, se procesan en pares.
- * - Si hay múltiples respuestas sin enunciados, se formatean según el tipo de pregunta.
- * - Si es una sola respuesta, se procesa directamente.
- * - Si el contenido resultante está vacío, se muestra "Sin responder".
- *
- * @param {Array} enunciados - Arreglo de enunciados (puede estar vacío).
- * @param {Array} respuestasFinales - Arreglo de respuestas.
- * @param {string} tipo - Tipo de pregunta.
- * @param {string} numeroPregunta - Identificador de la pregunta (ej. "Pregunta1").
- * @returns {string} - HTML con el contenido de la respuesta formateado.
- */
-function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta) {
-    let respuestasHTML = '';
-
-    if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
-        respuestasHTML = enunciados
-            .map((enunciado, index) => {
-                const respuesta = respuestasFinales[index];
-                return `${processContent(enunciado, 'enunciado')} <strong>➔</strong> ${processContent(respuesta, 'respuesta')}`;
-            })
-            .join('<br>');
-    } else if (respuestasFinales.length > 1) {
-        respuestasHTML = formatMultipleResponses(respuestasFinales, tipo);
-    } else {
-        const respuesta = respuestasFinales[0] || '';
-        respuestasHTML = processContent(respuesta, 'respuesta');
-    }
-
-    if (!respuestasHTML) {
-        respuestasHTML = `<span id="${numeroPregunta}" style="font-weight:500; color:red;">Sin responder</span>`;
-    }
-
-    return respuestasHTML;
-}
-
-/**
- * Función para formatear el arreglo de opciones de respuesta.
- * Si hay más de una opción, se les asignan literales (a., b., c., …)
- * Se resalta (literal y texto) con color rojo y font-weight 700 la opción que coincida con la respuesta seleccionada.
- *
- * @param {Array} opciones - Arreglo de opciones de respuesta.
- * @param {string} respuestaSeleccionada - La respuesta seleccionada.
- * @returns {string} - HTML con las opciones formateadas.
- */
-function formatOptions(opciones, respuestaSeleccionada) {
-    if (!opciones || !Array.isArray(opciones)) return '';
-    return opciones
-        .map((opcion, index) => {
-            // Se asigna una letra (a., b., c., …)
-            const literal = opciones.length > 1 
-                ? String.fromCharCode(97 + index) + '. ' 
-                : (index + 1) + '. ';
-            // Se obtiene el contenido procesado de la opción
-            let opcionFormateada = processContent(opcion, 'respuesta');
-            // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
-            if (opcion.trim() === respuestaSeleccionada.trim()) {
-                opcionFormateada = `<span style="font-weight:600; color:MediumBlue;">${literal}${opcionFormateada}</span>`;
-            } else {
-                // Si no es la opción seleccionada, se muestra el literal normalmente
-                opcionFormateada = `${literal}${opcionFormateada}`;
-            }
-            return `<div>${opcionFormateada}</div>`;
-        })
-        .join('');
-}
-
-/**
- * Función que procesa el contenido para reemplazar URLs de imágenes, data URIs, MathML y saltos de línea.
- *
- * @param {string} contenido - Contenido a procesar.
- * @param {string} tipo - Tipo de contenido ('enunciado' o 'respuesta').
- * @returns {string} - Contenido procesado en HTML.
- */
-function processContent(contenido, tipo) {
-    const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
-    const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi;
-    const mathRegex = /<math[^>]*>[\s\S]*?<\/math>/g;
-
-    let procesado = contenido
-        .replace(imageRegex, (match) => createImgTag(match, tipo))
-        .replace(dataUriRegex, (match) => createImgTag(match, tipo))
-        .replace(mathRegex, (match) => `<span style="font-size: 1.5em;">${match}</span>`)
-        .replace(/(\r\n|\n|\r)/g, '<br>');
-
-    return procesado || `<span style="font-weight:500; color:red;">Sin responder</span>`;
-}
-
-/**
- * Función que crea una etiqueta <img> con el atributo src, alt y estilos adecuados.
- *
- * @param {string} src - URL o data URI de la imagen.
- * @param {string} tipo - Tipo de contenido ('enunciado' o 'respuesta').
- * @returns {string} - Etiqueta <img> en HTML.
- */
-function createImgTag(src, tipo) {
-    const altText = tipo === 'enunciado' ? 'Imagen de enunciado' : 'Imagen de respuesta';
-    return `<img src="${src}" alt="${altText}" style="max-width: 200px; max-height: 150px;">`;
-}
-
-/**
- * Función que formatea múltiples respuestas según el tipo de pregunta.
- *
- * @param {Array} respuestas - Arreglo de respuestas.
- * @param {string} tipoPregunta - Tipo de pregunta (por ejemplo, 'draganddrop_text' o 'draganddrop_image').
- * @returns {string} - Respuestas formateadas en HTML.
- */
-function formatMultipleResponses(respuestas, tipoPregunta) {
-    if (tipoPregunta === 'draganddrop_text' || tipoPregunta === 'draganddrop_image') {
-        return respuestas
-            .map((respuesta, index) => `${index + 1}. ${processContent(respuesta, 'respuesta')}`)
-            .join('<br>');
-    } else {
-        return respuestas
-            .map(respuesta => `• ${processContent(respuesta, 'respuesta')}`)
-            .join('<br>');
-    }
-}
-
-
-
-
 // -----------------------------------------------------------------------
 // Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
 // -----------------------------------------------------------------------
@@ -476,4 +263,223 @@ function detectarCambiosPreguntas() {
 
 }
 
+// Función principal para mostrar las respuestas guardadas (AutoSave)
+function AutoSave_ShowResponses() {
+    // Se obtiene el elemento del DOM con id "respuestasautosave"
+    const elementoRespuestasAutoSave = document.getElementById('respuestasautosave');
 
+    // Si el elemento no existe, se muestra un error y se detiene la ejecución
+    if (!elementoRespuestasAutoSave) {
+        console.error('El elemento con id "respuestasautosave" no existe en el DOM.');
+        return;
+    }
+
+    // Se recuperan las respuestas guardadas en sessionStorage
+    const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave');
+    if (!respuestasGuardadas) {
+        elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+        console.log('No hay respuestas guardadas, mostrando "Sin responder".');
+        return;
+    }
+
+    let respuestasObj;
+    try {
+        // Se parsea el JSON de respuestas
+        respuestasObj = JSON.parse(respuestasGuardadas);
+    } catch (error) {
+        console.error('Error al parsear las respuestas guardadas:', error);
+        elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+        return;
+    }
+
+    // Se formatean las respuestas según la estructura del objeto y se muestran en el DOM
+    const respuestasFormateadas = formatResponses(respuestasObj);
+    elementoRespuestasAutoSave.innerHTML = respuestasFormateadas || '<span style="font-weight:500; color:red;">Sin responder</span>';
+}
+
+/**
+ * Función para formatear las respuestas guardadas en HTML.
+ * Se itera sobre cada propiedad del objeto.
+ *
+ * Si el objeto (por ejemplo, "Pregunta1") contiene la propiedad "opcionesRespuesta",
+ * se asume la nueva estructura y se muestra:
+ *    - Nombre de la pregunta (usando la clave, ej. "Pregunta 1")
+ *    - Enunciado
+ *    - Opciones de respuesta (con literales a., b., c., etc.) donde la opción que coincide con la respuesta seleccionada se marca en color y negrita (literal y texto).
+ *
+ * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
+ *
+ * Al final de cada bloque de pregunta se inserta un separador.
+ *
+ * @param {Object} respuestasObj - Objeto con las respuestas guardadas.
+ * @returns {string} - HTML formateado.
+ */
+function formatResponses(respuestasObj) {
+    let html = '';
+
+    // Se itera sobre cada par clave-valor del objeto de respuestas
+    for (const [clave, valor] of Object.entries(respuestasObj)) {
+        // Se extrae el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
+        let numeroPregunta = clave.replace(/[^\d]/g, '');
+        
+        if (valor.hasOwnProperty('opcionesRespuesta')) {
+            // Nueva estructura
+            html += `
+                <div class="preguntaautosave" id="${clave}">
+                    <strong>Pregunta ${numeroPregunta}:</strong> ${processContent(valor.enunciado, 'enunciado')}
+                </div>
+                <div class="respuestasautosave">
+                    ${formatOptions(valor.opcionesRespuesta, valor.respuestaCorrecta)}
+                </div>
+                <hr style="margin-top:20px; margin-bottom:20px;">
+            `;
+        } else {
+            // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
+            const { respuestas = [], enunciados = [], tipo = '' } = valor;
+            // Se asegura que respuestasFinales sea un arreglo
+            const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
+            // Se obtiene el contenido HTML de la respuesta usando la función consolidada getResponseContent
+            const contenidoRespuesta = getResponseContent(enunciados, respuestasFinales, tipo, clave);
+
+            html += `
+                <div class="preguntaautosave" id="${clave}">
+                    <strong>Pregunta ${numeroPregunta}:</strong>
+                </div>
+                <div class="respuestasautosave">
+                    ${contenidoRespuesta}
+                </div>
+                <hr style="margin-top:20px; margin-bottom:20px;">
+            `;
+        }
+    }
+
+    return html;
+}
+
+/**
+ * Función que determina el contenido HTML de una respuesta.
+ * Aquí se agrupa la lógica:
+ * - Si existen enunciados y su cantidad coincide con la de respuestas, se procesan en pares.
+ * - Si hay múltiples respuestas sin enunciados o la cantidad de enunciados no coincide, se muestran las respuestas en negrita.
+ * - Si es una sola respuesta, se muestra en negrita.
+ * - Si el contenido resultante está vacío, se muestra "Sin responder".
+ *
+ * @param {Array} enunciados - Arreglo de enunciados (puede estar vacío).
+ * @param {Array} respuestasFinales - Arreglo de respuestas.
+ * @param {string} tipo - Tipo de pregunta.
+ * @param {string} numeroPregunta - Identificador de la pregunta (ej. "Pregunta1").
+ * @returns {string} - HTML con el contenido de la respuesta formateado.
+ */
+function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta) {
+    let respuestasHTML = '';
+
+    if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
+        respuestasHTML = enunciados
+            .map((enunciado, index) => {
+                const respuesta = respuestasFinales[index];
+                return `${processContent(enunciado, 'enunciado')} <strong>➔</strong> ${processContent(respuesta, 'respuesta')}`;
+            })
+            .join('<br>');
+    } else if (respuestasFinales.length > 1) {
+        // Si hay enunciados pero la cantidad no coincide, se muestran todas las respuestas en negrita.
+        if (enunciados.length > 0 && enunciados.length !== respuestasFinales.length) {
+            respuestasHTML = respuestasFinales
+                .map((respuesta) => `<strong>${processContent(respuesta, 'respuesta')}</strong>`)
+                .join('<br>');
+        } else {
+            respuestasHTML = formatMultipleResponses(respuestasFinales, tipo);
+        }
+    } else {
+        const respuesta = respuestasFinales[0] || '';
+        respuestasHTML = `<strong>${processContent(respuesta, 'respuesta')}</strong>`;
+    }
+
+    if (!respuestasHTML) {
+        respuestasHTML = `<span id="${numeroPregunta}" style="font-weight:500; color:red;">Sin responder</span>`;
+    }
+
+    return respuestasHTML;
+}
+
+/**
+ * Función para formatear el arreglo de opciones de respuesta.
+ * Si hay más de una opción, se les asignan literales (a., b., c., …)
+ * Se resalta (literal y texto) con color rojo y font-weight 700 la opción que coincida con la respuesta seleccionada.
+ *
+ * @param {Array} opciones - Arreglo de opciones de respuesta.
+ * @param {string} respuestaSeleccionada - La respuesta seleccionada.
+ * @returns {string} - HTML con las opciones formateadas.
+ */
+function formatOptions(opciones, respuestaSeleccionada) {
+    if (!opciones || !Array.isArray(opciones)) return '';
+    return opciones
+        .map((opcion, index) => {
+            // Se asigna una letra (a., b., c., …)
+            const literal = opciones.length > 1 
+                ? String.fromCharCode(97 + index) + '. ' 
+                : (index + 1) + '. ';
+            // Se obtiene el contenido procesado de la opción
+            let opcionFormateada = processContent(opcion, 'respuesta');
+            // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
+            if (opcion.trim() === respuestaSeleccionada.trim()) {
+                opcionFormateada = `<span style="font-weight:700; color:red;">${literal}${opcionFormateada}</span>`;
+            } else {
+                // Si no es la opción seleccionada, se muestra el literal normalmente
+                opcionFormateada = `${literal}${opcionFormateada}`;
+            }
+            return `<div>${opcionFormateada}</div>`;
+        })
+        .join('');
+}
+
+/**
+ * Función que procesa el contenido para reemplazar URLs de imágenes, data URIs, MathML y saltos de línea.
+ *
+ * @param {string} contenido - Contenido a procesar.
+ * @param {string} tipo - Tipo de contenido ('enunciado' o 'respuesta').
+ * @returns {string} - Contenido procesado en HTML.
+ */
+function processContent(contenido, tipo) {
+    const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
+    const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi;
+    const mathRegex = /<math[^>]*>[\s\S]*?<\/math>/g;
+
+    let procesado = contenido
+        .replace(imageRegex, (match) => createImgTag(match, tipo))
+        .replace(dataUriRegex, (match) => createImgTag(match, tipo))
+        .replace(mathRegex, (match) => `<span style="font-size: 1.5em;">${match}</span>`)
+        .replace(/(\r\n|\n|\r)/g, '<br>');
+
+    return procesado || `<span style="font-weight:500; color:red;">Sin responder</span>`;
+}
+
+/**
+ * Función que crea una etiqueta <img> con el atributo src, alt y estilos adecuados.
+ *
+ * @param {string} src - URL o data URI de la imagen.
+ * @param {string} tipo - Tipo de contenido ('enunciado' o 'respuesta').
+ * @returns {string} - Etiqueta <img> en HTML.
+ */
+function createImgTag(src, tipo) {
+    const altText = tipo === 'enunciado' ? 'Imagen de enunciado' : 'Imagen de respuesta';
+    return `<img src="${src}" alt="${altText}" style="max-width: 200px; max-height: 150px;">`;
+}
+
+/**
+ * Función que formatea múltiples respuestas según el tipo de pregunta.
+ *
+ * @param {Array} respuestas - Arreglo de respuestas.
+ * @param {string} tipoPregunta - Tipo de pregunta (por ejemplo, 'draganddrop_text' o 'draganddrop_image').
+ * @returns {string} - Respuestas formateadas en HTML.
+ */
+function formatMultipleResponses(respuestas, tipoPregunta) {
+    if (tipoPregunta === 'draganddrop_text' || tipoPregunta === 'draganddrop_image') {
+        return respuestas
+            .map((respuesta, index) => `${index + 1}. ${processContent(respuesta, 'respuesta')}`)
+            .join('<br>');
+    } else {
+        return respuestas
+            .map(respuesta => `• ${processContent(respuesta, 'respuesta')}`)
+            .join('<br>');
+    }
+}
