@@ -1,13 +1,5 @@
 import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
-/**
- * Función para extraer el enunciado de la pregunta.
- * Se obtiene el contenido del elemento con clase "qtext", que según el HTML de ejemplo
- * es donde se encuentra el enunciado.
- *
- * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
- * @returns {Promise<string>} El enunciado extraído.
- */
 export async function extractEnunciado(originalFormulationClearfix) {
     console.log("Extrayendo enunciado...");
     const enunciadoElement = originalFormulationClearfix.querySelector('.qtext');
@@ -21,17 +13,6 @@ export async function extractEnunciado(originalFormulationClearfix) {
     return enunciado;
 }
 
-/**
- * Función para extraer las opciones de respuesta y la respuesta seleccionada.
- * Recorre todos los inputs de tipo radio, ignorando aquellos que correspondan a "Quitar mi elección"
- * (identificados por estar dentro de un contenedor con clase "qtype_multichoice_clearchoice", tener valor "-1"
- * o la clase "sr-only").
- *
- * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
- * @returns {Promise<Object>} Un objeto con dos propiedades:
- *    - opcionesRespuesta: arreglo con el texto de cada opción.
- *    - respuestaCorrecta: texto de la opción marcada o cadena vacía si ninguna está marcada.
- */
 export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
     console.log("Extrayendo opciones de respuesta...");
     const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
