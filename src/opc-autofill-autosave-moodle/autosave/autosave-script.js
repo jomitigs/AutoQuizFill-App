@@ -235,9 +235,8 @@ function AutoSave_ShowResponses() {
  * Si el objeto (por ejemplo, "Pregunta1") contiene la propiedad "opcionesRespuesta",
  * se asume la nueva estructura y se muestra:
  *    - Enunciado
- *    - Opciones de respuesta
- *    - Respuesta correcta
- *    - (Opcional) HTML completo, si se desea.
+ *    - Opciones de respuesta (con literales a., b., c., etc.)
+ *    - Respuesta seleccionada
  *
  * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
  *
@@ -259,9 +258,8 @@ function formatResponses(respuestasObj) {
                     ${formatOptions(valor.opcionesRespuesta)}
                 </div>
                 <div class="respuestasautosave">
-                    <strong>Respuesta correcta: </strong>${processContent(valor.respuestaCorrecta, 'respuesta')}
+                    <strong>Respuesta seleccionada: </strong>${processContent(valor.respuestaCorrecta, 'respuesta')}
                 </div>
-                ${valor.html ? `<div class="html-content">${valor.html}</div>` : ''}
             `;
         } else {
             // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
@@ -330,7 +328,7 @@ function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta)
 
 /**
  * Función para formatear el arreglo de opciones de respuesta.
- * Cada opción se muestra numerada.
+ * Si hay más de una opción, se les asignan literales (a., b., c., …)
  *
  * @param {Array} opciones - Arreglo de opciones de respuesta.
  * @returns {string} - HTML con las opciones formateadas.
@@ -338,7 +336,13 @@ function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta)
 function formatOptions(opciones) {
     if (!opciones || !Array.isArray(opciones)) return '';
     return opciones
-        .map((opcion, index) => `<div>${index + 1}. ${processContent(opcion, 'respuesta')}</div>`)
+        .map((opcion, index) => {
+            // Si hay más de una opción, se asigna una letra (a., b., c., …)
+            const etiqueta = opciones.length > 1 
+                ? String.fromCharCode(97 + index) + '. ' 
+                : (index + 1) + '. ';
+            return `<div>${etiqueta}${processContent(opcion, 'respuesta')}</div>`;
+        })
         .join('');
 }
 
