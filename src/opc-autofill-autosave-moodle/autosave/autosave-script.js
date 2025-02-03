@@ -41,10 +41,8 @@ export function contenedorAutoSave_js() {
                 await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
                 AutoSave_ShowResponses();
                 
-                if (window.MathJax && window.MathJax.Hub) {
-                      // Renderiza el contenido del div con id "Pregunta2"
-                      MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("Pregunta2")]);
-                    }                  
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("Pregunta2")]);
+                
 
                 detectarCambiosPreguntas();
 
