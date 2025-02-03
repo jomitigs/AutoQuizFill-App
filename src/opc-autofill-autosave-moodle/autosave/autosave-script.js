@@ -31,30 +31,48 @@ export function contenedorAutoSave_js() {
     // **Hacer que actualizarVisibilidadBody sea async**
     const actualizarVisibilidadBody = async () => {
         const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
-
+    
         if (esPaginaQuiz && interruptorAutoSave.checked) {
             if (bodyAutoSave) {
                 bodyAutoSave.style.display = 'flex';
                 console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
+    
                 const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-
-                await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
-                AutoSave_ShowResponses();
-                               
-
+                await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine esa función
+    
+                // Espera que se complete AutoSave_ShowResponses
+                try {
+                    await AutoSave_ShowResponses();
+                } catch (error) {
+                    console.error("Error en AutoSave_ShowResponses:", error);
+                }
+    
+                // Una vez AutoSave_ShowResponses haya finalizado, renderiza las fórmulas
+                const contenedor = document.getElementById('contenido-principal');
+                if (contenedor && typeof renderMathInElement === 'function') {
+                    renderMathInElement(contenedor, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '\\(', right: '\\)', display: false }
+                        ]
+                    });
+                    console.log("KaTeX: Expresiones renderizadas en 'contenido-principal'.");
+                } else {
+                    console.warn("No se encontró 'contenido-principal' o renderMathInElement no está disponible.");
+                }
+    
                 detectarCambiosPreguntas();
-
                 console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
             }
         } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
             if (bodyAutoSave) {
                 bodyAutoSave.style.display = 'none';
             }
-
         } else if (!esPaginaQuiz) {
             console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
         }
     };
+    
 
     // **Llamar la función sin await para que no bloquee la ejecución**
     actualizarVisibilidadBody();
@@ -264,44 +282,60 @@ function detectarCambiosPreguntas() {
 
 }
 
+// Modificamos AutoSave_ShowResponses para que retorne una promesa
 function AutoSave_ShowResponses() {
-    const container = document.getElementById('respuestasautosave');
-    if (!container) return console.error('Elemento "respuestasautosave" no encontrado.');
-    
-    const savedData = sessionStorage.getItem('questions-AutoSave');
-    if (!savedData) return (container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>');
-    
-    try {
-        const responses = JSON.parse(savedData);
-        container.innerHTML = Object.entries(responses).map(([key, data]) => {
-            const questionNumber = key.replace(/\D/g, '');
-            let html = `<div class="preguntaautosave" id="${key}">`;
-            if (data.enunciado) html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
-            
-            if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
-                if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-                    html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+    return new Promise((resolve, reject) => {
+        const container = document.getElementById('respuestasautosave');
+        if (!container) {
+            console.error('Elemento "respuestasautosave" no encontrado.');
+            return reject('Elemento "respuestasautosave" no encontrado.');
+        }
+        
+        const savedData = sessionStorage.getItem('questions-AutoSave');
+        if (!savedData) {
+            container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+            return resolve(); // Termina aquí, ya que no hay datos.
+        }
+        
+        try {
+            const responses = JSON.parse(savedData);
+            container.innerHTML = Object.entries(responses).map(([key, data]) => {
+                const questionNumber = key.replace(/\D/g, '');
+                let html = `<div class="preguntaautosave" id="${key}">`;
+                if (data.enunciado) {
+                    html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
                 }
-            } else if (data.tipo === 'select_emparejamiento') {
-                if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
-                    html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
-                        const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
-                        return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
-                    }).join('') + `</div>`;
+                
+                if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+                    if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+                        html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+                    }
+                } else if (data.tipo === 'select_emparejamiento') {
+                    if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
+                        html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+                            const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
+                            return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
+                        }).join('') + `</div>`;
+                    }
+                } else if (data.tipo === 'inputtext_respuestacorta') {
+                    const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
+                        .filter(Boolean)
+                        .map(processContent)
+                        .join('') || '<em>___________</em>';
+                    html += `<div class="respuestasautosave">${respuestas}</div>`;
                 }
-            } else if (data.tipo === 'inputtext_respuestacorta') {
-                const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
-                    .filter(Boolean).map(processContent).join('') || '<em>___________</em>';
-                html += `<div class="respuestasautosave">${respuestas}</div>`;
-            }
-            return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
-        }).join('');
-    } catch (error) {
-        console.error('Error al parsear las respuestas:', error);
-        container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-    }
+                return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
+            }).join('');
+            resolve();
+        } catch (error) {
+            console.error('Error al parsear las respuestas:', error);
+            container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+            reject(error);
+        }
+    });
 }
 
+// Función auxiliar que formatea las opciones de respuesta (ya la tienes definida)
 function formatResponseOptions(options, selected) {
     const selectedSet = new Set(Array.isArray(selected) ? selected.map(s => s.trim()) : [selected?.trim()]);
     return options.map((option, i) => {
@@ -310,6 +344,7 @@ function formatResponseOptions(options, selected) {
     }).join('');
 }
 
+// Función auxiliar que procesa el contenido (ya la tienes definida)
 function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
     return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
