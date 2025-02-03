@@ -1,4 +1,12 @@
 
+// Importaciones de MathJax:
+import { mathjax } from 'mathjax-full/js/mathjax.js'
+import { TeX } from 'mathjax-full/js/input/tex.js'
+import { MathML } from 'mathjax-full/js/output/mathml.js'
+import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
+import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
+import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
+
 export async function feedbackQuestion(originalFormulationClearfix) {
     // console.log('Iniciando feedbackQuestion');
 
@@ -295,13 +303,7 @@ export async function File2DataUri(files) {
   }
 
 
-  // Importaciones de MathJax:
-import { mathjax } from 'mathjax-full/js/mathjax.js'
-import { TeX } from 'mathjax-full/js/input/tex.js'
-import { MathML } from 'mathjax-full/js/output/mathml.js'
-import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
-import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
-import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
+  
 
   export async function extractContentInOrder(node) {
     let content = '';
@@ -450,12 +452,6 @@ const mjDocument = mathjax.document('', {
   OutputJax: mml
 })
 
-/**
- * Función real que convierte código LaTeX a MathML usando MathJax v3 (mathjax-full).
- * @param {string} latexCode - La cadena LaTeX que deseas convertir.
- * @param {boolean} [displayMode=false] - Indica si se renderiza como ecuación de bloque (true) o en línea (false).
- * @returns {string} - Cadena con el MathML resultante.
- */
 export function convertLatexToMathML(latexCode, displayMode = false) {
   // Convertimos el LaTeX a un nodo interno de MathJax
   const node = mjDocument.convert(latexCode, {

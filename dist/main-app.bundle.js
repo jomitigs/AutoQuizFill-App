@@ -51857,6 +51857,9 @@
         }
       }
 
+
+      
+
       async function extractContentInOrder(node) {
         let content = '';
       
@@ -52004,12 +52007,6 @@
       OutputJax: mml
     });
 
-    /**
-     * Función real que convierte código LaTeX a MathML usando MathJax v3 (mathjax-full).
-     * @param {string} latexCode - La cadena LaTeX que deseas convertir.
-     * @param {boolean} [displayMode=false] - Indica si se renderiza como ecuación de bloque (true) o en línea (false).
-     * @returns {string} - Cadena con el MathML resultante.
-     */
     function convertLatexToMathML(latexCode, displayMode = false) {
       // Convertimos el LaTeX a un nodo interno de MathJax
       const node = mjDocument.convert(latexCode, {
