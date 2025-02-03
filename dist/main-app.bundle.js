@@ -24936,7 +24936,7 @@
                 <div class="respuestasautosave">
                     ${formatOptions(valor.opcionesRespuesta, valor.respuestaCorrecta)}
                 </div>
-                <hr style="margin-top: 0px; margin-bottom: 5px;">
+                <hr style="margin-top: 5px; margin-bottom: 0px;">
             `;
             } else {
                 // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
