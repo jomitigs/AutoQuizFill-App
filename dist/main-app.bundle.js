@@ -24870,7 +24870,7 @@
                 <div class="respuestasautosave">
                     ${formatOptions(valor.opcionesRespuesta, valor.respuestaCorrecta)}
                 </div>
-                <hr style="margin-top:20px; margin-bottom:20px;">
+                <hr style="margin-top: 0px; margin-bottom: 0px;">
             `;
             } else {
                 // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
@@ -24887,7 +24887,7 @@
                 <div class="respuestasautosave">
                     ${contenidoRespuesta}
                 </div>
-                <hr style="margin-top:20px; margin-bottom:20px;">
+                <hr style="margin-top:0px; margin-bottom:0px;">
             `;
             }
         }
@@ -24961,7 +24961,7 @@
                 let opcionFormateada = processContent(opcion, 'respuesta');
                 // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
                 if (opcion.trim() === respuestaSeleccionada.trim()) {
-                    opcionFormateada = `<span style="font-weight:700; color:red;">${literal}${opcionFormateada}</span>`;
+                    opcionFormateada = `<span style="font-weight:600; color:MediumBlue ;">${literal}${opcionFormateada}</span>`;
                 } else {
                     // Si no es la opción seleccionada, se muestra el literal normalmente
                     opcionFormateada = `${literal}${opcionFormateada}`;
