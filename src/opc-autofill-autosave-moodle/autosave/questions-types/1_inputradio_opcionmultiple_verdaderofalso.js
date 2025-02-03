@@ -1,5 +1,44 @@
 import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
+
+
+export async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
+    console.log("Procesando pregunta de tipo inputradio_opcionmultiple_verdaderofalso...");
+    const tipo = 'inputradio_opcionmultiple_verdaderofalso';
+
+    // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
+    if (clonFormulation.querySelectorAll('img').length > 0 || clonFormulation.querySelectorAll('audio').length > 0) {
+        console.log("Convirtiendo imágenes a Data URI usando File2DataUri...");
+        await File2DataUri(clonFormulation);
+    }
+
+    // Extraemos el enunciado usando la función dedicada.
+    const enunciado = await extractEnunciado(originalFormulationClearfix);
+
+    // Extraemos las opciones de respuesta y la respuesta correcta.
+    const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
+
+    // Obtenemos el feedback, si existe.
+    console.log("Obteniendo feedback...");
+    const feedback = await feedbackQuestion(originalFormulationClearfix);
+    console.log("Feedback obtenido:", feedback);
+
+    // Construimos el objeto questionData con la información obtenida.
+    const questionData = {
+        enunciado: enunciado,
+        opcionesRespuesta: opcionesRespuesta,
+        respuestaCorrecta: respuestaCorrecta,
+        html: clonFormulation.outerHTML,
+        tipo: tipo,
+        ciclo: localStorage.getItem("ciclo"),
+        feedback: feedback,
+    };
+
+    console.log("Objeto questionData generado:", questionData);
+    return questionData;
+}
+
+
 export async function extractEnunciado(originalFormulationClearfix) {
     console.log("Extrayendo enunciado...");
     const enunciadoElement = originalFormulationClearfix.querySelector('.qtext');
@@ -68,62 +107,4 @@ export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
     console.log("Respuesta correcta:", respuestaCorrecta);
 
     return { opcionesRespuesta, respuestaCorrecta };
-}
-
-/**
- * Función principal para procesar la pregunta de opción múltiple (tipo verdadero/falso).
- * Esta función procesa la pregunta clonando el elemento original, convirtiendo las imágenes a Data URI,
- * extrayendo el enunciado, las opciones de respuesta, la respuesta correcta, y el feedback,
- * para luego retornar un objeto con la siguiente estructura:
- *
- * {
- *   enunciado:           // Enunciado extraído del elemento .qtext.
- *   opcionesRespuesta:   // Arreglo con todas las opciones válidas.
- *   respuestaCorrecta:   // La opción marcada o cadena vacía.
- *   html:                // HTML del clon procesado (con imágenes convertidas a Data URI).
- *   tipo:                // Tipo de la pregunta.
- *   ciclo:               // Valor obtenido desde localStorage.
- *   feedback:            // Feedback de la pregunta (si existe).
- * }
- *
- * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
- * @returns {Promise<Object>} El objeto questionData con la información procesada de la pregunta.
- */
-export async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
-    console.log("Procesando pregunta de tipo inputradio_opcionmultiple_verdaderofalso...");
-    const tipo = 'inputradio_opcionmultiple_verdaderofalso';
-
-    // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
-    const clonFormulation = originalFormulationClearfix.cloneNode(true);
-    console.log("Clon de la formulación creado.");
-
-    // Convertimos las imágenes dentro del clon a Data URI utilizando File2DataUri.
-    console.log("Convirtiendo imágenes a Data URI usando File2DataUri...");
-    await File2DataUri(clonFormulation);
-    console.log("Imágenes convertidas.");
-
-    // Extraemos el enunciado usando la función dedicada.
-    const enunciado = await extractEnunciado(originalFormulationClearfix);
-
-    // Extraemos las opciones de respuesta y la respuesta correcta.
-    const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
-
-    // Obtenemos el feedback, si existe.
-    console.log("Obteniendo feedback...");
-    const feedback = await feedbackQuestion(originalFormulationClearfix);
-    console.log("Feedback obtenido:", feedback);
-
-    // Construimos el objeto questionData con la información obtenida.
-    const questionData = {
-        enunciado: enunciado,
-        opcionesRespuesta: opcionesRespuesta,
-        respuestaCorrecta: respuestaCorrecta,
-        html: clonFormulation.outerHTML,
-        tipo: tipo,
-        ciclo: localStorage.getItem("ciclo"),
-        feedback: feedback,
-    };
-
-    console.log("Objeto questionData generado:", questionData);
-    return questionData;
 }
