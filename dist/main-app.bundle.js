@@ -86,35 +86,143 @@
         });
     });
 
-    // Una vez AutoSave_ShowResponses haya finalizado, renderiza las fórmulas
-    const contenedor = document.getElementById('contenido-principal');
-    if (!contenedor) {
-      console.warn("DEBUG: No se encontró el contenedor con id 'contenido-principal'.");
-    } else {
-      console.log("DEBUG: Se encontró 'contenido-principal'.");
-    }
+    var html = "<div id=\"barra-lateral-autoquizfillapp\">\r\n</div>\r\n<button id=\"boton-mostrar-ocultar-autoquizfillapp\">\r\n  <i class=\"fa-solid fa-angles-right\"></i>\r\n</button>\r\n";
 
-    if (typeof renderMathInElement !== 'function') {
-      console.warn("DEBUG: renderMathInElement NO está disponible. Asegúrate de que KaTeX y su auto-render se han cargado.");
-    } else {
-      console.log("DEBUG: renderMathInElement está disponible.");
-    }
+    function styleInject(css, ref) {
+      if ( ref === undefined ) ref = {};
+      var insertAt = ref.insertAt;
 
-    if (contenedor && typeof renderMathInElement === 'function') {
-      try {
-        renderMathInElement(contenedor, {
-          delimiters: [
-            { left: '$$', right: '$$', display: true },
-            { left: '\\(', right: '\\)', display: false }
-          ]
-        });
-        console.log("KaTeX: Expresiones renderizadas en 'contenido-principal'.");
-      } catch (error) {
-        console.error("DEBUG: Error al llamar a renderMathInElement:", error);
+      if (!css || typeof document === 'undefined') { return; }
+
+      var head = document.head || document.getElementsByTagName('head')[0];
+      var style = document.createElement('style');
+      style.type = 'text/css';
+
+      if (insertAt === 'top') {
+        if (head.firstChild) {
+          head.insertBefore(style, head.firstChild);
+        } else {
+          head.appendChild(style);
+        }
+      } else {
+        head.appendChild(style);
       }
-    } else {
-      console.warn("DEBUG: No se pudo ejecutar renderMathInElement porque faltan algunos elementos.");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
     }
+
+    var css_248z$6 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 350px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 20px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
+    styleInject(css_248z$6);
+
+    // Importar el archivo HTML como cadena
+
+    // Encapsular el código dentro de una IIFE
+    (function () {
+      console.log('[AutoFillQuiz-App] Creando Interfaz.');
+
+      // 1. Insertar el contenido HTML en el DOM
+      document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
+
+      // 2. Buscar los elementos en el DOM que acabamos de inyectar
+      const barraLateral = document.getElementById('barra-lateral-autoquizfillapp'); // Obtiene el elemento de la barra lateral
+      const botonMostrarOcultar = document.getElementById('boton-mostrar-ocultar-autoquizfillapp'); // Obtiene el botón de mostrar/ocultar
+
+      // 3. Verificar que existan
+      if (!barraLateral || !botonMostrarOcultar) { // Verifica si los elementos existen
+        console.error('initBarraLateral: Error: No se encontraron los elementos necesarios en el DOM.'); // Error si no se encuentran
+        return; // Sale de la función
+      }
+
+      // Define los íconos para el botón
+      const iconFlecha = '<i class="fa-solid fa-angles-right"></i>'; // Define el icono de flecha
+      const iconFlechaRotada = '<i class="fa-solid fa-angles-right fa-rotate-180"></i>'; // Define el icono de flecha rotada
+
+      // Leer el estado de la barra lateral desde localStorage
+      const estadoBarra = localStorage.getItem('barraLateralVisible'); // Obtiene el estado guardado
+      let isBarraVisible = estadoBarra === null ? true : estadoBarra === 'true'; // Define la visibilidad inicial
+
+      // Aplicar el estado inicial de la barra lateral
+      if (isBarraVisible) { // Si la barra está visible
+        barraLateral.style.display = 'flex'; // Muestra la barra lateral
+        botonMostrarOcultar.innerHTML = iconFlechaRotada; // Asigna el icono rotado al botón
+      } else { // Si la barra está oculta
+        barraLateral.style.display = 'none'; // Oculta la barra lateral
+        botonMostrarOcultar.innerHTML = iconFlecha; // Asigna el icono normal al botón
+        botonMostrarOcultar.style.left = '10px'; // Posiciona el botón
+        document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
+        document.body.style.width = '100%'; // Resetea el ancho del body
+      }
+
+      // Función para reposicionar el botón en función del ancho de la barra lateral
+      function reposicionarBoton() {
+        const barraWidth = barraLateral.getBoundingClientRect().width;
+        botonMostrarOcultar.style.left = `calc(${barraWidth}px + 10px)`;
+      }
+
+      // Función para ajustar el contenido de la página según el ancho de la barra lateral
+      function ajustarContenidoPagina() {
+        const barraWidth = barraLateral.getBoundingClientRect().width;
+        const contenido = document.body; // Puedes usar document.body directamente
+        contenido.style.marginLeft = `${barraWidth}px`;
+        contenido.style.width = `calc(100% - ${barraWidth}px)`;
+      }
+
+      // Función para alternar la visibilidad de la barra lateral
+      function alternarBarraLateral() {
+        if (isBarraVisible) {
+          barraLateral.style.display = 'none';
+          botonMostrarOcultar.innerHTML = iconFlecha;
+          botonMostrarOcultar.style.left = '10px';
+          document.body.style.marginLeft = '0';
+          document.body.style.width = '100%';
+          isBarraVisible = false;
+          localStorage.setItem('barraLateralVisible', 'false');
+        } else {
+          barraLateral.style.display = 'flex';
+          botonMostrarOcultar.innerHTML = iconFlechaRotada;
+          reposicionarBoton();
+          ajustarContenidoPagina();
+          isBarraVisible = true;
+          localStorage.setItem('barraLateralVisible', 'true');
+        }
+      }
+
+      // Observador de cambios en el tamaño de la barra lateral
+      const resizeObserver = new ResizeObserver(() => {
+        reposicionarBoton();
+        ajustarContenidoPagina();
+      });
+      resizeObserver.observe(barraLateral);
+
+      // Evento al hacer clic en el botón de mostrar/ocultar
+      botonMostrarOcultar.addEventListener('click', () => {
+        //console.log('botonMostrarOcultar: click detectado');
+        alternarBarraLateral();
+      });
+
+      // Evento para detectar la combinación de teclas Ctrl + Q
+      document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
+          event.preventDefault();
+          console.log('keydown: Ctrl + Q detectado');
+          alternarBarraLateral();
+        }
+      });
+
+      // Ajusta el contenido de la página inicialmente si la barra está visible
+      if (isBarraVisible) {
+        ajustarContenidoPagina();
+      }
+
+      // Retorna la barra lateral si es necesario dentro del IIFE
+      // Nota: Este valor no estará accesible fuera de la IIFE
+      // Puedes eliminar esta línea si no la necesitas
+      return barraLateral;
+    })();
 
     /**
      * @license
@@ -23084,33 +23192,6 @@
     // Exponer las variables en el objeto global `window`
     window.autenticacion = autenticacion;
     window.database = database;
-
-    function styleInject(css, ref) {
-      if ( ref === undefined ) ref = {};
-      var insertAt = ref.insertAt;
-
-      if (!css || typeof document === 'undefined') { return; }
-
-      var head = document.head || document.getElementsByTagName('head')[0];
-      var style = document.createElement('style');
-      style.type = 'text/css';
-
-      if (insertAt === 'top') {
-        if (head.firstChild) {
-          head.insertBefore(style, head.firstChild);
-        } else {
-          head.appendChild(style);
-        }
-      } else {
-        head.appendChild(style);
-      }
-
-      if (style.styleSheet) {
-        style.styleSheet.cssText = css;
-      } else {
-        style.appendChild(document.createTextNode(css));
-      }
-    }
 
     var css_248z$5 = "\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
     styleInject(css_248z$5);

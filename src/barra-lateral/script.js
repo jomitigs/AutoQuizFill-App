@@ -1,29 +1,109 @@
-// Una vez AutoSave_ShowResponses haya finalizado, renderiza las fórmulas
-const contenedor = document.getElementById('contenido-principal');
-if (!contenedor) {
-  console.warn("DEBUG: No se encontró el contenedor con id 'contenido-principal'.");
-} else {
-  console.log("DEBUG: Se encontró 'contenido-principal'.");
-}
+// Importar el archivo HTML como cadena
+import html from './index.html'; // Importa el contenido de index.html como una cadena
 
-if (typeof renderMathInElement !== 'function') {
-  console.warn("DEBUG: renderMathInElement NO está disponible. Asegúrate de que KaTeX y su auto-render se han cargado.");
-} else {
-  console.log("DEBUG: renderMathInElement está disponible.");
-}
+// Importar el CSS (PostCSS lo inyectará en el bundle)
+import './style.css'; // Importa el archivo de estilos CSS
 
-if (contenedor && typeof renderMathInElement === 'function') {
-  try {
-    renderMathInElement(contenedor, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '\\(', right: '\\)', display: false }
-      ]
-    });
-    console.log("KaTeX: Expresiones renderizadas en 'contenido-principal'.");
-  } catch (error) {
-    console.error("DEBUG: Error al llamar a renderMathInElement:", error);
+// Encapsular el código dentro de una IIFE
+(function () {
+  console.log('[AutoFillQuiz-App] Creando Interfaz.');
+
+  // 1. Insertar el contenido HTML en el DOM
+  document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
+
+  // 2. Buscar los elementos en el DOM que acabamos de inyectar
+  const barraLateral = document.getElementById('barra-lateral-autoquizfillapp'); // Obtiene el elemento de la barra lateral
+  const botonMostrarOcultar = document.getElementById('boton-mostrar-ocultar-autoquizfillapp'); // Obtiene el botón de mostrar/ocultar
+
+  // 3. Verificar que existan
+  if (!barraLateral || !botonMostrarOcultar) { // Verifica si los elementos existen
+    console.error('initBarraLateral: Error: No se encontraron los elementos necesarios en el DOM.'); // Error si no se encuentran
+    return; // Sale de la función
   }
-} else {
-  console.warn("DEBUG: No se pudo ejecutar renderMathInElement porque faltan algunos elementos.");
-}
+
+  // Define los íconos para el botón
+  const iconFlecha = '<i class="fa-solid fa-angles-right"></i>'; // Define el icono de flecha
+  const iconFlechaRotada = '<i class="fa-solid fa-angles-right fa-rotate-180"></i>'; // Define el icono de flecha rotada
+
+  // Leer el estado de la barra lateral desde localStorage
+  const estadoBarra = localStorage.getItem('barraLateralVisible'); // Obtiene el estado guardado
+  let isBarraVisible = estadoBarra === null ? true : estadoBarra === 'true'; // Define la visibilidad inicial
+
+  // Aplicar el estado inicial de la barra lateral
+  if (isBarraVisible) { // Si la barra está visible
+    barraLateral.style.display = 'flex'; // Muestra la barra lateral
+    botonMostrarOcultar.innerHTML = iconFlechaRotada; // Asigna el icono rotado al botón
+  } else { // Si la barra está oculta
+    barraLateral.style.display = 'none'; // Oculta la barra lateral
+    botonMostrarOcultar.innerHTML = iconFlecha; // Asigna el icono normal al botón
+    botonMostrarOcultar.style.left = '10px'; // Posiciona el botón
+    document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
+    document.body.style.width = '100%'; // Resetea el ancho del body
+  }
+
+  // Función para reposicionar el botón en función del ancho de la barra lateral
+  function reposicionarBoton() {
+    const barraWidth = barraLateral.getBoundingClientRect().width;
+    botonMostrarOcultar.style.left = `calc(${barraWidth}px + 10px)`;
+  }
+
+  // Función para ajustar el contenido de la página según el ancho de la barra lateral
+  function ajustarContenidoPagina() {
+    const barraWidth = barraLateral.getBoundingClientRect().width;
+    const contenido = document.body; // Puedes usar document.body directamente
+    contenido.style.marginLeft = `${barraWidth}px`;
+    contenido.style.width = `calc(100% - ${barraWidth}px)`;
+  }
+
+  // Función para alternar la visibilidad de la barra lateral
+  function alternarBarraLateral() {
+    if (isBarraVisible) {
+      barraLateral.style.display = 'none';
+      botonMostrarOcultar.innerHTML = iconFlecha;
+      botonMostrarOcultar.style.left = '10px';
+      document.body.style.marginLeft = '0';
+      document.body.style.width = '100%';
+      isBarraVisible = false;
+      localStorage.setItem('barraLateralVisible', 'false');
+    } else {
+      barraLateral.style.display = 'flex';
+      botonMostrarOcultar.innerHTML = iconFlechaRotada;
+      reposicionarBoton();
+      ajustarContenidoPagina();
+      isBarraVisible = true;
+      localStorage.setItem('barraLateralVisible', 'true');
+    }
+  }
+
+  // Observador de cambios en el tamaño de la barra lateral
+  const resizeObserver = new ResizeObserver(() => {
+    reposicionarBoton();
+    ajustarContenidoPagina();
+  });
+  resizeObserver.observe(barraLateral);
+
+  // Evento al hacer clic en el botón de mostrar/ocultar
+  botonMostrarOcultar.addEventListener('click', () => {
+    //console.log('botonMostrarOcultar: click detectado');
+    alternarBarraLateral();
+  });
+
+  // Evento para detectar la combinación de teclas Ctrl + Q
+  document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
+      event.preventDefault();
+      console.log('keydown: Ctrl + Q detectado');
+      alternarBarraLateral();
+    }
+  });
+
+  // Ajusta el contenido de la página inicialmente si la barra está visible
+  if (isBarraVisible) {
+    ajustarContenidoPagina();
+  }
+
+  // Retorna la barra lateral si es necesario dentro del IIFE
+  // Nota: Este valor no estará accesible fuera de la IIFE
+  // Puedes eliminar esta línea si no la necesitas
+  return barraLateral;
+})();
