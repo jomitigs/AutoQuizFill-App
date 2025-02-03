@@ -24751,7 +24751,12 @@
 
                     await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
                     AutoSave_ShowResponses();
-                    window.MathJax.typesetPromise(["#Pregunta2"]);
+                    
+                    if (window.MathJax && window.MathJax.Hub) {
+                          // Renderiza el contenido del div con id "Pregunta2"
+                          MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("Pregunta2")]);
+                        }                  
+
                     detectarCambiosPreguntas();
 
                     console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
