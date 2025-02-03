@@ -319,7 +319,39 @@ function formatResponseData(responseData) {
                 `;
             } 
         
-        } else if (!questionData.hasOwnProperty('opcionesRespuesta')) {
+        } 
+        
+        else if (!questionData.hasOwnProperty('opcionesRespuesta') && questionData.hasOwnProperty('opcionesSelect')) {
+            // Se muestra el enunciado
+            htmlOutput += `
+                <div class="preguntaautosave" id="${questionKey}">
+                    <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
+                </div>
+            `;
+            
+            // Verificamos si existen opcionesEnunciados y respuestaCorrecta
+            if (Array.isArray(questionData.opcionesEnunciados) && Array.isArray(questionData.respuestaCorrecta)) {
+                htmlOutput += `<div class="respuestasautosave">`;
+                
+                questionData.opcionesEnunciados.forEach((enunciado, index) => {
+                    let respuesta = questionData.respuestaCorrecta[index] || "";
+                    let color = respuesta.trim() !== "" ? "MediumBlue" : "red";
+                    let textoRespuesta = respuesta.trim() !== "" ? processContent(respuesta, 'respuesta') : "Elegir...";
+                    
+                    htmlOutput += `
+                        <div style="font-weight: 600; color: ${color};">
+                            • ${processContent(enunciado, 'enunciado')} - ${textoRespuesta}
+                        </div>
+                    `;
+                });
+                
+                htmlOutput += `</div>`;
+            }
+            
+            htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
+        }
+        
+        else if (!questionData.hasOwnProperty('opcionesRespuesta' )) {
             // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
             // Si no hay respuesta, se muestran líneas debajo del enunciado.
             htmlOutput += `
