@@ -75,7 +75,7 @@ appendScriptIfNotExists(katexJsSrc, katexJsPattern, 'KaTeX JS', () => {
                 renderMathInElement(container, {
                     delimiters: [
                         { left: '$$', right: '$$', display: true },
-                        { left: '\\(', right: '\\)', display: false }
+                        { left: '\(', right: '\)', display: false }
                     ]
                 });
                 console.log("KaTeX auto-render: Expresiones renderizadas en 'contenido-principal'.");
