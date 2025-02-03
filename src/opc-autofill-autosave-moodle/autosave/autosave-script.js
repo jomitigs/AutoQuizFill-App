@@ -331,7 +331,7 @@ function formatResponses(respuestasObj) {
                 <div class="respuestasautosave">
                     ${formatOptions(valor.opcionesRespuesta, valor.respuestaCorrecta)}
                 </div>
-                <hr style="margin-top: 0px; margin-bottom: 0px;">
+                <hr style="margin-top: 0px; margin-bottom: 5px;">
             `;
         } else {
             // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
@@ -348,7 +348,7 @@ function formatResponses(respuestasObj) {
                 <div class="respuestasautosave">
                     ${contenidoRespuesta}
                 </div>
-                <hr style="margin-top:0px; margin-bottom:0px;">
+                <hr style="margin-top:0px; margin-bottom:5px;">
             `;
         }
     }
@@ -414,7 +414,7 @@ function formatOptions(opciones, respuestaSeleccionada) {
     if (!opciones || !Array.isArray(opciones)) return '';
     return opciones
         .map((opcion, index) => {
-            // Se asigna una letra (a., b., c., …)
+            // Se asigna una letra (a., b., c., …) o número si solo hay una opción
             const literal = opciones.length > 1 
                 ? String.fromCharCode(97 + index) + '. ' 
                 : (index + 1) + '. ';
@@ -422,15 +422,16 @@ function formatOptions(opciones, respuestaSeleccionada) {
             let opcionFormateada = processContent(opcion, 'respuesta');
             // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
             if (opcion.trim() === respuestaSeleccionada.trim()) {
-                opcionFormateada = `<span style="font-weight:600; color:MediumBlue ;">${literal}${opcionFormateada}</span>`;
+                opcionFormateada = `<span style="font-weight:500; color:MediumBlue;">${literal}${opcionFormateada}</span>`;
             } else {
-                // Si no es la opción seleccionada, se muestra el literal normalmente
-                opcionFormateada = `${literal}${opcionFormateada}`;
+                // Si no es la opción seleccionada, se muestra el literal normalmente seguido del contenido
+                opcionFormateada = `<span style="font-weight:500;">${literal}</span>${opcionFormateada}`;
             }
             return `<div>${opcionFormateada}</div>`;
         })
         .join('');
 }
+
 
 /**
  * Función que procesa el contenido para reemplazar URLs de imágenes, data URIs, MathML y saltos de línea.

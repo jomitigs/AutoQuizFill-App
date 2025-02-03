@@ -34,7 +34,6 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
     return questionData;
 }
 
-
 export async function extractEnunciado(clonFormulation) {
     const enunciadoElement = clonFormulation.querySelector('.qtext');
     let enunciado = '';
