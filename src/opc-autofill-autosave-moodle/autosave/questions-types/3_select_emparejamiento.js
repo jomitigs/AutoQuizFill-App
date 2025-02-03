@@ -7,7 +7,7 @@ import {
 /**
  * Procesa preguntas de emparejamiento basadas en <select>.
  * Se clona el elemento original, se convierten las imágenes a Data URI,
- * se extrae el enunciado, las respuestas seleccionadas y las opciones de los <select>.
+ * se extrae el enunciado, las respuestas seleccionadas y las opciones únicas de los <select>.
  *
  * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
  * @returns {Object} Objeto questionData con la información procesada.
@@ -26,7 +26,7 @@ export async function select_emparejamiento(originalFormulationClearfix) {
     // Extraemos el enunciado usando la función dedicada.
     const enunciado = await extractEnunciado(clonFormulation);
 
-    // Extraemos las opciones de emparejamiento, las respuestas correctas y las opciones de los select.
+    // Extraemos las opciones de emparejamiento, las respuestas correctas y las opciones únicas de los select.
     const { opcionesEnunciados, respuestaCorrecta, opcionesSelect } = await extractOpcionesYRespuesta(originalFormulationClearfix);
 
     // Obtenemos el feedback, si existe.
@@ -37,7 +37,7 @@ export async function select_emparejamiento(originalFormulationClearfix) {
         enunciado: enunciado,
         opcionesEnunciados: opcionesEnunciados,
         respuestaCorrecta: respuestaCorrecta,
-        opcionesSelect: opcionesSelect,  // Agregamos las opciones de los <select>
+        opcionesSelect: opcionesSelect,  // Opciones únicas sin repetir
         html: clonFormulation.outerHTML,
         tipo: tipo,
         ciclo: localStorage.getItem("ciclo"),
@@ -66,26 +66,24 @@ export async function extractEnunciado(clonFormulation) {
 }
 
 /**
- * Extrae las opciones de emparejamiento, las respuestas correctas y las opciones de los <select>.
+ * Extrae las opciones de emparejamiento, las respuestas correctas y las opciones únicas de los <select>.
  *
  * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
- * @returns {Object} Objeto con las opciones de emparejamiento, respuestas correctas y opciones de los select.
+ * @returns {Object} Objeto con las opciones de emparejamiento, respuestas correctas y opciones únicas de los select.
  */
 export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
     const allSelects = originalFormulationClearfix.querySelectorAll('select');
     let opcionesEnunciados = [];
     let respuestaCorrecta = [];
-    let opcionesSelect = [];
+    let opcionesSelectSet = new Set(); // Usamos un Set para evitar duplicados
 
     for (const selectElement of allSelects) {
-        // Obtenemos todas las opciones dentro del <select>
-        let opciones = [];
+        // Obtenemos todas las opciones dentro del <select>, omitiendo "Elegir..."
         for (const option of selectElement.options) {
-            if (option.value !== "0") { // Omitimos la opción "Elegir..."
-                opciones.push(option.textContent.trim());
+            if (option.value !== "0") {
+                opcionesSelectSet.add(option.textContent.trim());
             }
         }
-        opcionesSelect.push(opciones);
 
         // Obtenemos la opción seleccionada en el <select>
         let opcionSeleccionada = selectElement.options[selectElement.selectedIndex];
@@ -124,5 +122,9 @@ export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
         }
     }
 
-    return { opcionesEnunciados, respuestaCorrecta, opcionesSelect };
+    return { 
+        opcionesEnunciados, 
+        respuestaCorrecta, 
+        opcionesSelect: Array.from(opcionesSelectSet) // Convertimos el Set en una lista sin repeticiones
+    };
 }
