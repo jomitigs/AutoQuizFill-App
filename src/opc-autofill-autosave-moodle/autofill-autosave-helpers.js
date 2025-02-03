@@ -1,3 +1,12 @@
+  // latexToMathML.js
+  import { mathjax } from 'mathjax-full/js/mathjax.js'
+  import { TeX } from 'mathjax-full/js/input/tex.js'
+  import { MathML } from 'mathjax-full/js/output/mathml.js'
+  import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
+  import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
+  import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
+
+  
 export async function feedbackQuestion(originalFormulationClearfix) {
     // console.log('Iniciando feedbackQuestion');
 
@@ -86,77 +95,130 @@ export async function feedbackQuestion(originalFormulationClearfix) {
 }
 
 export async function extractContentInOrder(node) {
-    let content = '';
+  let content = '';
 
-    for (const child of node.childNodes) {
-        if (child.nodeType === Node.TEXT_NODE) {
-            // Extraer el contenido de texto sin aplicar .trim() para preservar los espacios
-            const text = child.textContent;
-            if (text && text !== '\n') { // Evitar añadir contenido vacío o solo saltos de línea
-                content += text;
-            }
-        } else if (child.nodeType === Node.ELEMENT_NODE) {
-            const tagName = child.tagName.toLowerCase();
+  for (const child of node.childNodes) {
+    
+    // 1) Nodos de texto
+    if (child.nodeType === Node.TEXT_NODE) {
+      const text = child.textContent;
+      if (text && text !== '\n') {
+        content += text;
+      }
 
-            if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
-                // Ignorar los scripts de tipo MathJax
-                continue;
-            } else if (child.classList.contains('MathJax')) {
-                // Extraer MathML de los elementos MathJax si existen
-                const mathml = child.getAttribute('data-mathml');
-                if (mathml) {
-                    if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-                        content += ' ';
-                    }
-                    content += mathml;
-                }
-            } else if (tagName === 'img') {
-                // Extraer el atributo 'src' de las imágenes
-                const src = child.getAttribute('src');
-                if (src) {
-                    if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-                        content += ' ';
-                    }
+    // 2) Nodos de elemento
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      const tagName = child.tagName.toLowerCase();
 
-                    if (src.includes('pluginfile.php')) {
-                        try {
-                            // Convertir la imagen a Data URI si contiene 'pluginfile.php'
-                            const dataUri = await convertImageToDataUri(src);
-                            content += dataUri; // Añadir el Data URI en lugar de la URL original
-                        } catch (error) {
-                            console.error('Error en la conversión de la imagen:', error);
-                            content += src; // Si falla la conversión, mantener el src original
-                        }
-                    } else {
-                        content += src; // Si no contiene 'pluginfile.php', mantener el src original
-                    }
-                }
-            } else if (tagName === 'sub' || tagName === 'sup') {
-                // Añadir etiquetas <sub> o <sup> sin espacios adicionales
-                content += child.outerHTML;
-            } else if (tagName === 'p') {
-                // Procesar recursivamente el contenido del <p>
-                const childContent = await extractContentInOrder(child);
-                if (childContent) {
-                    if (content.length > 0 && !content.endsWith('\n')) {
-                        content += '\n'; // Añadir un salto de línea antes del nuevo párrafo
-                    }
-                    content += childContent + '\n'; // Añadir el contenido del párrafo seguido de un salto de línea
-                }
-            } else if (tagName === 'br') {
-                // Añadir un salto de línea por cada <br>
-                content += '\n';
-            } else {
-                // Procesar recursivamente otros elementos hijos
-                const childContent = await extractContentInOrder(child);
-                if (childContent) {
-                    content += childContent;
-                }
-            }
+      // ------------------------------------------------------------------------
+      // A) <script type="math/tex">
+      // ------------------------------------------------------------------------
+      if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
+        const latexCode = child.textContent.trim();
+        
+        // Buscamos si el siguiente hermano es <span class="MathJax">
+        let nextSibling = child.nextSibling;
+        let matched = false;
+        
+        // Ignorar posibles nodos de texto vacíos
+        while (nextSibling && nextSibling.nodeType === Node.TEXT_NODE) {
+          if (!nextSibling.textContent.trim()) {
+            nextSibling = nextSibling.nextSibling;
+          } else {
+            break;
+          }
         }
-    }
 
-    return content;
+        // Si el siguiente es un <span class="MathJax">, asumimos que es la misma fórmula
+        if (nextSibling && nextSibling.nodeType === Node.ELEMENT_NODE) {
+          const nsTag = nextSibling.tagName.toLowerCase();
+          if (nsTag === 'span' && nextSibling.classList.contains('MathJax')) {
+            const mathml = nextSibling.getAttribute('data-mathml');
+            if (mathml) {
+              matched = true;
+              // Añadimos un espacio si es necesario
+              if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+                content += ' ';
+              }
+              // Nos quedamos con la versión MathML
+              content += mathml;
+            }
+          }
+        }
+
+        // Si no hay <span class="MathJax">, convertimos el LaTeX
+        if (!matched) {
+          if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+            content += ' ';
+          }
+          // Conversión real usando MathJax
+          const generatedMathML = convertLatexToMathML(latexCode);
+          content += generatedMathML;
+        }
+
+      // ------------------------------------------------------------------------
+      // B) <span class="MathJax" data-mathml>
+      // ------------------------------------------------------------------------
+      } else if (tagName === 'span' && child.classList.contains('MathJax')) {
+        const mathml = child.getAttribute('data-mathml');
+        if (mathml) {
+          if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+            content += ' ';
+          }
+          content += mathml;
+        }
+
+      // ------------------------------------------------------------------------
+      // C) <img>
+      // ------------------------------------------------------------------------
+      } else if (tagName === 'img') {
+        const src = child.getAttribute('src');
+        if (src) {
+          if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
+            content += ' ';
+          }
+          // Ya NO convertimos a Data URI, solo conservamos el src
+          content += src;
+        }
+
+      // ------------------------------------------------------------------------
+      // D) <sub>, <sup>
+      // ------------------------------------------------------------------------
+      } else if (tagName === 'sub' || tagName === 'sup') {
+        // Conservamos las etiquetas
+        content += child.outerHTML;
+      
+      // ------------------------------------------------------------------------
+      // E) <p> (procesado recursivo + saltos de línea)
+      // ------------------------------------------------------------------------
+      } else if (tagName === 'p') {
+        const childContent = await extractContentInOrder(child);
+        if (childContent) {
+          if (content.length > 0 && !content.endsWith('\n')) {
+            content += '\n';
+          }
+          content += childContent + '\n';
+        }
+
+      // ------------------------------------------------------------------------
+      // F) <br> (salto de línea)
+      // ------------------------------------------------------------------------
+      } else if (tagName === 'br') {
+        content += '\n';
+
+      // ------------------------------------------------------------------------
+      // G) Otros elementos (recursivo)
+      // ------------------------------------------------------------------------
+      } else {
+        const childContent = await extractContentInOrder(child);
+        if (childContent) {
+          content += childContent;
+        }
+      }
+    }
+  }
+
+  return content;
 }
 
 export function getQuestionNumber(formulation_clearfix) {
@@ -367,3 +429,42 @@ export async function File2DataUri(files) {
     }
   }
   
+
+/**
+ * Configuramos MathJax para convertir LaTeX a MathML.
+ * Esto se hace una sola vez, al cargar el módulo.
+ */
+const adaptor = liteAdaptor()
+RegisterHTMLHandler(adaptor)
+
+// InputJax para procesar LaTeX
+const tex = new TeX({
+  packages: AllPackages // Incluye todos los paquetes necesarios para LaTeX
+})
+
+// OutputJax para generar MathML
+const mml = new MathML()
+
+// Creamos un documento "vacío" en MathJax
+const mjDocument = mathjax.document('', {
+  InputJax: tex,
+  OutputJax: mml
+})
+
+/**
+ * Función real que convierte código LaTeX a MathML usando MathJax v3 (mathjax-full).
+ * @param {string} latexCode - La cadena LaTeX que deseas convertir.
+ * @param {boolean} [displayMode=false] - Indica si se renderiza como ecuación de bloque (true) o en línea (false).
+ * @returns {string} - Cadena con el MathML resultante.
+ */
+export function convertLatexToMathML(latexCode, displayMode = false) {
+  // Convertimos el LaTeX a un nodo interno de MathJax
+  const node = mjDocument.convert(latexCode, {
+    display: displayMode // true = \[ \], false = \( \)
+  })
+  
+  // Extraemos el MathML como cadena HTML
+  const mathml = adaptor.outerHTML(node)
+  return mathml
+}
+
