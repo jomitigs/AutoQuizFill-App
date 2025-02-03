@@ -24881,7 +24881,7 @@
                 let opcionFormateada = processContent(opcion, 'respuesta');
                 // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
                 if (opcion.trim() === respuestaSeleccionada.trim()) {
-                    opcionFormateada = `<span style="font-weight:600;">${literal}${opcionFormateada}</span>`;
+                    opcionFormateada = `<span style="font-weight:600; color:MediumBlue;">${literal}${opcionFormateada}</span>`;
                 } else {
                     // Si no es la opción seleccionada, se muestra el literal normalmente
                     opcionFormateada = `${literal}${opcionFormateada}`;
