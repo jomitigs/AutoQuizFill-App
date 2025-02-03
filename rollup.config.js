@@ -6,6 +6,7 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 // Verifica si es producción
 const isProduction = process.env.BUILD_PROD === 'true';
@@ -21,6 +22,7 @@ export default {
     // Resuelve imports para navegador
     resolve({ browser: true }),
     // Permite usar CommonJS
+    nodeResolve(),  
     commonjs(),
     // Convierte archivos HTML a strings (si los importas en tu JS)
     string({ include: '**/*.html' }),
