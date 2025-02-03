@@ -24107,26 +24107,26 @@
       }
 
       async function extractContentInOrder(node) {
-        console.log('Iniciando extracción de contenido para el nodo:', node);
+        //console.log('Iniciando extracción de contenido para el nodo:', node);
         let content = '';
       
         for (const child of node.childNodes) {
-          console.log('Procesando child node con nodeType:', child.nodeType);
+          //console.log('Procesando child node con nodeType:', child.nodeType);
       
           // 1) Nodos de texto
           if (child.nodeType === Node.TEXT_NODE) {
             const text = child.textContent;
-            console.log('-> Nodo de texto encontrado:', text);
+            //console.log('-> Nodo de texto encontrado:', text);
       
             if (text && text !== '\n') {
               content += text;
-              console.log('-> Agregando al contenido:', text);
+              //console.log('-> Agregando al contenido:', text);
             }
       
           // 2) Nodos de elemento
           } else if (child.nodeType === Node.ELEMENT_NODE) {
             const tagName = child.tagName.toLowerCase();
-            console.log('-> Nodo de elemento encontrado con tagName:', tagName);
+            //console.log('-> Nodo de elemento encontrado con tagName:', tagName);
       
             // ------------------------------------------------------------------------
             // Ignorar nodos <span> que sean de MathJax o MathJax_Preview
@@ -24135,7 +24135,7 @@
               tagName === 'span' &&
               (child.classList.contains('MathJax') || child.classList.contains('MathJax_Preview'))
             ) {
-              console.log('-> Ignorando nodo <span> con clase MathJax o MathJax_Preview');
+              //console.log('-> Ignorando nodo <span> con clase MathJax o MathJax_Preview');
               continue; // No procesamos este nodo ni sus hijos
             }
       
@@ -24144,7 +24144,7 @@
             // ------------------------------------------------------------------------
             if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
               const latexCode = child.textContent.trim();
-              console.log('-> Nodo <script type="math/tex"> detectado, LaTeX:', latexCode);
+              //console.log('-> Nodo <script type="math/tex"> detectado, LaTeX:', latexCode);
       
               if (latexCode) {
                 // Se añade un espacio si es necesario
@@ -24160,21 +24160,21 @@
             // C) <img>
             // ------------------------------------------------------------------------
             } else if (tagName === 'img') {
-              console.log('-> Encontrado <img> con src');
+              //console.log('-> Encontrado <img> con src');
               const src = child.getAttribute('src');
               if (src) {
                 if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
                   content += ' ';
                 }
                 content += src;
-                console.log('-> Agregando src al contenido:', src);
+                //console.log('-> Agregando src al contenido:', src);
               }
       
             // ------------------------------------------------------------------------
             // D) <sub> y <sup>
             // ------------------------------------------------------------------------
             } else if (tagName === 'sub' || tagName === 'sup') {
-              console.log(`-> Encontrado <${tagName}>; conservando la etiqueta completa.`);
+              //console.log(`-> Encontrado <${tagName}>; conservando la etiqueta completa.`);
               // Se conserva la etiqueta completa
               content += child.outerHTML;
       
@@ -24182,38 +24182,38 @@
             // E) <p> (procesado recursivo + saltos de línea)
             // ------------------------------------------------------------------------
             } else if (tagName === 'p') {
-              console.log('-> Encontrado <p>. Procesando recursivamente su contenido...');
+              //console.log('-> Encontrado <p>. Procesando recursivamente su contenido...');
               const childContent = await extractContentInOrder(child);
               if (childContent) {
                 if (content.length > 0 && !content.endsWith('\n')) {
                   content += '\n';
                 }
                 content += childContent + '\n';
-                console.log('-> Contenido extraído de <p>:', childContent);
+               // console.log('-> Contenido extraído de <p>:', childContent);
               }
       
             // ------------------------------------------------------------------------
             // F) <br> (salto de línea)
             // ------------------------------------------------------------------------
             } else if (tagName === 'br') {
-              console.log('-> Encontrado <br>. Añadiendo salto de línea.');
+              //console.log('-> Encontrado <br>. Añadiendo salto de línea.');
               content += '\n';
       
             // ------------------------------------------------------------------------
             // G) Otros elementos (procesado recursivo)
             // ------------------------------------------------------------------------
             } else {
-              console.log('-> Nodo de tipo desconocido. Procesando recursivamente...');
+              //console.log('-> Nodo de tipo desconocido. Procesando recursivamente...');
               const childContent = await extractContentInOrder(child);
               if (childContent) {
                 content += childContent;
-                console.log('-> Contenido extraído del nodo hijo desconocido:', childContent);
+               // console.log('-> Contenido extraído del nodo hijo desconocido:', childContent);
               }
             }
           }
         }
       
-        console.log('Contenido acumulado para este nodo:', content);
+       // console.log('Contenido acumulado para este nodo:', content);
         return content;
       }
 
