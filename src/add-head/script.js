@@ -1,19 +1,24 @@
 /**
- * Inserta dinámicamente fuentes (Poppins, Font Awesome), MathJax y Polyfill.io en el <head>.
+ * Inserta dinámicamente las fuentes Poppins y Font Awesome, y también KaTeX (CSS y JS) en el <head>.
  * Evita agregar múltiples versiones de los mismos recursos.
+ * Puedes importar y llamar a esta función en tu código para cargar los recursos necesarios.
  */
 
-// URLs de las fuentes y scripts
+// URLs de las fuentes
 const poppinsHref = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
 const fontAwesomeHref = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
-const mathJaxSrc = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-const polyfillSrc = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
+
+// URL y patrones para KaTeX
+const katexCssHref = 'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css';
+const katexJsSrc = 'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js';
+const katexAutoRenderSrc = 'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js';
 
 // Patrones para identificar si los recursos ya están cargados
 const poppinsPattern = /fonts\.googleapis\.com\/css2\?family=Poppins/;
 const fontAwesomePattern = /font-awesome/;
-const mathJaxPattern = /mathjax/;
-const polyfillPattern = /polyfill\.io\/v3\/polyfill\.min\.js/;
+const katexCssPattern = /katex\.min\.css/;
+const katexJsPattern = /katex\.min\.js/;
+const katexAutoRenderPattern = /auto-render\.min\.js/;
 
 /**
  * Inserta un <link> si no existe ya en <head>.
@@ -21,15 +26,14 @@ const polyfillPattern = /polyfill\.io\/v3\/polyfill\.min\.js/;
 const appendLinkIfNotExists = (href, pattern, resourceName) => {
     const existingLink = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
         .find(link => pattern.test(link.href));
-
     if (!existingLink) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
         document.head.appendChild(link);
-        console.log(`addHead.js: ${resourceName} inyectado en <head>`);
+        // console.log(`addHead.js: ${resourceName} inyectado en <head>`);
     } else {
-        console.log(`addHead.js: ${resourceName} ya existe en <head>`);
+        // console.log(`addHead.js: ${resourceName} ya existe en <head>`);
     }
 };
 
@@ -39,35 +43,41 @@ const appendLinkIfNotExists = (href, pattern, resourceName) => {
 const appendScriptIfNotExists = (src, pattern, resourceName, callback) => {
     const existingScript = Array.from(document.querySelectorAll('script'))
         .find(script => pattern.test(script.src));
-
     if (!existingScript) {
         const script = document.createElement('script');
         script.src = src;
         script.async = true;
-        script.onload = callback; // Ejecuta la función cuando el script haya cargado
+        script.onload = callback;
         document.head.appendChild(script);
-        console.log(`addHead.js: ${resourceName} inyectado en <head>`);
+        // console.log(`addHead.js: ${resourceName} inyectado en <head>`);
     } else {
-        console.log(`addHead.js: ${resourceName} ya existe en <head>`);
-        if (callback) callback(); // Ejecutar callback si el script ya estaba cargado
+        // console.log(`addHead.js: ${resourceName} ya existe en <head>`);
+        if (callback) callback();
     }
 };
 
-// Añadir la fuente Poppins si no está presente
+// Agregar las hojas de estilo de las fuentes
 appendLinkIfNotExists(poppinsHref, poppinsPattern, 'Fuente Poppins');
-
-// Añadir Font Awesome si no está presente
 appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern, 'Font Awesome');
 
-// Añadir MathJax si no está presente
-appendScriptIfNotExists(mathJaxSrc, mathJaxPattern, 'MathJax', () => {
-    if (window.MathJax) {
-        console.log('MathJax está listo. Forzando renderización.');
-        window.MathJax.typeset();
-    }
-});
+// Agregar KaTeX CSS
+appendLinkIfNotExists(katexCssHref, katexCssPattern, 'KaTeX CSS');
 
-// Añadir Polyfill.io si no está presente
-appendScriptIfNotExists(polyfillSrc, polyfillPattern, 'Polyfill.io', () => {
-    console.log('Polyfill.io cargado correctamente.');
+// Agregar el script de KaTeX
+appendScriptIfNotExists(katexJsSrc, katexJsPattern, 'KaTeX JS', () => {
+    // Una vez cargado KaTeX, cargamos el script de auto-render.
+    appendScriptIfNotExists(katexAutoRenderSrc, katexAutoRenderPattern, 'KaTeX Auto Render', () => {
+        // Cuando se cargue el auto-render, si existe el contenedor con id "contenido-principal", se renderizan las expresiones.
+        const container = document.getElementById('contenido-principal');
+        if (container && typeof renderMathInElement === 'function') {
+            renderMathInElement(container, {
+                // Configura los delimitadores que usas en tus expresiones
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '\\(', right: '\\)', display: false }
+                ]
+            });
+            // console.log("KaTeX auto-render: Expresiones renderizadas en 'contenido-principal'.");
+        }
+    });
 });
