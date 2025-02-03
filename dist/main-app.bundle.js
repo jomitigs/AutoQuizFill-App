@@ -24310,10 +24310,19 @@
         const tipo = 'inputradio_opcionmultiple_verdaderofalso';
 
         // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
+        const clonFormulation = originalFormulationClearfix.cloneNode(true);
+        console.log("Clon de la formulación creado.");
+
         if (clonFormulation.querySelectorAll('img').length > 0 || clonFormulation.querySelectorAll('audio').length > 0) {
             console.log("Convirtiendo imágenes a Data URI usando File2DataUri...");
             await File2DataUri(clonFormulation);
         }
+        
+
+        // Convertimos las imágenes dentro del clon a Data URI utilizando File2DataUri.
+        console.log("Convirtiendo imágenes a Data URI usando File2DataUri...");
+        await File2DataUri(clonFormulation);
+        console.log("Imágenes convertidas.");
 
         // Extraemos el enunciado usando la función dedicada.
         const enunciado = await extractEnunciado(originalFormulationClearfix);
