@@ -24946,7 +24946,7 @@
                 `;
                 } 
             
-            } else if (!questionData.hasOwnProperty('opcionesRespuesta')){
+            } else if (!questionData.hasOwnProperty('opcionesRespuesta')) {
                 // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
                 // Si no hay respuesta, se muestran líneas debajo del enunciado.
                 htmlOutput += `
@@ -24954,21 +24954,49 @@
                     <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
                 </div>
             `;
-                if (questionData.respuestaCorrecta && questionData.respuestaCorrecta.trim() !== '') {
-                    htmlOutput += `
-                    <div class="respuestasautosave">
-                        ${processContent(questionData.respuestaCorrecta, 'respuesta')}
-                    </div>
-                `;
+                
+                // Se determina si respuestaCorrecta es un array o una cadena
+                if (Array.isArray(questionData.respuestaCorrecta)) {
+                    // Si es un array, se verifica que tenga elementos y se procesan
+                    if (questionData.respuestaCorrecta.length > 0) {
+                        htmlOutput += `<div class="respuestasautosave">`;
+                        questionData.respuestaCorrecta.forEach((respuesta) => {
+                            // Se omiten respuestas vacías (después de quitar espacios)
+                            if (respuesta && respuesta.trim() !== '') {
+                                htmlOutput += processContent(respuesta, 'respuesta');
+                            } else {
+                                htmlOutput += `<em>___________</em>`;
+                            }
+                        });
+                        htmlOutput += `</div>`;
+                    } else {
+                        // Si el array está vacío, se muestra línea de respuesta
+                        htmlOutput += `
+                        <div class="respuestasautosave">
+                            <em>___________</em>
+                        </div>
+                    `;
+                    }
                 } else {
-                    htmlOutput += `
-                    <div class="respuestasautosave">
-                        <em>___________</em>
-                    </div>
-                `;
+                    // Si respuestaCorrecta es una cadena (o de otro tipo)
+                    if (questionData.respuestaCorrecta && questionData.respuestaCorrecta.trim() !== '') {
+                        htmlOutput += `
+                        <div class="respuestasautosave">
+                            ${processContent(questionData.respuestaCorrecta, 'respuesta')}
+                        </div>
+                    `;
+                    } else {
+                        htmlOutput += `
+                        <div class="respuestasautosave">
+                            <em>___________</em>
+                        </div>
+                    `;
+                    }
                 }
+                
                 htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
-            } 
+            }
+            
             else {
                 // Si la estructura es la antigua, se esperan las propiedades "enunciados" y "respuestas"
                 const { respuestas = [], enunciados = [], tipo = '' } = questionData;
