@@ -24626,27 +24626,20 @@
     }
 
     async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
+
         // 1) Verificar si "questionsHtml" es una colección (NodeList o HTMLCollection).
         //    Si no lo es, se convierte a array para procesarlo de forma uniforme.
-        if (
-            !NodeList.prototype.isPrototypeOf(questionsHtml) &&
-            !HTMLCollection.prototype.isPrototypeOf(questionsHtml)
-        ) {
+        if (!NodeList.prototype.isPrototypeOf(questionsHtml) && !HTMLCollection.prototype.isPrototypeOf(questionsHtml)) {
             questionsHtml = [questionsHtml];
         }
 
         // 2) Si el array está vacío, se muestra un error y se termina la ejecución.
         if (questionsHtml.length === 0) {
-            console.error('AutoSave_SessionStorage no se pudo ejecutar porque no cumple con los argumentos correctos');
+            console.error('[AutoSave_SessionStorage] No se pudo ejecutar porque no cumple con los argumentos correctos');
             return;
         }
 
-        // ——————————————————————————————————————————————————————
-        // Definición de funciones según el tipo de pregunta.
-        // Se asume que cada función procesa el "questionHtml" y retorna un objeto con toda
-        // la información necesaria (por ejemplo: html, respuestas, enunciados, etc.).
-        // ——————————————————————————————————————————————————————
-        const funcionesPorTipo = {
+        const funcQuestionType = {
             'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
             'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
             'select_emparejamiento': select_emparejamiento,
@@ -24693,7 +24686,7 @@
                 console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
                 // Buscar la función correspondiente al tipo de pregunta.
-                const funcion = funcionesPorTipo[questionType];
+                const funcion = funcQuestionType[questionType];
                 let questionData;
                 if (funcion) {
                     // Se invoca la función y se espera que retorne el objeto con la información de la pregunta.
@@ -24739,7 +24732,7 @@
             const questionType = determinarTipoPregunta(questionHtml);
             console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
-            const funcion = funcionesPorTipo[questionType];
+            const funcion = funcQuestionType[questionType];
             let questionData;
             if (funcion) {
                 questionData = await funcion(questionHtml);
