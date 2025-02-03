@@ -305,16 +305,34 @@ function formatResponseData(responseData) {
         const questionNumber = questionKey.replace(/[^\d]/g, '');
         
         if (questionData.hasOwnProperty('opcionesRespuesta')) {
-            // Si la estructura es la nueva, se formatea usando el enunciado y las opciones de respuesta
-            htmlOutput += `
-                <div class="preguntaautosave" id="${questionKey}">
-                    <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
-                </div>
-                <div class="respuestasautosave">
-                    ${formatResponseOptions(questionData.opcionesRespuesta, questionData.respuestaCorrecta)}
-                </div>
-                <hr style="margin-top: 5px; margin-bottom: 0px;">
-            `;
+            // Verifica si existe opcionesRespuesta y si tiene elementos
+            if (Array.isArray(questionData.opcionesRespuesta) && questionData.opcionesRespuesta.length > 0) {
+                // Si hay opciones, se formatea usando el enunciado y las opciones de respuesta
+                htmlOutput += `
+                    <div class="preguntaautosave" id="${questionKey}">
+                        <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
+                    </div>
+                    <div class="respuestasautosave">
+                        ${formatResponseOptions(questionData.opcionesRespuesta, questionData.respuestaCorrecta)}
+                    </div>
+                    <hr style="margin-top: 5px; margin-bottom: 0px;">
+                `;
+            } else {
+                // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta
+                htmlOutput += `
+                    <div class="preguntaautosave" id="${questionKey}">
+                        <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
+                    </div>
+                `;
+                if (questionData.respuestaCorrecta && questionData.respuestaCorrecta.trim() !== '') {
+                    htmlOutput += `
+                        <div class="respuestasautosave">
+                            ${processContent(questionData.respuestaCorrecta, 'respuesta')}
+                        </div>
+                    `;
+                }
+                htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
+            }
         } else {
             // Si la estructura es la antigua, se esperan las propiedades "enunciados" y "respuestas"
             const { respuestas = [], enunciados = [], tipo = '' } = questionData;
@@ -436,3 +454,4 @@ function formatMultipleResponseItems(responses, questionType) {
             .join('<br>');
     }
 }
+
