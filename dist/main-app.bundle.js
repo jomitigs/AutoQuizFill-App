@@ -24976,11 +24976,18 @@
 
     function formatMatchingOptions(data) {
         if (!Array.isArray(data.opcionesEnunciados) || !Array.isArray(data.respuestaCorrecta)) return '';
+        
         return `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
-            const respuesta = data.respuestaCorrecta[i] || "Elegir...";
-            return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta.trim() ? 'MediumBlue' : 'black'};">${processContent(respuesta)}</span></div>`;
+            const respuesta = data.respuestaCorrecta[i]?.trim() || ""; // Si la respuesta es "" no asignamos "Elegir..."
+            const textoRespuesta = respuesta ? processContent(respuesta) : "Elegir...";
+            const color = respuesta ? "MediumBlue" : "black"; // Si está vacía, el color será negro
+
+            return `<div>• ${processContent(enunciado)} - 
+            <span style="font-weight:500; color:${color};">${textoRespuesta}</span>
+        </div>`;
         }).join('') + `</div>`;
     }
+
 
     function formatShortAnswer(data) {
         let respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta];
