@@ -24685,7 +24685,7 @@
                 // - Finalmente, se incrementa un contador si aún no se determina.
                 const numberQuestion =
                     numeroQuestionUpdate ||
-                    obtenerNumeroPregunta(questionHtml) ||
+                    getQuestionNumber(questionHtml) ||
                     ++contadorPreguntas;
 
                 // Determinar el tipo de pregunta mediante la función determinarTipoPregunta.
