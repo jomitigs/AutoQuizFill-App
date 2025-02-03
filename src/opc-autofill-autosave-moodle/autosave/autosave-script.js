@@ -41,12 +41,9 @@ export function contenedorAutoSave_js() {
                 await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
                 AutoSave_ShowResponses();
                 
-                document.addEventListener("DOMContentLoaded", () => {
-                    if (window.MathJax && window.MathJax.Hub) {
-                      MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("Pregunta2")]);
-                    }
-                  });
-                                  
+                if (window.MathJax && window.MathJax.Hub) {
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById("Pregunta2")]);
+                  }                
 
                 detectarCambiosPreguntas();
 
