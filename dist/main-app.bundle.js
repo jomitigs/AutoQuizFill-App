@@ -24315,11 +24315,12 @@
         // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
-        // Convertimos las imágenes del clon a formato Data URI.
-        await convertImgToDataUri(clonFormulation);
+        if (clonFormulation.querySelectorAll('img').length > 0 || clonFormulation.querySelectorAll('audio').length > 0) {
+            await File2DataUri(clonFormulation);
+        }
 
         // Extraemos el enunciado usando la función dedicada.
-        const enunciado = await extractEnunciado$1(clonFormulation);
+        const enunciado = await extractEnunciado$2(clonFormulation);
 
         // Extraemos las opciones de respuesta y las respuestas seleccionadas.
         const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuestaCheckbox(originalFormulationClearfix);
@@ -24349,7 +24350,7 @@
      * @param {HTMLElement} clonFormulation - Clon del elemento de la pregunta.
      * @returns {string} Enunciado extraído.
      */
-    async function extractEnunciado$1(clonFormulation) {
+    async function extractEnunciado$2(clonFormulation) {
         const enunciadoElement = clonFormulation.querySelector('.qtext');
         let enunciado = '';
         if (enunciadoElement) {
@@ -24420,10 +24421,10 @@
         }
 
         // Extraemos el enunciado usando la función dedicada.
-        const enunciado = await extractEnunciado(clonFormulation);
+        const enunciado = await extractEnunciado$1(clonFormulation);
 
         // Extraemos las opciones de respuesta y la respuesta correcta.
-        const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
+        const { opcionesRespuesta, respuestaCorrecta } = await extractOpcionesYRespuesta$1(originalFormulationClearfix);
 
         // Obtenemos el feedback, si existe.
         const feedback = await feedbackQuestion(originalFormulationClearfix);
@@ -24443,7 +24444,7 @@
         return questionData;
     }
 
-    async function extractEnunciado(clonFormulation) {
+    async function extractEnunciado$1(clonFormulation) {
         const enunciadoElement = clonFormulation.querySelector('.qtext');
         let enunciado = '';
         if (enunciadoElement) {
@@ -24454,7 +24455,7 @@
         return enunciado;
     }
 
-    async function extractOpcionesYRespuesta(originalFormulationClearfix) {
+    async function extractOpcionesYRespuesta$1(originalFormulationClearfix) {
         const allInputRadio = originalFormulationClearfix.querySelectorAll('input[type="radio"]');
         let opcionesRespuesta = [];
         let respuestaCorrecta = '';
@@ -24552,86 +24553,117 @@
         return questionData;
     }
 
-    // Manejar respuestas tipo 'select'
-    async function select_emparejamiento(originalFormulationClearfix, questionsAutoSave) {
-        const tipo = 'select_emparejamiento'; // Define el tipo de pregunta como "select_emparejamiento"
-        questionsAutoSave.respuestas = [];    // Inicializa el array respuestas como vacío
-        questionsAutoSave.enunciados = [];    // Inicializa el array enunciados como vacío
+    /**
+     * Procesa preguntas de emparejamiento basadas en <select>.
+     * Se clona el elemento original, se convierten las imágenes a Data URI,
+     * se extrae el enunciado y las respuestas seleccionadas; además se almacena
+     * el enunciado relacionado para cada <select> en "opcionesEnunciados".
+     *
+     * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
+     * @returns {Object} Objeto questionData con la información procesada.
+     */
+    async function select_emparejamiento(originalFormulationClearfix) {
+        const tipo = 'select_emparejamiento';
 
-        // Crea un clon de la estructura HTML de la pregunta
+        // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
-        // Convierte las imágenes dentro del clon a formato Data URI para almacenar todo el contenido en texto
-        await convertImgToDataUri(clonFormulation);
+        // Convertimos las imágenes del clon a Data URI si es necesario.
+        if (clonFormulation.querySelectorAll('img').length > 0) {
+            await File2DataUri(clonFormulation);
+        }
 
-        // Obtiene todos los elementos <select> en la pregunta original
+        // Extraemos el enunciado usando la función dedicada.
+        const enunciado = await extractEnunciado(clonFormulation);
+
+        // Extraemos las opciones y respuestas correctas.
+        const { opcionesEnunciados, respuestaCorrecta } = await extractOpcionesYRespuesta(originalFormulationClearfix);
+
+        // Obtenemos el feedback, si existe.
+        const feedback = await feedbackQuestion(originalFormulationClearfix);
+
+        // Construimos el objeto questionData con la información obtenida.
+        const questionData = {
+            enunciado: enunciado,
+            opcionesEnunciados: opcionesEnunciados,
+            respuestaCorrecta: respuestaCorrecta,
+            html: clonFormulation.outerHTML,
+            tipo: tipo,
+            ciclo: localStorage.getItem("ciclo"),
+            feedback: feedback,
+        };
+
+        console.log("Objeto questionData generado:", questionData);
+        return questionData;
+    }
+
+    /**
+     * Extrae el enunciado usando la función dedicada.
+     *
+     * @param {HTMLElement} clonFormulation - Elemento DOM clonado de la pregunta.
+     * @returns {string} El enunciado extraído.
+     */
+    async function extractEnunciado(clonFormulation) {
+        const enunciadoElement = clonFormulation.querySelector('.qtext');
+        let enunciado = '';
+        if (enunciadoElement) {
+            enunciado = await extractContentInOrder(enunciadoElement);
+        } else {
+            console.log("No se encontró el elemento .qtext para extraer el enunciado.");
+        }
+        return enunciado;
+    }
+
+    /**
+     * Extrae las opciones de emparejamiento y las respuestas correctas.
+     *
+     * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
+     * @returns {Object} Objeto con las opciones de emparejamiento y las respuestas correctas.
+     */
+    async function extractOpcionesYRespuesta(originalFormulationClearfix) {
         const allSelects = originalFormulationClearfix.querySelectorAll('select');
+        let opcionesEnunciados = [];
+        let respuestaCorrecta = [];
 
-        // Itera sobre cada elemento <select> encontrado
-        allSelects.forEach(async (selectElement) => {
-            // Obtiene la opción seleccionada
+        for (const selectElement of allSelects) {
+            // Obtenemos la opción seleccionada en el <select>.
             let opcionSeleccionada = selectElement.options[selectElement.selectedIndex];
 
             if (opcionSeleccionada) {
-                // Si el valor es "0", la respuesta será una cadena vacía, de lo contrario, es el texto de la opción
+                // Si el valor es "0", interpretamos que no se seleccionó opción, por lo que la respuesta es cadena vacía.
                 let textoRespuesta = (opcionSeleccionada.value === "0")
                     ? ""
                     : opcionSeleccionada.textContent.trim();
 
-                // Almacena la respuesta (vacía o con texto, según corresponda)
-                questionsAutoSave.respuestas.push(textoRespuesta);
+                // Almacenamos la respuesta seleccionada.
+                respuestaCorrecta.push(textoRespuesta);
 
-                // Extrae el enunciado relacionado de la celda <td> más cercana que contiene el texto o una imagen
+                // Buscamos el enunciado asociado a este <select>.
                 let textoPregunta;
-                const textoElement = selectElement.closest('tr').querySelector('td.text');
+                const textoElement = selectElement.closest('tr')?.querySelector('td.text');
                 if (textoElement) {
-                    // Verifica si contiene texto
+                    // Si la celda contiene texto, lo usamos como enunciado.
                     if (textoElement.innerText.trim()) {
                         textoPregunta = textoElement.innerText.trim();
                     } else {
-                        // Si no contiene texto, intenta procesar la(s) imagen(es)
+                        // Si no contiene texto, buscamos una imagen.
                         const imgElement = textoElement.querySelector('img');
                         if (imgElement) {
-                            // Si la imagen proviene de 'pluginfile.php', la convertimos a Data URI
-                            if (imgElement.src.includes('pluginfile.php')) {
-                                try {
-                                    console.log('Convirtiendo imagen (pluginfile.php):', imgElement.src);
-                                    const dataUri = await convertImageToDataUri(imgElement);
-                                    imgElement.src = dataUri;
-                                    textoPregunta = dataUri;
-                                    console.log('Imagen convertida a Data URI:', imgElement.src);
-                                } catch (error) {
-                                    console.error('Error en la conversión de la imagen:', error);
-                                }
-                            } else {
-                                // Si la imagen no está en pluginfile.php, usamos su URL como textoPregunta
-                                textoPregunta = imgElement.src;
-                                console.log('La imagen no se convierte:', imgElement.src);
-                            }
+                            // La imagen ya fue convertida a Data URI (si era necesario) durante File2DataUri.
+                            textoPregunta = imgElement.src;
+                            console.log('Obteniendo imagen ya convertida:', imgElement.src);
                         }
                     }
 
-                    // Almacena el enunciado en questionsAutoSave.enunciados
+                    // Si se obtuvo algún enunciado (ya sea texto o imagen), lo almacenamos.
                     if (textoPregunta) {
-                        questionsAutoSave.enunciados.push(textoPregunta);
-                         // console.log(`Enunciado almacenado: ${textoPregunta}`);
+                        opcionesEnunciados.push(textoPregunta);
                     }
                 }
             }
-        });
+        }
 
-        // Guarda el HTML del clon y el tipo de pregunta después de procesar todas las selecciones
-        questionsAutoSave.html = clonFormulation.outerHTML;
-        questionsAutoSave.tipo = tipo;
-
-        // Llama a la función feedbackQuestion para obtener retroalimentación de la pregunta y la almacena
-        const feedback = await feedbackQuestion(originalFormulationClearfix);
-        questionsAutoSave.feedback = feedback;
-
-        // Guarda el valor de "ciclo" de localStorage en el objeto questionsAutoSave
-        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
-
-        //console.log(`[opc-autofill-autosave-moodle: autosave/questions-types] Pregunta guardada en SessionStorage`);
+        return { opcionesEnunciados, respuestaCorrecta };
     }
 
     // Exporta una función llamada contenedorAutoSave_js

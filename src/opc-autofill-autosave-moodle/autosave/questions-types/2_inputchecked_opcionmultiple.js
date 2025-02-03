@@ -1,4 +1,4 @@
-import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
+import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
 /**
  * Función para procesar preguntas de opción múltiple con checkboxes.
@@ -14,8 +14,9 @@ export async function inputchecked_opcionmultiple(originalFormulationClearfix) {
     // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
     const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
-    // Convertimos las imágenes del clon a formato Data URI.
-    await convertImgToDataUri(clonFormulation);
+    if (clonFormulation.querySelectorAll('img').length > 0 || clonFormulation.querySelectorAll('audio').length > 0) {
+        await File2DataUri(clonFormulation);
+    }
 
     // Extraemos el enunciado usando la función dedicada.
     const enunciado = await extractEnunciado(clonFormulation);
