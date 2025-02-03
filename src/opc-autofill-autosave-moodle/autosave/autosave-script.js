@@ -264,198 +264,76 @@ function detectarCambiosPreguntas() {
 }
 
 function AutoSave_ShowResponses() {
-    // Obtiene el contenedor en el DOM donde se mostrarán las respuestas autoguardadas
-    const autoSaveResponseContainer = document.getElementById('respuestasautosave');
-
-    // Verifica que el contenedor exista en el DOM
-    if (!autoSaveResponseContainer) {
-        console.error('El elemento con id "respuestasautosave" no existe en el DOM.');
-        return;
-    }
-
-    // Recupera las respuestas guardadas desde sessionStorage
-    const savedResponses = sessionStorage.getItem('questions-AutoSave');
-    if (!savedResponses) {
-        autoSaveResponseContainer.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-        console.log('No hay respuestas guardadas, mostrando "Sin responder".');
-        return;
-    }
-
-    let parsedResponses;
+    const container = document.getElementById('respuestasautosave');
+    if (!container) return console.error('Elemento "respuestasautosave" no encontrado.');
+    
+    const savedData = sessionStorage.getItem('questions-AutoSave');
+    if (!savedData) return displayNoResponse(container);
+    
     try {
-        // Intenta convertir el JSON de respuestas a un objeto
-        parsedResponses = JSON.parse(savedResponses);
+        const responses = JSON.parse(savedData);
+        container.innerHTML = formatResponseData(responses) || displayNoResponse(container);
     } catch (error) {
-        console.error('Error al parsear las respuestas guardadas:', error);
-        autoSaveResponseContainer.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-        return;
+        console.error('Error al parsear las respuestas:', error);
+        displayNoResponse(container);
     }
-
-    // Formatea las respuestas y las muestra en el contenedor
-    const formattedResponses = formatResponseData(parsedResponses);
-    autoSaveResponseContainer.innerHTML = formattedResponses || '<span style="font-weight:500; color:red;">Sin responder</span>';
 }
 
-function formatResponseData(responseData) {
-    let htmlOutput = '';
+function displayNoResponse(container) {
+    container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+}
 
-    // Itera sobre cada entrada (pregunta) del objeto de respuestas
-    for (const [questionKey, questionData] of Object.entries(responseData)) {
-        // Extrae el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
-        const questionNumber = questionKey.replace(/[^\d]/g, '');
-        
-        if (questionData.tipo === ('inputradio_opcionmultiple_verdaderofalso') || questionData.tipo === ('inputchecked_opcionmultiple')) {
-            // Verifica si existe opcionesRespuesta y si tiene elementos
-            if (Array.isArray(questionData.opcionesRespuesta) && questionData.opcionesRespuesta.length > 0) {
-                // Si hay opciones, se formatea usando el enunciado y las opciones de respuesta
-                htmlOutput += `
-                    <div class="preguntaautosave" id="${questionKey}">
-                        <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
-                    </div>
-                    <div class="respuestasautosave">
-                        ${formatResponseOptions(questionData.opcionesRespuesta, questionData.respuestaCorrecta)}
-                    </div>
-                    <hr style="margin-top: 5px; margin-bottom: 0px;">
-                `;
-            } 
-        
-        } 
-        
-        else if (questionData.tipo === ('select_emparejamiento')) {
-            // Se muestra el enunciado
-            htmlOutput += `
-                <div class="preguntaautosave" id="${questionKey}">
-                    <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
-                </div>
-            `;
-            
-            // Verificamos si existen opcionesEnunciados y respuestaCorrecta
-            if (Array.isArray(questionData.opcionesEnunciados) && Array.isArray(questionData.respuestaCorrecta)) {
-                htmlOutput += `<div class="respuestasautosave">`;
-                
-                questionData.opcionesEnunciados.forEach((enunciado, index) => {
-                    let respuesta = questionData.respuestaCorrecta[index] || "";
-                    let color = respuesta.trim() !== "" ? "MediumBlue" : "black";
-                    let textoRespuesta = respuesta.trim() !== "" ? processContent(respuesta, 'respuesta') : "Elegir...";
-                    
-                    htmlOutput += `
-                        <div>
-                            • ${processContent(enunciado, 'enunciado')} - <span style="font-weight: 500; color: ${color};">${textoRespuesta}</span>
-                        </div>
-                    `;
-                });
-                
-                htmlOutput += `</div>`;
-            }
-            
-            htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
+function formatResponseData(data) {
+    return Object.entries(data).map(([key, value]) => formatQuestion(key, value)).join('');
+}
+
+function formatQuestion(key, data) {
+    const questionNumber = key.replace(/\D/g, '');
+    let html = `<div class="preguntaautosave" id="${key}"><strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}</div>`;
+    
+    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+            html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
         }
-        
-        else if (questionData.tipo === ('inputtext_respuestacorta')) {
-            // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
-            // Si no hay respuesta, se muestran líneas debajo del enunciado.
-            htmlOutput += `
-                <div class="preguntaautosave" id="${questionKey}">
-                    <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
-                </div>
-            `;
-            
-            // Se determina si respuestaCorrecta es un array o una cadena
-            if (Array.isArray(questionData.respuestaCorrecta)) {
-                // Si es un array, se verifica que tenga elementos y se procesan
-                if (questionData.respuestaCorrecta.length > 0) {
-                    htmlOutput += `<div class="respuestasautosave">`;
-                    questionData.respuestaCorrecta.forEach((respuesta) => {
-                        // Se omiten respuestas vacías (después de quitar espacios)
-                        if (respuesta && respuesta.trim() !== '') {
-                            htmlOutput += processContent(respuesta, 'respuesta');
-                        } else {
-                            htmlOutput += `<em>___________</em>`;
-                        }
-                    });
-                    htmlOutput += `</div>`;
-                } else {
-                    // Si el array está vacío, se muestra línea de respuesta
-                    htmlOutput += `
-                        <div class="respuestasautosave">
-                            <em>___________</em>
-                        </div>
-                    `;
-                }
-            } else {
-                // Si respuestaCorrecta es una cadena (o de otro tipo)
-                if (questionData.respuestaCorrecta && questionData.respuestaCorrecta.trim() !== '') {
-                    htmlOutput += `
-                        <div class="respuestasautosave">
-                            ${processContent(questionData.respuestaCorrecta, 'respuesta')}
-                        </div>
-                    `;
-                } else {
-                    htmlOutput += `
-                        <div class="respuestasautosave">
-                            <em>___________</em>
-                        </div>
-                    `;
-                }
-            }
-            
-            htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
-        }
-        
+    } else if (data.tipo === 'select_emparejamiento') {
+        html += formatMatchingOptions(data);
+    } else if (data.tipo === 'inputtext_respuestacorta') {
+        html += formatShortAnswer(data);
     }
-
-    return htmlOutput;
+    return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
 }
 
-function formatResponseOptions(options, selectedResponse) {
-    if (!options || !Array.isArray(options)) return '';
-
-    // Normaliza la respuesta seleccionada a un arreglo de valores recortados
-    let selectedResponses = [];
-    if (Array.isArray(selectedResponse)) {
-        selectedResponses = selectedResponse.map(resp => resp.trim());
-    } else if (typeof selectedResponse === 'string') {
-        selectedResponses = [selectedResponse.trim()];
-    }
-
-    return options
-        .map((option, index) => {
-            // Asigna una letra (a., b., c., …) o número si solo hay una opción
-            const literal = options.length > 1 
-                ? String.fromCharCode(97 + index) + '. ' 
-                : (index + 1) + '. ';
-
-            // Procesa el contenido de la opción
-            let formattedOption = processContent(option, 'respuesta');
-
-            // Si la opción está entre las seleccionadas, se resalta
-            if (selectedResponses.includes(option.trim())) {
-                formattedOption = `<span style="font-weight:500; color:MediumBlue;">${literal}${formattedOption}</span>`;
-            } else {
-                formattedOption = `<span style="font-weight:500;">${literal}</span>${formattedOption}`;
-            }
-            return `<div>${formattedOption}</div>`;
-        })
-        .join('');
+function formatMatchingOptions(data) {
+    if (!Array.isArray(data.opcionesEnunciados) || !Array.isArray(data.respuestaCorrecta)) return '';
+    return `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+        const respuesta = data.respuestaCorrecta[i] || "Elegir...";
+        return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta.trim() ? 'MediumBlue' : 'black'};">${processContent(respuesta)}</span></div>`;
+    }).join('') + `</div>`;
 }
 
-function processContent(content, contentType) {
-    const imageRegex = /(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi;
-    const dataUriRegex = /(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi;
-    const mathRegex = /<math[^>]*>[\s\S]*?<\/math>/g;
-
-    // Reemplaza URLs de imágenes, datos URI y etiquetas de matemáticas por contenido HTML apropiado
-    let processedContent = content
-        .replace(imageRegex, (match) => createImgTag(match, contentType))
-        .replace(dataUriRegex, (match) => createImgTag(match, contentType))
-        .replace(mathRegex, (match) => `<span style="font-size: 1.5em;">${match}</span>`)
-        .replace(/(\r\n|\n|\r)/g, '<br>');
-
-    return processedContent || `<span style="font-weight:500; color:red;">Sin responder</span>`;
+function formatShortAnswer(data) {
+    let respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta];
+    respuestas = respuestas.filter(Boolean).map(res => processContent(res)).join('') || '<em>___________</em>';
+    return `<div class="respuestasautosave">${respuestas}</div>`;
 }
 
-function createImgTag(src, contentType) {
-    const altText = contentType === 'enunciado' ? 'Imagen de enunciado' : 'Imagen de respuesta';
-    return `<img src="${src}" alt="${altText}" style="max-width: 200px; max-height: 150px;">`;
+function formatResponseOptions(options, selected) {
+    const selectedSet = new Set(Array.isArray(selected) ? selected.map(s => s.trim()) : [selected?.trim()]);
+    return options.map((option, i) => {
+        const literal = options.length > 1 ? String.fromCharCode(97 + i) + '. ' : (i + 1) + '. ';
+        return `<div><span style="font-weight:500; ${selectedSet.has(option.trim()) ? 'color:MediumBlue;' : ''}">${literal}${processContent(option)}</span></div>`;
+    }).join('');
+}
+
+function processContent(content) {
+    if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
+    return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, createImgTag)
+                  .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, createImgTag)
+                  .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
+                  .replace(/(\r\n|\n|\r)/g, '<br>');
+}
+
+function createImgTag(src) {
+    return `<img src="${src}" alt="Imagen" style="max-width: 200px; max-height: 150px;">`;
 }
 
