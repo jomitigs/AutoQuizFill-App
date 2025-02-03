@@ -321,66 +321,24 @@ export async function File2DataUri(files) {
         // ------------------------------------------------------------------------
         if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
           const latexCode = child.textContent.trim();
-          console.log('-> Script de tipo "math/tex" detectado, LaTeX:', latexCode);
+          console.log('-> Nodo <script type="math/tex"> detectado, LaTeX:', latexCode);
   
-          // Buscamos si el siguiente hermano es <span class="MathJax">
-          let nextSibling = child.nextSibling;
-          let matched = false;
-          console.log('-> Buscando siguiente hermano que sea <span class="MathJax">');
-  
-          // Ignorar posibles nodos de texto vacíos
-          while (nextSibling && nextSibling.nodeType === Node.TEXT_NODE) {
-            if (!nextSibling.textContent.trim()) {
-              nextSibling = nextSibling.nextSibling;
-            } else {
-              break;
-            }
-          }
-  
-          // Si el siguiente es un <span class="MathJax">, asumimos que es la misma fórmula
-          if (nextSibling && nextSibling.nodeType === Node.ELEMENT_NODE) {
-            const nsTag = nextSibling.tagName.toLowerCase();
-            if (nsTag === 'span' && nextSibling.classList.contains('MathJax')) {
-              console.log('-> Encontrado <span class="MathJax"> contiguo.');
-              const mathml = nextSibling.getAttribute('data-mathml');
-              if (mathml) {
-                matched = true;
-                // Añadimos un espacio si es necesario
-                if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-                  content += ' ';
-                }
-                // Nos quedamos con la versión MathML
-                content += mathml;
-                console.log('-> Usando MathML del atributo data-mathml:', mathml);
-              }
-            }
-          }
-  
-          // Si no hay <span class="MathJax">, convertimos el LaTeX a MathML
-          if (!matched) {
-            console.log('-> No se encontró <span class="MathJax"> contiguo. Convirtiendo LaTeX a MathML...');
+          if (latexCode) {
+            // Se añade un espacio si es necesario
             if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
               content += ' ';
             }
-            // Conversión real usando MathJax
-            const generatedMathML = convertLatexToMathML(latexCode);
-            content += generatedMathML;
-            console.log('-> MathML generado:', generatedMathML);
+            // Se agrega directamente el código LaTeX al contenido
+            content += latexCode;
+            console.log('-> Agregando LaTeX al contenido:', latexCode);
           }
   
         // ------------------------------------------------------------------------
-        // B) <span class="MathJax" data-mathml>
+        // B) Ignorar <span class="MathJax">
         // ------------------------------------------------------------------------
         } else if (tagName === 'span' && child.classList.contains('MathJax')) {
-          console.log('-> Encontrado <span class="MathJax"> con data-mathml');
-          const mathml = child.getAttribute('data-mathml');
-          if (mathml) {
-            if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
-              content += ' ';
-            }
-            content += mathml;
-            console.log('-> Agregando MathML al contenido:', mathml);
-          }
+          console.log('-> Ignorando nodo <span class="MathJax">');
+          // Se ignora este nodo; no se extrae nada
   
         // ------------------------------------------------------------------------
         // C) <img>
@@ -392,17 +350,16 @@ export async function File2DataUri(files) {
             if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
               content += ' ';
             }
-            // Ya NO convertimos a Data URI, solo conservamos el src
             content += src;
             console.log('-> Agregando src al contenido:', src);
           }
   
         // ------------------------------------------------------------------------
-        // D) <sub>, <sup>
+        // D) <sub> y <sup>
         // ------------------------------------------------------------------------
         } else if (tagName === 'sub' || tagName === 'sup') {
           console.log(`-> Encontrado <${tagName}>; conservando la etiqueta completa.`);
-          // Conservamos las etiquetas
+          // Se conserva la etiqueta completa
           content += child.outerHTML;
   
         // ------------------------------------------------------------------------
@@ -427,7 +384,7 @@ export async function File2DataUri(files) {
           content += '\n';
   
         // ------------------------------------------------------------------------
-        // G) Otros elementos (recursivo)
+        // G) Otros elementos (procesado recursivo)
         // ------------------------------------------------------------------------
         } else {
           console.log('-> Nodo de tipo desconocido. Procesando recursivamente...');
