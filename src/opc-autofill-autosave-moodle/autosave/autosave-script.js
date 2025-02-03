@@ -236,7 +236,7 @@ function AutoSave_ShowResponses() {
  * se asume la nueva estructura y se muestra:
  *    - Enunciado
  *    - Opciones de respuesta (con literales a., b., c., etc.)
- *    - Respuesta seleccionada
+ *    - El texto seleccionado, mostrado en rojo con font-weight 500.
  *
  * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
  *
@@ -258,7 +258,7 @@ function formatResponses(respuestasObj) {
                     ${formatOptions(valor.opcionesRespuesta)}
                 </div>
                 <div class="respuestasautosave">
-                    <strong>Respuesta seleccionada: </strong>${processContent(valor.respuestaCorrecta, 'respuesta')}
+                    <span style="font-weight:500; color:red;">${processContent(valor.respuestaCorrecta, 'respuesta')}</span>
                 </div>
             `;
         } else {
