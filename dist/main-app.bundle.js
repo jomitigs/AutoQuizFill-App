@@ -24773,9 +24773,10 @@
      *
      * Si el objeto (por ejemplo, "Pregunta1") contiene la propiedad "opcionesRespuesta",
      * se asume la nueva estructura y se muestra:
+     *    - Nombre de la pregunta (usando la clave, ej. "Pregunta 1")
      *    - Enunciado
      *    - Opciones de respuesta (con literales a., b., c., etc.)
-     *    - El texto seleccionado, mostrado en rojo con font-weight 500.
+     *    - El contenido seleccionado, mostrado en rojo con font-weight 500.
      *
      * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
      *
@@ -24787,11 +24788,14 @@
 
         // Se itera sobre cada par clave-valor del objeto de respuestas
         for (const [clave, valor] of Object.entries(respuestasObj)) {
+            // Extraer el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
+            let numeroPregunta = clave.replace(/[^\d]/g, '');
+            
             // Si el objeto actual tiene la propiedad "opcionesRespuesta", se usa la nueva estructura
             if (valor.hasOwnProperty('opcionesRespuesta')) {
                 html += `
                 <div class="preguntaautosave" id="${clave}">
-                    ${processContent(valor.enunciado, 'enunciado')}
+                    <strong>Pregunta ${numeroPregunta}:</strong> ${processContent(valor.enunciado, 'enunciado')}
                 </div>
                 <div class="respuestasautosave">
                     ${formatOptions(valor.opcionesRespuesta)}
@@ -24803,15 +24807,14 @@
             } else {
                 // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
                 const { respuestas = [], enunciados = [], tipo = '' } = valor;
-                const numeroPregunta = clave; // Por ejemplo, "Pregunta1"
                 // Se asegura que respuestasFinales sea un arreglo
                 const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
                 // Se obtiene el contenido HTML de la respuesta usando la función consolidada getResponseContent
-                const contenidoRespuesta = getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta);
+                const contenidoRespuesta = getResponseContent(enunciados, respuestasFinales, tipo, clave);
 
                 html += `
-                <div class="preguntaautosave" id="${numeroPregunta}">
-                    ${numeroPregunta}:
+                <div class="preguntaautosave" id="${clave}">
+                    <strong>Pregunta ${numeroPregunta}:</strong>
                 </div>
                 <div class="respuestasautosave">
                     ${contenidoRespuesta}
@@ -24936,6 +24939,7 @@
                 .join('<br>');
         }
     }
+
 
 
 
