@@ -24988,7 +24988,6 @@
         }).join('') + `</div>`;
     }
 
-
     function formatShortAnswer(data) {
         let respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta];
         respuestas = respuestas.filter(Boolean).map(res => processContent(res)).join('') || '<em>___________</em>';
