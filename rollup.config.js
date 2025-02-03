@@ -13,7 +13,7 @@ const isProduction = process.env.BUILD_PROD === 'true';
 
 export default {
   input: 'src/main-app.js',
-  
+
   external: [
     'mathjax-full', 
     // O si importas submódulos directos
@@ -26,6 +26,9 @@ export default {
     file: 'dist/main-app.bundle.js',
     format: 'iife',
     name: 'AutoQuizFillApp',
+    globals: {
+      'mathjax-full': 'MathJax'
+    }
   },
   plugins: [
     // Resuelve imports para navegador
