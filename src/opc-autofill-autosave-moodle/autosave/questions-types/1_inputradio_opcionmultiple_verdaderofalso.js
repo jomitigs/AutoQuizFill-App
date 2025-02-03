@@ -1,7 +1,5 @@
 import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
-
-
 export async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
     const tipo = 'inputradio_opcionmultiple_verdaderofalso';
 
