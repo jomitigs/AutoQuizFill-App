@@ -236,8 +236,7 @@ function AutoSave_ShowResponses() {
  * se asume la nueva estructura y se muestra:
  *    - Nombre de la pregunta (usando la clave, ej. "Pregunta 1")
  *    - Enunciado
- *    - Opciones de respuesta (con literales a., b., c., etc.)
- *    - El contenido seleccionado, mostrado en rojo con font-weight 500.
+ *    - Opciones de respuesta (con literales a., b., c., etc.) donde la opción que coincide con la respuesta seleccionada se marca en rojo con font-weight 500.
  *
  * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
  *
@@ -249,20 +248,17 @@ function formatResponses(respuestasObj) {
 
     // Se itera sobre cada par clave-valor del objeto de respuestas
     for (const [clave, valor] of Object.entries(respuestasObj)) {
-        // Extraer el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
+        // Se extrae el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
         let numeroPregunta = clave.replace(/[^\d]/g, '');
         
-        // Si el objeto actual tiene la propiedad "opcionesRespuesta", se usa la nueva estructura
         if (valor.hasOwnProperty('opcionesRespuesta')) {
+            // Nueva estructura
             html += `
                 <div class="preguntaautosave" id="${clave}">
                     <strong>Pregunta ${numeroPregunta}:</strong> ${processContent(valor.enunciado, 'enunciado')}
                 </div>
                 <div class="respuestasautosave">
-                    ${formatOptions(valor.opcionesRespuesta)}
-                </div>
-                <div class="respuestasautosave">
-                    <span style="font-weight:500; color:red;">${processContent(valor.respuestaCorrecta, 'respuesta')}</span>
+                    ${formatOptions(valor.opcionesRespuesta, valor.respuestaCorrecta)}
                 </div>
             `;
         } else {
@@ -305,7 +301,6 @@ function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta)
     let respuestasHTML = '';
 
     if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
-        // Si existen enunciados y su número coincide con el de respuestas:
         respuestasHTML = enunciados
             .map((enunciado, index) => {
                 const respuesta = respuestasFinales[index];
@@ -313,15 +308,12 @@ function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta)
             })
             .join('<br>');
     } else if (respuestasFinales.length > 1) {
-        // Si hay múltiples respuestas sin enunciados, se formatean según el tipo de pregunta
         respuestasHTML = formatMultipleResponses(respuestasFinales, tipo);
     } else {
-        // Si es una sola respuesta, se procesa directamente
         const respuesta = respuestasFinales[0] || '';
         respuestasHTML = processContent(respuesta, 'respuesta');
     }
 
-    // Si el contenido resultante está vacío, se asigna "Sin responder" con estilo
     if (!respuestasHTML) {
         respuestasHTML = `<span id="${numeroPregunta}" style="font-weight:500; color:red;">Sin responder</span>`;
     }
@@ -332,19 +324,27 @@ function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta)
 /**
  * Función para formatear el arreglo de opciones de respuesta.
  * Si hay más de una opción, se les asignan literales (a., b., c., …)
+ * Se resalta con color rojo y font-weight 500 la opción que coincida con la respuesta seleccionada.
  *
  * @param {Array} opciones - Arreglo de opciones de respuesta.
+ * @param {string} respuestaSeleccionada - La respuesta seleccionada.
  * @returns {string} - HTML con las opciones formateadas.
  */
-function formatOptions(opciones) {
+function formatOptions(opciones, respuestaSeleccionada) {
     if (!opciones || !Array.isArray(opciones)) return '';
     return opciones
         .map((opcion, index) => {
-            // Si hay más de una opción, se asigna una letra (a., b., c., …)
+            // Se asigna una letra (a., b., c., …)
             const etiqueta = opciones.length > 1 
                 ? String.fromCharCode(97 + index) + '. ' 
                 : (index + 1) + '. ';
-            return `<div>${etiqueta}${processContent(opcion, 'respuesta')}</div>`;
+            // Comparamos la opción (sin procesar) con la respuesta seleccionada
+            // Se realiza un trim para evitar diferencias por espacios adicionales
+            let opcionFormateada = processContent(opcion, 'respuesta');
+            if (opcion.trim() === respuestaSeleccionada.trim()) {
+                opcionFormateada = `<span style="font-weight:500; color:red;">${opcionFormateada}</span>`;
+            }
+            return `<div>${etiqueta}${opcionFormateada}</div>`;
         })
         .join('');
 }
