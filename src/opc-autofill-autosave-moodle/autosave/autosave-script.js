@@ -412,25 +412,36 @@ function getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta)
  */
 function formatOptions(opciones, respuestaSeleccionada) {
     if (!opciones || !Array.isArray(opciones)) return '';
+
+    // Normalizamos respuestaSeleccionada a un arreglo de valores recortados
+    let respuestasSeleccionadas = [];
+    if (Array.isArray(respuestaSeleccionada)) {
+        respuestasSeleccionadas = respuestaSeleccionada.map(resp => resp.trim());
+    } else if (typeof respuestaSeleccionada === 'string') {
+        respuestasSeleccionadas = [respuestaSeleccionada.trim()];
+    }
+
     return opciones
         .map((opcion, index) => {
             // Se asigna una letra (a., b., c., …) o número si solo hay una opción
             const literal = opciones.length > 1 
                 ? String.fromCharCode(97 + index) + '. ' 
                 : (index + 1) + '. ';
+
             // Se obtiene el contenido procesado de la opción
             let opcionFormateada = processContent(opcion, 'respuesta');
-            // Si la opción coincide con la respuesta seleccionada, se resalta tanto el literal como el texto
-            if (opcion.trim() === respuestaSeleccionada.trim()) {
+
+            // Si la opción está en el arreglo de respuestas seleccionadas se resalta
+            if (respuestasSeleccionadas.includes(opcion.trim())) {
                 opcionFormateada = `<span style="font-weight:500; color:MediumBlue;">${literal}${opcionFormateada}</span>`;
             } else {
-                // Si no es la opción seleccionada, se muestra el literal normalmente seguido del contenido
                 opcionFormateada = `<span style="font-weight:500;">${literal}</span>${opcionFormateada}`;
             }
             return `<div>${opcionFormateada}</div>`;
         })
         .join('');
 }
+
 
 
 /**
