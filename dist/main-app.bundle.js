@@ -24975,7 +24975,7 @@
             // Extrae el número de la pregunta (por ejemplo, de "Pregunta1" se obtiene "1")
             const questionNumber = questionKey.replace(/[^\d]/g, '');
             
-            if (questionData.hasOwnProperty('opcionesRespuesta')) {
+            if (questionData.tipo === ('inputradio_opcionmultiple_verdaderofalso') || questionData.tipo === ('inputchecked_opcionmultiple')) {
                 // Verifica si existe opcionesRespuesta y si tiene elementos
                 if (Array.isArray(questionData.opcionesRespuesta) && questionData.opcionesRespuesta.length > 0) {
                     // Si hay opciones, se formatea usando el enunciado y las opciones de respuesta
@@ -24992,7 +24992,7 @@
             
             } 
             
-            else if (!questionData.hasOwnProperty('opcionesRespuesta') && questionData.hasOwnProperty('opcionesSelect')) {
+            else if (questionData.tipo === ('select_emparejamiento')) {
                 // Se muestra el enunciado
                 htmlOutput += `
                 <div class="preguntaautosave" id="${questionKey}">
@@ -25006,7 +25006,7 @@
                     
                     questionData.opcionesEnunciados.forEach((enunciado, index) => {
                         let respuesta = questionData.respuestaCorrecta[index] || "";
-                        let color = respuesta.trim() !== "" ? "MediumBlue" : "red";
+                        let color = respuesta.trim() !== "" ? "MediumBlue" : "black";
                         let textoRespuesta = respuesta.trim() !== "" ? processContent(respuesta, 'respuesta') : "Elegir...";
                         
                         htmlOutput += `
@@ -25022,7 +25022,7 @@
                 htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
             }
             
-            else if (!questionData.hasOwnProperty('opcionesRespuesta' )) {
+            else if (questionData.tipo === ('inputtext_respuestacorta')) {
                 // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
                 // Si no hay respuesta, se muestran líneas debajo del enunciado.
                 htmlOutput += `
@@ -25073,62 +25073,9 @@
                 htmlOutput += `<hr style="margin-top: 5px; margin-bottom: 0px;">`;
             }
             
-            else {
-                // Si la estructura es la antigua, se esperan las propiedades "enunciados" y "respuestas"
-                const { respuestas = [], enunciados = [], tipo = '' } = questionData;
-                // Asegura que las respuestas sean un arreglo
-                const finalResponses = Array.isArray(respuestas) ? respuestas : [respuestas];
-                // Genera el contenido HTML consolidado de la respuesta
-                const responseContentHTML = assembleResponseContent(enunciados, finalResponses, tipo, questionKey);
-
-                htmlOutput += `
-                <div class="preguntaautosave" id="${questionKey}">
-                    <strong>Pregunta ${questionNumber}:</strong>
-                </div>
-                <div class="respuestasautosave">
-                    ${responseContentHTML}
-                </div>
-                <hr style="margin-top:0px; margin-bottom:5px;">
-            `;
-            }
         }
 
         return htmlOutput;
-    }
-
-    function assembleResponseContent(questionPrompts, finalResponses, questionType, questionKey) {
-        let responseHTML = '';
-
-        if (questionPrompts.length > 0 && questionPrompts.length === finalResponses.length) {
-            // Si la cantidad de enunciados coincide con la de respuestas, se mapean en pares
-            responseHTML = questionPrompts
-                .map((prompt, index) => {
-                    const response = finalResponses[index];
-                    return `${processContent(prompt, 'enunciado')} <strong>➔</strong> ${processContent(response, 'respuesta')}`;
-                })
-                .join('<br>');
-        } else if (finalResponses.length > 1) {
-            // Si hay múltiples respuestas pero la cantidad no coincide con los enunciados
-            if (questionPrompts.length > 0 && questionPrompts.length !== finalResponses.length) {
-                responseHTML = finalResponses
-                    .map(response => `<strong>${processContent(response, 'respuesta')}</strong>`)
-                    .join('<br>');
-            } else {
-                // Si no hay enunciados, se formatean las respuestas de manera múltiple
-                responseHTML = formatMultipleResponseItems(finalResponses, questionType);
-            }
-        } else {
-            // Caso de una única respuesta
-            const response = finalResponses[0] || '';
-            responseHTML = `<strong>${processContent(response, 'respuesta')}</strong>`;
-        }
-
-        // Si no se generó contenido, se indica "Sin responder"
-        if (!responseHTML) {
-            responseHTML = `<span id="${questionKey}" style="font-weight:500; color:red;">Sin responder</span>`;
-        }
-
-        return responseHTML;
     }
 
     function formatResponseOptions(options, selectedResponse) {
@@ -25181,18 +25128,6 @@
     function createImgTag(src, contentType) {
         const altText = contentType === 'enunciado' ? 'Imagen de enunciado' : 'Imagen de respuesta';
         return `<img src="${src}" alt="${altText}" style="max-width: 200px; max-height: 150px;">`;
-    }
-
-    function formatMultipleResponseItems(responses, questionType) {
-        if (questionType === 'draganddrop_text' || questionType === 'draganddrop_image') {
-            return responses
-                .map((response, index) => `${index + 1}. ${processContent(response, 'respuesta')}`)
-                .join('<br>');
-        } else {
-            return responses
-                .map(response => `• ${processContent(response, 'respuesta')}`)
-                .join('<br>');
-        }
     }
 
     function opcion_AutoFillAutoSave_Moodle_html() {
