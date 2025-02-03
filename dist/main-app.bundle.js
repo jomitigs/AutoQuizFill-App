@@ -24609,7 +24609,6 @@
         // ——————————————————————————————————————————————————————
         if (questionsHtml.length > 1 || (questionsHtml.length === 1 && numeroQuestionUpdate === null)) {
             // *************** Caso A ***************
-            console.log('[AutoSave_SessionStorage] Ejecutando Caso A: Reemplazando completamente sessionStorage.');
 
             // Se crea un objeto nuevo para almacenar la información de todas las preguntas.
             const questionsHtmlObject = {};
@@ -24655,8 +24654,6 @@
 
         } else {
             // *************** Caso B ***************
-            // Se ejecuta cuando hay un solo elemento y numeroQuestionUpdate tiene un valor.
-            console.log('[AutoSave_SessionStorage] Ejecutando Caso B: Actualizando datos existentes en sessionStorage.');
 
             // Leer la información existente en sessionStorage.
             let datosExistentes = {};
