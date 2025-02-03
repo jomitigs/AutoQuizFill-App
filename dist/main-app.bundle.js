@@ -24945,7 +24945,8 @@
                     <hr style="margin-top: 5px; margin-bottom: 0px;">
                 `;
                 } else {
-                    // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta
+                    // Si no hay opcionesRespuesta o está vacío, se muestra el enunciado y, si existe, la respuesta.
+                    // Si no hay respuesta, se muestran líneas debajo del enunciado.
                     htmlOutput += `
                     <div class="preguntaautosave" id="${questionKey}">
                         <strong>Pregunta ${questionNumber}:</strong> ${processContent(questionData.enunciado, 'enunciado')}
@@ -24955,6 +24956,12 @@
                         htmlOutput += `
                         <div class="respuestasautosave">
                             ${processContent(questionData.respuestaCorrecta, 'respuesta')}
+                        </div>
+                    `;
+                    } else {
+                        htmlOutput += `
+                        <div class="respuestasautosave">
+                            <em>___________</em>
                         </div>
                     `;
                     }
