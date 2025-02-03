@@ -24140,8 +24140,8 @@
                 if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
                   content += ' ';
                 }
-                // Se agrega directamente el código LaTeX al contenido
-                content += latexCode;
+                // Se encierra el código LaTeX en delimitadores \(...\)
+                content += `\\(${latexCode}\\)`;
                 console.log('-> Agregando LaTeX al contenido:', latexCode);
               }
       
