@@ -293,7 +293,16 @@ export async function File2DataUri(files) {
       }
     }
   }
-  
+
+
+  // Importaciones de MathJax:
+import { mathjax } from 'mathjax-full/js/mathjax.js'
+import { TeX } from 'mathjax-full/js/input/tex.js'
+import { MathML } from 'mathjax-full/js/output/mathml.js'
+import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
+import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
+import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
+
   export async function extractContentInOrder(node) {
     let content = '';
   
