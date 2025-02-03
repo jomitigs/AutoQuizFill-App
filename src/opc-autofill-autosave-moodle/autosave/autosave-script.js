@@ -40,7 +40,7 @@ export function contenedorAutoSave_js() {
 
                 await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine AutoSave
                 AutoSave_ShowResponses();
-
+                window.MathJax.typesetPromise(["#Pregunta2"]);
                 detectarCambiosPreguntas();
 
                 console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
