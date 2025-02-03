@@ -91,8 +91,9 @@ export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
 
 /**
  * Función principal para procesar la pregunta de opción múltiple (tipo verdadero/falso).
- * Se actualiza el objeto que se recibe como segundo parámetro (por ejemplo, "questionsAutoSave")
- * con la siguiente estructura:
+ * Esta función procesa la pregunta clonando el elemento original, convirtiendo las imágenes a Data URI,
+ * extrayendo el enunciado, las opciones de respuesta, la respuesta correcta, y el feedback,
+ * para luego retornar un objeto con la siguiente estructura:
  *
  * {
  *   enunciado:           // Enunciado extraído del elemento .qtext.
@@ -105,10 +106,9 @@ export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
  * }
  *
  * @param {HTMLElement} originalFormulationClearfix - Elemento que contiene la formulación original de la pregunta.
- * @param {Object} questionsAutoSave - Objeto que se actualiza con la estructura de la pregunta.
- * @returns {Promise<void>}
+ * @returns {Promise<Object>} El objeto questionData con la información procesada de la pregunta.
  */
-export async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix, questionsAutoSave) {
+export async function inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
     console.log("Procesando pregunta de tipo inputradio_opcionmultiple_verdaderofalso...");
     const tipo = 'inputradio_opcionmultiple_verdaderofalso';
 
@@ -132,14 +132,17 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
     const feedback = await feedbackQuestion(originalFormulationClearfix);
     console.log("Feedback obtenido:", feedback);
 
-    // Actualizamos el objeto "questionsAutoSave" con la nueva estructura.
-    questionsAutoSave.enunciado = enunciado;
-    questionsAutoSave.opcionesRespuesta = opcionesRespuesta;
-    questionsAutoSave.respuestaCorrecta = respuestaCorrecta;
-    questionsAutoSave.html = clonFormulation.outerHTML;
-    questionsAutoSave.tipo = tipo;
-    questionsAutoSave.ciclo = localStorage.getItem("ciclo");
-    questionsAutoSave.feedback = feedback;
+    // Construimos el objeto questionData con la información obtenida.
+    const questionData = {
+        enunciado: enunciado,
+        opcionesRespuesta: opcionesRespuesta,
+        respuestaCorrecta: respuestaCorrecta,
+        html: clonFormulation.outerHTML,
+        tipo: tipo,
+        ciclo: localStorage.getItem("ciclo"),
+        feedback: feedback,
+    };
 
-    console.log("Objeto questionsAutoSave actualizado:", questionsAutoSave);
+    console.log("Objeto questionData generado:", questionData);
+    return questionData;
 }
