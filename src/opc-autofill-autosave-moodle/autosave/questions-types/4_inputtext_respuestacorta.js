@@ -4,9 +4,10 @@ import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '..
  * Función para procesar preguntas de respuesta corta (input text).
  * Se clona el formulario original, se convierten las imágenes a Data URI,
  * se extrae el enunciado y se recogen los valores ingresados en los inputs de tipo texto.
+ * Siempre se crea el objeto questionData, aunque las respuestas puedan estar vacías.
  *
  * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
- * @returns {Object|null} Objeto con la información extraída de la pregunta o null si no hay respuesta.
+ * @returns {Object} Objeto con la información extraída de la pregunta.
  */
 export async function inputtext_respuestacorta(originalFormulationClearfix) {
     const tipo = 'inputtext_respuestacorta';
@@ -28,34 +29,25 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
 
     // Recorremos todos los inputs de tipo text para recoger sus valores.
     const respuestas = [];
-    let hayRespuestaLleno = false;
     const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
-
     allInputText.forEach((inputText) => {
-        // Obtenemos el valor y eliminamos espacios en blanco.
         const valor = inputText.value.trim();
         respuestas.push(valor);
-        if (valor !== '') {
-            hayRespuestaLleno = true;
-        }
     });
 
-    // Solo se crea el objeto questionData si se ha proporcionado alguna respuesta válida.
-    if (hayRespuestaLleno) {
-        const feedback = await feedbackQuestion(originalFormulationClearfix);
-        const questionData = {
-            enunciado: enunciado,
-            respuestas: respuestas,
-            html: clonFormulation.outerHTML,
-            tipo: tipo,
-            ciclo: localStorage.getItem("ciclo"),
-            feedback: feedback,
-        };
+    // Se obtiene el feedback de la pregunta.
+    const feedback = await feedbackQuestion(originalFormulationClearfix);
 
-        console.log("Objeto questionData generado:", questionData);
-        return questionData;
-    } else {
-        console.log("No se proporcionó ninguna respuesta en input text.");
-        return null;
-    }
+    // Construimos el objeto questionData, incluso si respuestas está vacío.
+    const questionData = {
+        enunciado: enunciado,
+        respuestas: respuestas, // Puede ser un array vacío
+        html: clonFormulation.outerHTML,
+        tipo: tipo,
+        ciclo: localStorage.getItem("ciclo"),
+        feedback: feedback,
+    };
+
+    console.log("Objeto questionData generado:", questionData);
+    return questionData;
 }
