@@ -24129,6 +24129,17 @@
             console.log('-> Nodo de elemento encontrado con tagName:', tagName);
       
             // ------------------------------------------------------------------------
+            // Ignorar nodos <span> que sean de MathJax o MathJax_Preview
+            // ------------------------------------------------------------------------
+            if (
+              tagName === 'span' &&
+              (child.classList.contains('MathJax') || child.classList.contains('MathJax_Preview'))
+            ) {
+              console.log('-> Ignorando nodo <span> con clase MathJax o MathJax_Preview');
+              continue; // No procesamos este nodo ni sus hijos
+            }
+      
+            // ------------------------------------------------------------------------
             // A) <script type="math/tex">
             // ------------------------------------------------------------------------
             if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
@@ -24140,17 +24151,10 @@
                 if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
                   content += ' ';
                 }
-                // Se encierra el código LaTeX en delimitadores \(...\)
+                // Encierrar el código LaTeX entre \(...\)
                 content += `\\(${latexCode}\\)`;
                 console.log('-> Agregando LaTeX al contenido:', latexCode);
               }
-      
-            // ------------------------------------------------------------------------
-            // B) Ignorar <span class="MathJax">
-            // ------------------------------------------------------------------------
-            } else if (tagName === 'span' && child.classList.contains('MathJax')) {
-              console.log('-> Ignorando nodo <span class="MathJax">');
-              // Se ignora este nodo; no se extrae nada
       
             // ------------------------------------------------------------------------
             // C) <img>
