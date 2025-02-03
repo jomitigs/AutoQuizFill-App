@@ -1,21 +1,26 @@
 (function () {
     'use strict';
 
-    // addHead.js
-
     /**
-     * Inserta dinámicamente las fuentes Poppins y Font Awesome en el <head>.
-     * Evita agregar múltiples versiones de las mismas fuentes.
-     * Puedes importar y llamar a esta función en tu código para cargar las fuentes necesarias.
+     * Inserta dinámicamente fuentes (Poppins, Font Awesome), MathJax y Polyfill.io en el <head>.
+     * Evita agregar múltiples versiones de los mismos recursos.
      */
 
-    // URLs de las fuentes
+    // URLs de las fuentes y scripts
     const poppinsHref = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap';
     const fontAwesomeHref = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css';
+    const mathJaxSrc = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    const polyfillSrc = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
 
-    // Patrones para identificar si las fuentes ya están cargadas
+    // Patrones para identificar si los recursos ya están cargados
     const poppinsPattern = /fonts\.googleapis\.com\/css2\?family=Poppins/;
     const fontAwesomePattern = /font-awesome/;
+    const mathJaxPattern = /mathjax/;
+    const polyfillPattern = /polyfill\.io\/v3\/polyfill\.min\.js/;
+
+    /**
+     * Inserta un <link> si no existe ya en <head>.
+     */
     const appendLinkIfNotExists = (href, pattern, resourceName) => {
         const existingLink = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
             .find(link => pattern.test(link.href));
@@ -25,15 +30,50 @@
             link.rel = 'stylesheet';
             link.href = href;
             document.head.appendChild(link);
-            // console.log(`addHead: ${resourceName} inyectado en <head>`);
+            console.log(`addHead.js: ${resourceName} inyectado en <head>`);
+        } else {
+            console.log(`addHead.js: ${resourceName} ya existe en <head>`);
+        }
+    };
+
+    /**
+     * Inserta un <script> si no existe ya en <head>.
+     */
+    const appendScriptIfNotExists = (src, pattern, resourceName, callback) => {
+        const existingScript = Array.from(document.querySelectorAll('script'))
+            .find(script => pattern.test(script.src));
+
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.onload = callback; // Ejecuta la función cuando el script haya cargado
+            document.head.appendChild(script);
+            console.log(`addHead.js: ${resourceName} inyectado en <head>`);
+        } else {
+            console.log(`addHead.js: ${resourceName} ya existe en <head>`);
+            if (callback) callback(); // Ejecutar callback si el script ya estaba cargado
         }
     };
 
     // Añadir la fuente Poppins si no está presente
-    appendLinkIfNotExists(poppinsHref, poppinsPattern);
+    appendLinkIfNotExists(poppinsHref, poppinsPattern, 'Fuente Poppins');
 
     // Añadir Font Awesome si no está presente
-    appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern);
+    appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern, 'Font Awesome');
+
+    // Añadir MathJax si no está presente
+    appendScriptIfNotExists(mathJaxSrc, mathJaxPattern, 'MathJax', () => {
+        if (window.MathJax) {
+            console.log('MathJax está listo. Forzando renderización.');
+            window.MathJax.typeset();
+        }
+    });
+
+    // Añadir Polyfill.io si no está presente
+    appendScriptIfNotExists(polyfillSrc, polyfillPattern, 'Polyfill.io', () => {
+        console.log('Polyfill.io cargado correctamente.');
+    });
 
     var html = "<div id=\"barra-lateral-autoquizfillapp\">\r\n</div>\r\n<button id=\"boton-mostrar-ocultar-autoquizfillapp\">\r\n  <i class=\"fa-solid fa-angles-right\"></i>\r\n</button>\r\n";
 
@@ -24939,59 +24979,37 @@
         if (!container) return console.error('Elemento "respuestasautosave" no encontrado.');
         
         const savedData = sessionStorage.getItem('questions-AutoSave');
-        if (!savedData) return displayNoResponse(container);
+        if (!savedData) return (container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>');
         
         try {
             const responses = JSON.parse(savedData);
-            container.innerHTML = formatResponseData(responses) || displayNoResponse(container);
+            container.innerHTML = Object.entries(responses).map(([key, data]) => {
+                const questionNumber = key.replace(/\D/g, '');
+                let html = `<div class="preguntaautosave" id="${key}">`;
+                if (data.enunciado) html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
+                
+                if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+                    if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+                        html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+                    }
+                } else if (data.tipo === 'select_emparejamiento') {
+                    if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
+                        html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+                            const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
+                            return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
+                        }).join('') + `</div>`;
+                    }
+                } else if (data.tipo === 'inputtext_respuestacorta') {
+                    const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
+                        .filter(Boolean).map(processContent).join('') || '<em>___________</em>';
+                    html += `<div class="respuestasautosave">${respuestas}</div>`;
+                }
+                return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
+            }).join('');
         } catch (error) {
             console.error('Error al parsear las respuestas:', error);
-            displayNoResponse(container);
+            container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
         }
-    }
-
-    function displayNoResponse(container) {
-        container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-    }
-
-    function formatResponseData(data) {
-        return Object.entries(data).map(([key, value]) => formatQuestion(key, value)).join('');
-    }
-
-    function formatQuestion(key, data) {
-        const questionNumber = key.replace(/\D/g, '');
-        let html = `<div class="preguntaautosave" id="${key}"><strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}</div>`;
-        
-        if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
-            if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-                html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
-            }
-        } else if (data.tipo === 'select_emparejamiento') {
-            html += formatMatchingOptions(data);
-        } else if (data.tipo === 'inputtext_respuestacorta') {
-            html += formatShortAnswer(data);
-        }
-        return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
-    }
-
-    function formatMatchingOptions(data) {
-        if (!Array.isArray(data.opcionesEnunciados) || !Array.isArray(data.respuestaCorrecta)) return '';
-        
-        return `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
-            const respuesta = data.respuestaCorrecta[i]?.trim() || ""; // Si la respuesta es "" no asignamos "Elegir..."
-            const textoRespuesta = respuesta ? processContent(respuesta) : "Elegir...";
-            const color = respuesta ? "MediumBlue" : "black"; // Si está vacía, el color será negro
-
-            return `<div>• ${processContent(enunciado)} - 
-            <span style="font-weight:500; color:${color};">${textoRespuesta}</span>
-        </div>`;
-        }).join('') + `</div>`;
-    }
-
-    function formatShortAnswer(data) {
-        let respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta];
-        respuestas = respuestas.filter(Boolean).map(res => processContent(res)).join('') || '<em>___________</em>';
-        return `<div class="respuestasautosave">${respuestas}</div>`;
     }
 
     function formatResponseOptions(options, selected) {
@@ -25004,14 +25022,10 @@
 
     function processContent(content) {
         if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
-        return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, createImgTag)
-                      .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, createImgTag)
+        return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
+                      .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
                       .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
                       .replace(/(\r\n|\n|\r)/g, '<br>');
-    }
-
-    function createImgTag(src) {
-        return `<img src="${src}" alt="Imagen" style="max-width: 200px; max-height: 150px;">`;
     }
 
     function opcion_AutoFillAutoSave_Moodle_html() {

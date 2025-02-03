@@ -268,59 +268,37 @@ function AutoSave_ShowResponses() {
     if (!container) return console.error('Elemento "respuestasautosave" no encontrado.');
     
     const savedData = sessionStorage.getItem('questions-AutoSave');
-    if (!savedData) return displayNoResponse(container);
+    if (!savedData) return (container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>');
     
     try {
         const responses = JSON.parse(savedData);
-        container.innerHTML = formatResponseData(responses) || displayNoResponse(container);
+        container.innerHTML = Object.entries(responses).map(([key, data]) => {
+            const questionNumber = key.replace(/\D/g, '');
+            let html = `<div class="preguntaautosave" id="${key}">`;
+            if (data.enunciado) html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
+            
+            if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+                if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+                    html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+                }
+            } else if (data.tipo === 'select_emparejamiento') {
+                if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
+                    html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+                        const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
+                        return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
+                    }).join('') + `</div>`;
+                }
+            } else if (data.tipo === 'inputtext_respuestacorta') {
+                const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
+                    .filter(Boolean).map(processContent).join('') || '<em>___________</em>';
+                html += `<div class="respuestasautosave">${respuestas}</div>`;
+            }
+            return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
+        }).join('');
     } catch (error) {
         console.error('Error al parsear las respuestas:', error);
-        displayNoResponse(container);
+        container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
     }
-}
-
-function displayNoResponse(container) {
-    container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-}
-
-function formatResponseData(data) {
-    return Object.entries(data).map(([key, value]) => formatQuestion(key, value)).join('');
-}
-
-function formatQuestion(key, data) {
-    const questionNumber = key.replace(/\D/g, '');
-    let html = `<div class="preguntaautosave" id="${key}"><strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}</div>`;
-    
-    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
-        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-            html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
-        }
-    } else if (data.tipo === 'select_emparejamiento') {
-        html += formatMatchingOptions(data);
-    } else if (data.tipo === 'inputtext_respuestacorta') {
-        html += formatShortAnswer(data);
-    }
-    return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
-}
-
-function formatMatchingOptions(data) {
-    if (!Array.isArray(data.opcionesEnunciados) || !Array.isArray(data.respuestaCorrecta)) return '';
-    
-    return `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
-        const respuesta = data.respuestaCorrecta[i]?.trim() || ""; // Si la respuesta es "" no asignamos "Elegir..."
-        const textoRespuesta = respuesta ? processContent(respuesta) : "Elegir...";
-        const color = respuesta ? "MediumBlue" : "black"; // Si está vacía, el color será negro
-
-        return `<div>• ${processContent(enunciado)} - 
-            <span style="font-weight:500; color:${color};">${textoRespuesta}</span>
-        </div>`;
-    }).join('') + `</div>`;
-}
-
-function formatShortAnswer(data) {
-    let respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta];
-    respuestas = respuestas.filter(Boolean).map(res => processContent(res)).join('') || '<em>___________</em>';
-    return `<div class="respuestasautosave">${respuestas}</div>`;
 }
 
 function formatResponseOptions(options, selected) {
@@ -333,13 +311,9 @@ function formatResponseOptions(options, selected) {
 
 function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
-    return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, createImgTag)
-                  .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, createImgTag)
+    return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
+                  .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
                   .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
                   .replace(/(\r\n|\n|\r)/g, '<br>');
-}
-
-function createImgTag(src) {
-    return `<img src="${src}" alt="Imagen" style="max-width: 200px; max-height: 150px;">`;
 }
 
