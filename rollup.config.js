@@ -15,20 +15,20 @@ export default {
   input: 'src/main-app.js',
 
   external: [
-    'mathjax-full', 
-    // O si importas submódulos directos
-    // 'mathjax-full/js/output/mathml.js',
-    // 'mathjax-full/js/input/tex.js',
-    // ...
+    'mathjax-full',
+    'mathjax-full/js/output/mathml.js'
   ],
+  
 
   output: {
     file: 'dist/main-app.bundle.js',
     format: 'iife',
     name: 'AutoQuizFillApp',
     globals: {
-      'mathjax-full': 'MathJax'
+      'mathjax-full': 'MathJax',
+      'mathjax-full/js/output/mathml.js': 'MathJax'
     }
+    
   },
   plugins: [
     // Resuelve imports para navegador

@@ -1,12 +1,4 @@
-  // latexToMathML.js
-  import { mathjax } from 'mathjax-full/js/mathjax.js'
-  import { TeX } from 'mathjax-full/js/input/tex.js'
-  import { MathML } from 'mathjax-full/js/output/mathml.js'
-  import { liteAdaptor } from 'mathjax-full/js/adaptors/liteAdaptor.js'
-  import { RegisterHTMLHandler } from 'mathjax-full/js/handlers/html.js'
-  import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 
-  
 export async function feedbackQuestion(originalFormulationClearfix) {
     // console.log('Iniciando feedbackQuestion');
 
@@ -93,8 +85,6 @@ export async function feedbackQuestion(originalFormulationClearfix) {
     // Retornar el texto del feedback
     return textoFeedback;
 }
-
-
 
 export function getQuestionNumber(formulation_clearfix) {
     let contenedorPadre = formulation_clearfix.closest('.content');
