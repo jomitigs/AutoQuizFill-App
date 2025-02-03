@@ -339,8 +339,8 @@ function formatResponseData(responseData) {
                     let textoRespuesta = respuesta.trim() !== "" ? processContent(respuesta, 'respuesta') : "Elegir...";
                     
                     htmlOutput += `
-                        <div style="font-weight: 600; color: ${color};">
-                            • ${processContent(enunciado, 'enunciado')} - ${textoRespuesta}
+                        <div>
+                            • ${processContent(enunciado, 'enunciado')} - <span style="font-weight: 500; color: ${color};">${textoRespuesta}</span>
                         </div>
                     `;
                 });
