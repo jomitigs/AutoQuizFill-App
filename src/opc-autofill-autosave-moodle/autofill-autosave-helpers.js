@@ -295,31 +295,39 @@ export async function File2DataUri(files) {
   }
 
   export async function extractContentInOrder(node) {
+    console.log('Iniciando extracción de contenido para el nodo:', node);
     let content = '';
   
     for (const child of node.childNodes) {
-      
+      console.log('Procesando child node con nodeType:', child.nodeType);
+  
       // 1) Nodos de texto
       if (child.nodeType === Node.TEXT_NODE) {
         const text = child.textContent;
+        console.log('-> Nodo de texto encontrado:', text);
+  
         if (text && text !== '\n') {
           content += text;
+          console.log('-> Agregando al contenido:', text);
         }
   
       // 2) Nodos de elemento
       } else if (child.nodeType === Node.ELEMENT_NODE) {
         const tagName = child.tagName.toLowerCase();
+        console.log('-> Nodo de elemento encontrado con tagName:', tagName);
   
         // ------------------------------------------------------------------------
         // A) <script type="math/tex">
         // ------------------------------------------------------------------------
         if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
           const latexCode = child.textContent.trim();
-          
+          console.log('-> Script de tipo "math/tex" detectado, LaTeX:', latexCode);
+  
           // Buscamos si el siguiente hermano es <span class="MathJax">
           let nextSibling = child.nextSibling;
           let matched = false;
-          
+          console.log('-> Buscando siguiente hermano que sea <span class="MathJax">');
+  
           // Ignorar posibles nodos de texto vacíos
           while (nextSibling && nextSibling.nodeType === Node.TEXT_NODE) {
             if (!nextSibling.textContent.trim()) {
@@ -333,6 +341,7 @@ export async function File2DataUri(files) {
           if (nextSibling && nextSibling.nodeType === Node.ELEMENT_NODE) {
             const nsTag = nextSibling.tagName.toLowerCase();
             if (nsTag === 'span' && nextSibling.classList.contains('MathJax')) {
+              console.log('-> Encontrado <span class="MathJax"> contiguo.');
               const mathml = nextSibling.getAttribute('data-mathml');
               if (mathml) {
                 matched = true;
@@ -342,36 +351,42 @@ export async function File2DataUri(files) {
                 }
                 // Nos quedamos con la versión MathML
                 content += mathml;
+                console.log('-> Usando MathML del atributo data-mathml:', mathml);
               }
             }
           }
   
-          // Si no hay <span class="MathJax">, convertimos el LaTeX
+          // Si no hay <span class="MathJax">, convertimos el LaTeX a MathML
           if (!matched) {
+            console.log('-> No se encontró <span class="MathJax"> contiguo. Convirtiendo LaTeX a MathML...');
             if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
               content += ' ';
             }
             // Conversión real usando MathJax
             const generatedMathML = convertLatexToMathML(latexCode);
             content += generatedMathML;
+            console.log('-> MathML generado:', generatedMathML);
           }
   
         // ------------------------------------------------------------------------
         // B) <span class="MathJax" data-mathml>
         // ------------------------------------------------------------------------
         } else if (tagName === 'span' && child.classList.contains('MathJax')) {
+          console.log('-> Encontrado <span class="MathJax"> con data-mathml');
           const mathml = child.getAttribute('data-mathml');
           if (mathml) {
             if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
               content += ' ';
             }
             content += mathml;
+            console.log('-> Agregando MathML al contenido:', mathml);
           }
   
         // ------------------------------------------------------------------------
         // C) <img>
         // ------------------------------------------------------------------------
         } else if (tagName === 'img') {
+          console.log('-> Encontrado <img> con src');
           const src = child.getAttribute('src');
           if (src) {
             if (content.length > 0 && !content.endsWith(' ') && !content.endsWith('\u00A0')) {
@@ -379,48 +394,57 @@ export async function File2DataUri(files) {
             }
             // Ya NO convertimos a Data URI, solo conservamos el src
             content += src;
+            console.log('-> Agregando src al contenido:', src);
           }
   
         // ------------------------------------------------------------------------
         // D) <sub>, <sup>
         // ------------------------------------------------------------------------
         } else if (tagName === 'sub' || tagName === 'sup') {
+          console.log(`-> Encontrado <${tagName}>; conservando la etiqueta completa.`);
           // Conservamos las etiquetas
           content += child.outerHTML;
-        
+  
         // ------------------------------------------------------------------------
         // E) <p> (procesado recursivo + saltos de línea)
         // ------------------------------------------------------------------------
         } else if (tagName === 'p') {
+          console.log('-> Encontrado <p>. Procesando recursivamente su contenido...');
           const childContent = await extractContentInOrder(child);
           if (childContent) {
             if (content.length > 0 && !content.endsWith('\n')) {
               content += '\n';
             }
             content += childContent + '\n';
+            console.log('-> Contenido extraído de <p>:', childContent);
           }
   
         // ------------------------------------------------------------------------
         // F) <br> (salto de línea)
         // ------------------------------------------------------------------------
         } else if (tagName === 'br') {
+          console.log('-> Encontrado <br>. Añadiendo salto de línea.');
           content += '\n';
   
         // ------------------------------------------------------------------------
         // G) Otros elementos (recursivo)
         // ------------------------------------------------------------------------
         } else {
+          console.log('-> Nodo de tipo desconocido. Procesando recursivamente...');
           const childContent = await extractContentInOrder(child);
           if (childContent) {
             content += childContent;
+            console.log('-> Contenido extraído del nodo hijo desconocido:', childContent);
           }
         }
       }
     }
   
+    console.log('Contenido acumulado para este nodo:', content);
     return content;
   }
-
+  
+ 
   /**
  * Convierte LaTeX a MathML sin afectar la parte visible de la web.
  * Detecta la versión de MathJax (v3 o v2) y utiliza el método correspondiente.
