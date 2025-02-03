@@ -24733,9 +24733,6 @@
         }
     }
 
-
-
-
     // Función principal para mostrar las respuestas guardadas (AutoSave)
     function AutoSave_ShowResponses() {
         // Se obtiene el elemento del DOM con id "respuestasautosave"
@@ -24750,7 +24747,6 @@
         // Se recuperan las respuestas guardadas en sessionStorage
         const respuestasGuardadas = sessionStorage.getItem('questions-AutoSave');
         if (!respuestasGuardadas) {
-            // Si no hay respuestas, se muestra "Sin responder" y se registra en la consola
             elementoRespuestasAutoSave.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
             console.log('No hay respuestas guardadas, mostrando "Sin responder".');
             return;
@@ -24773,11 +24769,16 @@
 
     /**
      * Función para formatear las respuestas guardadas en HTML.
-     * Si el objeto tiene la propiedad "enunciado", se asume la nueva estructura y se muestra:
-     *    enunciado
-     *    opciones de pregunta
-     *    respuesta correcta
-     * Caso contrario, se procesa la estructura anterior (usando claves como "Pregunta1", etc.)
+     * Se itera sobre cada propiedad del objeto.
+     *
+     * Si el objeto (por ejemplo, "Pregunta1") contiene la propiedad "opcionesRespuesta",
+     * se asume la nueva estructura y se muestra:
+     *    - Enunciado
+     *    - Opciones de respuesta
+     *    - Respuesta correcta
+     *    - (Opcional) HTML completo, si se desea.
+     *
+     * De lo contrario, se asume la estructura antigua (usando "enunciados" y "respuestas").
      *
      * @param {Object} respuestasObj - Objeto con las respuestas guardadas.
      * @returns {string} - HTML formateado.
@@ -24785,51 +24786,52 @@
     function formatResponses(respuestasObj) {
         let html = '';
 
-        // Si se encuentra la propiedad "enunciado", se usa la nueva estructura
-        if (respuestasObj.hasOwnProperty("enunciado")) {
-            html += `
-            <div class="preguntaautosave">
-                ${processContent(respuestasObj.enunciado, 'enunciado')}
-            </div>
-            <div class="respuestasautosave">
-                ${formatOptions(respuestasObj.opcionesRespuesta)}
-            </div>
-            <div class="respuestasautosave">
-                <strong>Respuesta correcta: </strong>${processContent(respuestasObj.respuestaCorrecta, 'respuesta')}
-            </div>
-        `;
-        } else {
-            // Si no, se asume la estructura anterior: se iteran las propiedades que comienzan con "Pregunta"
-            for (const [clave, valor] of Object.entries(respuestasObj)) {
-                if (clave.startsWith('Pregunta')) {
-                    // Se extraen respuestas, enunciados y tipo (con valores por defecto si no existen)
-                    const { respuestas = [], enunciados = [], tipo = '' } = valor;
-                    const numeroPregunta = clave; // Ejemplo: "Pregunta1"
-                    // Asegurarse de que respuestasFinales sea un arreglo
-                    const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
-                    // Se obtiene el contenido HTML de la respuesta usando la función consolidada getResponseContent
-                    const contenidoRespuesta = getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta);
+        // Se itera sobre cada par clave-valor del objeto de respuestas
+        for (const [clave, valor] of Object.entries(respuestasObj)) {
+            // Si el objeto actual tiene la propiedad "opcionesRespuesta", se usa la nueva estructura
+            if (valor.hasOwnProperty('opcionesRespuesta')) {
+                html += `
+                <div class="preguntaautosave" id="${clave}">
+                    ${processContent(valor.enunciado, 'enunciado')}
+                </div>
+                <div class="respuestasautosave">
+                    ${formatOptions(valor.opcionesRespuesta)}
+                </div>
+                <div class="respuestasautosave">
+                    <strong>Respuesta correcta: </strong>${processContent(valor.respuestaCorrecta, 'respuesta')}
+                </div>
+                ${valor.html ? `<div class="html-content">${valor.html}</div>` : ''}
+            `;
+            } else {
+                // Se asume la estructura antigua: se esperan propiedades "enunciados" y "respuestas"
+                const { respuestas = [], enunciados = [], tipo = '' } = valor;
+                const numeroPregunta = clave; // Por ejemplo, "Pregunta1"
+                // Se asegura que respuestasFinales sea un arreglo
+                const respuestasFinales = Array.isArray(respuestas) ? respuestas : [respuestas];
+                // Se obtiene el contenido HTML de la respuesta usando la función consolidada getResponseContent
+                const contenidoRespuesta = getResponseContent(enunciados, respuestasFinales, tipo, numeroPregunta);
 
-                    html += `
-                    <div class="preguntaautosave" id="${numeroPregunta}">
-                        ${numeroPregunta}:
-                    </div>
-                    <div class="respuestasautosave">
-                        ${contenidoRespuesta}
-                    </div>
-                `;
-                }
+                html += `
+                <div class="preguntaautosave" id="${numeroPregunta}">
+                    ${numeroPregunta}:
+                </div>
+                <div class="respuestasautosave">
+                    ${contenidoRespuesta}
+                </div>
+            `;
             }
         }
+
         return html;
     }
 
     /**
-     * Función que determina el contenido HTML de una respuesta. En ella se agrupa la lógica:
+     * Función que determina el contenido HTML de una respuesta.
+     * Aquí se agrupa la lógica:
      * - Si existen enunciados y su cantidad coincide con la de respuestas, se procesan en pares.
      * - Si hay múltiples respuestas sin enunciados, se formatean según el tipo de pregunta.
      * - Si es una sola respuesta, se procesa directamente.
-     * - Finalmente, si el contenido resultante está vacío, se muestra "Sin responder".
+     * - Si el contenido resultante está vacío, se muestra "Sin responder".
      *
      * @param {Array} enunciados - Arreglo de enunciados (puede estar vacío).
      * @param {Array} respuestasFinales - Arreglo de respuestas.
@@ -24842,7 +24844,6 @@
 
         if (enunciados.length > 0 && enunciados.length === respuestasFinales.length) {
             // Si existen enunciados y su número coincide con el de respuestas:
-            // Se formatea cada par enunciado-respuesta
             respuestasHTML = enunciados
                 .map((enunciado, index) => {
                     const respuesta = respuestasFinales[index];
