@@ -23329,7 +23329,8 @@
     }
 
     function contenedorRuta_js$1() {
-        const containerOptionSelect = document.querySelector('.containerOption'),
+        const contenidoPrincipal = document.getElementById('contenido-principal'),
+            containerOptionSelect = document.querySelector('.containerOption'),
             containerRutaFirebase = document.getElementById('containerRutaFirebase'),
             ruta = localStorage.getItem('configRuta'),
             ciclo = localStorage.getItem('ciclo');
@@ -23364,7 +23365,7 @@
         if (containerRutaFirebase) {
             // Eliminar mensaje de advertencia si existe
             const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
-            
+
             if (mensajeExistente) {
                 mensajeExistente.remove();
                 console.log('Mensaje de advertencia eliminado.');
@@ -23381,6 +23382,7 @@
         }
 
     }
+
 
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 

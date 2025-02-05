@@ -3,7 +3,8 @@ import { database } from '../../config-firebase/script.js';
 
 
 export function contenedorRuta_js() {
-    const containerOptionSelect = document.querySelector('.containerOption'),
+    const contenidoPrincipal = document.getElementById('contenido-principal'),
+        containerOptionSelect = document.querySelector('.containerOption'),
         containerRutaFirebase = document.getElementById('containerRutaFirebase'),
         ruta = localStorage.getItem('configRuta'),
         ciclo = localStorage.getItem('ciclo');
@@ -38,7 +39,7 @@ export function contenedorRuta_js() {
     if (containerRutaFirebase) {
         // Eliminar mensaje de advertencia si existe
         const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
-        
+
         if (mensajeExistente) {
             mensajeExistente.remove();
             console.log('Mensaje de advertencia eliminado.');
@@ -55,6 +56,7 @@ export function contenedorRuta_js() {
     }
 
 }
+
 
 // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
