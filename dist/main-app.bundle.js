@@ -43692,7 +43692,6 @@
 
     }
 
-    // Modificamos AutoSave_ShowResponses para que retorne una promesa y acepte un parámetro opcional (numeroPregunta)
     function AutoSave_ShowResponses(numeroPregunta) {
         return new Promise((resolve, reject) => {
             const container = document.getElementById('respuestasautosave');
@@ -43762,9 +43761,8 @@
                             console.log('HTML actualizado:', html);
                         }
                         
-                        if (numeroPregunta === undefined && numeroPregunta === null) {
-                            html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
-                        }
+                        // Si se pasó un parámetro (se procesa una sola pregunta), NO se agrega la línea separadora
+                        html += '</div>';
 
                         // Buscamos el elemento de esa pregunta dentro del contenedor
                         let updatedElement = container.querySelector(`#${key}`);
@@ -43794,7 +43792,8 @@
                 }
 
                 // Si no se recibió un parámetro, procesamos y mostramos TODAS las respuestas
-                container.innerHTML = Object.entries(responses).map(([key, data]) => {
+                const entries = Object.entries(responses);
+                container.innerHTML = entries.map(([key, data], index, array) => {
                     const questionNumber = key.replace(/\D/g, '');
                     let html = `<div class="preguntaautosave" id="${key}">`;
                     if (data.enunciado) {
@@ -43818,7 +43817,9 @@
                             .join('') || '<em>________-----------</em>';
                         html += `<div class="respuestasautosave">${respuestas}</div>`;
                     }
-                    return html + '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
+                    // Solo agregamos la línea separadora si NO es el último elemento
+                    html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>' : '</div>';
+                    return html;
                 }).join('');
                 resolve();
             } catch (error) {
