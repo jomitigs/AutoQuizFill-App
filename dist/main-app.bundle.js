@@ -43744,7 +43744,29 @@
                             html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
                         }
                         
-                        html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
+                        // Se recupera el objeto guardado y se parsea
+    // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
+    let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
+
+    // Obtenemos las claves del objeto
+    let keysPreguntas = Object.keys(preguntas);
+
+    // Calculamos el número máximo de pregunta extrayendo el número de cada clave
+    let maxNumero = 0;
+    keysPreguntas.forEach(function(key) {
+      // Suponemos que la clave tiene el formato "PreguntaXX"
+      var num = parseInt(key.replace('Pregunta', ''), 10);
+      if (num > maxNumero) {
+        maxNumero = num;
+      }
+    });
+
+    // Si el número de la pregunta actual no es el último, agregamos el <hr>
+    if (numeroPregunta < maxNumero) {
+      html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
+    }
+
+
 
                         // Buscamos el elemento de esa pregunta dentro del contenedor
                         let updatedElement = container.querySelector(`#${key}`);
