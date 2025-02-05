@@ -54,6 +54,9 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
                 </div>
             </div>
 
+              <div class="wrapper-autofill-autosave">
+
+
             <!-- Nuevo contenedor para AutoFill-->
             <div id="container-autofill" class="subcontainer-autoquiz-autofill" style="display: none;">
 
@@ -100,6 +103,8 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
                 </div>
             </div>
+
+                </div>
 
         </div>
 `;
