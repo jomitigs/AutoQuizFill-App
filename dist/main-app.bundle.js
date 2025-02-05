@@ -23606,6 +23606,8 @@
     }
 
     async function crearSelectsDinamicos(materiaValor, testClave) {
+        console.log('Creando Selects Dinamicos.');
+
         
         const ciclo = localStorage.getItem('ciclo');
         const containerRutaFirebase = document.getElementById('containerRutaFirebase');
@@ -23624,7 +23626,6 @@
 
         // Asegurarse de limpiar completamente el contenedor
         if (containerRutaDinamicaFirebase) {
-            //console.log('Limpiando todos los elementos existentes en el contenedor.');
             containerRutaDinamicaFirebase.innerHTML = ''; // Elimina todo el contenido del contenedor
         } else {
             console.error('No se encontró el contenedor con id="containerRutaDinamicaFirebase".');
