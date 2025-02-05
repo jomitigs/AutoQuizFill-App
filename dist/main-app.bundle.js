@@ -37,9 +37,9 @@
             enlace.rel = 'stylesheet';
             enlace.href = url;
             document.head.appendChild(enlace);
-            console.log(`[add-head.js] ${nombre} agregado en <head>`);
+            console.log(`[add-head.js] ✅ ${nombre} agregado en <head>`);
         } else {
-            console.log(`[add-head.js] ${nombre} ya existe en <head>`);
+            console.log(`[add-head.js] ℹ️ ${nombre} ya existe en <head>`);
         }
     }
 
@@ -52,12 +52,12 @@
                 script.src = url;
                 script.async = true;
                 script.onload = () => {
-                    console.log(`[add-head.js] ${nombre} cargado correctamente.`);
+                    console.log(`[add-head.js] ✅ ${nombre} cargado correctamente.`);
                     resolve();
                 };
                 document.head.appendChild(script);
             } else {
-                console.log(`[add-head.js] ${nombre} ya existe en <head>`);
+                console.log(`[add-head.js] ℹ️ ${nombre} ya existe en <head>`);
                 resolve();
             }
         });
@@ -76,7 +76,9 @@
             }
         }
 
-        // 🟢 Verificar si `renderMathInElement` está disponible
+        console.log("[add-head.js] ✅ Todos los recursos han sido cargados correctamente.");
+
+        // 🟢 Verificar si `renderMathInElement` está disponible después de cargar AutoRender
         let intentos = 0;
         const intervalo = setInterval(() => {
             if (typeof window.renderMathInElement === "function") {
@@ -85,14 +87,26 @@
             } else {
                 intentos++;
                 console.warn(`[add-head.js] ⚠️ Intento ${intentos}: Aún no está disponible renderMathInElement.`);
-                if (intentos >= 10) { // 10 intentos (~1 segundo en total)
+
+                // Si después de 10 intentos sigue sin estar disponible, intentamos forzar la importación manual
+                if (intentos >= 10) {
                     clearInterval(intervalo);
                     console.error("[add-head.js] ❌ Error: No se pudo cargar KaTeX AutoRender.");
+
+                    // ⚠️ Intentar forzar la importación manualmente
+                    try {
+                        window.renderMathInElement = window.katex?.renderMathInElement;
+                        if (typeof window.renderMathInElement === "function") {
+                            console.log("[add-head.js] 🔄 KaTeX AutoRender asignado manualmente y ahora está disponible.");
+                        } else {
+                            console.error("[add-head.js] ❌ No se pudo asignar KaTeX AutoRender manualmente.");
+                        }
+                    } catch (e) {
+                        console.error("[add-head.js] ❌ Error al intentar asignar manualmente KaTeX AutoRender:", e);
+                    }
                 }
             }
-        }, 100);
-
-        console.log("[add-head.js] Todos los recursos se han cargado correctamente.");
+        }, 200);
     })();
 
     /**
