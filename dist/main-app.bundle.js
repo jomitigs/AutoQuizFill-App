@@ -43852,11 +43852,9 @@
 
             </div>
 
-              <div class="wrapper-autofill-autosave">
-
 
             <!-- Nuevo contenedor para AutoFill-->
-            <div id="container-autofill" class="subcontainer-autoquiz autofill" style="display: none;">
+            <div id="container-autofill" class="subcontainer-autoquiz" style="display: none;">
 
                 <div id="header-autofill" class="header-autoquiz">
                     <h2 id="titulo-autoquiz">AutoFill</h2>
@@ -43879,7 +43877,7 @@
             </div>
 
             <!-- Contenedor para AutoSave -->
-            <div id="container-autosave" class="subcontainer-autoquiz autosave" style="display: none;">
+            <div id="container-autosave" class="subcontainer-autoquiz" style="display: none;">
 
                 <div id="header-autosave" class="header-autoquiz">
 
