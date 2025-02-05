@@ -214,6 +214,8 @@ async function actualizaConfigRutaDinamic() {
         }
 
         else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
+            document.getElementById("container-ruta-dinamica").style.display = "block";
+            
             sessionStorage.setItem('configRutaDinamic', "dinámica");
 
             // Actualizar el elemento HTML con la ruta 'dinamica'
