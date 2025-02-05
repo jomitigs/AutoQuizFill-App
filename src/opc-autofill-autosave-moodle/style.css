@@ -68,15 +68,19 @@
 /* ==========================================================================
      5. Sección: Wrapper de AutoFill y AutoSave
      ========================================================================== */
-/* Contenedores internos: */
+/* Contenedor principal: se adapta al alto del viewport */
 #container-autofillautosave {
     display: flex;
-    flex-direction: column; /* Asegura que los contenedores estén apilados verticalmente */
-    height: 536px; /* Altura total disponible */
-    gap: 5px; /* Espacio entre los contenedores */
-}
-
-.subcontainer-autoquiz-autosave {
+    flex-direction: column; /* Los contenedores internos se apilan verticalmente */
+    height: calc(100vh - 20px); /* Ocupa el alto disponible restando márgenes/paddings externos si los hay */
+    gap: 5px; /* Espacio entre contenedores */
+    padding: 10px; /* Opcional: para que no esté pegado al borde de la ventana */
+    box-sizing: border-box; /* Incluye padding en el cálculo del alto */
+  }
+  
+  /* Agrupamos las reglas compartidas para ambos subcontenedores */
+  .subcontainer-autoquiz-autosave,
+  .subcontainer-autoquiz-autofill {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
@@ -84,54 +88,59 @@
     border-radius: 8px;
     overflow-x: hidden;
     overflow-y: auto;
-    
-    /* Permite que ambos crezcan y compartan el espacio */
-    flex-grow: 1; 
-    min-height: 100px; /* Define una altura mínima para evitar colapsos */
-}
-
-.subcontainer-autoquiz-autofill {
-    display: flex;
-    flex-direction: column;
-    background-color: #f4f4f4;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    
-    /* Permite que ambos crezcan y compartan el espacio */
-    flex-grow: 1; 
-    min-height: 100px; /* Define una altura mínima para evitar colapsos */
-}
-
-/* Estilos para la barra de desplazamiento vertical */
-.subcontainer-autoquiz::-webkit-scrollbar {
+    flex: 1 1 auto; /* Permite que crezcan y se contraigan según el espacio disponible */
+    min-height: 100px; /* Altura mínima para evitar colapsos */
+    padding: 10px; /* Opcional: espacio interno */
+    box-sizing: border-box;
+  }
+  
+  /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
+  .subcontainer-autoquiz-autosave::-webkit-scrollbar,
+  .subcontainer-autoquiz-autofill::-webkit-scrollbar {
     width: 0.5em; /* Ancho de la barra de desplazamiento */
-}
-
-.subcontainer-autoquiz::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3); /* Color opaco del thumb (barra deslizadora) */
+  }
+  
+  .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb,
+  .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Color del thumb */
     border-radius: 10px;
-}
-
-.subcontainer-autoquiz::-webkit-scrollbar-track {
-    background: transparent; /* Hace que el fondo de la barra de desplazamiento sea transparente */
-}
-
-.subcontainer-autoquiz::-webkit-scrollbar-button {
-    display: none; /* Oculta los botones de la barra de desplazamiento (flechas arriba y abajo) */
-}
-
-
-
-#body-autoquiz-autosave {
+  }
+  
+  .subcontainer-autoquiz-autosave::-webkit-scrollbar-track,
+  .subcontainer-autoquiz-autofill::-webkit-scrollbar-track {
+    background: transparent; /* Fondo transparente */
+  }
+  
+  .subcontainer-autoquiz-autosave::-webkit-scrollbar-button,
+  .subcontainer-autoquiz-autofill::-webkit-scrollbar-button {
+    display: none; /* Oculta botones (flechas) */
+  }
+  
+  /* Estilos adicionales para el cuerpo de texto */
+  #body-autoquiz-autosave {
     font-size: 12px;
-    padding-left: 10px;
-    padding-right: 15px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
+    padding: 10px 15px; /* shorthand: top/bottom 10px, right/left 15px */
+    box-sizing: border-box;
+  }
+  
+  /* Opcional: media queries para ajustes específicos en dispositivos pequeños */
+  @media (max-width: 600px) {
+    #container-autofillautosave {
+      padding: 5px;
+      gap: 3px;
+    }
+    
+    .subcontainer-autoquiz-autosave,
+    .subcontainer-autoquiz-autofill {
+      padding: 5px;
+    }
+    
+    #body-autoquiz-autosave {
+      font-size: 11px;
+      padding: 8px 10px;
+    }
+  }
+  
 
 /* --------------------------------------------------------------------------
      5.1. Subcontenedor de AutoFill
