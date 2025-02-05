@@ -43757,7 +43757,7 @@
                             console.log('Resultado final de respuestas:', respuestas);
                             
                             // Agregar al HTML el bloque con las respuestas
-                            html += `<div class="respuestasautosave">${respuestas}</div>`;
+                            html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
                             console.log('HTML actualizado:', html);
                         }
                         
