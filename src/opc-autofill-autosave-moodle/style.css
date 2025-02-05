@@ -12,12 +12,6 @@
      2. Sección: Ruta y Ciclo
      ========================================================================== */
 
-#containerRutaFirebase {
-    /* O usa flex según lo que necesites */
-    margin-bottom: 5px;
-    margin-top: 5px;
-}
-
 #containerRutaFirebase .title {
     font-size: 14px;
     font-weight: 600;
