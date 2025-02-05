@@ -76,7 +76,21 @@
     gap: 5px; /* Espacio entre los contenedores */
 }
 
-.subcontainer-autoquiz {
+.subcontainer-autoquiz autosave {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    
+    /* Permite que ambos crezcan y compartan el espacio */
+    flex-grow: 1; 
+    min-height: 100px; /* Define una altura mínima para evitar colapsos */
+}
+
+.subcontainer-autoquiz autofill {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
