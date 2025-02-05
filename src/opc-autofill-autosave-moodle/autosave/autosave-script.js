@@ -355,7 +355,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     
                     // Enfocamos la pregunta actualizada desplazando la vista hacia ella
                     if (updatedElement && typeof updatedElement.scrollIntoView === 'function') {
-                        updatedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        updatedElement.scrollIntoView({ behavior: 'auto', block: 'center' });
                     }
                     
                     return resolve();
@@ -418,7 +418,6 @@ function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
     return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
                   .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-                  .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
                   .replace(/(\r\n|\n|\r)/g, '<br>');
 }
 
