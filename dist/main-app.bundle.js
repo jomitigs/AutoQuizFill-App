@@ -23395,7 +23395,7 @@
         const ruta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
         const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-        const rutaDinamica = sessionStorage.setItem('configRutaDinamic', rutaDinamica);
+        const rutaDinamica = sessionStorage.getItem('configRutaDinamic');
 
         // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
         if (!ruta || !ciclo) {
