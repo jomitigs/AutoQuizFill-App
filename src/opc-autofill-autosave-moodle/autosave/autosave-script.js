@@ -5,7 +5,7 @@ import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_in
 import { inputtext_respuestacorta } from './questions-types/4_inputtext_respuestacorta.js';
 import { select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
 
-import { getQuestionNumber, determinarTipoPregunta } from '../autofill-autosave-helpers.js';
+import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas } from '../autofill-autosave-helpers.js';
 
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
@@ -28,69 +28,41 @@ export function contenedorAutoSave_js() {
 
     interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
 
-    const actualizarVisibilidadBody = async () => {
-        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
-    
-        if (esPaginaQuiz && interruptorAutoSave.checked) {
-            if (bodyAutoSave) {
-                bodyAutoSave.style.display = 'flex';
-                console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
-    
-                const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-                await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine esa función
-    
-                try {
-                    await AutoSave_ShowResponses();
-                } catch (error) {
-                    console.error("Error en AutoSave_ShowResponses:", error);
-                }
-    
-                // Espera a que renderMathInElement esté disponible
-                try {
-                    await waitForRenderMathInElement();
-                    console.log("DEBUG: renderMathInElement está disponible.");
-                } catch (err) {
-                    console.error("DEBUG: renderMathInElement no se pudo cargar:", err);
-                }
-    
-                // Espera a que el contenedor 'contenido-principal' esté en el DOM
-                let contenedor;
-                try {
-                    contenedor = await waitForElementById('contenido-principal');
-                    console.log("DEBUG: Se encontró el contenedor 'contenido-principal'.");
-                } catch (err) {
-                    console.warn("DEBUG:", err);
-                }
-    
-                // Si ambos existen, se llama a renderMathInElement
-                if (contenedor && typeof renderMathInElement === 'function') {
-                    try {
-                        renderMathInElement(contenedor, {
-                            delimiters: [
-                                { left: '$$', right: '$$', display: true },
-                                { left: '\\(', right: '\\)', display: false }
-                            ]
-                        });
-                        console.log("KaTeX: Expresiones renderizadas en 'contenido-principal'.");
-                    } catch (error) {
-                        console.error("DEBUG: Error al llamar a renderMathInElement:", error);
-                    }
-                } else {
-                    console.warn("DEBUG: No se pudo ejecutar renderMathInElement porque faltan algunos elementos.");
-                }
-    
-                detectarCambiosPreguntas();
-                console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
-            }
-        } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
-            if (bodyAutoSave) {
-                bodyAutoSave.style.display = 'none';
-            }
-        } else if (!esPaginaQuiz) {
-            console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
+// Ejemplo de importación:
+// import { renderizarPreguntas } from './autofill-autosave-helpers.js';
+
+const actualizarVisibilidadBody = async () => {
+    const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
+
+    if (esPaginaQuiz && interruptorAutoSave.checked) {
+        if (bodyAutoSave) {
+            bodyAutoSave.style.display = 'flex';
+
+            console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
+
+            const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+            await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine esa función
+
+            await AutoSave_ShowResponses();
+
+            // **Aquí** se llama a la función para renderizar expresiones LaTeX
+            // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
+            renderizarPreguntas(); 
+            // O si tu función acepta un selector:
+            // renderizarPreguntas('#barra-lateral-autoquizfillapp');
+
+            detectarCambiosPreguntas();
+            console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
         }
-    };
-    
+
+    } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
+        if (bodyAutoSave) {
+            bodyAutoSave.style.display = 'none';
+        }
+    } else if (!esPaginaQuiz) {
+        console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
+    }
+};
 
     // **Llamar la función sin await para que no bloquee la ejecución**
     actualizarVisibilidadBody();
