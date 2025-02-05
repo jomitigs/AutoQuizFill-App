@@ -15,6 +15,11 @@
 #containerRutaFirebase div {
     display: inline-block;
     /* O usa flex según lo que necesites */
+
+}
+
+#containerRutaFirebase {
+    /* O usa flex según lo que necesites */
     margin-bottom: 5px;
     margin-top: 5px;
 }
