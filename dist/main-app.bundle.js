@@ -23415,7 +23415,7 @@
             
               containerRutaFirebase.innerHTML = `
             <div>
-              <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
+              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green; >${rutaDinamica}</span>
             </div>
         
             <div>
