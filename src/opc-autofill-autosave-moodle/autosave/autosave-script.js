@@ -293,23 +293,24 @@ function AutoSave_ShowResponses(numeroPregunta) {
 
         const savedData = sessionStorage.getItem('questions-AutoSave');
         if (!savedData) {
+            // Solo si no existe ningún dato, se muestra el mensaje.
             container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-            return resolve(); // Termina aquí, ya que no hay datos.
+            return resolve();
         }
 
         try {
             const responses = JSON.parse(savedData);
 
-            // Si se pasa el parámetro numeroPregunta, actualizamos solo ese ítem
+            // Si se recibe el parámetro, solo procesamos esa pregunta
             if (numeroPregunta !== undefined && numeroPregunta !== null) {
                 const key = 'Pregunta' + numeroPregunta;
                 const data = responses[key];
                 if (data) {
+                    // Construimos el HTML para esa pregunta
                     let html = `<div class="preguntaautosave" id="${key}">`;
                     if (data.enunciado) {
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
                     }
-
                     if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
                             html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
@@ -328,33 +329,33 @@ function AutoSave_ShowResponses(numeroPregunta) {
                             .join('') || '<em>___________</em>';
                         html += `<div class="respuestasautosave">${respuestas}</div>`;
                     }
-                    html += '<hr style="margin-top: 5px; margin-bottom: 0px;">';
+                    html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
 
-                    // Buscamos si ya existe un elemento con el id de la pregunta en el contenedor
+                    // Buscamos el elemento de esa pregunta dentro del contenedor
                     const existingElement = container.querySelector(`#${key}`);
                     if (existingElement) {
-                        // Reemplazamos el elemento existente
+                        // Si existe, actualizamos su contenido sin modificar el resto
                         existingElement.outerHTML = html;
                     } else {
-                        // Si no existe, lo agregamos al final del contenedor
-                        container.innerHTML += html;
+                        // Si no existe, creamos un nodo a partir del HTML y lo insertamos al final
+                        const tempContainer = document.createElement('div');
+                        tempContainer.innerHTML = html;
+                        container.appendChild(tempContainer.firstElementChild);
                     }
                     return resolve();
                 } else {
-                    console.warn(`No se encontró la información para la ${key} en los datos guardados.`);
+                    console.warn(`No se encontró la información para ${key} en los datos guardados.`);
                     return resolve();
                 }
             }
 
-            // Si no se pasó el parámetro, procesamos y mostramos TODAS las respuestas
+            // Si no se recibió un parámetro, procesamos y mostramos TODAS las respuestas
             container.innerHTML = Object.entries(responses).map(([key, data]) => {
-                // Extraemos el número de pregunta del key
                 const questionNumber = key.replace(/\D/g, '');
                 let html = `<div class="preguntaautosave" id="${key}">`;
                 if (data.enunciado) {
                     html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
                 }
-
                 if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                     if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
                         html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
@@ -373,7 +374,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         .join('') || '<em>___________</em>';
                     html += `<div class="respuestasautosave">${respuestas}</div>`;
                 }
-                return html + '<hr style="margin-top: 5px; margin-bottom: 0px;">';
+                return html + '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
             }).join('');
             resolve();
         } catch (error) {
