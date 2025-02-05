@@ -44,7 +44,7 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
             <!-- Contenedor para Subject Dinamic -->
 
-            <div id="container-ruta-dinamica" style="display: block;">
+            <div id="container-ruta-dinamica" style="display: none;"">
 
                 <div id="subject-dinamic" class="subject-dinamic">
 
