@@ -23380,7 +23380,7 @@
           <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
         </div>
       `;
-          
+
             console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo:${ciclo}`);
         } else {
             console.error('[opc-autofill-autosave-moodle: ruta] No se encontró el contenedor de la ruta y ciclo.');
@@ -23395,25 +23395,41 @@
         const ruta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
         const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+        const rutaDinamica = sessionStorage.setItem('configRutaDinamic', rutaDinamica);
 
         // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
         if (!ruta || !ciclo) {
             // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
             contenedorRuta_js$1();
             return;
-        } else {
+        } 
+        
+        else if (rutaDinamicaSessionStorage) {
+            containerRutaFirebase.style.display = 'block';
+            containerRutaFirebase.innerHTML = `
+        <div>
+          <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;" >${rutaDinamica}</span>
+        </div>
+        <div>
+          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+        </div>
+      `;
+            
+        } 
+        
+        else {
             containerRutaFirebase.style.display = 'block';
 
             // Espera a que la función asíncrona obtenga la ruta dinámica
             const rutaDinamica = await obtenerRutaDinamica(ruta);
-            
+         
             if (rutaDinamica) {
-              console.log("La nueva ruta dinámica es:", rutaDinamica);
-            
-              sessionStorage.setItem('configRutaDinamic', rutaDinamica);
-              console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
-            
-              containerRutaFirebase.innerHTML = `
+                console.log("La nueva ruta dinámica es:", rutaDinamica);
+
+                sessionStorage.setItem('configRutaDinamic', rutaDinamica);
+                console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
+
+                containerRutaFirebase.innerHTML = `
             <div>
               <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;" >${rutaDinamica}</span>
             </div>
@@ -23423,7 +23439,6 @@
             </div>
           `;
             }
-            
         }
     }
 
@@ -23582,7 +23597,7 @@
                 await crearSelectsDinamicos(materiaValor, testClave);
                 return null;
             }
-            
+
         } catch (error) {
             // Manejo de errores generales en la función
             console.error('Error en actualizaConfigRutaDinamic:', error);
@@ -23593,15 +23608,25 @@
     async function crearSelectsDinamicos(materiaValor, testClave) {
 
         const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+        containerRutaFirebase.style.display = 'block';
+
+        containerRutaFirebase.innerHTML = `
+    <div>
+      <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;" >dinámica</span>
+    </div>
+
+    <div>
+      <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+    </div>`;
+
         const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
-        const contenedorSelects = document.getElementById('subject-dinamic');
 
         // Asegurarse de limpiar completamente el contenedor
         if (containerRutaDinamicaFirebase) {
             //console.log('Limpiando todos los elementos existentes en el contenedor.');
             containerRutaDinamicaFirebase.innerHTML = ''; // Elimina todo el contenido del contenedor
         } else {
-            console.error('No se encontró el contenedor con id="subject-dinamic".');
+            console.error('No se encontró el contenedor con id="containerRutaDinamicaFirebase".');
             return;
         }
 
@@ -23609,36 +23634,6 @@
 
         // Asumiendo que estás dentro de una función async o que manejas las promesas adecuadamente
         if (rutaLista.includes('UNEMI')) {
-
-            // Verifica si el elemento existe antes de modificar su estilo
-            if (containerRutaFirebase) {
-                containerRutaFirebase.style.display = 'block';
-
-            } else {
-                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-            }
-
-            // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
-            const rutaElemento = document.getElementById('ruta-configruta');
-
-            console.log(`[opc-autofill-autosave-moodle: ruta]  Mostrando "rutaCicloContainerDinamic".`);
-
-            const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-
-            // Verifica si 'configRutaDinamic' existe y no está vacío
-            if (configRutaDinamic) {
-                // Obtiene el elemento con el ID 'ruta-configruta'
-                const rutaElemento = document.getElementById('ruta-configruta');
-
-                // Verifica que el elemento exista en el DOM
-                if (rutaElemento) {
-                    // Actualiza el contenido HTML del elemento
-                    rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span>`;
-                    return;
-                }
-            } else {
-                rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span> `;
-            }
 
             if (rutaLista.includes('niv')) {
 
