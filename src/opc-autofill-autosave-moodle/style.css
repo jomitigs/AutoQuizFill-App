@@ -67,13 +67,6 @@
 /* ==========================================================================
      5. Sección: Wrapper de AutoFill y AutoSave
      ========================================================================== */
-/* Contenedor principal: se adapta al alto del viewport */
-#container-autofillautosave {
-    display: flex;
-    flex-direction: column; /* Los contenedores internos se apilan verticalmente */
-    gap: 5px; /* Espacio entre contenedores */
-    padding: 10px; /* Opcional: para que no esté pegado al borde de la ventana */
-  }
   
   /* Agrupamos las reglas compartidas para ambos subcontenedores */
   .subcontainer-autoquiz-autosave,
