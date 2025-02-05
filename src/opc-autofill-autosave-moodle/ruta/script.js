@@ -419,23 +419,29 @@ function guardarRutaDinamica() {
     configRutaParts.splice(-2); // Elimina los últimos dos elementos
     console.log('Partes de configRuta después de eliminar los últimos dos elementos:', configRutaParts);
 
-    // Obtener los selects de materia y test que son hijos de containerRutaFirebase
-    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-    const selectMateria = containerRutaFirebase.querySelector('#select-materia');
-    const selectTest = containerRutaFirebase.querySelector('#select-test');
-
-    if (!selectMateria || !selectTest) {
-        console.error('No se encontraron los selects de materia y/o test.');
+    // Obtener el contenedor que agrupa los selects (y el botón)
+    const container = document.getElementById('containerRutaDinamicaFirebase');
+    if (!container) {
+        console.error('No se encontró el contenedor con id "containerRutaDinamicaFirebase".');
         return;
     }
 
-    // Obtener los valores seleccionados
+    // Obtener los selects de materia y test
+    const selectMateria = container.querySelector('#select-materia');
+    const selectTest = container.querySelector('#select-test');
+
+    if (!selectMateria || !selectTest) {
+        console.error('No se encontraron los selects "select-materia" y/o "select-test".');
+        return;
+    }
+
+    // Obtener los valores seleccionados de cada select
     const materiaValue = selectMateria.value;
     const testValue = selectTest.value;
     console.log('Valor de materia:', materiaValue);
     console.log('Valor de test:', testValue);
 
-    // Formar la nueva ruta combinando las partes de configRuta con los valores seleccionados
+    // Combinar las partes de configRuta con los valores seleccionados para formar la nueva ruta
     const newRuta = [...configRutaParts, materiaValue, testValue].join('/');
     console.log('Nueva ruta construida:', newRuta);
 
@@ -455,15 +461,18 @@ function guardarRutaDinamica() {
         console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
     }
 
-    // Ocultar el contenedor de selects (con id "subject-dinamic")
+    // Ocultar el contenedor de selects, en este caso el id "subject-dinamic", si existe
     const contenedorSelects = document.getElementById('subject-dinamic');
     if (contenedorSelects) {
         contenedorSelects.style.display = 'none';
         console.log('Contenedor "subject-dinamic" ocultado.');
     } else {
-        console.error('No se encontró el contenedor con id="subject-dinamic".');
+        console.log('No se encontró el contenedor con id "subject-dinamic" para ocultar.');
     }
+
+    // Se ha eliminado la llamada a AutoSaveReview_LocalStorage()
 }
+
 
 
 function actualizarVisibilidadSelects(isVisible) {
