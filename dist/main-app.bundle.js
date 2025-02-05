@@ -23580,21 +23580,17 @@
             
 
             else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
-                document.getElementById("container-ruta-dinamica").style.display = "block";
 
                 sessionStorage.setItem('configRutaDinamic', "dinámica");
 
-                // Actualizar el elemento HTML con la ruta 'dinamica'
-                const rutaElement = document.getElementById('ruta-configruta');
-                if (rutaElement) {
-                    rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">dinámica</span>`;
-                } else {
-                    console.warn("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-                }
+                // Actualizar el contenido de containerRutaFirebase
+                containerRutaFirebase.innerHTML = `
+            <div>
+                <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">dinámica</span>
+            </div>
+            `;
 
-                console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar materia ni quiz. Se ha establecido la ruta como "dinámica".');
-                containerRutaFirebase.style.display = 'block';
-                return null;
+                return;
             }
 
             else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
