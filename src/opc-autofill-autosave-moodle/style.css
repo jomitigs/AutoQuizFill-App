@@ -95,7 +95,7 @@
   
   .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb,
   .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.7); /* Color del thumb */
+    background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */
     border-radius: 10px;
   }
   
