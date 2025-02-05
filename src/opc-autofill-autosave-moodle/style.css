@@ -91,6 +91,25 @@
     min-height: 100px; /* Define una altura mínima para evitar colapsos */
 }
 
+/* Estilos para la barra de desplazamiento vertical */
+.subcontainer-autoquiz::-webkit-scrollbar {
+    width: 0.5em; /* Ancho de la barra de desplazamiento */
+}
+
+.subcontainer-autoquiz::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Color opaco del thumb (barra deslizadora) */
+    border-radius: 10px;
+}
+
+.subcontainer-autoquiz::-webkit-scrollbar-track {
+    background: transparent; /* Hace que el fondo de la barra de desplazamiento sea transparente */
+}
+
+.subcontainer-autoquiz::-webkit-scrollbar-button {
+    display: none; /* Oculta los botones de la barra de desplazamiento (flechas arriba y abajo) */
+}
+
+
 
 #body-autoquiz-autosave {
     font-size: 12px;
