@@ -439,13 +439,13 @@
             border-radius: 8px;
             border: 1px solid #dcdcdc;
             overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            max-height: 300px; /* Limitar la altura máxima a 350px */
+            /* max-height: 300px; /* Limitar la altura máxima a 350px */
         }
 
         /* Estilos personalizados para la barra de desplazamiento */
         .subcontainer-autoquiz-autosave::-webkit-scrollbar {
-            width: 3px; /* Ancho del scrollbar */
-            height: 3px; /* Alto del scrollbar horizontal */
+            width: 5px; /* Ancho del scrollbar */
+            height: 5px; /* Alto del scrollbar horizontal */
         }
 
         .subcontainer-autoquiz-autosave::-webkit-scrollbar-track {
