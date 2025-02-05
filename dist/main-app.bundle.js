@@ -43762,7 +43762,9 @@
                             console.log('HTML actualizado:', html);
                         }
                         
-                        html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
+                        if (!numeroPregunta) {
+                            html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
+                        }
 
                         // Buscamos el elemento de esa pregunta dentro del contenedor
                         let updatedElement = container.querySelector(`#${key}`);
