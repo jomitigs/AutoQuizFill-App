@@ -4,6 +4,7 @@
 #autofillautosave_moodle {
     display: flex;
     flex-direction: column;
+
     /* Altura ajustable según se requiera */
 }
 
@@ -55,11 +56,14 @@
 
 
 #containerRutaFirebase {
-    display: flex;
-    flex-direction: row; /* Para que estén en línea */
-    gap: 0; /* Elimina cualquier espacio entre los div */
-    margin-bottom: 5px;
-    margin-top: 5px
+  display: flex;
+  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */
+  gap: 0; /* Esto asegura que no haya espacio entre ellos */
+}
+
+#containerRutaFirebase div {
+  margin: 0;
+  padding: 0;
 }
 
 
