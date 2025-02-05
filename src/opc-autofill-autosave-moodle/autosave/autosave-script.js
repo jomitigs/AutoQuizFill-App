@@ -267,6 +267,8 @@ function detectarCambiosPreguntas() {
 
                     // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
                     await AutoSave_SessionStorage(formulation, numeroPregunta);
+
+                    console.log('AutoSave_ShowResponses iniciado');
                     await AutoSave_ShowResponses(numeroPregunta);
 
                     // **Aquí** se llama a la función para renderizar expresiones LaTeX
