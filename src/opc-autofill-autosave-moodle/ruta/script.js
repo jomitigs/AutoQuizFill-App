@@ -285,7 +285,11 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
     
     const ciclo = localStorage.getItem('ciclo');
     const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
+
+    containerRutaDinamicaFirebase.style.display = 'block';
     containerRutaFirebase.style.display = 'block';
+
     const rutaDinamica = "dinámica";
 
     containerRutaFirebase.innerHTML = `
@@ -295,8 +299,6 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
     <div>
         <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
     </div>`;
-
-    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
 
     // Asegurarse de limpiar completamente el contenedor
     if (containerRutaDinamicaFirebase) {
