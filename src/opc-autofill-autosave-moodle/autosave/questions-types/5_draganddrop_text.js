@@ -14,18 +14,25 @@ export async function draganddrop_text(originalFormulationClearfix) {
     // Convertir las imágenes dentro del clon a formato Data URI
     await File2DataUri(clonFormulation);
 
-    // Antes de extraer el enunciado, reemplazar los spans de tipo "place", "drop", "group", etc.
-    // Se busca cualquier elemento <span> cuya clase contenga "place", "drop" y "group"
+    // --- Preprocesado del clon antes de extraer el enunciado ---
+    // 1. Reemplazar los <span> que contengan "place", "drop" y "group" por "[ ]"
     const spansToReplace = clonFormulation.querySelectorAll('span[class*="place"][class*="drop"][class*="group"]');
     spansToReplace.forEach(span => {
-        // Se crea un nodo de texto con corchetes y un espacio en blanco: "[ ]"
         const replacementText = document.createTextNode('[ ]');
-        // Se reemplaza el span por el nodo de texto
         span.parentNode.replaceChild(replacementText, span);
     });
 
-    // Extraer el enunciado (por ejemplo, el contenido dentro del elemento con clase .qtext)
+    // 2. Eliminar cualquier <span> con clase "draghome" que se encuentre dentro del enunciado
     const enunciadoElement = clonFormulation.querySelector('.qtext');
+    if (enunciadoElement) {
+        const draghomeSpans = enunciadoElement.querySelectorAll('span.draghome');
+        draghomeSpans.forEach(span => span.remove());
+    } else {
+        console.log("No se encontró el elemento .qtext para el preprocesado del enunciado.");
+    }
+    // --- Fin del preprocesado ---
+
+    // Extraer el enunciado (ya modificado) del elemento con clase .qtext
     let enunciado = '';
     if (enunciadoElement) {
         enunciado = await extractContentInOrder(enunciadoElement);
