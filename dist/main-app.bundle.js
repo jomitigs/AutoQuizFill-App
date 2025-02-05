@@ -23395,7 +23395,9 @@
         const ruta = localStorage.getItem('configRuta');
         const ciclo = localStorage.getItem('ciclo');
         const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-        const rutaDinamica = sessionStorage.getItem('configRutaDinamic');
+        
+        // Se declara con let para poder actualizar su valor
+        let rutaDinamica = sessionStorage.getItem('configRutaDinamic');
 
         // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
         if (!ruta || !ciclo) {
@@ -23404,24 +23406,22 @@
             return;
         } 
         
-        else if (rutaDinamicaSessionStorage) {
+        else if (rutaDinamica && rutaDinamica !== "dinámica") {
             containerRutaFirebase.style.display = 'block';
             containerRutaFirebase.innerHTML = `
-        <div>
-          <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;" >${rutaDinamica}</span>
-        </div>
-        <div>
-          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-        </div>
-      `;
+            <div>
+              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
+            </div>
+            <div>
+              <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+            </div>
+        `;
             
-        } 
-        
-        else {
+        } else {
             containerRutaFirebase.style.display = 'block';
 
             // Espera a que la función asíncrona obtenga la ruta dinámica
-            const rutaDinamica = await obtenerRutaDinamica(ruta);
+            rutaDinamica = await obtenerRutaDinamica(ruta);
          
             if (rutaDinamica) {
                 console.log("La nueva ruta dinámica es:", rutaDinamica);
@@ -23430,17 +23430,17 @@
                 console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
 
                 containerRutaFirebase.innerHTML = `
-            <div>
-              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;" >${rutaDinamica}</span>
-            </div>
-        
-            <div>
-              <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-            </div>
-          `;
+                <div>
+                  <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
+                </div>
+                <div>
+                  <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+                </div>
+            `;
             }
         }
     }
+
 
 
     async function obtenerRutaDinamica(ruta) {
