@@ -76,7 +76,7 @@
      ========================================================================== */
 /* Contenedores internos: */
 .subcontainer-autoquiz {
-    flex: 1;  /* Se estira para ocupar el espacio disponible */
+    margin-top: 5px;
     display: flex;
     flex-direction: column;  /* Para organizar el header y el body verticalmente */
     background-color: #f4f4f4;
