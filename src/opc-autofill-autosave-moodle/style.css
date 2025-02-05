@@ -1,672 +1,840 @@
 .dynamic-select {
-    width: 100%; /* Ocupar todo el ancho del contenedor */
-    padding: 0.5rem 1rem; /* Espaciado interno */
-    font-size: 1rem; /* Tamaño de fuente */
-    color: #333; /* Texto en gris oscuro */
-    background-color: #fff; /* Fondo blanco */
-    border: 1px solid #ccc; /* Borde tenue */
-    border-radius: 4px; /* Bordes redondeados */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición en foco */
+    width: 100%;
+    /* Ocupar todo el ancho del contenedor */
+    padding: 0.5rem 1rem;
+    /* Espaciado interno */
+    font-size: 1rem;
+    /* Tamaño de fuente */
+    color: #333;
+    /* Texto en gris oscuro */
+    background-color: #fff;
+    /* Fondo blanco */
+    border: 1px solid #ccc;
+    /* Borde tenue */
+    border-radius: 4px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra ligera */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    /* Transición en foco */
 }
 
 /* Estilo al pasar el mouse por encima */
 .dynamic-select:hover {
-    border-color: #888; /* Borde más visible */
+    border-color: #888;
+    /* Borde más visible */
 }
 
 /* Estilo al enfocar el select */
 .dynamic-select:focus {
-    border-color: #007bff; /* Azul para el foco */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Sombra azul */
-    outline: none; /* Quitar borde predeterminado */
+    border-color: #007bff;
+    /* Azul para el foco */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    /* Sombra azul */
+    outline: none;
+    /* Quitar borde predeterminado */
 }
 
 /* Estilo para las opciones dentro del select */
 .dynamic-select option {
-    font-size: 1rem; /* Tamaño de fuente uniforme */
-    color: #333; /* Color del texto */
-    padding: 0.5rem; /* Espaciado interno */
+    font-size: 1rem;
+    /* Tamaño de fuente uniforme */
+    color: #333;
+    /* Color del texto */
+    padding: 0.5rem;
+    /* Espaciado interno */
 }
 
 /* Estilo específico para pantallas pequeñas */
 @media (max-width: 600px) {
     .dynamic-select {
-        font-size: 0.9rem; /* Ajustar tamaño de fuente */
+        font-size: 0.9rem;
+        /* Ajustar tamaño de fuente */
     }
 }
 
 
 
 
-                .autosavereview-verified {
-            display: inline-block;
-            background-color: LimeGreen;
-            color: white;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border-radius: 5px;
-            font-weight: 600;
+.autosavereview-verified {
+    display: inline-block;
+    background-color: LimeGreen;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 600;
     font-size: 14px;
-        }
+}
 
-                .autosavereview-no-verified-correct {
-            display: inline-block;
-            background-color: LimeGreen;
-            color: white;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border-radius: 5px;
-            font-weight: 600;
+.autosavereview-no-verified-correct {
+    display: inline-block;
+    background-color: LimeGreen;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 600;
     font-size: 14px;
-        }
+}
 
-                        .autosavereview-no-verified {
-            display: inline-block;
-            background-color: Red;
-            color: white;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border-radius: 5px;
-            font-weight: 600;
+.autosavereview-no-verified {
+    display: inline-block;
+    background-color: Red;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 600;
     font-size: 14px;
-        }
+}
 
 .autosavereview-contestar {
-            display: inline-block;
-            background-color: red;
-            color: white;
-            padding: 5px 10px;
-            margin-left: 10px;
-            border-radius: 5px;
-            font-weight: 600;
+    display: inline-block;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    font-weight: 600;
     font-size: 14px;
-        }
+}
 
 .select-siguiente-usuario {
-    font-size: 14px;              /* Tamaño de fuente para el texto seleccionado */
-    font-weight: 600;             /* Grosor de la fuente para el texto seleccionado */
-    color: #34495e;               /* Color del texto seleccionado */
-    border: none;                 /* Elimina el borde del select */
-    background-color: transparent;/* Fondo transparente */
-    outline: none;                /* Elimina el borde de enfoque */
-    appearance: none;             /* Quita el estilo predeterminado del navegador */
-    cursor: pointer;              /* Cambia el cursor a pointer */
-    text-align: right;            /* Alinea el texto seleccionado a la derecha */
-    padding-right: 0px;           /* Espacio entre el texto y el borde derecho */
-    direction: rtl;               /* Alinea el desplegable hacia la derecha */
+    font-size: 14px;
+    /* Tamaño de fuente para el texto seleccionado */
+    font-weight: 600;
+    /* Grosor de la fuente para el texto seleccionado */
+    color: #34495e;
+    /* Color del texto seleccionado */
+    border: none;
+    /* Elimina el borde del select */
+    background-color: transparent;
+    /* Fondo transparente */
+    outline: none;
+    /* Elimina el borde de enfoque */
+    appearance: none;
+    /* Quita el estilo predeterminado del navegador */
+    cursor: pointer;
+    /* Cambia el cursor a pointer */
+    text-align: right;
+    /* Alinea el texto seleccionado a la derecha */
+    padding-right: 0px;
+    /* Espacio entre el texto y el borde derecho */
+    direction: rtl;
+    /* Alinea el desplegable hacia la derecha */
 }
 
 /* Estilo de las opciones dentro del select */
 .select-siguiente-usuario option {
-    font-size: 12px;              /* Tamaño de fuente más pequeño para las opciones desplegables */
-    padding: 10px;            /* Espacio alrededor del texto en cada opción */
-    text-align: right;           /* Centra el texto dentro de las opciones */
-    direction: ltr;               /* Restablece la dirección del texto para que se lea correctamente */
+    font-size: 12px;
+    /* Tamaño de fuente más pequeño para las opciones desplegables */
+    padding: 10px;
+    /* Espacio alrededor del texto en cada opción */
+    text-align: right;
+    /* Centra el texto dentro de las opciones */
+    direction: ltr;
+    /* Restablece la dirección del texto para que se lea correctamente */
 }
 
 /* Limita la altura del desplegable para mostrar un número reducido de opciones */
 .select-siguiente-usuario {
-    max-height: 30px;             /* Reduce la altura visible del select */
-    overflow-y: auto;             /* Habilita la barra de desplazamiento vertical */
+    max-height: 30px;
+    /* Reduce la altura visible del select */
+    overflow-y: auto;
+    /* Habilita la barra de desplazamiento vertical */
 }
 
 /* Personalización de la barra de desplazamiento */
 .select-siguiente-usuario::-webkit-scrollbar {
-    width: 2px;                   /* Reduce la anchura de la barra de desplazamiento */
+    width: 2px;
+    /* Reduce la anchura de la barra de desplazamiento */
 }
 
 .select-siguiente-usuario::-webkit-scrollbar-thumb {
-    background-color: rgba(52, 73, 94, 0.2); /* Barra de desplazamiento más transparente */
-    border-radius: 10px;          /* Bordes redondeados para la barra */
+    background-color: rgba(52, 73, 94, 0.2);
+    /* Barra de desplazamiento más transparente */
+    border-radius: 10px;
+    /* Bordes redondeados para la barra */
 }
 
 .select-siguiente-usuario::-webkit-scrollbar-track {
-    background-color: transparent;/* Fondo transparente para la pista de la barra */
+    background-color: transparent;
+    /* Fondo transparente para la pista de la barra */
 }
 
 /* Destacar la opción seleccionada incluso al pasar el mouse */
 /* Nota: Debido a limitaciones, esto solo funciona en algunos navegadores */
 .select-siguiente-usuario option:checked {
-    background-color: #dcdde1;    /* Fondo diferente para la opción seleccionada */
-    font-weight: bold;            /* Fuente en negrita para la opción seleccionada */
+    background-color: #dcdde1;
+    /* Fondo diferente para la opción seleccionada */
+    font-weight: bold;
+    /* Fuente en negrita para la opción seleccionada */
 }
 
 /* Evitar que el hover cambie el estilo de la opción seleccionada */
 .select-siguiente-usuario option:hover {
-    background-color: #f1f2f6;    /* Fondo al pasar el mouse */
+    background-color: #f1f2f6;
+    /* Fondo al pasar el mouse */
 }
 
 /* Mantener el estilo de la opción seleccionada al hacer hover */
 .select-siguiente-usuario option:hover:checked {
-    background-color: #dcdde1;    /* Mantiene el fondo de la opción seleccionada */
+    background-color: #dcdde1;
+    /* Mantiene el fondo de la opción seleccionada */
 }
 
 
 
 /* Estilos para los checkboxes de AutoQuiz */
 .autoquiz-checkbox {
-    accent-color: #0072c5; /* Color por defecto para checkboxes habilitados */
-    width: 20px; /* Tamaño opcional */
-    height: 20px; /* Tamaño opcional */
+    accent-color: #0072c5;
+    /* Color por defecto para checkboxes habilitados */
+    width: 20px;
+    /* Tamaño opcional */
+    height: 20px;
+    /* Tamaño opcional */
 }
 
 /* Cambiar el color del checkbox cuando está deshabilitado */
 .autoquiz-checkbox:disabled {
-    accent-color: green; /* Cambia a verde cuando está deshabilitado */
-    cursor: not-allowed; /* Cambiar el cursor para indicar que está deshabilitado */
+    accent-color: green;
+    /* Cambia a verde cuando está deshabilitado */
+    cursor: not-allowed;
+    /* Cambiar el cursor para indicar que está deshabilitado */
 }
 
 /* Opcional: Mejorar la apariencia general de los checkboxes */
 .checkbox-item {
     display: flex;
     align-items: center;
-    margin-bottom: 8px; /* Espaciado entre los items */
+    margin-bottom: 8px;
+    /* Espaciado entre los items */
 }
 
 .checkbox-verified {
-    margin-right: 8px; /* Espaciado entre el checkbox y el label */
+    margin-right: 8px;
+    /* Espaciado entre el checkbox y el label */
 }
 
 
 .boton-siguiente-usuario {
     margin-top: 0;
-    margin-bottom: 0;           /* Establece el margen superior a 0 */
-    font-weight: 600;       /* Hace el texto del botón más negrito (600) */
-    border: none;           /* Elimina cualquier borde */
-    background-color: transparent; /* Fondo transparente */
-    cursor: pointer;        /* Cambia el cursor a pointer para indicar que es interactivo */
-    padding: 0px 3px;      /* Espaciado interno opcional */
+    margin-bottom: 0;
+    /* Establece el margen superior a 0 */
+    font-weight: 600;
+    /* Hace el texto del botón más negrito (600) */
+    border: none;
+    /* Elimina cualquier borde */
+    background-color: transparent;
+    /* Fondo transparente */
+    cursor: pointer;
+    /* Cambia el cursor a pointer para indicar que es interactivo */
+    padding: 0px 3px;
+    /* Espaciado interno opcional */
 }
 
 .boton-siguiente-usuario i {
-    font-size: 0.90em;       /* Ajusta el tamaño del ícono dentro del botón */
-    color: #34495e;         /* Color del ícono */
+    font-size: 0.90em;
+    /* Ajusta el tamaño del ícono dentro del botón */
+    color: #34495e;
+    /* Color del ícono */
 }
 
-              /* Estilos básicos para los checkboxes */
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            margin-top: 5px;
-        }
-        .checkbox-item label {
-            margin-left: 8px;
-            margin-bottom: 0px;
-            margin-top: 0px;
-        }
+/* Estilos básicos para los checkboxes */
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.checkbox-item label {
+    margin-left: 8px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
 
 
-      .boton-verificar {
-        width: 100%;
-        padding: 12px;
-        background-color: #0072c5;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
+.boton-verificar {
+    width: 100%;
+    padding: 12px;
+    background-color: #0072c5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-    /* Efecto hover en los botones */
-    .boton-verificar:hover {
-        background-color: #002c67;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+/* Efecto hover en los botones */
+.boton-verificar:hover {
+    background-color: #002c67;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .buttons-container-verificar {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* Espacio entre los botones */
-    margin-bottom: 10px; /* Espacio debajo de los botones */
+    gap: 5px;
+    /* Espacio entre los botones */
+    margin-bottom: 10px;
+    /* Espacio debajo de los botones */
 }
 
 
 
-        /* Estilos para el contenedor de Verificar */
-        .subcontainer-autoquiz-verificar {
-            margin-top: 10px; /* Espaciado superior para separar del contenido anterior */
-            margin-bottom: 10px; /* Espaciado inferior */
-            background-color: #f4f4f4; /* Color de fondo suave */
-            padding: 10px 15px; /* Relleno interno */
-            border-radius: 8px; /* Bordes redondeados */
-            border: 1px solid #dcdcdc; /* Borde suave */
-            overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            max-height: 100px; /* Limitar la altura máxima a 100px */
-        }
+/* Estilos para el contenedor de Verificar */
+.subcontainer-autoquiz-verificar {
+    margin-top: 10px;
+    /* Espaciado superior para separar del contenido anterior */
+    margin-bottom: 10px;
+    /* Espaciado inferior */
+    background-color: #f4f4f4;
+    /* Color de fondo suave */
+    padding: 10px 15px;
+    /* Relleno interno */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    border: 1px solid #dcdcdc;
+    /* Borde suave */
+    overflow-y: auto;
+    /* Habilitar desplazamiento si es necesario */
+    max-height: 100px;
+    /* Limitar la altura máxima a 100px */
+}
 
-        /* Estilos para el botón "Verificar Preguntas" */
-        .boton-verified {
-            width: 100%; /* Asegurarse de que ocupe todo el ancho disponible */
-            padding: 12px;
-            background-color: #0072c5; /* Color de fondo */
-            color: white; /* Color del texto */
-            border: none; /* Sin bordes */
-            border-radius: 5px; /* Bordes redondeados */
-            font-size: 16px; /* Tamaño de la fuente */
-            cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
-            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
-              margin-top: -4px; /* Margen inferior */
-              margin-bottom: 6px; /* Margen inferior */
-        }
+/* Estilos para el botón "Verificar Preguntas" */
+.boton-verified {
+    width: 100%;
+    /* Asegurarse de que ocupe todo el ancho disponible */
+    padding: 12px;
+    background-color: #0072c5;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    border: none;
+    /* Sin bordes */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    font-size: 16px;
+    /* Tamaño de la fuente */
+    cursor: pointer;
+    /* Cambiar el cursor al pasar sobre el botón */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    /* Transiciones suaves */
+    margin-top: -4px;
+    /* Margen inferior */
+    margin-bottom: 6px;
+    /* Margen inferior */
+}
 
-        /* Efecto hover en el botón "Verificar Preguntas" */
-        .boton-verified:hover {
-            background-color: #002c67; /* Cambio de color de fondo al pasar el cursor */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el cursor */
-        }
+/* Efecto hover en el botón "Verificar Preguntas" */
+.boton-verified:hover {
+    background-color: #002c67;
+    /* Cambio de color de fondo al pasar el cursor */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra más pronunciada al pasar el cursor */
+}
 
-        /* Estilos para el contenedor de cada pregunta */
-        .question-container-autoquiz {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            padding: 0;
-            color: #34495e;
-            flex-wrap: wrap;
-            width: 100%;
-            word-wrap: break-word;
-            word-break: break-word;
-            margin-bottom: 7px; /* Espacio entre preguntas */
-        }
+/* Estilos para el contenedor de cada pregunta */
+.question-container-autoquiz {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0;
+    color: #34495e;
+    flex-wrap: wrap;
+    width: 100%;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin-bottom: 7px;
+    /* Espacio entre preguntas */
+}
 
-        /* Estilos para el título de la pregunta */
-        .question-title-autoquiz {
-            color: #333;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: -1px; /* Espacio después del título */
-        }
+/* Estilos para el título de la pregunta */
+.question-title-autoquiz {
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: -1px;
+    /* Espacio después del título */
+}
 
-        /* Contenedor para agrupar cada par de etiqueta-valor (Estado y Similitud) */
-        .question-data-group {
-            display: flex; /* Asegura que los elementos se alineen horizontalmente */
-            flex-direction: row; /* Coloca la etiqueta y el valor en una sola línea */
-            justify-content: flex-start;
-            align-items: center; /* Alinea verticalmente el contenido al centro */
-            margin: 0 0 -4px 0px; /* Eliminar margen adicional */
-            padding: 0; /* Eliminar padding adicional */
-        }
+/* Contenedor para agrupar cada par de etiqueta-valor (Estado y Similitud) */
+.question-data-group {
+    display: flex;
+    /* Asegura que los elementos se alineen horizontalmente */
+    flex-direction: row;
+    /* Coloca la etiqueta y el valor en una sola línea */
+    justify-content: flex-start;
+    align-items: center;
+    /* Alinea verticalmente el contenido al centro */
+    margin: 0 0 -4px 0px;
+    /* Eliminar margen adicional */
+    padding: 0;
+    /* Eliminar padding adicional */
+}
 
-        /* Estilos para los elementos de etiqueta como Estado, Similitud */
-        .question-label-autoquiz {
-            color: #333;
-            font-size: 13px;
-            font-weight: 500;
-            margin-right: 3px; /* Espacio entre la etiqueta y el valor */
-        }
+/* Estilos para los elementos de etiqueta como Estado, Similitud */
+.question-label-autoquiz {
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 3px;
+    /* Espacio entre la etiqueta y el valor */
+}
 
-        /* Estilos para los valores correspondientes a Estado y Similitud */
-        /* Estilos para los valores correspondientes a Estado, Similitud, Respuestas */
-        .question-value-autoquiz {
-            color: #333;
-            font-size: 12px;
-            font-weight: 400;
-            font-style: normal;
-            line-height: 1.2; /* Ajuste para eliminar el espacio entre líneas */
-        }
-
-
-        /* Estilo para el contenedor específico de las respuestas */
-        .responses-container {
-            margin: 0px; /* Sin margen adicional */
-        }
-
-        .responses-container .question-label-autoquiz {
-            display: block; /* Mantiene la etiqueta "Respuestas" en una sola línea */
-            margin-bottom: 0px; /* Sin espacio adicional debajo de la etiqueta */
-            margin-top: 0px; /* Sin espacio adicional debajo de la etiqueta */
-        }
-
-        .responses-container .question-value-autoquiz {
-            display: block; /* Asegura que las respuestas aparezcan en una nueva línea */
-            margin-top: -2px; /* Sin margen adicional arriba de las respuestas */
-            padding-left: 0px; /* Alineación directa debajo de la etiqueta */
-        }
-
-
-           /* Estilos para el contenedor principal que ocupa toda la ventana */
-
-        /* Ocultar la barra de desplazamiento en Chrome, Safari y Opera */
-
-            /* Estilo para el contenedor que muestra los usuarios actuales y siguientes */
-            .users {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                box-sizing: border-box;
-                margin-bottom: 15px ;
-            }
-
-            /* Estilo para el nombre de usuario */
-            .nombre-usuario, .nombre-siguiente-usuario {
-                font-size: 14px;
-                font-weight: 600;
-                color: #34495e;
-                margin: 0 5px;
-            }
-
-            /* Sección de usuario actual alineada a la izquierda */
-            .usuario-actual {
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                flex: 1;
-            }
+/* Estilos para los valores correspondientes a Estado y Similitud */
+/* Estilos para los valores correspondientes a Estado, Similitud, Respuestas */
+.question-value-autoquiz {
+    color: #333;
+    font-size: 12px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.2;
+    /* Ajuste para eliminar el espacio entre líneas */
+}
 
 
+/* Estilo para el contenedor específico de las respuestas */
+.responses-container {
+    margin: 0px;
+    /* Sin margen adicional */
+}
 
-        /* Botón para el siguiente usuario sin fondo ni bordes */
-        .boton-simple-autoquiz {
-            background: none;
-            border: none;
-            color: #34495e;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex; /* Cambiamos a inline-flex para respetar el ancho del texto */
-            align-items: center;
-            justify-content: flex-start; /* Alinea el texto y el ícono de forma continua */
-            width: auto; /* Ajusta el ancho según el contenido */
-            white-space: normal; /* Permite el quiebre del texto si el ancho es pequeño */
-            padding: 0;
-            margin: 0;
-        }
+.responses-container .question-label-autoquiz {
+    display: block;
+    /* Mantiene la etiqueta "Respuestas" en una sola línea */
+    margin-bottom: 0px;
+    /* Sin espacio adicional debajo de la etiqueta */
+    margin-top: 0px;
+    /* Sin espacio adicional debajo de la etiqueta */
+}
 
-        /* Alinear el ícono justo después del texto */
-        .boton-simple-autoquiz i {
-            margin-left: 5px; /* Añade un pequeño margen para separar el ícono del texto */
-            flex-shrink: 0; /* Evita que el ícono se reduzca en tamaños pequeños */
-            margin-bottom: 5px;
-        }
+.responses-container .question-value-autoquiz {
+    display: block;
+    /* Asegura que las respuestas aparezcan en una nueva línea */
+    margin-top: -2px;
+    /* Sin margen adicional arriba de las respuestas */
+    padding-left: 0px;
+    /* Alineación directa debajo de la etiqueta */
+}
 
-        /* Efecto al hacer clic o al enfocarse */
-        .boton-simple-autoquiz:focus,
-        .boton-simple-autoquiz:active {
-            outline: none;
-            color: #2c3e50;
-            background: none;
-        }
 
-            /* Estilo para la ruta configurada */
-            .ruta-config {
-                margin-top: 10px;
-                font-size: 10px;
-                color: #34495e;
-            }
+/* Estilos para el contenedor principal que ocupa toda la ventana */
 
-        /* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */
-        .subcontainer-autoquiz-autofill {
-                margin-top: 10px;
-            margin-bottom: 10px;
-            background-color: #f4f4f4;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #dcdcdc;
-            overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            max-height: 300px; /* Limitar la altura máxima a 350px */
+/* Ocultar la barra de desplazamiento en Chrome, Safari y Opera */
 
-        }
-        /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar {
-            width: 3px; /* Ancho del scrollbar */
-        height: 3px; /* Alto del scrollbar horizontal */
-        }
+/* Estilo para el contenedor que muestra los usuarios actuales y siguientes */
+.users {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
 
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar-track {
-            background: transparent; /* Fondo del track transparente */
-        }
+/* Estilo para el nombre de usuario */
+.nombre-usuario,
+.nombre-siguiente-usuario {
+    font-size: 14px;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0 5px;
+}
 
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
-            border-radius: 10px; /* Bordes redondeados */
-        }
+/* Sección de usuario actual alineada a la izquierda */
+.usuario-actual {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+}
 
-        .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
-        }
 
-        /* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */
-        .subcontainer-autoquiz-autosave {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            background-color: #f4f4f4;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #dcdcdc;
-            overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            max-height: 300px; /* Limitar la altura máxima a 350px */
-        }
 
-        /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar {
-            width: 5px; /* Ancho del scrollbar */
-            height: 5px; /* Alto del scrollbar horizontal */
-        }
+/* Botón para el siguiente usuario sin fondo ni bordes */
+.boton-simple-autoquiz {
+    background: none;
+    border: none;
+    color: #34495e;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    /* Cambiamos a inline-flex para respetar el ancho del texto */
+    align-items: center;
+    justify-content: flex-start;
+    /* Alinea el texto y el ícono de forma continua */
+    width: auto;
+    /* Ajusta el ancho según el contenido */
+    white-space: normal;
+    /* Permite el quiebre del texto si el ancho es pequeño */
+    padding: 0;
+    margin: 0;
+}
 
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar-track {
-            background: transparent; /* Fondo del track transparente */
-        }
+/* Alinear el ícono justo después del texto */
+.boton-simple-autoquiz i {
+    margin-left: 5px;
+    /* Añade un pequeño margen para separar el ícono del texto */
+    flex-shrink: 0;
+    /* Evita que el ícono se reduzca en tamaños pequeños */
+    margin-bottom: 5px;
+}
 
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
-            border-radius: 10px; /* Bordes redondeados */
-        }
+/* Efecto al hacer clic o al enfocarse */
+.boton-simple-autoquiz:focus,
+.boton-simple-autoquiz:active {
+    outline: none;
+    color: #2c3e50;
+    background: none;
+}
 
-        .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
-        }
+/* Estilo para la ruta configurada */
+.ruta-config {
+    margin-top: 10px;
+    font-size: 10px;
+    color: #34495e;
+}
 
-        .subcontainer-autoquiz-verified {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            background-color: #f4f4f4;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #dcdcdc;
-            overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            max-height: 350px; /* Limitar la altura máxima a 350px */
-        }
+/* Ajuste para que el contenedor AutoSave ocupe todo el espacio restante */
+.subcontainer-autoquiz-autofill {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f4f4f4;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    overflow-y: auto;
+    /* Habilitar desplazamiento si es necesario */
+    max-height: 300px;
+    /* Limitar la altura máxima a 350px */
 
-        /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-verified::-webkit-scrollbar {
-            width: 3px; /* Ancho del scrollbar */
-            height: 3px; /* Alto del scrollbar horizontal */
-        }
+}
 
-        .subcontainer-autoquiz-verified::-webkit-scrollbar-track {
-            background: transparent; /* Fondo del track transparente */
-        }
+/* Estilos personalizados para la barra de desplazamiento */
+.subcontainer-autoquiz-autofill::-webkit-scrollbar {
+    width: 3px;
+    /* Ancho del scrollbar */
+    height: 3px;
+    /* Alto del scrollbar horizontal */
+}
 
-        .subcontainer-autoquiz-verified::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
-            border-radius: 10px; /* Bordes redondeados */
-        }
+.subcontainer-autoquiz-autofill::-webkit-scrollbar-track {
+    background: transparent;
+    /* Fondo del track transparente */
+}
 
-        .subcontainer-autoquiz-verified::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
-        }
+.subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Color tenue para el thumb */
+    border-radius: 10px;
+    /* Bordes redondeados */
+}
 
-        .subcontainer-autoquiz-autosavereview {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            background-color: #f4f4f4;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #dcdcdc;
-            overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            max-height: 350px; /* Limitar la altura máxima a 350px */
-        }
+.subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Color un poco más oscuro al pasar el mouse */
+}
 
-        /* Estilos personalizados para la barra de desplazamiento */
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar {
-            width: 3px; /* Ancho del scrollbar */
-            height: 3px; /* Alto del scrollbar horizontal */
-        }
+/* CSS */
 
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-track {
-            background: transparent; /* Fondo del track transparente */
-        }
+/* Establece el contenedor principal como flex y define su altura */
+#opcion_AutoFillAutoSave_Moodle_html {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* O la altura que necesites */
+}
 
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2); /* Color tenue para el thumb */
-            border-radius: 10px; /* Bordes redondeados */
-        }
+/* Estilos para el contenedor interno */
+.subcontainer-autoquiz-autosave {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    overflow-y: auto;
+    /* Habilita el desplazamiento vertical cuando sea necesario */
 
-        .subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(0, 0, 0, 0.3); /* Color un poco más oscuro al pasar el mouse */
-        }
+    /* Propiedades clave para el tamaño */
+    min-height: 300px;
+    /* Alto mínimo de 300px */
+    flex: 1;
+    /* Se expande para ocupar el espacio disponible */
+}
 
-            /* Estilo común para el header que contiene el título y el switch */
-        .header-autoquiz {
-            margin-top: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
+/* Estilos personalizados para la barra de desplazamiento */
+.subcontainer-autoquiz-autosave::-webkit-scrollbar {
+    width: 5px;
+    /* Ancho del scrollbar */
+    height: 5px;
+    /* Alto del scrollbar horizontal */
+}
 
-        /* Estilo para el título */
-        .header-autoquiz h2 {
-            font-size: 22px;
-            font-weight: 600;
-            color: #34495e;
-            margin: 0;
-        }
+.subcontainer-autoquiz-autosave::-webkit-scrollbar-track {
+    background: transparent;
+    /* Fondo del track transparente */
+}
 
-        .header-autoquiz h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #34495e;
-            margin: 0;
+.subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Color tenue para el thumb */
+    border-radius: 10px;
+    /* Bordes redondeados */
+}
 
-        }
+.subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Color un poco más oscuro al pasar el mouse */
+}
 
-         .header-autoquiz h4 {
-         width: 100%;
-         display: flex;
+.subcontainer-autoquiz-verified {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f4f4f4;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    overflow-y: auto;
+    /* Habilitar desplazamiento si es necesario */
+    max-height: 350px;
+    /* Limitar la altura máxima a 350px */
+}
+
+/* Estilos personalizados para la barra de desplazamiento */
+.subcontainer-autoquiz-verified::-webkit-scrollbar {
+    width: 3px;
+    /* Ancho del scrollbar */
+    height: 3px;
+    /* Alto del scrollbar horizontal */
+}
+
+.subcontainer-autoquiz-verified::-webkit-scrollbar-track {
+    background: transparent;
+    /* Fondo del track transparente */
+}
+
+.subcontainer-autoquiz-verified::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Color tenue para el thumb */
+    border-radius: 10px;
+    /* Bordes redondeados */
+}
+
+.subcontainer-autoquiz-verified::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Color un poco más oscuro al pasar el mouse */
+}
+
+.subcontainer-autoquiz-autosavereview {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f4f4f4;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    overflow-y: auto;
+    /* Habilitar desplazamiento si es necesario */
+    max-height: 350px;
+    /* Limitar la altura máxima a 350px */
+}
+
+/* Estilos personalizados para la barra de desplazamiento */
+.subcontainer-autoquiz-autosavereview::-webkit-scrollbar {
+    width: 3px;
+    /* Ancho del scrollbar */
+    height: 3px;
+    /* Alto del scrollbar horizontal */
+}
+
+.subcontainer-autoquiz-autosavereview::-webkit-scrollbar-track {
+    background: transparent;
+    /* Fondo del track transparente */
+}
+
+.subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Color tenue para el thumb */
+    border-radius: 10px;
+    /* Bordes redondeados */
+}
+
+.subcontainer-autoquiz-autosavereview::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Color un poco más oscuro al pasar el mouse */
+}
+
+/* Estilo común para el header que contiene el título y el switch */
+.header-autoquiz {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* Estilo para el título */
+.header-autoquiz h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+}
+
+.header-autoquiz h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+
+}
+
+.header-autoquiz h4 {
+    width: 100%;
+    display: flex;
     justify-content: center;
-            font-size: 22px;
-            font-weight: 600;
-            color: #34495e;
-            margin: 0;
-            text-align: center;
-        }
+    font-size: 22px;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0;
+    text-align: center;
+}
 
-        /* Estilo para el switch */
-        .switch-autoquiz {
-            position: relative;
-            display: inline-block;
-            width: 34px;
-            height: 20px;
-        }
+/* Estilo para el switch */
+.switch-autoquiz {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+}
 
-        .switch-autoquiz input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+.switch-autoquiz input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 20px;
-        }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 20px;
+}
 
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 12px;
-            width: 12px;
-            border-radius: 50%;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
-        }
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
 
-        input:checked + .slider {
-            background-color: #3498db;
-        }
+input:checked+.slider {
+    background-color: #3498db;
+}
 
-        input:checked + .slider:before {
-            transform: translateX(14px);
-        }
+input:checked+.slider:before {
+    transform: translateX(14px);
+}
 
-        /* Estilo para el contenido dentro de los contenedores de AutoFill y AutoSave */
-        .body-autoquiz {
-            display: flex;
-            flex-direction: column;
-            gap: 0px;
-            font-size: 16px;
-            width: 100%; /* Para que ocupe el 100% del ancho del contenedor padre */
-        }
+/* Estilo para el contenido dentro de los contenedores de AutoFill y AutoSave */
+.body-autoquiz {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    font-size: 16px;
+    width: 100%;
+    /* Para que ocupe el 100% del ancho del contenedor padre */
+}
 
-        /* Estilo para cada línea de dato en AutoFill y AutoSave */
-        .dato-autoquiz {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 0;
-            color: #34495e;
-            flex-wrap: wrap; /* Permitir que el contenido se ajuste si es muy largo */
-            width: 100%; /* Para que ocupe todo el ancho del contenedor */
-            word-wrap: break-word; /* Romper palabras si son muy largas */
-            word-break: break-word; /* Para manejar palabras largas en el texto */
-        }
+/* Estilo para cada línea de dato en AutoFill y AutoSave */
+.dato-autoquiz {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    color: #34495e;
+    flex-wrap: wrap;
+    /* Permitir que el contenido se ajuste si es muy largo */
+    width: 100%;
+    /* Para que ocupe todo el ancho del contenedor */
+    word-wrap: break-word;
+    /* Romper palabras si son muy largas */
+    word-break: break-word;
+    /* Para manejar palabras largas en el texto */
+}
 
 
-        /* Estilo para el contenedor oculto que se muestra al hacer clic */
-        #container-viewquestion {
-            margin-top: 0;
-            padding: 10px;
-            font-size: 14px;
-            background-color: #f8f8f8;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+/* Estilo para el contenedor oculto que se muestra al hacer clic */
+#container-viewquestion {
+    margin-top: 0;
+    padding: 10px;
+    font-size: 14px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
-        /* Estilos para la pregunta */
-        .preguntaautosave {
-            color: #333; /* Color casi negro */
-            font-size: 13px; /* Puedes ajustar el tamaño de la fuente aquí */
-            font-weight: 500;
-            margin-top: 5px;
-            /* Grosor modificable: 100 (fino), 400 (normal), 700 (grueso), etc. */
-        }
+/* Estilos para la pregunta */
+.preguntaautosave {
+    color: #333;
+    /* Color casi negro */
+    font-size: 13px;
+    /* Puedes ajustar el tamaño de la fuente aquí */
+    font-weight: 500;
+    margin-top: 5px;
+    /* Grosor modificable: 100 (fino), 400 (normal), 700 (grueso), etc. */
+}
 
-        /* Estilos para las respuestas */
-        .respuestasautosave {
-            color: #333; /* Color casi negro, igual que las preguntas */
-            font-size: 12px; /* Tamaño de la fuente, ajustable */
-            font-weight: 400; /* Eliminar negritas */
-            font-style: normal; /* Eliminar la cursiva */
-        }
+/* Estilos para las respuestas */
+.respuestasautosave {
+    color: #333;
+    /* Color casi negro, igual que las preguntas */
+    font-size: 12px;
+    /* Tamaño de la fuente, ajustable */
+    font-weight: 400;
+    /* Eliminar negritas */
+    font-style: normal;
+    /* Eliminar la cursiva */
+}
 
-        /* Estilos para la pregunta */
-        .preguntaautosavereview {
-            color: #333; /* Color casi negro */
-            font-size: 13px; /* Puedes ajustar el tamaño de la fuente aquí */
-            font-weight: 500;
-            margin-top: 5px;
-            /* Grosor modificable: 100 (fino), 400 (normal), 700 (grueso), etc. */
-        }
+/* Estilos para la pregunta */
+.preguntaautosavereview {
+    color: #333;
+    /* Color casi negro */
+    font-size: 13px;
+    /* Puedes ajustar el tamaño de la fuente aquí */
+    font-weight: 500;
+    margin-top: 5px;
+    /* Grosor modificable: 100 (fino), 400 (normal), 700 (grueso), etc. */
+}
 
-        /* Estilos para las respuestas */
-        .respuestasautosavereview {
-            color: #333; /* Color casi negro, igual que las preguntas */
-            font-size: 12px; /* Tamaño de la fuente, ajustable */
-            font-weight: 400; /* Eliminar negritas */
-            font-style: normal; /* Eliminar la cursiva */
-        }
-
+/* Estilos para las respuestas */
+.respuestasautosavereview {
+    color: #333;
+    /* Color casi negro, igual que las preguntas */
+    font-size: 12px;
+    /* Tamaño de la fuente, ajustable */
+    font-weight: 400;
+    /* Eliminar negritas */
+    font-style: normal;
+    /* Eliminar la cursiva */
+}
