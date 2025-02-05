@@ -80,20 +80,24 @@ export async function contenedorRutaDinamica_js() {
 
         // Espera a que la función asíncrona obtenga la ruta dinámica
         const rutaDinamica = await obtenerRutaDinamica(ruta);
-
-        console.log("La nueva ruta dinámica es:", rutaDinamica);
-
-        sessionStorage.setItem('configRutaDinamic', rutaDinamica);
-        console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
-
-        containerRutaFirebase.innerHTML = `
-        <div>
-          <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
-        </div>
-
-        <div>
-          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-        </div>`;
+        
+        if (rutaDinamica) {
+          console.log("La nueva ruta dinámica es:", rutaDinamica);
+        
+          sessionStorage.setItem('configRutaDinamic', rutaDinamica);
+          console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
+        
+          containerRutaFirebase.innerHTML = `
+            <div>
+              <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
+            </div>
+        
+            <div>
+              <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+            </div>
+          `;
+        }
+        
     }
 }
 
@@ -250,7 +254,9 @@ async function obtenerRutaDinamica(ruta) {
             // Obtener la configuración de ruta dinámica almacenada en sessionStorage
             console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/"');
             await crearSelectsDinamicos(materiaValor, testClave);
+            return null;
         }
+        
     } catch (error) {
         // Manejo de errores generales en la función
         console.error('Error en actualizaConfigRutaDinamic:', error);
