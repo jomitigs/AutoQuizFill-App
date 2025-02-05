@@ -83,14 +83,24 @@
     padding: 10px;
     border: 1px solid #dcdcdc;
     border-radius: 8px;
+
+    /* Ocupa el 100% del ancho del contenedor padre */
+    width: 100%;
+    
+    /* Evita el desplazamiento horizontal */
+    overflow-x: hidden;
   
     /* Permite scroll vertical si el contenido supera el espacio asignado */
     overflow-y: auto;
-  
+
     /* Máximo de 300px de alto */
     max-height: 300px;
-  }
-  
+}
+
+#body-autoquiz-autosave {
+    font-size: 12px;
+}
+
 
 /* --------------------------------------------------------------------------
      5.1. Subcontenedor de AutoFill
