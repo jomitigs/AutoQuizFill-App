@@ -28,41 +28,42 @@ export function contenedorAutoSave_js() {
 
     interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
 
-// Ejemplo de importación:
-// import { renderizarPreguntas } from './autofill-autosave-helpers.js';
+    // Ejemplo de importación:
+    // import { renderizarPreguntas } from './autofill-autosave-helpers.js';
 
-const actualizarVisibilidadBody = async () => {
-    const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
+    const actualizarVisibilidadBody = async () => {
+        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
 
-    if (esPaginaQuiz && interruptorAutoSave.checked) {
-        if (bodyAutoSave) {
-            bodyAutoSave.style.display = 'flex';
+        if (esPaginaQuiz && interruptorAutoSave.checked) {
+            if (bodyAutoSave) {
+                bodyAutoSave.style.display = 'flex';
 
-            console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
+                console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
-            const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-            await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine esa función
+                const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+                await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine esa función
 
-            await AutoSave_ShowResponses();
+                await AutoSave_ShowResponses();
 
-            // **Aquí** se llama a la función para renderizar expresiones LaTeX
-            // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
-            renderizarPreguntas(); 
-            // O si tu función acepta un selector:
-            // renderizarPreguntas('#barra-lateral-autoquizfillapp');
+                // **Aquí** se llama a la función para renderizar expresiones LaTeX
+                // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
+                renderizarPreguntas();
+                // O si tu función acepta un selector:
+                // renderizarPreguntas('#barra-lateral-autoquizfillapp');
 
-            detectarCambiosPreguntas();
-            console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
+                detectarCambiosPreguntas();
+                console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
+            }
+
+        } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
+            if (bodyAutoSave) {
+                bodyAutoSave.style.display = 'none';
+                sessionStorage.removeItem('questions-AutoSave');
+            }
+        } else if (!esPaginaQuiz) {
+            console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
         }
-
-    } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
-        if (bodyAutoSave) {
-            bodyAutoSave.style.display = 'none';
-        }
-    } else if (!esPaginaQuiz) {
-        console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
-    }
-};
+    };
 
     // **Llamar la función sin await para que no bloquee la ejecución**
     actualizarVisibilidadBody();
@@ -72,7 +73,6 @@ const actualizarVisibilidadBody = async () => {
         const estadoNuevo = interruptorAutoSave.checked ? ACTIVADO : DESACTIVADO;
         localStorage.setItem(STORAGE_KEY, estadoNuevo);
         console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoNuevo}`);
-
         actualizarVisibilidadBody(); // Llamar sin await
     });
 }
@@ -234,8 +234,8 @@ function detectarCambiosPreguntas() {
 
                 // **Aquí** se llama a la función para renderizar expresiones LaTeX
                 // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
-                renderizarPreguntas(); 
-  
+                renderizarPreguntas();
+
             } else {
                 // Si SÍ existe, lo parseamos
                 const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
@@ -271,7 +271,7 @@ function detectarCambiosPreguntas() {
 
                     // **Aquí** se llama a la función para renderizar expresiones LaTeX
                     // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
-                    renderizarPreguntas(); 
+                    renderizarPreguntas();
                 } else {
                     console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
                     // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
@@ -398,8 +398,8 @@ function formatResponseOptions(options, selected) {
 function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
     return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-                  .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-                  .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
-                  .replace(/(\r\n|\n|\r)/g, '<br>');
+        .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
+        .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
+        .replace(/(\r\n|\n|\r)/g, '<br>');
 }
 
