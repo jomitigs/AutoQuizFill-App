@@ -43968,14 +43968,10 @@
                 </div>
 
                 <!-- Contenido de AutoSave -->
-                <div id="body-autoquiz-autosave" class="body-autoquiz">
-
-                    <div class="dato-autoquiz">
-                        <div>
-                            <span id="respuestasautosave"></span>
-                        </div>
+                <div id="body-autoquiz-autosave">
+                    <div>
+                        <span id="respuestasautosave"></span>
                     </div>
-
                 </div>
             </div>
 
