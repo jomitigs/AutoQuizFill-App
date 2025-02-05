@@ -435,7 +435,7 @@
             margin-top: 10px;
             margin-bottom: 10px;
             background-color: #f4f4f4;
-            padding: 10px 15px;
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #dcdcdc;
             overflow-y: auto; /* Habilitar desplazamiento si es necesario */
@@ -625,12 +625,6 @@
             word-break: break-word; /* Para manejar palabras largas en el texto */
         }
 
-
-        /* Si la ruta no es válida, oculta los contenedores */
-        #container-autofill[style*="display: none"],
-            #container-autosave[style*="display: none"] {
-                display: none;
-            }
 
         /* Estilo para el contenedor oculto que se muestra al hacer clic */
         #container-viewquestion {
