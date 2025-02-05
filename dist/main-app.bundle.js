@@ -49,7 +49,7 @@
     	}
 
     	/******************************************************
-    	 * 3) Carga de los recursos (Solución RequireJS)
+    	 * 🔍 Carga de los recursos (Solución RequireJS con Depuración)
     	 ******************************************************/
 
     	(async () => {
@@ -57,17 +57,28 @@
     	        if (recurso.tipo === "link") {
     	            agregarEnlaceSiNoExiste(recurso.url, recurso.patron, recurso.nombre);
     	        } else if (recurso.tipo === "script") {
-    	            // 🔴 Solución: Deshabilitar RequireJS antes de cargar KaTeX
+    	            // ✅ Guardamos el estado original de RequireJS antes de deshabilitarlo
     	            let defineTemp = window.define;
     	            let moduleTemp = window.module;
+    	            let requireTemp = window.require; // También guardamos `require`, por si acaso
+
+    	            console.log(`[add-head.js] 🔴 Deshabilitando RequireJS antes de cargar ${recurso.nombre}...`);
     	            window.define = undefined;
     	            window.module = undefined;
+    	            window.require = undefined; // Desactivamos `require` también
 
     	            await agregarScriptSiNoExiste(recurso.url, recurso.patron, recurso.nombre);
 
-    	            // 🔄 Restaurar RequireJS después de cargar KaTeX
+    	            console.log(`[add-head.js] 🔄 Restaurando RequireJS después de cargar ${recurso.nombre}...`);
     	            window.define = defineTemp;
     	            window.module = moduleTemp;
+    	            window.require = requireTemp; // Restauramos `require`
+
+    	            // 🚀 Depuración final: Verificamos si RequireJS fue restaurado correctamente
+    	            console.log(`[add-head.js] ✅ RequireJS restaurado:`);
+    	            console.log("🔹 typeof window.define:", typeof window.define);
+    	            console.log("🔹 typeof window.module:", typeof window.module);
+    	            console.log("🔹 typeof window.require:", typeof window.require);
     	        }
     	    }
 
