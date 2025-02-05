@@ -4,7 +4,7 @@
    #opcion_AutoFillAutoSave_Moodle_html {
     display: flex;
     flex-direction: column;
-    height: 80vh; /* Altura ajustable según se requiera */
+    height: 100vh; /* Altura ajustable según se requiera */
   }
   
   /* ==========================================================================
@@ -111,12 +111,7 @@
   /* ==========================================================================
      3. Sección: Ruta y Ciclo
      ========================================================================== */
-  
-  /* Contenedor para Ruta y Ciclo (oculto por defecto) */
-  .ruta-ciclo-container {
-    display: none;
-  }
-  
+    
   /* Estilos para los contenedores de Ruta y Ciclo */
   .title-configruta {
     font-size: 14px;
