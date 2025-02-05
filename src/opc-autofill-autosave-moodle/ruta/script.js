@@ -450,27 +450,16 @@ function guardarRutaDinamica() {
     console.log('Ruta dinámica guardada en sessionStorage:', newRuta);
 
     // Actualizar el contenido del elemento con id "ruta-configruta"
-    const rutaElemento = document.getElementById('ruta-configruta');
-    if (rutaElemento) {
-        rutaElemento.innerHTML = `
-            <span class="label-configruta">Ruta:</span>
-            <span style="font-weight: 500; color: green;">${newRuta}</span>
-        `;
-        console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-    } else {
-        console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-    }
+    contenedorRutaDinamica_js();
 
     // Ocultar el contenedor de selects, en este caso el id "subject-dinamic", si existe
-    const contenedorSelects = document.getElementById('subject-dinamic');
+    const contenedorSelects = document.getElementById('containerRutaDinamicaFirebase');
     if (contenedorSelects) {
         contenedorSelects.style.display = 'none';
-        console.log('Contenedor "subject-dinamic" ocultado.');
+        console.log('Contenedor "containerRutaDinamicaFirebase" ocultado.');
     } else {
-        console.log('No se encontró el contenedor con id "subject-dinamic" para ocultar.');
+        console.log('No se encontró el contenedor con id "containerRutaDinamicaFirebase" para ocultar.');
     }
-
-    // Se ha eliminado la llamada a AutoSaveReview_LocalStorage()
 }
 
 
