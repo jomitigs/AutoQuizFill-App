@@ -84,12 +84,15 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
             <div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
 
                 <div id="header-autosave">
+
                     <!-- Título y Switch -->
                     <h2 id="titulo-autoquiz">AutoSave</h2>
+
                     <label class="switch-autoquiz">
                         <input type="checkbox" id="switch-autosave">
                         <span class="slider round"></span>
                     </label>
+                    
                 </div>
 
                 <!-- Contenido de AutoSave -->
