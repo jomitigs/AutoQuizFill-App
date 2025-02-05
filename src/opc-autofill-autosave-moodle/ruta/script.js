@@ -78,7 +78,7 @@ export async function contenedorRutaDinamica_js() {
     } else {
         containerRutaFirebase.style.display = 'block';
 
-        const rutaDinamica = obtenerRutaDinamica(ruta, containerRutaFirebase);
+        const rutaDinamica = obtenerRutaDinamica(ruta);
 
         console.log("La nueva ruta dinámicaaa es:", rutaDinamica);
 
