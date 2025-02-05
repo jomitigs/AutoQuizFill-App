@@ -34,14 +34,8 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
             <!-- Contenedor para Subject Dinamic -->
 
-            <div id="container-ruta-dinamica" style="display: none;"">
+            <div id="containerRutaDinamicaFirebase" style="display: none;"">
 
-                <div id="subject-dinamic" class="subject-dinamic">
-
-                    <div id="selects-subject-dinamic">
-                    </div>
-
-                </div>
             </div>
 
               <div class="wrapper-autofill-autosave">

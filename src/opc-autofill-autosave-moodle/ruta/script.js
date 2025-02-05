@@ -89,7 +89,7 @@ export async function contenedorRutaDinamica_js() {
         
           containerRutaFirebase.innerHTML = `
             <div>
-              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green; >${rutaDinamica}</span>
+              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;" >${rutaDinamica}</span>
             </div>
         
             <div>
@@ -267,12 +267,13 @@ async function obtenerRutaDinamica(ruta) {
 async function crearSelectsDinamicos(materiaValor, testClave) {
 
     const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
     const contenedorSelects = document.getElementById('subject-dinamic');
 
     // Asegurarse de limpiar completamente el contenedor
-    if (contenedorSelects) {
+    if (containerRutaDinamicaFirebase) {
         //console.log('Limpiando todos los elementos existentes en el contenedor.');
-        contenedorSelects.innerHTML = ''; // Elimina todo el contenido del contenedor
+        containerRutaDinamicaFirebase.innerHTML = ''; // Elimina todo el contenido del contenedor
     } else {
         console.error('No se encontró el contenedor con id="subject-dinamic".');
         return;
