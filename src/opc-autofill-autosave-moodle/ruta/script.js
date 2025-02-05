@@ -374,7 +374,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
                     }
 
                     // Añadir el select al contenedor principal
-                    contenedorSelects.appendChild(selectElement);
+                    containerRutaDinamicaFirebase.appendChild(selectElement);
                     //console.log(`Select creado y agregado para la ruta: ${path}`);
                 }
 
@@ -386,7 +386,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
                 botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
 
                 // Agregar el botón al contenedor
-                contenedorSelects.appendChild(botonGuardarRuta);
+                containerRutaDinamicaFirebase.appendChild(botonGuardarRuta);
                 //console.log('Botón "Guardar ruta" agregado.');
 
                 // Actualizar la visibilidad de los selects si es necesario
