@@ -13,13 +13,6 @@ const isProduction = process.env.BUILD_PROD === 'true';
 
 export default {
   input: 'src/main-app.js',
-
-  external: [
-    'mathjax-full',
-    'mathjax-full/js/output/mathml.js'
-  ],
-  
-
   output: {
     file: 'dist/main-app.bundle.js',
     format: 'iife',
@@ -28,64 +21,21 @@ export default {
       'mathjax-full': 'MathJax',
       'mathjax-full/js/output/mathml.js': 'MathJax'
     }
-    
   },
   plugins: [
-    // Resuelve imports para navegador
     resolve({ browser: true }),
-    // Permite usar CommonJS
     nodeResolve(),  
     commonjs(),
-    // Convierte archivos HTML a strings (si los importas en tu JS)
     string({ include: '**/*.html' }),
-    // Procesa CSS
     postcss({
       extensions: ['.css'],
       inject: true,
       minimize: isProduction,
-      // Se eliminó el uso de generateScopedName()
-      plugins: isProduction
-        ? [
-            cssnano({
-              preset: [
-                'default',
-                {
-                  discardComments: { removeAll: true },
-                },
-              ],
-            }),
-          ]
-        : [],
+      plugins: isProduction ? [cssnano({ preset: ['default', { discardComments: { removeAll: true } }] })] : [],
     }),
-    // Solo minifica JS en producción
-    isProduction &&
-      terser({
-        format: { comments: false },
-        compress: { drop_console: true },
-      }),
-    // Ofuscación avanzada en producción
-    
-    isProduction &&
-      obfuscator({
-        compact: true,
-        controlFlowFlattening: true,
-        controlFlowFlatteningThreshold: 0.8,
-        deadCodeInjection: true,
-        deadCodeInjectionThreshold: 0.6,
-        disableConsoleOutput: true,
-        identifierNamesGenerator: 'hexadecimal',
-        renameGlobals: true,
-        selfDefending: true,
-        splitStrings: true,
-        stringArray: true,
-        stringArrayEncoding: ['base64'],
-        stringArrayThreshold: 0.9,
-        transformObjectKeys: true,
-        unicodeEscapeSequence: false,
-        rotateStringArray: true,
-        shuffleStringArray: true,
-      }),
-    // Genera/inyecta un HTML si lo necesitas
+    isProduction && terser({ format: { comments: false }, compress: { drop_console: true } }),
+    isProduction && obfuscator({ /* opciones de obfuscación */ }),
     html({ include: '**/*.html' }),
-  ].filter(Boolean), // Filtra plugins "falsos"
+  ].filter(Boolean),
 };
+

@@ -1,4 +1,13 @@
 
+// src/katex-entry.js
+import katex from 'katex';
+import renderMathInElement from 'katex/contrib/auto-render';
+
+// Exponemos a window para que sea global
+window.katex = katex;
+window.renderMathInElement = renderMathInElement;
+
+
 export async function feedbackQuestion(originalFormulationClearfix) {
   // console.log('Iniciando feedbackQuestion');
 
