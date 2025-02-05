@@ -230,6 +230,12 @@ function detectarCambiosPreguntas() {
                 // Si NO existe, llamamos la función general y guardamos todo por primera vez
                 const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
                 await AutoSave_SessionStorage(originalAllFormulations);
+                await AutoSave_ShowResponses();
+
+                // **Aquí** se llama a la función para renderizar expresiones LaTeX
+                // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
+                renderizarPreguntas(); 
+  
             } else {
                 // Si SÍ existe, lo parseamos
                 const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
@@ -261,7 +267,11 @@ function detectarCambiosPreguntas() {
 
                     // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
                     await AutoSave_SessionStorage(formulation, numeroPregunta);
+                    await AutoSave_ShowResponses(numeroPregunta);
 
+                    // **Aquí** se llama a la función para renderizar expresiones LaTeX
+                    // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
+                    renderizarPreguntas(); 
                 } else {
                     console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
                     // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo

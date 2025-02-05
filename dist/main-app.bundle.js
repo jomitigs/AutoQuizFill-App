@@ -43699,6 +43699,12 @@
                     // Si NO existe, llamamos la función general y guardamos todo por primera vez
                     const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
                     await AutoSave_SessionStorage(originalAllFormulations);
+                    await AutoSave_ShowResponses();
+
+                    // **Aquí** se llama a la función para renderizar expresiones LaTeX
+                    // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
+                    renderizarPreguntas(); 
+      
                 } else {
                     // Si SÍ existe, lo parseamos
                     const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
@@ -43730,7 +43736,11 @@
 
                         // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
                         await AutoSave_SessionStorage(formulation, numeroPregunta);
+                        await AutoSave_ShowResponses(numeroPregunta);
 
+                        // **Aquí** se llama a la función para renderizar expresiones LaTeX
+                        // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
+                        renderizarPreguntas(); 
                     } else {
                         console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
                         // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
@@ -43760,7 +43770,50 @@
                 const responses = JSON.parse(savedData);
 
                 // Si se pasa el parámetro numeroPregunta, actualizamos solo ese ítem
-                if (numeroPregunta !== undefined && numeroPregunta !== null) ;
+                if (numeroPregunta !== undefined && numeroPregunta !== null) {
+                    const key = 'Pregunta' + numeroPregunta;
+                    const data = responses[key];
+                    if (data) {
+                        let html = `<div class="preguntaautosave" id="${key}">`;
+                        if (data.enunciado) {
+                            html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
+                        }
+
+                        if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+                            if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+                                html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+                            }
+                        } else if (data.tipo === 'select_emparejamiento') {
+                            if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
+                                html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+                                    const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
+                                    return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
+                                }).join('') + `</div>`;
+                            }
+                        } else if (data.tipo === 'inputtext_respuestacorta') {
+                            const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
+                                .filter(Boolean)
+                                .map(processContent)
+                                .join('') || '<em>___________</em>';
+                            html += `<div class="respuestasautosave">${respuestas}</div>`;
+                        }
+                        html += '<hr style="margin-top: 5px; margin-bottom: 0px;">';
+
+                        // Buscamos si ya existe un elemento con el id de la pregunta en el contenedor
+                        const existingElement = container.querySelector(`#${key}`);
+                        if (existingElement) {
+                            // Reemplazamos el elemento existente
+                            existingElement.outerHTML = html;
+                        } else {
+                            // Si no existe, lo agregamos al final del contenedor
+                            container.innerHTML += html;
+                        }
+                        return resolve();
+                    } else {
+                        console.warn(`No se encontró la información para la ${key} en los datos guardados.`);
+                        return resolve();
+                    }
+                }
 
                 // Si no se pasó el parámetro, procesamos y mostramos TODAS las respuestas
                 container.innerHTML = Object.entries(responses).map(([key, data]) => {
