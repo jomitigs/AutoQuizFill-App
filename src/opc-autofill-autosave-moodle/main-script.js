@@ -35,6 +35,8 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
             <div id="containerRutaDinamicaFirebase" style="display: none;">
             </div>
 
+            <div id="container-autofillautosave">
+
             <!-- Nuevo contenedor para AutoFill-->
             <div id="container-autofill" class="subcontainer-autoquiz" style="display: none;">
 
@@ -80,7 +82,7 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
                     </div>
                 </div>
             </div>
-
+</div>
         </div>
     `;
 }

@@ -75,27 +75,28 @@
      5. Sección: Wrapper de AutoFill y AutoSave
      ========================================================================== */
 /* Contenedores internos: */
-.subcontainer-autoquiz {
-    margin-top: 5px;
+#container-autofillautosave {
     display: flex;
-    flex-direction: column;  /* Para organizar el header y el body verticalmente */
+    flex-direction: column; /* Asegura que los contenedores estén apilados verticalmente */
+    height: 536px; /* Altura total disponible */
+    gap: 5px; /* Espacio entre los contenedores */
+}
+
+.subcontainer-autoquiz {
+    display: flex;
+    flex-direction: column;
     background-color: #f4f4f4;
     padding: 10px;
     border: 1px solid #dcdcdc;
     border-radius: 8px;
-
-    /* Ocupa el 100% del ancho del contenedor padre */
-    width: 100%;
-    
-    /* Evita el desplazamiento horizontal */
     overflow-x: hidden;
-  
-    /* Permite scroll vertical si el contenido supera el espacio asignado */
     overflow-y: auto;
-
-    /* Máximo de 300px de alto */
-    max-height: 268px;
+    
+    /* Permite que ambos crezcan y compartan el espacio */
+    flex-grow: 1; 
+    min-height: 100px; /* Define una altura mínima para evitar colapsos */
 }
+
 
 #body-autoquiz-autosave {
     font-size: 12px;
