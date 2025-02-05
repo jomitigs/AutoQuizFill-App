@@ -43732,37 +43732,19 @@
                                 }).join('') + `</div>`;
                             }
                         } else if (data.tipo === 'inputtext_respuestacorta') {
-                            console.log('Tipo recibido:', data.tipo);
-                            
-                            // Verificar si data.respuestaCorrecta es un array o un valor único
+                           
                             const isArray = Array.isArray(data.respuestaCorrecta);
-                            console.log('¿data.respuestaCorrecta es un array?', isArray);
-                            
                             const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-                            console.log('Arreglo de respuestas:', respuestaArray);
-                            
-                            // Filtrar valores falsy (null, undefined, '', etc.)
                             const filteredRespuestas = respuestaArray.filter(Boolean);
-                            console.log('Respuestas filtradas (solo valores truthy):', filteredRespuestas);
-                            
-                            // Procesar cada elemento del arreglo (ej. convertir a HTML u otro formato)
                             const processedRespuestas = filteredRespuestas.map(processContent);
-                            console.log('Respuestas procesadas:', processedRespuestas);
-                            
-                            // Unir todas las respuestas en una sola cadena; si no hay nada, usar un marcador de posición
                             const joinedRespuestas = processedRespuestas.join('');
-                            console.log('Respuestas unidas:', joinedRespuestas);
-                            
                             const respuestas = joinedRespuestas || '<em>___________</em>';
-                            console.log('Resultado final de respuestas:', respuestas);
                             
                             // Agregar al HTML el bloque con las respuestas
                             html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
-                            console.log('HTML actualizado:', html);
                         }
                         
-                        // Si se pasó un parámetro (se procesa una sola pregunta), NO se agrega la línea separadora
-                        html += '</div>';
+                        html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
 
                         // Buscamos el elemento de esa pregunta dentro del contenedor
                         let updatedElement = container.querySelector(`#${key}`);
