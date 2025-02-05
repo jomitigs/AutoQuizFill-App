@@ -43744,7 +43744,7 @@
                             html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
                         }
                         
-                        html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
+                        html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
 
                         // Buscamos el elemento de esa pregunta dentro del contenedor
                         let updatedElement = container.querySelector(`#${key}`);
@@ -43800,7 +43800,7 @@
                         html += `<div class="respuestasautosave">${respuestas}</div>`;
                     }
                     // Solo agregamos la línea separadora si NO es el último elemento
-                    html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>' : '</div>';
+                    html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>' : '</div>';
                     return html;
                 }).join('');
                 resolve();
