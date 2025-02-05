@@ -8,7 +8,7 @@ import { contenedorAutoSave_js } from './autosave/autosave-script.js';
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
-        <div id="opcion_AutoFillAutoSave_Moodle_html">
+        <div id="autofillautosave_moodle">
 
             <div id="users-autofill-moodle" class="users" style="display: none;">
 

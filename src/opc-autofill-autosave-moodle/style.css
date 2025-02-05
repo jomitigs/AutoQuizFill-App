@@ -1,7 +1,7 @@
 /* ==========================================================================
    1. Contenedor Principal
    ========================================================================== */
-   #opcion_AutoFillAutoSave_Moodle_html {
+   #autofillautosave_moodle {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Altura ajustable según se requiera */
@@ -113,13 +113,14 @@
      ========================================================================== */
     
   /* Estilos para los contenedores de Ruta y Ciclo */
-  .title-configruta {
+  #autofillautosave_moodle .title-configruta {
     font-size: 14px;
     color: #34495e;
   }
   
   /* Etiqueta que muestra "Ruta:" o "Ciclo:" */
-  .label-configruta {
+  #autofillautosave_moodle .label-configruta {
+    font-size: 14px;
     font-weight: 600;
   }
   
