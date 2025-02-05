@@ -60,11 +60,15 @@
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-#containerRutaDinamicaFirebase {
 
+#containerRutaFirebase {
+    display: flex;
+    flex-direction: row; /* Para que estén en línea */
+    gap: 0; /* Elimina cualquier espacio entre los div */
     margin-bottom: 5px;
     margin-top: 5px
 }
+
 
 
 /* ==========================================================================
