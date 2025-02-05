@@ -23329,81 +23329,58 @@
     }
 
     function contenedorRuta_js$1() {
-        
-        const containerOptionSelect = document.querySelector('.container-option');
-        const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-
-        const ruta = localStorage.getItem('configRuta');
-        const ciclo = localStorage.getItem('ciclo');
-
-        // Verificar si configRuta y ciclo están definidos
-        if (!ruta || !ciclo) {
-            // console.log('ruta o ciclo no están definidos. Ocultando contenedores y mostrando mensaje de advertencia.');
-
-            containerOptionSelect.style.display = 'none';
-            // console.log('Contenedor .container-autoquiz ocultado:', container);
-
-            // Desactivar autofill y autosave
-            localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
-            localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-            //console.log('Autofill y autosave desactivados en localStorage.');
-
-            // Crear y mostrar el mensaje de advertencia en 'contenido-principal'
+        const containerOptionSelect  = document.querySelector('.containerOption'),
+              containerRutaFirebase  = document.getElementById('containerRutaFirebase'),
+              ruta                   = localStorage.getItem('configRuta'),
+              ciclo                  = localStorage.getItem('ciclo');
+      
+        // Función para crear y mostrar el mensaje de advertencia
+        const mostrarMensaje = () => {
+          if (!document.getElementById('mensaje-ruta-invalida')) {
             const mensaje = document.createElement('div');
-            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
-            mensaje.style.color = 'red';
-            mensaje.style.fontWeight = '500';
-            mensaje.style.fontSize = '0.95em';
-            mensaje.style.fontStyle = 'italic';
-            mensaje.style.textAlign = 'center';
             mensaje.id = 'mensaje-ruta-invalida';
-
-            const contenidoPrincipal = document.getElementById('contenido-principal');
-
-            if (contenidoPrincipal && !document.getElementById('mensaje-ruta-invalida')) {
-                contenidoPrincipal.appendChild(mensaje);
-                console.log('[opc-autofill-autosave-moodle: ruta]  No ha seleccionado una ruta o ciclo');
-            }
+            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
+            Object.assign(mensaje.style, {
+              color: 'red',
+              fontWeight: '500',
+              fontSize: '0.95em',
+              fontStyle: 'italic',
+              textAlign: 'center'
+            });
+            contenidoPrincipal.appendChild(mensaje);
+            console.log('Mensaje de advertencia mostrado.');
+          }
+        };
+      
+        if (!ruta || !ciclo) {
+          if (containerOptionSelect) containerOptionSelect.style.display = 'none';
+          localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
+          localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
+          console.log('Ruta o ciclo no definidos. Contenedores ocultados y autofill/autosave desactivados.');
+          mostrarMensaje();
+          return; // Salir de la función ya que faltan datos
         }
-
-        else {
-            console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo: ${ciclo}`);
-
-
-            // Verifica si el elemento existe antes de modificar su estilo
-            if (containerRutaFirebase) {
-                containerRutaFirebase.style.display = 'block';
-            } else {
-                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-            }
-
-            if (containerOptionSelect) {
-                containerOptionSelect.style.display = 'block';
-            } else {
-                console.error('No se encontró ningún elemento con la clase "ruta-ciclo-container".');
-            }
-
-            // Eliminar el mensaje si existe
-            const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
-            if (mensajeExistente) {
-                mensajeExistente.remove();
-                console.log('Mensaje de advertencia eliminado.');
-            }
-
-            // Establecer el valor de 'Ruta' y 'Ciclo' en el HTML correspondiente
-            const rutaElemento = document.getElementById('ruta');
-            const cicloElemento = document.getElementById('ciclo');
-            console.log(`[opc-autofill-autosave-moodle: ruta]  Mostrando ruta y ciclo.`);
-
-            if (rutaElemento && cicloElemento) {
-                // Asignar los valores de configRuta y ciclo en los elementos del DOM
-                rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> ${ruta}`;
-                cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
-                // console.log(`Valores asignados: Ruta = ${configRuta}, Ciclo = ${ciclo}`);
-            }
+      
+        // Si se tienen ruta y ciclo definidos, actualizamos los contenedores
+        if (containerRutaFirebase) {
+          containerRutaFirebase.style.display = 'block';
+          containerRutaFirebase.innerHTML = `
+        <span class="label-configruta">Ruta:</span> <span class="valor-ruta">${ruta}</span><br>
+        <span class="label-configruta">Ciclo:</span> <span class="valor-ciclo">${ciclo}</span>
+      `;
+          console.log(`Ruta y ciclo actualizados en containerRutaFirebase: Ruta = ${ruta}, Ciclo = ${ciclo}`);
+        } else {
+          console.error('No se encontró el contenedor de ruta y ciclo.');
         }
-    }
-
+      
+        // Eliminar mensaje de advertencia si existe
+        const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
+        if (mensajeExistente) {
+          mensajeExistente.remove();
+          console.log('Mensaje de advertencia eliminado.');
+        }
+      }
+      
 
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
@@ -43885,7 +43862,7 @@
 
     function opcion_AutoFillAutoSave_Moodle_html() {
         return `
-        <div id="autofillautosave_moodle" class="container-option">
+        <div id="autofillautosave_moodle" class="containerOption">
 
             <div id="users-autofill-moodle" class="users" style="display: none;">
 
@@ -43906,16 +43883,6 @@
 
             <!-- Contenedor para Ruta y Ciclo -->
             <div id="containerRutaFirebase" style="display: none;">
-
-                <!-- Ruta -->
-                <div id="ruta-configruta" class="title-configruta">
-                    <span class="label-configruta">Ruta:</span>
-                </div>
-
-                <!-- Ciclo -->
-                <div id="ciclo-configruta" class="title-configruta">
-                    <span class="label-configruta">Ciclo:</span>
-                </div>
 
             </div>
 

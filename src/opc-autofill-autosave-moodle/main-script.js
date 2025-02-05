@@ -8,7 +8,7 @@ import { contenedorAutoSave_js } from './autosave/autosave-script.js';
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
-        <div id="autofillautosave_moodle" class="container-option">
+        <div id="autofillautosave_moodle" class="containerOption">
 
             <div id="users-autofill-moodle" class="users" style="display: none;">
 
@@ -29,16 +29,6 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
             <!-- Contenedor para Ruta y Ciclo -->
             <div id="containerRutaFirebase" style="display: none;">
-
-                <!-- Ruta -->
-                <div id="ruta-configruta" class="title-configruta">
-                    <span class="label-configruta">Ruta:</span>
-                </div>
-
-                <!-- Ciclo -->
-                <div id="ciclo-configruta" class="title-configruta">
-                    <span class="label-configruta">Ciclo:</span>
-                </div>
 
             </div>
 
