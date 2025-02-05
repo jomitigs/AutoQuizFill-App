@@ -23329,58 +23329,58 @@
     }
 
     function contenedorRuta_js$1() {
-        const containerOptionSelect  = document.querySelector('.containerOption'),
-              containerRutaFirebase  = document.getElementById('containerRutaFirebase'),
-              ruta                   = localStorage.getItem('configRuta'),
-              ciclo                  = localStorage.getItem('ciclo');
-      
+        const containerOptionSelect = document.querySelector('.containerOption'),
+            containerRutaFirebase = document.getElementById('containerRutaFirebase'),
+            ruta = localStorage.getItem('configRuta'),
+            ciclo = localStorage.getItem('ciclo');
+
         // Función para crear y mostrar el mensaje de advertencia
         const mostrarMensaje = () => {
-          if (!document.getElementById('mensaje-ruta-invalida')) {
-            const mensaje = document.createElement('div');
-            mensaje.id = 'mensaje-ruta-invalida';
-            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
-            Object.assign(mensaje.style, {
-              color: 'red',
-              fontWeight: '500',
-              fontSize: '0.95em',
-              fontStyle: 'italic',
-              textAlign: 'center'
-            });
-            contenidoPrincipal.appendChild(mensaje);
-            console.log('Mensaje de advertencia mostrado.');
-          }
+            if (!document.getElementById('mensaje-ruta-invalida')) {
+                const mensaje = document.createElement('div');
+                mensaje.id = 'mensaje-ruta-invalida';
+                mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
+                Object.assign(mensaje.style, {
+                    color: 'red',
+                    fontWeight: '500',
+                    fontSize: '0.95em',
+                    fontStyle: 'italic',
+                    textAlign: 'center'
+                });
+                contenidoPrincipal.appendChild(mensaje);
+                console.log('[opc-autofill-autosave-moodle: ruta]  No ha seleccionado una ruta o ciclo');
+            }
         };
-      
+
         if (!ruta || !ciclo) {
-          if (containerOptionSelect) containerOptionSelect.style.display = 'none';
-          localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
-          localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-          console.log('Ruta o ciclo no definidos. Contenedores ocultados y autofill/autosave desactivados.');
-          mostrarMensaje();
-          return; // Salir de la función ya que faltan datos
+            if (containerOptionSelect) containerOptionSelect.style.display = 'none';
+            localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
+            localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
+            mostrarMensaje();
+            return; // Salir de la función ya que faltan datos
         }
-      
+
         // Si se tienen ruta y ciclo definidos, actualizamos los contenedores
         if (containerRutaFirebase) {
-          containerRutaFirebase.style.display = 'block';
-          containerRutaFirebase.innerHTML = `
+            // Eliminar mensaje de advertencia si existe
+            const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
+            
+            if (mensajeExistente) {
+                mensajeExistente.remove();
+                console.log('Mensaje de advertencia eliminado.');
+            }
+
+            containerRutaFirebase.style.display = 'block';
+            containerRutaFirebase.innerHTML = `
         <span class="label-configruta">Ruta:</span> <span class="valor-ruta">${ruta}</span><br>
         <span class="label-configruta">Ciclo:</span> <span class="valor-ciclo">${ciclo}</span>
       `;
-          console.log(`Ruta y ciclo actualizados en containerRutaFirebase: Ruta = ${ruta}, Ciclo = ${ciclo}`);
+            console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo:${ciclo}`);
         } else {
-          console.error('No se encontró el contenedor de ruta y ciclo.');
+            console.error('[opc-autofill-autosave-moodle: ruta] No se encontró el contenedor de ruta y ciclo.');
         }
-      
-        // Eliminar mensaje de advertencia si existe
-        const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
-        if (mensajeExistente) {
-          mensajeExistente.remove();
-          console.log('Mensaje de advertencia eliminado.');
-        }
-      }
-      
+
+    }
 
     // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
@@ -23694,56 +23694,56 @@
                             console.warn(`No se encontraron datos en la ruta: ${path}`);
                             continue; // Saltar a la siguiente ruta si no hay datos
                         }
-                    
+
                         const options = optionsSnapshot.val();
                         //console.log(`Opciones obtenidas para la ruta ${path}:`, options);
-                    
+
                         // Crear el elemento select
                         const selectElement = document.createElement('select');
                         selectElement.classList.add('dynamic-select');
                         selectElement.style.display = 'block'; // Asegura que el select sea visible
-                    
+
                         // Añadir una opción por defecto
                         const defaultOption = document.createElement('option');
                         defaultOption.value = "";
-                        
+
                         let isMateriaSelect = path === "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion";
                         let isTestSelect = path === "ConfigRuta/opciones/UNEMI/unemi:niv-test";
-                    
+
                         if (isMateriaSelect) {
                             defaultOption.textContent = "Seleccionar Materia";
                         } else if (isTestSelect) {
                             defaultOption.textContent = "Seleccionar Test";
                         }
-                    
+
                         defaultOption.disabled = true;
                         defaultOption.selected = true;
                         selectElement.appendChild(defaultOption);
-                    
+
                         // Añadir opciones al select
                         for (const [key, value] of Object.entries(options)) {
                             const optionElement = document.createElement('option');
                             optionElement.value = key;
                             optionElement.textContent = value;
-                    
+
                             // Si es un select de materias y materiaValor coincide con la opción, seleccionarla
                             if (isMateriaSelect && materiaValor !== null && key === materiaValor) {
                                 optionElement.selected = true;
                             }
-                    
+
                             // Si es un select de test y testClave coincide con la opción, seleccionarla
                             if (isTestSelect && testClave !== null && key === testClave) {
                                 optionElement.selected = true;
                             }
-                    
+
                             selectElement.appendChild(optionElement);
                         }
-                    
+
                         // Añadir el select al contenedor principal
                         contenedorSelects.appendChild(selectElement);
                         //console.log(`Select creado y agregado para la ruta: ${path}`);
                     }
-                    
+
 
                     // Crear el botón "Guardar Ruta" después de todos los selects
                     const botonGuardarRuta = document.createElement('button');
