@@ -118,8 +118,7 @@
   }
   
   /* Estilos para los contenedores de Ruta y Ciclo */
-  .title-configruta-ruta,
-  .title-configruta-ciclo {
+  .title-configruta {
     margin-top: 10px;
     font-size: 14px;
     color: #34495e;

@@ -31,12 +31,12 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
             <div class="ruta-ciclo-container" style="display: none;">
 
                 <!-- Ruta -->
-                <div id="ruta-configruta" class="title-configruta-ruta">
+                <div id="ruta-configruta" class="title-configruta">
                     <span class="label-configruta">Ruta:</span>
                 </div>
 
                 <!-- Ciclo -->
-                <div id="ciclo-configruta" class="title-configruta-ciclo">
+                <div id="ciclo-configruta" class="title-configruta">
                     <span class="label-configruta">Ciclo:</span>
                 </div>
 
