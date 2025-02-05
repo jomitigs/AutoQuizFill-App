@@ -78,16 +78,26 @@ export async function contenedorRutaDinamica_js() {
     } else {
         containerRutaFirebase.style.display = 'block';
 
-        await actualizaConfigRutaDinamic(ruta, containerRutaFirebase);
+        const rutaDinamica = obtenerRutaDinamica(ruta, containerRutaFirebase);
+
+        console.log("La nueva ruta dinámicaaa es:", rutaDinamica);
+
+        sessionStorage.setItem('configRutaDinamic', rutaDinamica);
+        console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
+
         containerRutaFirebase.innerHTML = `
+        <div>
+          <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
+        </div>
+
         <div>
           <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
         </div>`;
+
     }
 }
 
-
-async function actualizaConfigRutaDinamic(ruta, containerRutaFirebase) {
+async function obtenerRutaDinamica(ruta) {
 
     try {
 
@@ -235,36 +245,13 @@ async function actualizaConfigRutaDinamic(ruta, containerRutaFirebase) {
         
             // Unir las partes para formar la nueva configuración de ruta
             const rutaDinamica = rutaSplit.join('/');
-            console.log("La nueva ruta dinámica es:", rutaDinamica);
-        
-            // Almacenar la configuración actualizada en sessionStorage
-            sessionStorage.setItem('configRutaDinamic', rutaDinamica);
-            console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
-        
-            // Actualizar el contenido de containerRutaFirebase
-            containerRutaFirebase.innerHTML = `
-              <div>
-                <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
-              </div>
-            `;
-            console.log("El contenido de containerRutaFirebase se ha actualizado con la ruta:", rutaDinamica);
-        
-            return;
+            return  rutaDinamica;
         }
         
 
         else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
-
-            sessionStorage.setItem('configRutaDinamic', "dinámica");
-
-            // Actualizar el contenido de containerRutaFirebase
-            containerRutaFirebase.innerHTML = `
-            <div>
-                <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">dinámica</span>
-            </div>
-            `;
-
-            return;
+            return "dinámica";
+            ;
         }
 
         else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
