@@ -1,17 +1,5 @@
 /******************************************************
- * add-head.js
- * 
- * Se encarga de inyectar dinámicamente en el <head>:
- *  - Fuentes (Poppins, Font Awesome)
- *  - KaTeX (CSS, JS y AutoRender)
- * 
- * Al terminar, deja un mensaje en consola.
- * 
- * NO realiza ninguna renderización de LaTeX.
- ******************************************************/
-
-/******************************************************
- * 1) Lista de recursos
+ * add-head.js - Carga de recursos (KaTeX, Poppins, FontAwesome)
  ******************************************************/
 
 const listaRecursos = [
@@ -22,29 +10,19 @@ const listaRecursos = [
     { tipo: "script", url: "https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js", patron: /auto-render\.min\.js/, nombre: "KaTeX Auto Render" }
 ];
 
-/******************************************************
- * 2) Funciones para inyectar enlaces y scripts
- ******************************************************/
-
 function agregarEnlaceSiNoExiste(url, patron, nombre) {
-    const existe = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-        .some(enlace => patron.test(enlace.href));
-    if (!existe) {
+    if (!Array.from(document.querySelectorAll('link[rel="stylesheet"]')).some(link => patron.test(link.href))) {
         const enlace = document.createElement('link');
         enlace.rel = 'stylesheet';
         enlace.href = url;
         document.head.appendChild(enlace);
-        console.log(`[add-head.js] ✅ ${nombre} agregado en <head>`);
-    } else {
-        console.log(`[add-head.js] ℹ️ ${nombre} ya existe en <head>`);
+        console.log(`[add-head.js] ✅ ${nombre} agregado.`);
     }
 }
 
 function agregarScriptSiNoExiste(url, patron, nombre) {
     return new Promise((resolve) => {
-        const existe = Array.from(document.querySelectorAll('script'))
-            .some(script => patron.test(script.src));
-        if (!existe) {
+        if (!Array.from(document.querySelectorAll('script')).some(script => patron.test(script.src))) {
             const script = document.createElement('script');
             script.src = url;
             script.async = true;
@@ -54,14 +32,14 @@ function agregarScriptSiNoExiste(url, patron, nombre) {
             };
             document.head.appendChild(script);
         } else {
-            console.log(`[add-head.js] ℹ️ ${nombre} ya existe en <head>`);
+            console.log(`[add-head.js] ℹ️ ${nombre} ya existe.`);
             resolve();
         }
     });
 }
 
 /******************************************************
- * 3) Carga de los recursos secuencialmente
+ * 3) Carga de los recursos (Solución RequireJS)
  ******************************************************/
 
 (async () => {
@@ -69,39 +47,19 @@ function agregarScriptSiNoExiste(url, patron, nombre) {
         if (recurso.tipo === "link") {
             agregarEnlaceSiNoExiste(recurso.url, recurso.patron, recurso.nombre);
         } else if (recurso.tipo === "script") {
+            // 🔴 Solución: Deshabilitar RequireJS antes de cargar KaTeX
+            let defineTemp = window.define;
+            let moduleTemp = window.module;
+            window.define = undefined;
+            window.module = undefined;
+
             await agregarScriptSiNoExiste(recurso.url, recurso.patron, recurso.nombre);
+
+            // 🔄 Restaurar RequireJS después de cargar KaTeX
+            window.define = defineTemp;
+            window.module = moduleTemp;
         }
     }
 
-    console.log("[add-head.js] ✅ Todos los recursos han sido cargados correctamente.");
-
-    // 🟢 Verificar si `renderMathInElement` está disponible después de cargar AutoRender
-    let intentos = 0;
-    const intervalo = setInterval(() => {
-        if (typeof window.renderMathInElement === "function") {
-            clearInterval(intervalo);
-            console.log("[add-head.js] ✅ KaTeX AutoRender está listo.");
-        } else {
-            intentos++;
-            console.warn(`[add-head.js] ⚠️ Intento ${intentos}: Aún no está disponible renderMathInElement.`);
-
-            // Si después de 10 intentos sigue sin estar disponible, intentamos forzar la importación manual
-            if (intentos >= 10) {
-                clearInterval(intervalo);
-                console.error("[add-head.js] ❌ Error: No se pudo cargar KaTeX AutoRender.");
-
-                // ⚠️ Intentar forzar la importación manualmente
-                try {
-                    window.renderMathInElement = window.katex?.renderMathInElement;
-                    if (typeof window.renderMathInElement === "function") {
-                        console.log("[add-head.js] 🔄 KaTeX AutoRender asignado manualmente y ahora está disponible.");
-                    } else {
-                        console.error("[add-head.js] ❌ No se pudo asignar KaTeX AutoRender manualmente.");
-                    }
-                } catch (e) {
-                    console.error("[add-head.js] ❌ Error al intentar asignar manualmente KaTeX AutoRender:", e);
-                }
-            }
-        }
-    }, 200);
+    console.log("[add-head.js] ✅ Todos los recursos se han cargado correctamente.");
 })();
