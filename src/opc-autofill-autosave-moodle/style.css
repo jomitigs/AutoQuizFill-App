@@ -80,7 +80,6 @@
   .subcontainer-autoquiz-autosave,
   .subcontainer-autoquiz-autofill {
     /* Permiten que se expandan para repartir el espacio disponible */
-    flex: 1 1 0;
     /* Si el contenido es muy largo, no excederán 268px */
     max-height: 268px;
     overflow-y: auto;
