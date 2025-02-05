@@ -14,7 +14,7 @@
   display: flex; /* Configura el layout interno para usar flexbox */
   flex-direction: column;
   align-items: flex-start;
-  overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */
+  /* overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */
   scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
   font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */
 }
