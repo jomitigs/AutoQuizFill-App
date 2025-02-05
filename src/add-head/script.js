@@ -31,9 +31,9 @@ const appendLinkIfNotExists = (href, pattern, resourceName) => {
         link.rel = 'stylesheet';
         link.href = href;
         document.head.appendChild(link);
-        // console.log(`addHead.js: ${resourceName} inyectado en <head>`);
+        // console.log(`${resourceName} inyectado en <head>`);
     } else {
-        // console.log(`addHead.js: ${resourceName} ya existe en <head>`);
+        // console.log(`${resourceName} ya existe en <head>`);
     }
 };
 
@@ -49,9 +49,9 @@ const appendScriptIfNotExists = (src, pattern, resourceName, callback) => {
         script.async = true;
         script.onload = callback;
         document.head.appendChild(script);
-        // console.log(`addHead.js: ${resourceName} inyectado en <head>`);
+        // console.log(`${resourceName} inyectado en <head>`);
     } else {
-        // console.log(`addHead.js: ${resourceName} ya existe en <head>`);
+        // console.log(`${resourceName} ya existe en <head>`);
         if (callback) callback();
     }
 };
@@ -63,15 +63,38 @@ appendLinkIfNotExists(fontAwesomeHref, fontAwesomePattern, 'Font Awesome');
 // Agregar KaTeX CSS
 appendLinkIfNotExists(katexCssHref, katexCssPattern, 'KaTeX CSS');
 
-// Agregar el script de KaTeX y luego el de auto-render, esperando que el contenedor esté disponible.
+/**
+ * Espera hasta que la función renderMathInElement esté disponible,
+ * comprobando cada 100 ms, hasta un timeout (por defecto 5000 ms).
+ * Retorna una promesa que se resuelve cuando la función está disponible.
+ */
+async function waitForRenderMathInElement(timeout = 5000) {
+    return new Promise((resolve, reject) => {
+        let elapsed = 0;
+        const interval = setInterval(() => {
+            if (typeof window.renderMathInElement === 'function') {
+                clearInterval(interval);
+                resolve();
+            } else {
+                elapsed += 100;
+                if (elapsed >= timeout) {
+                    clearInterval(interval);
+                    reject(new Error("Timeout waiting for renderMathInElement"));
+                }
+            }
+        }, 100);
+    });
+}
+
+// Inyectar KaTeX JS y luego el de auto-render
 appendScriptIfNotExists(katexJsSrc, katexJsPattern, 'KaTeX JS', () => {
-    // Una vez cargado KaTeX, cargamos el script de auto-render.
     appendScriptIfNotExists(katexAutoRenderSrc, katexAutoRenderPattern, 'KaTeX Auto Render', () => {
-        // Espera hasta que el contenedor "contenido-principal" esté en el DOM
-        const intervalID = setInterval(() => {
+        // Opcional: Aquí puedes, por ejemplo, esperar a que renderMathInElement esté disponible
+        waitForRenderMathInElement().then(() => {
+            // Si deseas realizar un renderizado inmediato en algún contenedor que ya exista,
+            // por ejemplo:
             const container = document.getElementById('contenido-principal');
-            if (container && typeof renderMathInElement === 'function') {
-                // Cuando se encuentre el contenedor y renderMathInElement esté disponible, se renderizan las expresiones.
+            if (container) {
                 renderMathInElement(container, {
                     delimiters: [
                         { left: '$$', right: '$$', display: true },
@@ -79,8 +102,9 @@ appendScriptIfNotExists(katexJsSrc, katexJsPattern, 'KaTeX JS', () => {
                     ]
                 });
                 console.log("KaTeX auto-render: Expresiones renderizadas en 'contenido-principal'.");
-                clearInterval(intervalID);
             }
-        }, 2000); // Comprueba cada 100 ms
+        }).catch((err) => {
+            console.error(err);
+        });
     });
 });
