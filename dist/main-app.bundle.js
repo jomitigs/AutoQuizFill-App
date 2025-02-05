@@ -43762,7 +43762,7 @@
                             console.log('HTML actualizado:', html);
                         }
                         
-                        if (!numeroPregunta) {
+                        if (numeroPregunta === undefined && numeroPregunta === null) {
                             html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
                         }
 
