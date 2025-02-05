@@ -30,7 +30,7 @@ export async function inputradio_opcionmultiple_verdaderofalso(originalFormulati
         feedback: feedback,
     };
 
-    console.log("Objeto questionData generado:", questionData);
+    // console.log("Objeto questionData generado:", questionData);
     return questionData;
 }
 

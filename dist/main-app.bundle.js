@@ -24433,7 +24433,7 @@
             feedback: feedback,
         };
 
-        console.log("Objeto questionData generado:", questionData);
+        // console.log("Objeto questionData generado:", questionData);
         return questionData;
     }
 
@@ -24533,7 +24533,7 @@
             feedback: feedback,
         };
 
-        console.log("Objeto questionData generado:", questionData);
+        // console.log("Objeto questionData generado:", questionData);
         return questionData;
     }
 
@@ -24642,7 +24642,7 @@
             feedback: feedback,
         };
 
-        console.log("Objeto questionData generado:", questionData);
+        //console.log("Objeto questionData generado:", questionData);
         return questionData;
     }
 
@@ -24686,7 +24686,7 @@
             feedback: feedback,
         };
 
-        console.log("Objeto questionData generado:", questionData);
+        //console.log("Objeto questionData generado:", questionData);
         return questionData;
     }
 

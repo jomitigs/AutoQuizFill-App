@@ -48,6 +48,6 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
         feedback: feedback,
     };
 
-    console.log("Objeto questionData generado:", questionData);
+    //console.log("Objeto questionData generado:", questionData);
     return questionData;
 }

@@ -39,7 +39,7 @@ export async function inputchecked_opcionmultiple(originalFormulationClearfix) {
         feedback: feedback,
     };
 
-    console.log("Objeto questionData generado:", questionData);
+    // console.log("Objeto questionData generado:", questionData);
     return questionData;
 }
 

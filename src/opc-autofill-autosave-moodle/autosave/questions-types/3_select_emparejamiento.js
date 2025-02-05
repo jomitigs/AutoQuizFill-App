@@ -44,7 +44,7 @@ export async function select_emparejamiento(originalFormulationClearfix) {
         feedback: feedback,
     };
 
-    console.log("Objeto questionData generado:", questionData);
+    //console.log("Objeto questionData generado:", questionData);
     return questionData;
 }
 
