@@ -67,6 +67,12 @@
 /* ==========================================================================
      5. Sección: Wrapper de AutoFill y AutoSave
      ========================================================================== */
+/* Contenedor principal: se adapta al alto del viewport */
+#container-autofillautosave {
+    display: flex;
+    flex-direction: column; /* Los contenedores internos se apilan verticalmente */
+    gap: 5px; /* Espacio entre contenedores */
+  }
   
   /* Agrupamos las reglas compartidas para ambos subcontenedores */
   .subcontainer-autoquiz-autosave,
@@ -84,12 +90,12 @@
   /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
   .subcontainer-autoquiz-autosave::-webkit-scrollbar,
   .subcontainer-autoquiz-autofill::-webkit-scrollbar {
-    width: 0.5em; /* Ancho de la barra de desplazamiento */
+    width: 0.4em; /* Ancho de la barra de desplazamiento */
   }
   
   .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb,
   .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3); /* Color del thumb */
+    background-color: rgba(0, 0, 0, 0.7); /* Color del thumb */
     border-radius: 10px;
   }
   
@@ -113,7 +119,6 @@
   
   /* Reglas para el elemento de la pregunta */
   .preguntaautosave {
-    display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 0;
