@@ -71,13 +71,6 @@
 /* ==========================================================================
      5. Sección: Wrapper de AutoFill y AutoSave
      ========================================================================== */
-     .wrapper-autofill-autosave {
-        display: flex;
-        flex-direction: column;
-        height: 100vh; /* O la altura que requieras */
-        gap: 10px;    /* Espacio entre cada contenedor */
-      }
-      
       /* Contenedores internos: */
       .subcontainer-autoquiz {
         flex: 1;  /* Se estira para ocupar el espacio disponible */
@@ -164,12 +157,6 @@
     /* Se puede ajustar según el contenido interno */
     display: none;
     /* En AutoFill se oculta por defecto */
-}
-
-/* Contenedor para las preguntas generadas */
-.contenedor-preguntas {
-    /* Estilos base para el contenedor de preguntas */
-    /* Aquí se pueden agregar márgenes, paddings o tipografía según sea necesario */
 }
 
 /* --------------------------------------------------------------------------
