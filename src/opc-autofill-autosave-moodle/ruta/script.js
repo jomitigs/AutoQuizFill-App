@@ -381,9 +381,12 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
             // Crear y agregar el botón "Guardar Ruta"
             const botonGuardarRuta = document.createElement('button');
             botonGuardarRuta.textContent = 'Guardar Ruta';
-            botonGuardarRuta.classList.add('estilo-configruta-boton', 'generarpdf');
+            botonGuardarRuta.classList.add('boton-ruta');
+            // Asignar un id único, por ejemplo, "boton-ruta-guardar"
+            botonGuardarRuta.id = 'boton-ruta-guardar';
             botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
             containerRutaDinamicaFirebase.appendChild(botonGuardarRuta);
+
 
             // Actualizar la visibilidad de los selects si es necesario
             actualizarVisibilidadSelects(true);
