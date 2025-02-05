@@ -43741,30 +43741,36 @@
 
     }
 
-    // Modificamos AutoSave_ShowResponses para que retorne una promesa
-    function AutoSave_ShowResponses() {
+    // Modificamos AutoSave_ShowResponses para que retorne una promesa y acepte un parámetro opcional (numeroPregunta)
+    function AutoSave_ShowResponses(numeroPregunta) {
         return new Promise((resolve, reject) => {
             const container = document.getElementById('respuestasautosave');
             if (!container) {
                 console.error('Elemento "respuestasautosave" no encontrado.');
                 return reject('Elemento "respuestasautosave" no encontrado.');
             }
-            
+
             const savedData = sessionStorage.getItem('questions-AutoSave');
             if (!savedData) {
                 container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
                 return resolve(); // Termina aquí, ya que no hay datos.
             }
-            
+
             try {
                 const responses = JSON.parse(savedData);
+
+                // Si se pasa el parámetro numeroPregunta, actualizamos solo ese ítem
+                if (numeroPregunta !== undefined && numeroPregunta !== null) ;
+
+                // Si no se pasó el parámetro, procesamos y mostramos TODAS las respuestas
                 container.innerHTML = Object.entries(responses).map(([key, data]) => {
+                    // Extraemos el número de pregunta del key
                     const questionNumber = key.replace(/\D/g, '');
                     let html = `<div class="preguntaautosave" id="${key}">`;
                     if (data.enunciado) {
                         html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
                     }
-                    
+
                     if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
                             html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
