@@ -28,11 +28,11 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
     }
 
     // Recorremos todos los inputs de tipo text para recoger sus valores.
-    const respuestas = [];
+    const respuestaCorrecta = [];
     const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
     allInputText.forEach((inputText) => {
         const valor = inputText.value.trim();
-        respuestas.push(valor);
+        respuestaCorrecta.push(valor);
     });
 
     // Se obtiene el feedback de la pregunta.
@@ -41,7 +41,7 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
     // Construimos el objeto questionData, incluso si respuestas está vacío.
     const questionData = {
         enunciado: enunciado,
-        respuestas: respuestas, // Puede ser un array vacío
+        respuestaCorrecta: respuestaCorrecta, // Puede ser un array vacío
         html: clonFormulation.outerHTML,
         tipo: tipo,
         ciclo: localStorage.getItem("ciclo"),
