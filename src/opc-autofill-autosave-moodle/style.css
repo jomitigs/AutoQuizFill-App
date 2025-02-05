@@ -1,123 +1,133 @@
 /* ==========================================================================
    1. Contenedor Principal
    ========================================================================== */
-   #autofillautosave_moodle {
+#autofillautosave_moodle {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Altura ajustable según se requiera */
-  }
-  
-  /* ==========================================================================
+    height: 100vh;
+    /* Altura ajustable según se requiera */
+}
+
+/* ==========================================================================
      2. Sección: Ruta y Ciclo
      ========================================================================== */
- 
-     #containerRutaFirebase div {
-        display: inline-block; /* O usa flex según lo que necesites */
-      }
 
-  #containerRutaFirebase .title  {
+#containerRutaFirebase div {
+    display: inline-block;
+    /* O usa flex según lo que necesites */
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#containerRutaFirebase .title {
     font-size: 14px;
     font-weight: 600;
-  }
-  
-  #containerRutaFirebase .label{
+}
+
+#containerRutaFirebase .label {
     font-size: 14px;
     color: #34495e;
-  }
-  
-  /* ==========================================================================
+}
+
+/* ==========================================================================
      4. Sección: Ruta Dinámica
      ========================================================================== */
-  
-     .select-ruta {
-        width: 100%;
-        padding: 3px; 
-        font-size: 15px;
-        font-family: 'Poppins', sans-serif;
-        border: 1px solid #bdc3c7;
-        border-radius: 4px;
-        background-color: #ffffff;
-        color: #2c3e50;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: border 0.3s ease, box-shadow 0.3s ease;
-        margin-bottom: 5px;
-    }
-    
-    .boton-ruta {
-        width: 100%;
-        padding: 5px; 
-        background-color: #0072c5;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        font-family: 'Poppins', sans-serif;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
 
-    #containerRutaDinamicaFirebase{
-    
+.select-ruta {
+    width: 100%;
+    padding: 3px;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #2c3e50;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 5px;
+}
+
+.boton-ruta {
+    width: 100%;
+    padding: 5px;
+    background-color: #0072c5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#containerRutaDinamicaFirebase {
+
     margin-bottom: 5px;
     margin-top: 5px
 }
-    
-  
-  /* ==========================================================================
+
+
+/* ==========================================================================
      5. Sección: Wrapper de AutoFill y AutoSave
      ========================================================================== */
-  .wrapper-autofill-autosave {
-    flex: 1; /* Ocupa el espacio restante del contenedor principal */
-    display: grid;
-    grid-template-rows: minmax(auto, 1fr) minmax(auto, 1fr);
-    gap: 10px;
-    overflow: hidden;
-  }
-  
-  /* --------------------------------------------------------------------------
+     .wrapper-autofill-autosave {
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* O la altura que requieras */
+        gap: 10px;    /* Espacio entre cada contenedor */
+      }
+      
+      /* Contenedores internos: */
+      .subcontainer-autoquiz {
+        flex: 1;  /* Se estira para ocupar el espacio disponible */
+        display: flex;
+        flex-direction: column;  /* Para organizar el header y el body verticalmente */
+        
+        background-color: #f4f4f4;
+        padding: 10px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+      
+        /* Si el contenido supera el espacio asignado, permite scroll vertical */
+        overflow-y: auto;
+      }
+
+/* --------------------------------------------------------------------------
      5.1. Subcontenedor de AutoFill
      -------------------------------------------------------------------------- */
-  .subcontainer-autoquiz-autofill {
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #dcdcdc;
-    overflow-y: auto;
-    display: none; /* Se muestra/oculta según la lógica de la aplicación */
-  }
-  
-  /* Header de AutoFill: título y switch */
-  .header-autoquiz {
+
+/* Header de AutoFill: título y switch */
+.header-autoquiz {
     margin-top: 5px;
     margin-bottom: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-  
-  .header-autoquiz h2 {
+}
+
+.header-autoquiz h2 {
     font-size: 22px;
     font-weight: 600;
     color: #34495e;
     margin: 0;
-  }
-  
-  /* Switch para AutoFill (y AutoSave) */
-  .switch-autoquiz {
+}
+
+/* Switch para AutoFill (y AutoSave) */
+.switch-autoquiz {
     position: relative;
     display: inline-block;
     width: 34px;
     height: 20px;
-  }
-  
-  .switch-autoquiz input {
+}
+
+.switch-autoquiz input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -127,9 +137,9 @@
     background-color: #ccc;
     transition: 0.4s;
     border-radius: 20px;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 12px;
@@ -139,57 +149,50 @@
     bottom: 4px;
     background-color: white;
     transition: 0.4s;
-  }
-  
-  .switch-autoquiz input:checked + .slider {
+}
+
+.switch-autoquiz input:checked+.slider {
     background-color: #3498db;
-  }
-  
-  .switch-autoquiz input:checked + .slider:before {
+}
+
+.switch-autoquiz input:checked+.slider:before {
     transform: translateX(14px);
-  }
-  
-  /* Contenedor del cuerpo de AutoFill (contenido dinámico) */
-  .body-autoquiz {
+}
+
+/* Contenedor del cuerpo de AutoFill (contenido dinámico) */
+.body-autoquiz {
     /* Se puede ajustar según el contenido interno */
-    display: none; /* En AutoFill se oculta por defecto */
-  }
-  
-  /* Contenedor para las preguntas generadas */
-  .contenedor-preguntas {
+    display: none;
+    /* En AutoFill se oculta por defecto */
+}
+
+/* Contenedor para las preguntas generadas */
+.contenedor-preguntas {
     /* Estilos base para el contenedor de preguntas */
     /* Aquí se pueden agregar márgenes, paddings o tipografía según sea necesario */
-  }
-  
-  /* --------------------------------------------------------------------------
+}
+
+/* --------------------------------------------------------------------------
      5.2. Subcontenedor de AutoSave
      -------------------------------------------------------------------------- */
-  .subcontainer-autoquiz-autosave {
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #dcdcdc;
-    overflow-y: auto;
-    display: none; /* Se muestra/oculta según la lógica de la aplicación */
-  }
-  
-  /* Header de AutoSave: título y switch */
-  .header-autoquiz h2 {
+
+/* Header de AutoSave: título y switch */
+.header-autoquiz h2 {
     /* Se reutiliza el mismo estilo que en AutoFill */
     font-size: 22px;
     font-weight: 600;
     color: #34495e;
     margin: 0;
-  }
-  
-  /* Cuerpo de AutoSave */
-  .body-autoquiz {
+}
+
+/* Cuerpo de AutoSave */
+.body-autoquiz {
     /* Se muestra por defecto en AutoSave */
     display: block;
-  }
-  
-  /* Estilo para los datos (ej. respuestas) en AutoSave */
-  .dato-autoquiz {
+}
+
+/* Estilo para los datos (ej. respuestas) en AutoSave */
+.dato-autoquiz {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -199,40 +202,40 @@
     width: 100%;
     word-wrap: break-word;
     word-break: break-word;
-  }
-  
+}
 
-    /* ==========================================================================
+
+/* ==========================================================================
      2. Sección de Usuarios
      ========================================================================== */
-  
-  /* Contenedor de usuarios (oculto por defecto) */
-  .users {
+
+/* Contenedor de usuarios (oculto por defecto) */
+.users {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 15px;
-  }
-  
-  /* Usuario actual: ícono y nombre */
-  .usuario-actual {
+}
+
+/* Usuario actual: ícono y nombre */
+.usuario-actual {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex: 1;
-  }
-  
-  .nombre-usuario {
+}
+
+.nombre-usuario {
     font-size: 14px;
     font-weight: 600;
     color: #34495e;
     margin: 0 5px;
-  }
-  
-  /* Select para el siguiente usuario */
-  .select-siguiente-usuario {
+}
+
+/* Select para el siguiente usuario */
+.select-siguiente-usuario {
     font-size: 14px;
     font-weight: 600;
     color: #34495e;
@@ -243,62 +246,63 @@
     cursor: pointer;
     text-align: right;
     padding-right: 0;
-    direction: rtl; /* Alinea el desplegable a la derecha */
-  }
-  
-  /* Opciones dentro del select */
-  .select-siguiente-usuario option {
+    direction: rtl;
+    /* Alinea el desplegable a la derecha */
+}
+
+/* Opciones dentro del select */
+.select-siguiente-usuario option {
     font-size: 12px;
     padding: 10px;
     text-align: right;
     direction: ltr;
-  }
-  
-  /* Limitación de altura y scroll vertical */
-  .select-siguiente-usuario {
+}
+
+/* Limitación de altura y scroll vertical */
+.select-siguiente-usuario {
     max-height: 30px;
     overflow-y: auto;
-  }
-  
-  /* Personalización de la barra de desplazamiento */
-  .select-siguiente-usuario::-webkit-scrollbar {
+}
+
+/* Personalización de la barra de desplazamiento */
+.select-siguiente-usuario::-webkit-scrollbar {
     width: 2px;
-  }
-  
-  .select-siguiente-usuario::-webkit-scrollbar-thumb {
+}
+
+.select-siguiente-usuario::-webkit-scrollbar-thumb {
     background-color: rgba(52, 73, 94, 0.2);
     border-radius: 10px;
-  }
-  
-  .select-siguiente-usuario::-webkit-scrollbar-track {
+}
+
+.select-siguiente-usuario::-webkit-scrollbar-track {
     background-color: transparent;
-  }
-  
-  /* Resalta la opción seleccionada */
-  .select-siguiente-usuario option:checked {
+}
+
+/* Resalta la opción seleccionada */
+.select-siguiente-usuario option:checked {
     background-color: #dcdde1;
     font-weight: bold;
-  }
-  
-  .select-siguiente-usuario option:hover {
+}
+
+.select-siguiente-usuario option:hover {
     background-color: #f1f2f6;
-  }
-  
-  .select-siguiente-usuario option:hover:checked {
+}
+
+.select-siguiente-usuario option:hover:checked {
     background-color: #dcdde1;
-  }
-  
-  /* Botón para pasar al siguiente usuario */
-  .boton-siguiente-usuario {
+}
+
+/* Botón para pasar al siguiente usuario */
+.boton-siguiente-usuario {
     margin: 0;
     font-weight: 600;
     border: none;
     background-color: transparent;
     cursor: pointer;
     padding: 0 3px;
-  }
-  
-  .boton-siguiente-usuario i {
+}
+
+.boton-siguiente-usuario i {
     font-size: 0.90em;
     color: #34495e;
-  }
+}
