@@ -119,7 +119,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
 
-    if (switchRutaDinamica === 'true' && (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html'))) {
+    if (esMoodle && switchRutaDinamica === 'true'  ) {
         console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta Dinamica...');
         await contenedorRutaDinamica_js();
     } else {

@@ -3,17 +3,18 @@ import { database } from '../../config-firebase/script.js';
 
 
 export function contenedorRuta_js() {
-    const contenidoPrincipal = document.getElementById('contenido-principal'),
-        containerOptionSelect = document.querySelector('.containerOption'),
-        containerRutaFirebase = document.getElementById('containerRutaFirebase'),
-        ruta = localStorage.getItem('configRuta'),
-        ciclo = localStorage.getItem('ciclo');
 
-    // Función para crear y mostrar el mensaje de advertencia
-    const mostrarMensaje = () => {
+    const contenidoPrincipal = document.getElementById('contenido-principal');
+    const containerOptionSelect = document.querySelector('.containerOption');
+    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+    const ruta = localStorage.getItem('configRuta');
+    const ciclo = localStorage.getItem('ciclo');
+
+    // Función para crear y mostrar el mensaje de ruta inválida
+    const rutaInvalida = () => {
         if (!document.getElementById('mensaje-ruta-invalida')) {
             const mensaje = document.createElement('div');
-            mensaje.id = 'mensaje-ruta-invalida';
+            mensaje.id = 'ruta-invalida';
             mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
             Object.assign(mensaje.style, {
                 color: 'red',
@@ -31,32 +32,35 @@ export function contenedorRuta_js() {
         if (containerOptionSelect) containerOptionSelect.style.display = 'none';
         localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
         localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-        mostrarMensaje();
+        rutaInvalida();
         return; // Salir de la función ya que faltan datos
     }
 
     // Si se tienen ruta y ciclo definidos, actualizamos los contenedores
     if (containerRutaFirebase) {
         // Eliminar mensaje de advertencia si existe
-        const mensajeExistente = document.getElementById('mensaje-ruta-invalida');
+        const mensajeExistente = document.getElementById('ruta-invalida');
 
         if (mensajeExistente) {
             mensajeExistente.remove();
-            console.log('Mensaje de advertencia eliminado.');
         }
 
         containerRutaFirebase.style.display = 'block';
         containerRutaFirebase.innerHTML = `
-        <span class="title">Ruta:</span> <span class="label">${ruta}</span><br>
-        <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+        <div>
+          <span class="title">Ruta:</span> <span class="label">${ruta}</span>
+        </div>
+        <div>
+          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+        </div>
       `;
+      
         console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo:${ciclo}`);
     } else {
-        console.error('[opc-autofill-autosave-moodle: ruta] No se encontró el contenedor de ruta y ciclo.');
+        console.error('[opc-autofill-autosave-moodle: ruta] No se encontró el contenedor de la ruta y ciclo.');
     }
 
 }
-
 
 // <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
 
@@ -64,154 +68,130 @@ export async function contenedorRutaDinamica_js() {
     // Obtiene los valores 'configRuta' y 'ciclo' del almacenamiento local
     const ruta = localStorage.getItem('configRuta');
     const ciclo = localStorage.getItem('ciclo');
+    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
 
     // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
-    if (!configRuta || !ciclo) {
+    if (!ruta || !ciclo) {
         // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
         contenedorRuta_js();
         return;
     } else {
-        // Obtiene el elemento con el ID 'ciclo-configruta' del DOM
-        const cicloElemento = document.getElementById('ciclo-configruta');
-        if (cicloElemento) {
-            // Asigna el valor de 'ciclo' al contenido HTML del elemento, mostrando una etiqueta y el valor
-            cicloElemento.innerHTML = `<span class="label-configruta">Ciclo:</span> ${ciclo}`;
-            await actualizaConfigRutaDinamic();
-        }
+        containerRutaFirebase.style.display = 'block';
+
+        await actualizaConfigRutaDinamic(ruta, containerRutaFirebase);
+        containerRutaFirebase.innerHTML = `
+        <div>
+          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+        </div>`;
     }
 }
 
 
-async function actualizaConfigRutaDinamic() {
-    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+async function actualizaConfigRutaDinamic(ruta, containerRutaFirebase) {
 
     try {
-        // ** 1. Recuperar la configuración de ruta desde localStorage **
-        const ruta = localStorage.getItem('configRuta');
 
-        // ** 2. Extraer la universidad de la configuración de ruta **
-        const universidad = configRuta.split('/')[0];
+        const universidad = ruta.split('/')[0];  // Universidad
+        
+        // Obtener Materia
+        const elementosRutaCurso = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
 
-        // ** 3. Seleccionar los elementos del breadcrumb relacionados con cursos y quizzes **
-        const breadcrumbItems = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
-        const quizItems = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
-
-        // ** 4. Obtener Materia **
         let materiaValor = null;
 
-        if (breadcrumbItems.length > 0) {
-            // Obtener el atributo 'title' del primer elemento del breadcrumb
-            const breadcrumbTitle = breadcrumbItems[0].getAttribute('title');
-            //console.log(`[opc-autofill-autosave-moodle: ruta]  Título encontrado: ${breadcrumbTitle}`);
+        if (elementosRutaCurso.length > 0) {
+            // Obtener el atributo 'title' del primer elemento de la ruta
+            const tituloRuta = elementosRutaCurso[0].getAttribute('title');
 
-            // Extraer las claves entre corchetes del título del breadcrumb
-            const matches = breadcrumbTitle.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
+            // Extraer las claves entre corchetes del título usando una expresión regular
+            const coincidencias = tituloRuta.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
 
-            if (matches && matches.length > 0) {
+            if (coincidencias && coincidencias.length > 0) {
                 // Limpiar los corchetes para obtener la clave de búsqueda
-                const searchKey = matches[0].replace(/[\[\]]/g, '');
-                //console.log(`[opc-autofill-autosave-moodle: ruta]  Materia de la página: "${searchKey}"`);
-
-                // Definir la ruta en Firebase para obtener las opciones de materias
-                const materiaRuta = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
+                const claveBusqueda = coincidencias[0].replace(/[\[\]]/g, '');
+                const rutaMateria = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
 
                 try {
                     // Obtener los datos de materias desde Firebase
-                    const materiaSnapshot = await get(ref(database, materiaRuta));
-                    const materiaOptions = materiaSnapshot.val();
+                    const snapshotMateria = await get(ref(database, rutaMateria));
+                    const opcionesMateria = snapshotMateria.val();
 
-                    if (materiaOptions) {
-                        let found = false; // Bandera para indicar si se encontró una coincidencia
-
-                        // Iterar sobre cada clave y valor en las opciones de materias
-                        for (const [key, value] of Object.entries(materiaOptions)) {
-                            // Separar los valores por comas y eliminar espacios
-                            const values = value.split(',').map(item => item.trim());
-
-                            for (const val of values) {
-                                if (val.includes(':')) {
-                                    // Si el valor contiene ":", dividirlo en dos partes
-                                    const [firstPart, secondPart] = val.split(':').map(part => part.trim());
-
-                                    // Comparar la primera parte con la clave de búsqueda
-                                    // y verificar si el título del breadcrumb contiene la segunda parte
-                                    if (firstPart === searchKey && breadcrumbTitle.includes(secondPart)) {
-                                        materiaValor = key;
-                                        console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
-                                        found = true;
-                                        break; // Salir del bucle interno si se encuentra una coincidencia
+                    if (opcionesMateria) {
+                        // Buscar la materia utilizando métodos funcionales para evitar bucles anidados
+                        const entradaEncontrada = Object.entries(opcionesMateria).find(([key, value]) => {
+                            return value.split(',')
+                                .map(item => item.trim())
+                                .some(val => {
+                                    if (val.includes(':')) {
+                                        const [parte1, parte2] = val.split(':').map(item => item.trim());
+                                        return (parte1 === claveBusqueda && tituloRuta.includes(parte2));
+                                    } else {
+                                        return val === claveBusqueda;
                                     }
-                                } else {
-                                    // Si el valor no contiene ":", comparar directamente con la clave de búsqueda
-                                    if (val === searchKey) {
-                                        materiaValor = key;
-                                        console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
-                                        found = true;
-                                        break; // Salir del bucle interno si se encuentra una coincidencia
-                                    }
-                                }
-                            }
+                                });
+                        });
 
-                            if (found) break; // Salir del bucle externo si se encontró una coincidencia
-                        }
-
-                        if (!found) {
-                            console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró ninguna coincidencia para la clave de búsqueda: ${searchKey}`);
+                        if (entradaEncontrada) {
+                            materiaValor = entradaEncontrada[0];
+                            console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
+                        } else {
+                            console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró ninguna coincidencia para la clave de búsqueda: ${claveBusqueda}`);
                         }
                     } else {
-                        console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontraron opciones para materias en la ruta: ${materiaRuta}`);
+                        console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontraron opciones para materias en la ruta: ${rutaMateria}`);
                     }
-                } catch (firebaseError) {
-                    console.error(`Error al obtener datos de Firebase en la ruta ${materiaRuta}:`, firebaseError);
+                } catch (errorFirebase) {
+                    console.error(`Error al obtener datos de Firebase en la ruta ${rutaMateria}:`, errorFirebase);
                 }
             } else {
                 console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontraron coincidencias en el título del breadcrumb.');
             }
         } else {
-            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontro materia.');
+            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró materia.');
         }
 
-        // ** 5. Obtener Test **
+        // Obtener Test 
         let testClave = null;
+        const elementosQuiz = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
 
-        if (quizItems.length > 0) {
-            // Obtener el texto del quiz desde el primer elemento del breadcrumb
-            const quizTextElement = quizItems[0].querySelector('span.text-truncate');
-            if (quizTextElement) {
+        if (elementosQuiz.length === 0) {
+            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró test.');
+        } else {
+            // Función auxiliar para obtener el número del quiz a partir del texto
+            const obtenerNumeroQuiz = (texto) => {
+                // Buscar número en formato numérico
+                const matchNumero = texto.match(/\d+/);
+                if (matchNumero) return parseInt(matchNumero[0], 10);
+
+                // Si no se encuentra número, buscar número escrito en palabras
+                const numWords = {
+                    'uno': 1,
+                    'dos': 2,
+                    'tres': 3,
+                    'cuatro': 4,
+                    'cinco': 5,
+                    'seis': 6,
+                    'siete': 7,
+                    'ocho': 8,
+                    'nueve': 9,
+                    'diez': 10
+                    // Se pueden agregar más si es necesario
+                };
+
+                const matchPalabra = texto.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
+                return matchPalabra ? numWords[matchPalabra[0]] : null;
+            };
+
+            // Obtener el elemento que contiene el texto del quiz
+            const quizTextElement = elementosQuiz[0].querySelector('span.text-truncate');
+            if (!quizTextElement) {
+                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró el elemento de texto del quiz.');
+            } else {
                 const quizText = quizTextElement.textContent.trim();
-                // Buscar números en formato numérico en el texto del quiz
-                const quizNumberMatch = quizText.match(/\d+/);
+                const quizNumber = obtenerNumeroQuiz(quizText);
 
-                let quizNumber = null;
-
-                if (quizNumberMatch) {
-                    // Convertir el número encontrado a entero
-                    quizNumber = parseInt(quizNumberMatch[0], 10);
+                if (quizNumber === null) {
+                    console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró número del test.');
                 } else {
-                    // Si no se encuentran números, buscar números escritos en palabras
-                    const numWords = {
-                        'uno': 1,
-                        'dos': 2,
-                        'tres': 3,
-                        'cuatro': 4,
-                        'cinco': 5,
-                        'seis': 6,
-                        'siete': 7,
-                        'ocho': 8,
-                        'nueve': 9,
-                        'diez': 10
-                        // Puedes agregar más si lo necesitas
-                    };
-
-                    // Convertir el texto a minúsculas y buscar una palabra numérica
-                    const wordMatch = quizText.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
-                    if (wordMatch) {
-                        quizNumber = numWords[wordMatch[0]];
-                    }
-                }
-
-                if (quizNumber !== null) {
-                    // Definir la ruta en Firebase para obtener las opciones de tests
                     const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
 
                     try {
@@ -219,55 +199,45 @@ async function actualizaConfigRutaDinamic() {
                         const testSnapshot = await get(ref(database, testRuta));
                         const testOptions = testSnapshot.val();
 
-                        if (testOptions) {
-                            // Buscar la clave que incluye "Test" seguido del número del quiz
+                        if (!testOptions) {
+                            console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
+                        } else {
+                            // Buscar la clave que incluya "Test" seguido del número obtenido
                             testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
+
                             if (testClave) {
                                 console.log(`[opc-autofill-autosave-moodle: ruta]  Test encontrado: "${testClave}"`);
                             } else {
                                 console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró una clave para Test ${quizNumber}`);
                             }
-                        } else {
-                            console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
                         }
                     } catch (firebaseError) {
                         console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
                     }
-                } else {
-                    console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontro número del test.`);
                 }
-            } else {
-                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró el elemento de texto del quiz.');
             }
-        } else {
-            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontro test.');
         }
 
         // ** 6. Verificar y Actualizar ConfigRutaDinamic **
         if (materiaValor && testClave) {
             // Dividir la configuración de ruta en partes
-            const configRutaParts = configRuta.split('/');
+            const rutaSplit = ruta.split('/');
             // Reemplazar las últimas dos partes con materiaValor y testClave
-            configRutaParts[configRutaParts.length - 2] = materiaValor;
-            configRutaParts[configRutaParts.length - 1] = testClave;
+            rutaSplit[rutaSplit.length - 2] = materiaValor;
+            rutaSplit[rutaSplit.length - 1] = testClave;
 
             // Unir las partes para formar la nueva configuración de ruta
-            const updatedConfigRuta = configRutaParts.join('/');
+            const rutaDinamica = rutaSplit.join('/');
             // Almacenar la configuración actualizada en sessionStorage
-            sessionStorage.setItem('configRutaDinamic', updatedConfigRuta);
+            sessionStorage.setItem('configRutaDinamic', rutaDinamica);
 
-            // Actualizar el elemento HTML con la nueva ruta
-            const rutaElement = document.getElementById('ruta-configruta');
-            if (rutaElement) {
-                rutaElement.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${updatedConfigRuta}</span>`;
-                console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta actualizada: ${updatedConfigRuta}`);
-            } else {
-                console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-            }
+            containerRutaFirebase.innerHTML = `
+            <div>
+              <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
+            </div>
+          `;
 
-            containerRutaFirebase.style.display = 'block';
-
-            return updatedConfigRuta;
+           return;
         }
 
         else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {

@@ -8,108 +8,7 @@
   }
   
   /* ==========================================================================
-     2. Sección de Usuarios
-     ========================================================================== */
-  
-  /* Contenedor de usuarios (oculto por defecto) */
-  .users {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-  }
-  
-  /* Usuario actual: ícono y nombre */
-  .usuario-actual {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex: 1;
-  }
-  
-  .nombre-usuario {
-    font-size: 14px;
-    font-weight: 600;
-    color: #34495e;
-    margin: 0 5px;
-  }
-  
-  /* Select para el siguiente usuario */
-  .select-siguiente-usuario {
-    font-size: 14px;
-    font-weight: 600;
-    color: #34495e;
-    border: none;
-    background-color: transparent;
-    outline: none;
-    appearance: none;
-    cursor: pointer;
-    text-align: right;
-    padding-right: 0;
-    direction: rtl; /* Alinea el desplegable a la derecha */
-  }
-  
-  /* Opciones dentro del select */
-  .select-siguiente-usuario option {
-    font-size: 12px;
-    padding: 10px;
-    text-align: right;
-    direction: ltr;
-  }
-  
-  /* Limitación de altura y scroll vertical */
-  .select-siguiente-usuario {
-    max-height: 30px;
-    overflow-y: auto;
-  }
-  
-  /* Personalización de la barra de desplazamiento */
-  .select-siguiente-usuario::-webkit-scrollbar {
-    width: 2px;
-  }
-  
-  .select-siguiente-usuario::-webkit-scrollbar-thumb {
-    background-color: rgba(52, 73, 94, 0.2);
-    border-radius: 10px;
-  }
-  
-  .select-siguiente-usuario::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  
-  /* Resalta la opción seleccionada */
-  .select-siguiente-usuario option:checked {
-    background-color: #dcdde1;
-    font-weight: bold;
-  }
-  
-  .select-siguiente-usuario option:hover {
-    background-color: #f1f2f6;
-  }
-  
-  .select-siguiente-usuario option:hover:checked {
-    background-color: #dcdde1;
-  }
-  
-  /* Botón para pasar al siguiente usuario */
-  .boton-siguiente-usuario {
-    margin: 0;
-    font-weight: 600;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    padding: 0 3px;
-  }
-  
-  .boton-siguiente-usuario i {
-    font-size: 0.90em;
-    color: #34495e;
-  }
-  
-  /* ==========================================================================
-     3. Sección: Ruta y Ciclo
+     2. Sección: Ruta y Ciclo
      ========================================================================== */
  
   #containerRutaFirebase .title  {
@@ -123,7 +22,7 @@
   }
   
   /* ==========================================================================
-     4. Sección: Subject Dinamic
+     4. Sección: Ruta Dinámica
      ========================================================================== */
   
   /* Contenedor principal para la ruta dinámica */
@@ -278,3 +177,104 @@
     word-break: break-word;
   }
   
+
+    /* ==========================================================================
+     2. Sección de Usuarios
+     ========================================================================== */
+  
+  /* Contenedor de usuarios (oculto por defecto) */
+  .users {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+  }
+  
+  /* Usuario actual: ícono y nombre */
+  .usuario-actual {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+  }
+  
+  .nombre-usuario {
+    font-size: 14px;
+    font-weight: 600;
+    color: #34495e;
+    margin: 0 5px;
+  }
+  
+  /* Select para el siguiente usuario */
+  .select-siguiente-usuario {
+    font-size: 14px;
+    font-weight: 600;
+    color: #34495e;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    text-align: right;
+    padding-right: 0;
+    direction: rtl; /* Alinea el desplegable a la derecha */
+  }
+  
+  /* Opciones dentro del select */
+  .select-siguiente-usuario option {
+    font-size: 12px;
+    padding: 10px;
+    text-align: right;
+    direction: ltr;
+  }
+  
+  /* Limitación de altura y scroll vertical */
+  .select-siguiente-usuario {
+    max-height: 30px;
+    overflow-y: auto;
+  }
+  
+  /* Personalización de la barra de desplazamiento */
+  .select-siguiente-usuario::-webkit-scrollbar {
+    width: 2px;
+  }
+  
+  .select-siguiente-usuario::-webkit-scrollbar-thumb {
+    background-color: rgba(52, 73, 94, 0.2);
+    border-radius: 10px;
+  }
+  
+  .select-siguiente-usuario::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
+  /* Resalta la opción seleccionada */
+  .select-siguiente-usuario option:checked {
+    background-color: #dcdde1;
+    font-weight: bold;
+  }
+  
+  .select-siguiente-usuario option:hover {
+    background-color: #f1f2f6;
+  }
+  
+  .select-siguiente-usuario option:hover:checked {
+    background-color: #dcdde1;
+  }
+  
+  /* Botón para pasar al siguiente usuario */
+  .boton-siguiente-usuario {
+    margin: 0;
+    font-weight: 600;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0 3px;
+  }
+  
+  .boton-siguiente-usuario i {
+    font-size: 0.90em;
+    color: #34495e;
+  }
