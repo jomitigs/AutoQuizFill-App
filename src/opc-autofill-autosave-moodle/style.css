@@ -81,17 +81,14 @@
   /* Agrupamos las reglas compartidas para ambos subcontenedores */
   .subcontainer-autoquiz-autosave,
   .subcontainer-autoquiz-autofill {
-    display: flex;
-    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 10px;
     background-color: #f4f4f4;
-    border: 1px solid #dcdcdc;
+    padding: 10px 15px;
     border-radius: 8px;
-    overflow-x: hidden;
+    border: 1px solid #dcdcdc;
     overflow-y: auto;
-    flex: 1 1 auto; /* Permite que crezcan y se contraigan según el espacio disponible */
-    min-height: 100px; /* Altura mínima para evitar colapsos */
-    padding: 10px; /* Opcional: espacio interno */
-    box-sizing: border-box;
+    max-height: 300px;
   }
   
   /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
@@ -118,20 +115,23 @@
   
  /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
 #body-autoquiz-autosave {
+    flex-direction: column;
+    gap: 0px;
     font-size: 12px;
-    padding: 10px 15px;
-    box-sizing: border-box;
     width: 100%;
-    overflow-x: auto; /* Opcional: permite scroll horizontal si llegara a ser necesario */
   }
   
   /* Reglas para el elemento de la pregunta */
   .preguntaautosave {
-    width: 100%;        /* Ocupa el 100% del ancho disponible */
-    min-width: 0;       /* Permite que se reduzca adecuadamente en contenedores flex */
-    overflow-wrap: break-word; /* Permite romper palabras largas */
-    word-break: break-word;    /* Alternativa para romper palabras si es necesario */
-    white-space: normal;       /* Asegura que el texto se envuelva en varias líneas */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    color: #34495e;
+    flex-wrap: wrap;
+    width: 100%;
+    word-wrap: break-word;
+    word-break: break-word;
   }
   
   /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */
