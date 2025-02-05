@@ -285,9 +285,6 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
     
     const ciclo = localStorage.getItem('ciclo');
     const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
-
-    containerRutaDinamicaFirebase.style.display = 'block';
     containerRutaFirebase.style.display = 'block';
 
     const rutaDinamica = "dinámica";
@@ -300,6 +297,9 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
         <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
     </div>`;
 
+    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
+    containerRutaDinamicaFirebase.style.display = 'block';
+
     // Asegurarse de limpiar completamente el contenedor
     if (containerRutaDinamicaFirebase) {
         containerRutaDinamicaFirebase.innerHTML = ''; // Elimina todo el contenido del contenedor
@@ -307,6 +307,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
         console.error('No se encontró el contenedor con id="containerRutaDinamicaFirebase".');
         return;
     }
+
 
     const rutaLista = (localStorage.getItem('configRuta') || '').split('/');
 
