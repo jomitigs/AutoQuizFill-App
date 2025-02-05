@@ -76,7 +76,7 @@
     gap: 5px; /* Espacio entre los contenedores */
 }
 
-.subcontainer-autoquiz autosave {
+.subcontainer-autoquiz-autosave {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
@@ -90,7 +90,7 @@
     min-height: 100px; /* Define una altura mínima para evitar colapsos */
 }
 
-.subcontainer-autoquiz autofill {
+.subcontainer-autoquiz-autofill {
     display: flex;
     flex-direction: column;
     background-color: #f4f4f4;
@@ -130,7 +130,6 @@
     padding-right: 15px;
     padding-bottom: 10px;
     padding-top: 10px;
-    width: 100%;
 }
 
 
