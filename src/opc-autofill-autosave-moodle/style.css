@@ -439,7 +439,7 @@
             border-radius: 8px;
             border: 1px solid #dcdcdc;
             overflow-y: auto; /* Habilitar desplazamiento si es necesario */
-            /* max-height: 300px; /* Limitar la altura máxima a 350px */
+            max-height: 300px; /* Limitar la altura máxima a 350px */
         }
 
         /* Estilos personalizados para la barra de desplazamiento */
