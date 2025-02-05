@@ -78,14 +78,14 @@
   /* Agrupamos las reglas compartidas para ambos subcontenedores */
   .subcontainer-autoquiz-autosave,
   .subcontainer-autoquiz-autofill {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     background-color: #f4f4f4;
-    padding: 10px 15px;
+    padding: 10px;
     border-radius: 8px;
     border: 1px solid #dcdcdc;
     overflow-y: auto;
-    max-height: 300px;
+    max-height: 268px;
   }
   
   /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
