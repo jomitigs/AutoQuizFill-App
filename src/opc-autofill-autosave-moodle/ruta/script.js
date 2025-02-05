@@ -441,6 +441,16 @@ function guardarRutaDinamica() {
     console.log('Valor de materia:', materiaValue);
     console.log('Valor de test:', testValue);
 
+    // Verificar que ambos selects tengan un valor válido
+    if (!materiaValue) {
+        alert('Por favor, selecciona una materia válida.');
+        return;
+    }
+    if (!testValue) {
+        alert('Por favor, selecciona un test válido.');
+        return;
+    }
+
     // Combinar las partes de configRuta con los valores seleccionados para formar la nueva ruta
     const newRuta = [...configRutaParts, materiaValue, testValue].join('/');
     console.log('Nueva ruta construida:', newRuta);
@@ -461,6 +471,7 @@ function guardarRutaDinamica() {
         console.log('No se encontró el contenedor con id "containerRutaDinamicaFirebase" para ocultar.');
     }
 }
+
 
 
 
