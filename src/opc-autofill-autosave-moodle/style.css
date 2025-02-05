@@ -81,7 +81,7 @@
   .subcontainer-autoquiz-autofill {
     /* Permiten que se expandan para repartir el espacio disponible */
     /* Si el contenido es muy largo, no excederán 268px */
-    max-height: 268px;
+    max-height: 50%;
     overflow-y: auto;
     background-color: #f4f4f4;
     padding: 10px;
