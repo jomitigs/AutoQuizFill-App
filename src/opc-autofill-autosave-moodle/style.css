@@ -116,30 +116,33 @@
     display: none; /* Oculta botones (flechas) */
   }
   
-  /* Estilos adicionales para el cuerpo de texto */
-  #body-autoquiz-autosave {
+ /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
+#body-autoquiz-autosave {
     font-size: 12px;
-    padding: 10px 15px; /* shorthand: top/bottom 10px, right/left 15px */
+    padding: 10px 15px;
     box-sizing: border-box;
+    width: 100%;
+    overflow-x: auto; /* Opcional: permite scroll horizontal si llegara a ser necesario */
   }
   
-  /* Opcional: media queries para ajustes específicos en dispositivos pequeños */
-  @media (max-width: 600px) {
-    #container-autofillautosave {
-      padding: 5px;
-      gap: 3px;
-    }
-    
-    .subcontainer-autoquiz-autosave,
-    .subcontainer-autoquiz-autofill {
-      padding: 5px;
-    }
-    
-    #body-autoquiz-autosave {
-      font-size: 11px;
-      padding: 8px 10px;
-    }
+  /* Reglas para el elemento de la pregunta */
+  .preguntaautosave {
+    width: 100%;        /* Ocupa el 100% del ancho disponible */
+    min-width: 0;       /* Permite que se reduzca adecuadamente en contenedores flex */
+    overflow-wrap: break-word; /* Permite romper palabras largas */
+    word-break: break-word;    /* Alternativa para romper palabras si es necesario */
+    white-space: normal;       /* Asegura que el texto se envuelva en varias líneas */
   }
+  
+  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */
+  .respuestasautosave {
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+  }
+  
   
 
 /* --------------------------------------------------------------------------
