@@ -25,20 +25,19 @@
      4. Sección: Ruta Dinámica
      ========================================================================== */
   
-  /* Contenedor principal para la ruta dinámica */
-  #container-ruta-dinamica {
-    display: block;
-  }
-  
-  /* Contenedor para subject dinamic */
-  .subject-dinamic {
-    /* Puedes agregar estilos propios si lo requieres */
-  }
-  
-  /* Contenedor interno para los selects (dinámicos) */
-  #selects-subject-dinamic {
-    /* Espacio para insertar los selects dinámicamente */
-  }
+     .select-ruta {
+        width: 100%;
+        padding: 3px; 
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+        background-color: #ffffff;
+        color: #2c3e50;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+    
   
   /* ==========================================================================
      5. Sección: Wrapper de AutoFill y AutoSave
