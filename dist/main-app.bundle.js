@@ -43843,15 +43843,11 @@
 
             <!-- Contenedor para Ruta y Ciclo -->
             <div id="containerRutaFirebase" style="display: none;">
-
             </div>
 
             <!-- Contenedor para Subject Dinamic -->
-
-            <div id="containerRutaDinamicaFirebase" style="display: none;"">
-
+            <div id="containerRutaDinamicaFirebase" style="display: none;">
             </div>
-
 
             <!-- Nuevo contenedor para AutoFill-->
             <div id="container-autofill" class="subcontainer-autoquiz" style="display: none;">
@@ -43899,10 +43895,8 @@
                 </div>
             </div>
 
-                </div>
-
         </div>
-`;
+    `;
     }
 
     async function opcion_AutoFillAutoSave_Moodle_js() {

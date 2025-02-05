@@ -29,15 +29,11 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
             <!-- Contenedor para Ruta y Ciclo -->
             <div id="containerRutaFirebase" style="display: none;">
-
             </div>
 
             <!-- Contenedor para Subject Dinamic -->
-
-            <div id="containerRutaDinamicaFirebase" style="display: none;"">
-
+            <div id="containerRutaDinamicaFirebase" style="display: none;">
             </div>
-
 
             <!-- Nuevo contenedor para AutoFill-->
             <div id="container-autofill" class="subcontainer-autoquiz" style="display: none;">
@@ -85,10 +81,8 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
                 </div>
             </div>
 
-                </div>
-
         </div>
-`;
+    `;
 }
 
 export async function opcion_AutoFillAutoSave_Moodle_js() {
