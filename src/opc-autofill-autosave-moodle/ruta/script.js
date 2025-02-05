@@ -78,9 +78,10 @@ export async function contenedorRutaDinamica_js() {
     } else {
         containerRutaFirebase.style.display = 'block';
 
-        const rutaDinamica = obtenerRutaDinamica(ruta);
+        // Espera a que la función asíncrona obtenga la ruta dinámica
+        const rutaDinamica = await obtenerRutaDinamica(ruta);
 
-        console.log("La nueva ruta dinámicaaa es:", rutaDinamica);
+        console.log("La nueva ruta dinámica es:", rutaDinamica);
 
         sessionStorage.setItem('configRutaDinamic', rutaDinamica);
         console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
@@ -93,19 +94,16 @@ export async function contenedorRutaDinamica_js() {
         <div>
           <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
         </div>`;
-
     }
 }
 
+
 async function obtenerRutaDinamica(ruta) {
-
     try {
+        const universidad = ruta.split('/')[0]; // Universidad
 
-        const universidad = ruta.split('/')[0];  // Universidad
-        
         // Obtener Materia
         const elementosRutaCurso = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
-
         let materiaValor = null;
 
         if (elementosRutaCurso.length > 0) {
@@ -228,39 +226,31 @@ async function obtenerRutaDinamica(ruta) {
             }
         }
 
-        // ** 6. Verificar y Actualizar ConfigRutaDinamic **
+        // Verificar y Actualizar ConfigRutaDinamic
         if (materiaValor && testClave) {
             console.log("Se tienen valores para materiaValor y testClave:", materiaValor, testClave);
-        
+
             // Dividir la configuración de ruta en partes
             const rutaSplit = ruta.split('/');
             console.log("La ruta se ha dividido en partes:", rutaSplit);
-        
+
             // Reemplazar las últimas dos partes con materiaValor y testClave
             rutaSplit[rutaSplit.length - 2] = materiaValor;
             console.log("Se ha reemplazado la penúltima parte de la ruta con materiaValor:", rutaSplit);
-            
+
             rutaSplit[rutaSplit.length - 1] = testClave;
             console.log("Se ha reemplazado la última parte de la ruta con testClave:", rutaSplit);
-        
+
             // Unir las partes para formar la nueva configuración de ruta
             const rutaDinamica = rutaSplit.join('/');
-            return  rutaDinamica;
-        }
-        
-
-        else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
+            return rutaDinamica;
+        } else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
             return "dinámica";
-            ;
-        }
-
-        else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
+        } else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
             // Obtener la configuración de ruta dinámica almacenada en sessionStorage
-            console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/" ');
+            console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/"');
             await crearSelectsDinamicos(materiaValor, testClave);
         }
-
-
     } catch (error) {
         // Manejo de errores generales en la función
         console.error('Error en actualizaConfigRutaDinamic:', error);
