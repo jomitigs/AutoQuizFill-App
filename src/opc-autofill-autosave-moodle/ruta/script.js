@@ -47,8 +47,8 @@ export function contenedorRuta_js() {
 
         containerRutaFirebase.style.display = 'block';
         containerRutaFirebase.innerHTML = `
-        <span class="label-configruta">Ruta:</span> <span class="valor-ruta">${ruta}</span><br>
-        <span class="label-configruta">Ciclo:</span> <span class="valor-ciclo">${ciclo}</span>
+        <span class="title">Ruta:</span> <span class="label">${ruta}</span><br>
+        <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
       `;
         console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo:${ciclo}`);
     } else {

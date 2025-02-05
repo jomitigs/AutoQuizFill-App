@@ -111,19 +111,19 @@
   /* ==========================================================================
      3. Sección: Ruta y Ciclo
      ========================================================================== */
-    
-  /* Estilos para los contenedores de Ruta y Ciclo */
-  #autofillautosave_moodle .title-configruta {
-    font-size: 14px;
-    color: #34495e;
-  }
-  
-  /* Etiqueta que muestra "Ruta:" o "Ciclo:" */
-  #autofillautosave_moodle .label-configruta {
+ 
+ #autofillautosave_moodle .title  {
     font-size: 14px;
     font-weight: 600;
   }
   
+
+  #autofillautosave_moodle .label{
+    font-size: 14px;
+    color: #34495e;
+  }
+  
+ 
   /* ==========================================================================
      4. Sección: Subject Dinamic
      ========================================================================== */
