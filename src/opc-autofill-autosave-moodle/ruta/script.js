@@ -45,7 +45,7 @@ export function contenedorRuta_js() {
             mensajeExistente.remove();
         }
 
-        containerRutaFirebase.style.display = 'block';
+        containerRutaFirebase.style.display = 'flex';
         containerRutaFirebase.innerHTML = `
         <div>
           <span class="title">Ruta:</span> <span class="label">${ruta}</span>
@@ -81,7 +81,7 @@ export async function contenedorRutaDinamica_js() {
     } 
     
     else if (rutaDinamica && rutaDinamica !== "dinámica") {
-        containerRutaFirebase.style.display = 'block';
+        containerRutaFirebase.style.display = 'flex';
         containerRutaFirebase.innerHTML = `
             <div>
               <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
@@ -92,7 +92,7 @@ export async function contenedorRutaDinamica_js() {
         `;
         
     } else {
-        containerRutaFirebase.style.display = 'block';
+        containerRutaFirebase.style.display = 'flex';
 
         // Espera a que la función asíncrona obtenga la ruta dinámica
         rutaDinamica = await obtenerRutaDinamica(ruta);
@@ -285,7 +285,7 @@ async function crearSelectsDinamicos(materiaValor, testClave) {
     // Mostrar y configurar el contenedor principal
     const ciclo = localStorage.getItem('ciclo');
     const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-    containerRutaFirebase.style.display = 'block';
+    containerRutaFirebase.style.display = 'flex';
 
     const rutaDinamica = "dinámica";
     containerRutaFirebase.innerHTML = `
