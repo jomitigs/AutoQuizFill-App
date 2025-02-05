@@ -23731,52 +23731,57 @@
 
 
     function guardarRutaDinamica() {
-        const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-        console.log('Guardando ruta...');
-
-        // Obtener todos los select creados dinámicamente
-        const dynamicSelects = document.querySelectorAll('.dynamic-select');
-
-        // Obtener los valores seleccionados en cada select
-        const selectedValues = Array.from(dynamicSelects).map(select => select.value);
-        console.log('Valores seleccionados:', selectedValues);
+        console.log('Guardando ruta dinámica...');
 
         // Obtener configRuta desde localStorage
-        localStorage.getItem('configRuta');
+        const configRuta = localStorage.getItem('configRuta');
         if (!configRuta) {
             console.error('No se encontró configRuta en localStorage.');
             return;
         }
 
-        // Dividir la ruta por "/" y eliminar los últimos dos elementos
+        // Dividir configRuta por "/" y eliminar los últimos dos elementos
         const configRutaParts = configRuta.split('/');
         configRutaParts.splice(-2); // Elimina los últimos dos elementos
         console.log('Partes de configRuta después de eliminar los últimos dos elementos:', configRutaParts);
 
-        // Combinar las partes de configRuta con los valores seleccionados
-        const newRuta = [...configRutaParts, ...selectedValues].join('/');
+        // Obtener los selects de materia y test que son hijos de containerRutaFirebase
+        const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+        const selectMateria = containerRutaFirebase.querySelector('#select-materia');
+        const selectTest = containerRutaFirebase.querySelector('#select-test');
+
+        if (!selectMateria || !selectTest) {
+            console.error('No se encontraron los selects de materia y/o test.');
+            return;
+        }
+
+        // Obtener los valores seleccionados
+        const materiaValue = selectMateria.value;
+        const testValue = selectTest.value;
+        console.log('Valor de materia:', materiaValue);
+        console.log('Valor de test:', testValue);
+
+        // Formar la nueva ruta combinando las partes de configRuta con los valores seleccionados
+        const newRuta = [...configRutaParts, materiaValue, testValue].join('/');
         console.log('Nueva ruta construida:', newRuta);
 
         // Guardar la nueva ruta en sessionStorage
         sessionStorage.setItem('configRutaDinamic', newRuta);
         console.log('Ruta dinámica guardada en sessionStorage:', newRuta);
 
+        // Actualizar el contenido del elemento con id "ruta-configruta"
         const rutaElemento = document.getElementById('ruta-configruta');
-        const configRutaDinamic = sessionStorage.getItem('configRutaDinamic');
-
         if (rutaElemento) {
-            console.log("la ruta es", rutaElemento);
-            // Asignar los valores de configRuta y ciclo en los elementos del DOM
-            rutaElemento.innerHTML = `<span class="label-configruta">Ruta:</span> <span style="font-weight: 500; color: green;">${configRutaDinamic}</span> `;
+            rutaElemento.innerHTML = `
+            <span class="label-configruta">Ruta:</span>
+            <span style="font-weight: 500; color: green;">${newRuta}</span>
+        `;
             console.log("Se ha actualizado el contenido del elemento con ID 'ruta-configruta'.");
-            containerRutaFirebase.style.display = 'block';
-        }
-        else {
-            console.log("El elemento con ID 'ruta-configruta' no existe en el DOM.");
-
+        } else {
+            console.error("El elemento con ID 'ruta-configruta' no existe en el DOM.");
         }
 
-        // Ocultar el contenedor con id "subject-dinamic"
+        // Ocultar el contenedor de selects (con id "subject-dinamic")
         const contenedorSelects = document.getElementById('subject-dinamic');
         if (contenedorSelects) {
             contenedorSelects.style.display = 'none';
@@ -23784,9 +23789,8 @@
         } else {
             console.error('No se encontró el contenedor con id="subject-dinamic".');
         }
-
-        AutoSaveReview_LocalStorage();
     }
+
 
     function actualizarVisibilidadSelects(isVisible) {
         const selects = document.querySelectorAll('.dynamic-select');
