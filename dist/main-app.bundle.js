@@ -43935,7 +43935,7 @@
             <!-- Nuevo contenedor para AutoFill-->
             <div id="container-autofill" class="subcontainer-autoquiz-autofill" style="display: none;">
 
-                <div class="header-autoquiz">
+                <div id="header-autofill" class="header-autoquiz">
                     <h2 id="titulo-autoquiz">AutoFill</h2>
 
                     <label class="switch-autoquiz">
@@ -43958,7 +43958,7 @@
             <!-- Contenedor para AutoSave -->
             <div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
 
-                <div id="header-autosave">
+                <div id="header-autosave" class="header-autoquiz">
 
                     <!-- Título y Switch -->
                     <h2 id="titulo-autoquiz">AutoSave</h2>
@@ -43967,7 +43967,7 @@
                         <input type="checkbox" id="switch-autosave">
                         <span class="slider round"></span>
                     </label>
-                    
+
                 </div>
 
                 <!-- Contenido de AutoSave -->
