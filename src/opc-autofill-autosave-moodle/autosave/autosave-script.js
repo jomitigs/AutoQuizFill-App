@@ -332,16 +332,25 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     html += '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
 
                     // Buscamos el elemento de esa pregunta dentro del contenedor
-                    const existingElement = container.querySelector(`#${key}`);
-                    if (existingElement) {
+                    let updatedElement = container.querySelector(`#${key}`);
+                    if (updatedElement) {
                         // Si existe, actualizamos su contenido sin modificar el resto
-                        existingElement.outerHTML = html;
+                        updatedElement.outerHTML = html;
+                        // Luego, reobtenemos el elemento actualizado
+                        updatedElement = container.querySelector(`#${key}`);
                     } else {
                         // Si no existe, creamos un nodo a partir del HTML y lo insertamos al final
                         const tempContainer = document.createElement('div');
                         tempContainer.innerHTML = html;
-                        container.appendChild(tempContainer.firstElementChild);
+                        updatedElement = tempContainer.firstElementChild;
+                        container.appendChild(updatedElement);
                     }
+                    
+                    // Enfocamos la pregunta actualizada desplazando la vista hacia ella
+                    if (updatedElement && typeof updatedElement.scrollIntoView === 'function') {
+                        updatedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
                     return resolve();
                 } else {
                     console.warn(`No se encontró la información para ${key} en los datos guardados.`);
@@ -371,7 +380,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
                         .filter(Boolean)
                         .map(processContent)
-                        .join('') || '<em>___________</em>';
+                        .join('') || '<em>________-----------</em>';
                     html += `<div class="respuestasautosave">${respuestas}</div>`;
                 }
                 return html + '<hr style="margin-top: 5px; margin-bottom: 0px;"></div>';
@@ -398,8 +407,8 @@ function formatResponseOptions(options, selected) {
 function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
     return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-        .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-        .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
-        .replace(/(\r\n|\n|\r)/g, '<br>');
+                  .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
+                  .replace(/<math[^>]*>[\s\S]*?<\/math>/g, '<span style="font-size: 1.5em;">$&</span>')
+                  .replace(/(\r\n|\n|\r)/g, '<br>');
 }
 
