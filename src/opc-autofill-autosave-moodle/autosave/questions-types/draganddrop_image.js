@@ -1,34 +1,5 @@
-import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
+import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
-// Manejar respuestas tipo 'input text' (respuesta corta)
- export async function inputtext_respuestacorta(originalFormulationClearfix, questionsAutoSave) {
-    const tipo = 'inputtext_respuestacorta';
-    const respuestas = questionsAutoSave.respuestas;
-    let hayRespuestaLleno = false;
-
-    const clonFormulation = originalFormulationClearfix.cloneNode(true);
-    // Convierte las imágenes dentro del clon a formato Data URI
-    await convertImgToDataUri(clonFormulation);
-
-    const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
-
-    allInputText.forEach((inputText) => {
-        const valor = inputText.value;
-        respuestas.push(valor);
-
-        if (valor) {
-            hayRespuestaLleno = true;
-        }
-    });
-
-    if (hayRespuestaLleno) {
-        questionsAutoSave.html = clonFormulation.outerHTML; // Guardar el HTML del clon
-        questionsAutoSave.tipo = tipo;
-        const feedback = await feedbackQuestion(originalFormulationClearfix);
-        questionsAutoSave.feedback = feedback;
-        questionsAutoSave.ciclo = localStorage.getItem("ciclo");
-    }
-}
  // Manejar respuestas tipo 'draganddrop' (image)
  export async function draganddrop_image(originalFormulationClearfix, questionsAutoSave) {
     const tipo = 'draganddrop_image';
@@ -39,7 +10,7 @@ import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '..
 
     const clonFormulation = originalFormulationClearfix.cloneNode(true);
     // Convierte las imágenes dentro del clon a formato Data URI
-    await convertImgToDataUri(clonFormulation);
+    await File2DataUri(clonFormulation);
 
     // Seleccionar todos los elementos con la clase 'place' dentro de 'qtext' usando un selector más genérico
     const qtextZones = originalFormulationClearfix.querySelectorAll('[class*="dropzone"][class*="group"][class*="place"]');

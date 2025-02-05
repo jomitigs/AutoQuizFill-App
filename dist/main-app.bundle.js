@@ -42781,65 +42781,6 @@
       return 'otroscasos';
     }
 
-    async function convertImgToDataUri(clonFormulation) {
-      const images = clonFormulation.querySelectorAll('img');
-
-      for (const img of images) {
-        if (img.src === 'https://profes.ac/pub/logoap.svg') {
-          img.remove(); // Eliminar la imagen no deseada
-          // console.log('Imagen eliminada:', img.src);
-        } else if (img.src.includes('pluginfile.php')) { // Convertir solo si la URL contiene 'pluginfile.php'
-          try {
-            // Convertir a Data URI las imágenes que contienen 'pluginfile.php'
-            // console.log('Convirtiendo imagen (pluginfile.php):', img.src);
-
-            await new Promise((resolve, reject) => {
-              if (img.complete) {
-                resolve();
-              } else {
-                img.onload = resolve;
-                img.onerror = reject;
-              }
-            });
-
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-
-            context.drawImage(img, 0, 0);
-            const dataUri = canvas.toDataURL();
-            img.src = dataUri;
-            // console.log('Imagen convertida a Data URI:', img.src);
-
-          } catch (error) {
-            console.error('Error en la conversión de la imagen:', error);
-          }
-        } else ;
-      }
-    }
-
-    function convertImageToDataUri(src) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = src;
-
-        img.onload = function () {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.width = img.naturalWidth;
-          canvas.height = img.naturalHeight;
-          context.drawImage(img, 0, 0);
-          const dataUri = canvas.toDataURL();
-          resolve(dataUri);
-        };
-
-        img.onerror = function () {
-          reject('Error en la conversión a Data URI');
-        };
-      });
-    }
-
     async function File2DataUri(files) {
       let imagenes = [];
       let audios = [];
@@ -43048,19 +42989,6 @@
       return content;
     }
 
-
-    /******************************************************
-     * autofill-autosave-helpers.js
-     * 
-     * Se encarga de exportar la función `renderizarPreguntas`,
-     * la cual llama a la función KaTeX auto-render (renderMathInElement)
-     * sobre el contenedor con id "barra-lateral-autoquizfillapp".
-     ******************************************************/
-
-    /**
-     * Renderiza expresiones LaTeX en el contenedor con id "barra-lateral-autoquizfillapp"
-     * usando KaTeX auto-render.
-     */
     function renderizarPreguntas() {
       // 1. Verificar si existe la función renderMathInElement en window.
       if (typeof window.renderMathInElement !== 'function') {
@@ -43097,7 +43025,7 @@
 
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
         // Convierte las imágenes dentro del clon a formato Data URI
-        await convertImgToDataUri(clonFormulation);
+        await File2DataUri(clonFormulation);
 
         // Seleccionar todos los elementos con la clase 'place' dentro de 'qtext' usando un selector más genérico
         const qtextZones = originalFormulationClearfix.querySelectorAll('[class*="dropzone"][class*="group"][class*="place"]');
@@ -43140,7 +43068,7 @@
 
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
         // Convierte las imágenes dentro del clon a formato Data URI
-        await convertImgToDataUri(clonFormulation);
+        await File2DataUri(clonFormulation);
 
         // Seleccionar todos los elementos con la clase 'place' dentro de 'qtext' usando un selector más genérico
         const qtextPlaces = originalFormulationClearfix.querySelectorAll('[class*="place"][class*="drop"][class*="group"]');
@@ -43387,7 +43315,7 @@
         const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
         // Convertimos las imágenes del clon a formato Data URI.
-        await convertImgToDataUri(clonFormulation);
+        await File2DataUri(clonFormulation);
 
         // Extraemos el enunciado (por ejemplo, contenido dentro de un elemento con clase .qtext).
         const enunciadoElement = clonFormulation.querySelector('.qtext');

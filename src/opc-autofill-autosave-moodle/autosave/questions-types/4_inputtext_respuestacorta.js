@@ -1,4 +1,4 @@
-import { feedbackQuestion, convertImgToDataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
+import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
 /**
  * Función para procesar preguntas de respuesta corta (input text).
@@ -16,7 +16,7 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
     const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
     // Convertimos las imágenes del clon a formato Data URI.
-    await convertImgToDataUri(clonFormulation);
+    await File2DataUri(clonFormulation);
 
     // Extraemos el enunciado (por ejemplo, contenido dentro de un elemento con clase .qtext).
     const enunciadoElement = clonFormulation.querySelector('.qtext');

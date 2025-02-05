@@ -1,5 +1,5 @@
 import { draganddrop_image } from './questions-types/draganddrop_image.js';
-import { draganddrop_text } from './questions-types/draganddrop_text.js';
+import { draganddrop_text } from './questions-types/5_draganddrop_text.js';
 import { inputchecked_opcionmultiple } from './questions-types/2_inputchecked_opcionmultiple.js';
 import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_inputradio_opcionmultiple_verdaderofalso.js';
 import { inputtext_respuestacorta } from './questions-types/4_inputtext_respuestacorta.js';
