@@ -220,25 +220,38 @@ async function actualizaConfigRutaDinamic(ruta, containerRutaFirebase) {
 
         // ** 6. Verificar y Actualizar ConfigRutaDinamic **
         if (materiaValor && testClave) {
+            console.log("Se tienen valores para materiaValor y testClave:", materiaValor, testClave);
+        
             // Dividir la configuración de ruta en partes
             const rutaSplit = ruta.split('/');
+            console.log("La ruta se ha dividido en partes:", rutaSplit);
+        
             // Reemplazar las últimas dos partes con materiaValor y testClave
             rutaSplit[rutaSplit.length - 2] = materiaValor;
+            console.log("Se ha reemplazado la penúltima parte de la ruta con materiaValor:", rutaSplit);
+            
             rutaSplit[rutaSplit.length - 1] = testClave;
-
+            console.log("Se ha reemplazado la última parte de la ruta con testClave:", rutaSplit);
+        
             // Unir las partes para formar la nueva configuración de ruta
             const rutaDinamica = rutaSplit.join('/');
+            console.log("La nueva ruta dinámica es:", rutaDinamica);
+        
             // Almacenar la configuración actualizada en sessionStorage
             sessionStorage.setItem('configRutaDinamic', rutaDinamica);
-
+            console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
+        
+            // Actualizar el contenido de containerRutaFirebase
             containerRutaFirebase.innerHTML = `
-            <div>
-              <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
-            </div>
-          `;
-
-           return;
+              <div>
+                <span class="title">Ruta:</span> <span class="label">${rutaDinamica}</span>
+              </div>
+            `;
+            console.log("El contenido de containerRutaFirebase se ha actualizado con la ruta:", rutaDinamica);
+        
+            return;
         }
+        
 
         else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
             document.getElementById("container-ruta-dinamica").style.display = "block";
