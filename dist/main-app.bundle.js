@@ -23672,7 +23672,7 @@
 
                     // Crear el elemento select con la clase común "select-ruta" y un id único
                     const selectElement = document.createElement('select');
-                    selectElement.classList.add('dynamic-select', 'select-ruta');
+                    selectElement.classList.add('select-ruta');
                     selectElement.id = id;
                     selectElement.style.display = 'block';
 
