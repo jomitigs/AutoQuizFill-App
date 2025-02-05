@@ -72,10 +72,8 @@
 #container-autofillautosave {
     display: flex;
     flex-direction: column; /* Los contenedores internos se apilan verticalmente */
-    height: calc(100vh - 20px); /* Ocupa el alto disponible restando márgenes/paddings externos si los hay */
     gap: 5px; /* Espacio entre contenedores */
     padding: 10px; /* Opcional: para que no esté pegado al borde de la ventana */
-    box-sizing: border-box; /* Incluye padding en el cálculo del alto */
   }
   
   /* Agrupamos las reglas compartidas para ambos subcontenedores */
