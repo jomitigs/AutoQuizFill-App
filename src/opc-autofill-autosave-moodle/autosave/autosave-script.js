@@ -496,7 +496,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                    // });
 
                     // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
-                    enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
+                    enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
 
                     // Agregar al HTML el bloque con el enunciado modificado
                     html += `<div class="enunciado">${enunciado}</div>`;
