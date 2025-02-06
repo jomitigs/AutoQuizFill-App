@@ -43015,25 +43015,20 @@
 	    await File2DataUri(clonFormulation);
 
 	    // --- Preprocesado del clon antes de extraer el enunciado ---
-	    // 1. Reemplazar los <span> que contengan "place", "drop" y "group" por "[ ]"
-	    const spansToReplace = clonFormulation.querySelectorAll('span[class*="place"][class*="drop"][class*="group"]');
-	    spansToReplace.forEach(span => {
-	        const replacementText = document.createTextNode('[ ]');
-	        span.parentNode.replaceChild(replacementText, span);
-	    });
-
-	    // 2. Eliminar cualquier <span> con clase "draghome" que se encuentre dentro del enunciado
+	    // 1. Reemplazar los <span> por "[ ]"
 	    const enunciadoElement = clonFormulation.querySelector('.qtext');
-	    if (enunciadoElement) {
-	        const draghomeSpans = enunciadoElement.querySelectorAll('span.draghome');
-	        draghomeSpans.forEach(span => span.remove());
-	    } else {
-	        console.log("No se encontró el elemento .qtext para el preprocesado del enunciado.");
+
+	    if (enunciadoElement) {  // Verifica que el elemento existe en el clon
+	        const replacementText = document.createTextNode('[ ]');
+	        enunciadoElement.parentNode.replaceChild(replacementText, enunciadoElement);
 	    }
+	    
+
 	    // --- Fin del preprocesado ---
 
 	    // Extraer el enunciado (ya modificado) del elemento con clase .qtext
 	    let enunciado = '';
+	    
 	    if (enunciadoElement) {
 	        enunciado = await extractContentInOrder(enunciadoElement);
 	    } else {
