@@ -17,17 +17,26 @@ export async function draganddrop_text(originalFormulationClearfix) {
  // --- Preprocesado del clon antes de extraer el enunciado ---
 console.log("Iniciando el preprocesado del clon...");
 
-// 1. Reemplazar los <span> por "[ ]"
+// 1. Seleccionar el enunciado dentro del clon
 const enunciadoElement = clonFormulation.querySelector('.qtext');
 
-if (enunciadoElement) {  // Verifica que el elemento existe en el clon
+if (enunciadoElement) {
     console.log("Elemento .qtext encontrado dentro del clon.");
 
-    const replacementText = document.createTextNode('[ ]');
-    console.log("Nodo de texto '[ ]' creado.");
+    // Seleccionar todos los <span> que contienen 'place' en su clase, sin importar el número
+    const placeholders = enunciadoElement.querySelectorAll('span[class*="place"]');
 
-    enunciadoElement.parentNode.replaceChild(replacementText, enunciadoElement);
-    console.log("Reemplazado el elemento .qtext por '[ ]' en el clon.");
+    placeholders.forEach(span => {
+        console.log("Reemplazando un placeholder con '[ ]'.");
+
+        // Crear un nodo de texto con los corchetes
+        const replacementText = document.createTextNode(' [ ] ');
+
+        // Reemplazar el <span> con el nodo de texto
+        span.parentNode.replaceChild(replacementText, span);
+    });
+
+    console.log(`Se han reemplazado ${placeholders.length} placeholders.`);
 } else {
     console.log("No se encontró el elemento .qtext dentro del clon.");
 }
