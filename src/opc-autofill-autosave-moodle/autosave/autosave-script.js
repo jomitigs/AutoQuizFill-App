@@ -235,19 +235,19 @@ function detectarCambiosPreguntas() {
         },
 
         onend: async function (event) {
-            console.log('Arrastre finalizado para:', event.target);
+            // console.log('Arrastre finalizado para:', event.target);
 
             // Detectar la posición donde se soltó el elemento (opcional)
             const dropX = event.pageX;
             const dropY = event.pageY;
-            console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
+            // console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
 
             const dropzone = document.elementFromPoint(dropX, dropY);
             if (dropzone) {
                 console.log('Elemento soltado sobre:', dropzone);
                 console.log('Clases del área donde se soltó:', dropzone.classList);
             } else {
-                console.log('No se detectó una dropzone específica.');
+               //  console.log('No se detectó una dropzone específica.');
             }
 
             // Si el elemento soltado está dentro de la barra lateral, se ignora

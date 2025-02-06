@@ -43031,6 +43031,7 @@
 	        console.log("No se encontró el elemento .qtext para el preprocesado del enunciado.");
 	    }
 	    // --- Fin del preprocesado ---
+	    console.log("Enunciado Before", enunciadoElement);
 
 	    // Extraer el enunciado (ya modificado) del elemento con clase .qtext
 	    let enunciado = '';
@@ -43039,7 +43040,7 @@
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
-
+	    console.log("Enunciado After",enunciado );
 	    // Extraer las opciones de respuesta únicas a partir del div con clase "user-select-none draggrouphomes1"
 	    const opcionesRespuestas = [];
 	    const divOpciones = clonFormulation.querySelectorAll('div.user-select-none.draggrouphomes1');
@@ -43716,19 +43717,17 @@
 	        },
 
 	        onend: async function (event) {
-	            console.log('Arrastre finalizado para:', event.target);
+	            // console.log('Arrastre finalizado para:', event.target);
 
 	            // Detectar la posición donde se soltó el elemento (opcional)
 	            const dropX = event.pageX;
 	            const dropY = event.pageY;
-	            console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
+	            // console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
 
 	            const dropzone = document.elementFromPoint(dropX, dropY);
 	            if (dropzone) {
 	                console.log('Elemento soltado sobre:', dropzone);
 	                console.log('Clases del área donde se soltó:', dropzone.classList);
-	            } else {
-	                console.log('No se detectó una dropzone específica.');
 	            }
 
 	            // Si el elemento soltado está dentro de la barra lateral, se ignora

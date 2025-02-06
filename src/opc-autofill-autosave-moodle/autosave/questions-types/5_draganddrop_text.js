@@ -31,6 +31,7 @@ export async function draganddrop_text(originalFormulationClearfix) {
         console.log("No se encontró el elemento .qtext para el preprocesado del enunciado.");
     }
     // --- Fin del preprocesado ---
+    console.log("Enunciado Before", enunciadoElement);
 
     // Extraer el enunciado (ya modificado) del elemento con clase .qtext
     let enunciado = '';
@@ -39,7 +40,7 @@ export async function draganddrop_text(originalFormulationClearfix) {
     } else {
         console.log("No se encontró el elemento .qtext para extraer el enunciado.");
     }
-
+    console.log("Enunciado After",enunciado );
     // Extraer las opciones de respuesta únicas a partir del div con clase "user-select-none draggrouphomes1"
     const opcionesRespuestas = [];
     const divOpciones = clonFormulation.querySelectorAll('div.user-select-none.draggrouphomes1');
