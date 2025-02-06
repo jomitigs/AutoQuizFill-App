@@ -227,38 +227,42 @@ function detectarCambiosPreguntas() {
 
     // 2. Configura los elementos "draghome" para que sean arrastrables
     interact('.draghome').draggable({
-        inertia: true, // Movimiento con inercia
+        // Habilita la inercia para que el elemento no se detenga en seco
+        inertia: true,
 
+        // Ocurre mientras se arrastra el elemento
         onmove: function (event) {
-            // Si deseas, puedes agregar lógica mientras se arrastra
-            // console.log('Elemento arrastrado:', event.target);
+          // Si deseas, agrega aquí la lógica para mover manualmente el elemento
+          // console.log('Elemento arrastrado:', event.target);
         },
 
-        onend: async function (event) {
-            // console.log('Arrastre finalizado para:', event.target);
+        // Ocurre cuando se suelta el elemento
+        onend: function (event) {
+          // Detecta las coordenadas donde se soltó
+          const dropX = event.pageX;
+          const dropY = event.pageY;
 
-            // Detectar la posición donde se soltó el elemento (opcional)
-            const dropX = event.pageX;
-            const dropY = event.pageY;
-            // console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
+          // Localiza el elemento que está en esas coordenadas (posible dropzone)
+          const dropzone = document.elementFromPoint(dropX, dropY);
+          if (dropzone) {
+            // console.log('Elemento soltado sobre:', dropzone);
+          } else {
+            // console.log('No se detectó una dropzone específica.');
+          }
 
-            const dropzone = document.elementFromPoint(dropX, dropY);
-            if (dropzone) {
-                //console.log('Elemento soltado sobre:', dropzone);
-               // console.log('Clases del área donde se soltó:', dropzone.classList);
-            } else {
-               //  console.log('No se detectó una dropzone específica.');
-            }
+          // Verifica si el elemento arrastrado se soltó dentro de la barra lateral
+          if (event.target.closest('#barra-lateral-autoquizfillapp')) {
+            // Si está en la barra lateral, no hacemos nada
+            return;
+          }
 
-            // Si el elemento soltado está dentro de la barra lateral, se ignora
-            if (event.target.closest('#barra-lateral-autoquizfillapp')) {
-                return;
-            }
-
-            // Realiza el proceso de autoguardado basado en el elemento arrastrado
+          // ****** RETARDO de 2 segundos antes de autoguardado ******
+          setTimeout(async () => {
+            // Llamamos a la función de autoguardado después de 2s
             await procesoAutoSave(event.target);
+          }, 2000);
         }
-    });
+      });
 }
 
 async function procesoAutoSave(elemento) {
