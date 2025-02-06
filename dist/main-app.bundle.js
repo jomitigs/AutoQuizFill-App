@@ -43014,8 +43014,8 @@
 	    // Convertir las imágenes dentro del clon a formato Data URI
 	    await File2DataUri(clonFormulation);
 
-	 // --- Preprocesado del clon antes de extraer el enunciado ---
-	console.log("Iniciando el preprocesado del clon...2");
+	// --- Preprocesado del clon antes de extraer el enunciado ---
+	console.log("Iniciando el preprocesado del clon...");
 
 	// 1. Seleccionar el enunciado dentro del clon
 	const enunciadoElement = clonFormulation.querySelector('.qtext');
@@ -43029,14 +43029,19 @@
 	    placeholders.forEach(span => {
 	        if (span.classList.contains("place")) {
 	            console.log("Reemplazando un placeholder con '[ ]'.");
-	            // Crear un nodo de texto con los corchetes
+
+	            // Crear un nodo de texto con espacios para mantener el formato
 	            const replacementText = document.createTextNode(' [ ] ');
-	            // Reemplazar el <span> con el nodo de texto
-	            span.parentNode.replaceChild(replacementText, span);
+
+	            // Insertar el nodo de texto antes del span para no perder los espacios
+	            span.parentNode.insertBefore(replacementText, span);
+
+	            // Eliminar el span después de insertar el texto
+	            span.remove();
 	        } else {
 	            console.log("Eliminando un span con clase 'draghome'.");
 	            // Simplemente eliminar el <span> sin reemplazo
-	            span.parentNode.removeChild(span);
+	            span.remove();
 	        }
 	    });
 
