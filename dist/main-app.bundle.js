@@ -43735,7 +43735,7 @@
 	          setTimeout(async () => {
 	            // Llamamos a la función de autoguardado después de 2s
 	            await procesoAutoSave(event.target);
-	          }, 2000);
+	          }, 100);
 	        }
 	      });
 	}
