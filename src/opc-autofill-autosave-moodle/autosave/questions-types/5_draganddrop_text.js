@@ -15,8 +15,8 @@ export async function draganddrop_text(originalFormulationClearfix) {
     await File2DataUri(clonFormulation);
 
     // --- Preprocesado del clon antes de extraer el enunciado ---
-    // 1. Reemplazar los <span> por "[ ]"
-    const spansToReplace = clonFormulation.querySelector('.qtext');
+    // 1. Reemplazar los <span> que contengan "place", "drop" y "group" por "[ ]"
+    const spansToReplace = clonFormulation.querySelectorAll('span[class*="place"][class*="drop"][class*="group"]');
     spansToReplace.forEach(span => {
         const replacementText = document.createTextNode('[ ]');
         span.parentNode.replaceChild(replacementText, span);
