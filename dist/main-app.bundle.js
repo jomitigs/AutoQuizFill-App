@@ -43771,8 +43771,8 @@
 	    inertia: true, // Permite un movimiento más fluido con inercia
 
 	    onmove: function(event) { // Se ejecuta mientras el elemento está siendo arrastrado
-	        console.log('Elemento arrastrado:', event.target);
-	        console.log('Posición actual:', event.pageX, event.pageY); // Muestra la posición del arrastre en la página
+	        //console.log('Elemento arrastrado:', event.target);
+	        //console.log('Posición actual:', event.pageX, event.pageY); // Muestra la posición del arrastre en la página
 	    },
 
 	    onend: function(event) { // Se ejecuta cuando el usuario suelta el elemento
