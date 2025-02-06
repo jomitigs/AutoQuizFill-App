@@ -43015,7 +43015,7 @@
 	    await File2DataUri(clonFormulation);
 
 	// --- Preprocesado del clon antes de extraer el enunciado ---
-	console.log("Iniciando el preprocesado del clon...");
+	console.log("Iniciando el preprocesado del clon...222");
 
 	// 1. Seleccionar el enunciado dentro del clon
 	const enunciadoElement = clonFormulation.querySelector('.qtext');
