@@ -229,25 +229,36 @@ function detectarCambiosPreguntas() {
     interact('.draghome').draggable({
         inertia: true,
       
-        onmove: function(event) {
+        onmove: function (event) {
           // Lógica durante el arrastre (opcional)
+          // console.log('Elemento se está arrastrando:', event.target);
         },
       
-        onend: async function(event) {
+        onend: async function (event) {
+          console.log('Evento onend disparado para:', event.target);
+      
+          // Obtén la posición de soltado
           const dropX = event.pageX;
           const dropY = event.pageY;
-          const dropzone = document.elementFromPoint(dropX, dropY);
+          console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
       
-          // Espera al siguiente frame de animación (un ciclo de render)
+          // Mensaje antes de esperar un frame
+          console.log('Esperando al siguiente ciclo de render (requestAnimationFrame)...');
+      
+          // Espera un "frame" para que el DOM se actualice
           await new Promise(resolve => {
-            requestAnimationFrame(resolve);
+            requestAnimationFrame(() => {
+              console.log('Callback de requestAnimationFrame: Se ha actualizado el DOM.');
+              resolve();
+            });
           });
       
-          // Ahora, el DOM ha tenido tiempo de actualizarse.
-          // Llama a procesoAutoSave
+          console.log('Ahora llamamos a procesoAutoSave...');
           await procesoAutoSave(event.target);
+          console.log('procesoAutoSave finalizado.');
         }
       });
+      
       
 }
 
