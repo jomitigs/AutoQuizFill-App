@@ -14,26 +14,38 @@ export async function draganddrop_text(originalFormulationClearfix) {
     // Convertir las imágenes dentro del clon a formato Data URI
     await File2DataUri(clonFormulation);
 
-    // --- Preprocesado del clon antes de extraer el enunciado ---
-    // 1. Reemplazar los <span> por "[ ]"
-    const enunciadoElement = clonFormulation.querySelector('.qtext');
+ // --- Preprocesado del clon antes de extraer el enunciado ---
+console.log("Iniciando el preprocesado del clon...");
 
-    if (enunciadoElement) {  // Verifica que el elemento existe en el clon
-        const replacementText = document.createTextNode('[ ]');
-        enunciadoElement.parentNode.replaceChild(replacementText, enunciadoElement);
-    }
-    
+// 1. Reemplazar los <span> por "[ ]"
+const enunciadoElement = clonFormulation.querySelector('.qtext');
 
-    // --- Fin del preprocesado ---
+if (enunciadoElement) {  // Verifica que el elemento existe en el clon
+    console.log("Elemento .qtext encontrado dentro del clon.");
 
-    // Extraer el enunciado (ya modificado) del elemento con clase .qtext
-    let enunciado = '';
-    
-    if (enunciadoElement) {
-        enunciado = await extractContentInOrder(enunciadoElement);
-    } else {
-        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
-    }
+    const replacementText = document.createTextNode('[ ]');
+    console.log("Nodo de texto '[ ]' creado.");
+
+    enunciadoElement.parentNode.replaceChild(replacementText, enunciadoElement);
+    console.log("Reemplazado el elemento .qtext por '[ ]' en el clon.");
+} else {
+    console.log("No se encontró el elemento .qtext dentro del clon.");
+}
+
+// --- Fin del preprocesado ---
+console.log("Fin del preprocesado del clon.");
+
+// Extraer el enunciado (ya modificado) del elemento con clase .qtext
+let enunciado = '';
+
+if (enunciadoElement) {
+    console.log("Llamando a extractContentInOrder() para extraer el enunciado...");
+    enunciado = await extractContentInOrder(enunciadoElement);
+    console.log("Enunciado extraído con éxito:", enunciado);
+} else {
+    console.log("No se encontró el elemento .qtext para extraer el enunciado.");
+}
+
 
     // Extraer las opciones de respuesta únicas a partir del div con clase "user-select-none draggrouphomes1"
     const opcionesRespuestas = [];
