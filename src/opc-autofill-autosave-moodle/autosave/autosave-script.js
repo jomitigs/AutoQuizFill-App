@@ -90,7 +90,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         console.error('[AutoSave_SessionStorage] No se pudo ejecutar porque no cumple con los argumentos correctos');
         return;
     }
-    
+
     console.log(`holaaa`);
 
     const funcQuestionType = {
@@ -341,11 +341,123 @@ function AutoSave_ShowResponses(numeroPregunta) {
 
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
-                    if (data.enunciado && data.tipo !== 'draganddrop_text'){
+                    if (data.enunciado && data.tipo !== 'draganddrop_text') {
 
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 
                     }
+
+                    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+                        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+                            html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+                        }
+                    } else if (data.tipo === 'select_emparejamiento') {
+                        if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
+                            html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+                                const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
+                                return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
+                            }).join('') + `</div>`;
+                        }
+                    } else if (data.tipo === 'inputtext_respuestacorta') {
+
+                        const isArray = Array.isArray(data.respuestaCorrecta);
+                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
+                        const filteredRespuestas = respuestaArray.filter(Boolean);
+                        const processedRespuestas = filteredRespuestas.map(processContent);
+                        const joinedRespuestas = processedRespuestas.join('');
+                        const respuestas = joinedRespuestas || '<em>___________</em>';
+
+                        // Agregar al HTML el bloque con las respuestas
+                        html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
+
+                    }
+                    else if (data.tipo === 'draganddrop_text') {
+                        // Verificar si la respuesta correcta es un array o un único valor
+                        const isArray = Array.isArray(data.respuestaCorrecta);
+                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
+
+                        // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
+                        let enunciado = data.enunciado;
+
+                        // Reemplazar cada marcador "[ ]" encontrado por la respuesta formateada.
+                        respuestaArray.forEach(respuesta => {
+                            // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
+                            enunciado = enunciado.replace(/\[\s*\]/,
+                                `<span style="font-weight:500;">[</span>` +
+                                `<span style="color:MediumBlue;">${respuesta}</span>` +
+                                `<span style="font-weight:500;">]</span>`
+                            );
+                        });
+
+                        // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
+                        enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
+
+                        // Agregar al HTML el bloque con el enunciado modificado
+                        html += `<div class="enunciado">${enunciado}</div>`;
+                    }
+
+
+                    // Se recupera el objeto guardado y se parsea
+                    // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
+                    let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
+
+                    // Obtenemos las claves del objeto
+                    let keysPreguntas = Object.keys(preguntas);
+
+                    // Calculamos el número máximo de pregunta extrayendo el número de cada clave
+                    let maxNumero = 0;
+                    keysPreguntas.forEach(function (key) {
+                        // Suponemos que la clave tiene el formato "PreguntaXX"
+                        var num = parseInt(key.replace('Pregunta', ''), 10);
+                        if (num > maxNumero) {
+                            maxNumero = num;
+                        }
+                    });
+
+                    // Si el número de la pregunta actual no es el último, agregamos el <hr>
+                    if (numeroPregunta < maxNumero) {
+                        html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
+                    }
+
+                    // Buscamos el elemento de esa pregunta dentro del contenedor
+                    let updatedElement = container.querySelector(`#${key}`);
+                    if (updatedElement) {
+                        // Si existe, actualizamos su contenido sin modificar el resto
+                        updatedElement.outerHTML = html;
+                        // Luego, reobtenemos el elemento actualizado
+                        updatedElement = container.querySelector(`#${key}`);
+                    } else {
+                        // Si no existe, creamos un nodo a partir del HTML y lo insertamos al final
+                        const tempContainer = document.createElement('div');
+                        tempContainer.innerHTML = html;
+                        updatedElement = tempContainer.firstElementChild;
+                        container.appendChild(updatedElement);
+                    }
+
+                    // Enfocamos la pregunta actualizada desplazando la vista hacia ella
+                    if (updatedElement && typeof updatedElement.scrollIntoView === 'function') {
+                        updatedElement.scrollIntoView({ behavior: 'auto', block: 'center' });
+                    }
+
+                    return resolve();
+                } else {
+                    console.warn(`No se encontró la información para ${key} en los datos guardados.`);
+                    return resolve();
+                }
+            }
+
+            // Si no se recibió un parámetro, procesamos y mostramos TODAS las respuestas
+            const entries = Object.entries(responses);
+            container.innerHTML = entries.map(([key, data], index, array) => {
+                const questionNumber = key.replace(/\D/g, '');
+                let html = `<div class="preguntaautosave" id="${key}">`;
+
+                
+                if (data.enunciado && data.tipo !== 'draganddrop_text') {
+
+                    html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
+
+                }
 
                 if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                     if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
@@ -359,132 +471,46 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         }).join('') + `</div>`;
                     }
                 } else if (data.tipo === 'inputtext_respuestacorta') {
-
-                    const isArray = Array.isArray(data.respuestaCorrecta);
-                    const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-                    const filteredRespuestas = respuestaArray.filter(Boolean);
-                    const processedRespuestas = filteredRespuestas.map(processContent);
-                    const joinedRespuestas = processedRespuestas.join('');
-                    const respuestas = joinedRespuestas || '<em>___________</em>';
-
-                    // Agregar al HTML el bloque con las respuestas
-                    html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
-
-                } 
-                else if (data.tipo === 'draganddrop_text') {
+                    const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
+                        .filter(Boolean)
+                        .map(processContent)
+                        .join('') || '<em>________-----------</em>';
+                    html += `<div class="respuestasautosave">${respuestas}</div>`;
+                } else if (data.tipo === 'draganddrop_text') {
                     // Verificar si la respuesta correcta es un array o un único valor
                     const isArray = Array.isArray(data.respuestaCorrecta);
                     const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-                
+
                     // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
                     let enunciado = data.enunciado;
-                
+
                     // Reemplazar cada marcador "[ ]" encontrado por la respuesta formateada.
                     respuestaArray.forEach(respuesta => {
                         // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
-                        enunciado = enunciado.replace(/\[\s*\]/, 
+                        enunciado = enunciado.replace(/\[\s*\]/,
                             `<span style="font-weight:500;">[</span>` +
                             `<span style="color:MediumBlue;">${respuesta}</span>` +
                             `<span style="font-weight:500;">]</span>`
                         );
                     });
-                
+
                     // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
                     enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
-                
+
                     // Agregar al HTML el bloque con el enunciado modificado
                     html += `<div class="enunciado">${enunciado}</div>`;
                 }
-                
-
-                // Se recupera el objeto guardado y se parsea
-                // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
-                let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
-
-                // Obtenemos las claves del objeto
-                let keysPreguntas = Object.keys(preguntas);
-
-                // Calculamos el número máximo de pregunta extrayendo el número de cada clave
-                let maxNumero = 0;
-                keysPreguntas.forEach(function (key) {
-                    // Suponemos que la clave tiene el formato "PreguntaXX"
-                    var num = parseInt(key.replace('Pregunta', ''), 10);
-                    if (num > maxNumero) {
-                        maxNumero = num;
-                    }
-                });
-
-                // Si el número de la pregunta actual no es el último, agregamos el <hr>
-                if (numeroPregunta < maxNumero) {
-                    html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
-                }
-
-
-
-                // Buscamos el elemento de esa pregunta dentro del contenedor
-                let updatedElement = container.querySelector(`#${key}`);
-                if (updatedElement) {
-                    // Si existe, actualizamos su contenido sin modificar el resto
-                    updatedElement.outerHTML = html;
-                    // Luego, reobtenemos el elemento actualizado
-                    updatedElement = container.querySelector(`#${key}`);
-                } else {
-                    // Si no existe, creamos un nodo a partir del HTML y lo insertamos al final
-                    const tempContainer = document.createElement('div');
-                    tempContainer.innerHTML = html;
-                    updatedElement = tempContainer.firstElementChild;
-                    container.appendChild(updatedElement);
-                }
-
-                // Enfocamos la pregunta actualizada desplazando la vista hacia ella
-                if (updatedElement && typeof updatedElement.scrollIntoView === 'function') {
-                    updatedElement.scrollIntoView({ behavior: 'auto', block: 'center' });
-                }
-
-                return resolve();
-            } else {
-                console.warn(`No se encontró la información para ${key} en los datos guardados.`);
-                return resolve();
-            }
+                // Solo agregamos la línea separadora si NO es el último elemento
+                html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>' : '</div>';
+                return html;
+            }).join('');
+            resolve();
+        } catch (error) {
+            console.error('Error al parsear las respuestas:', error);
+            container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+            reject(error);
         }
-
-            // Si no se recibió un parámetro, procesamos y mostramos TODAS las respuestas
-            const entries = Object.entries(responses);
-        container.innerHTML = entries.map(([key, data], index, array) => {
-            const questionNumber = key.replace(/\D/g, '');
-            let html = `<div class="preguntaautosave" id="${key}">`;
-            if (data.enunciado) {
-                html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
-            }
-            if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
-                if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-                    html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
-                }
-            } else if (data.tipo === 'select_emparejamiento') {
-                if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
-                    html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
-                        const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
-                        return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
-                    }).join('') + `</div>`;
-                }
-            } else if (data.tipo === 'inputtext_respuestacorta') {
-                const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
-                    .filter(Boolean)
-                    .map(processContent)
-                    .join('') || '<em>________-----------</em>';
-                html += `<div class="respuestasautosave">${respuestas}</div>`;
-            }
-            // Solo agregamos la línea separadora si NO es el último elemento
-            html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>' : '</div>';
-            return html;
-        }).join('');
-        resolve();
-    } catch (error) {
-        console.error('Error al parsear las respuestas:', error);
-        container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
-        reject(error);
-    }
-});
+    });
 }
 
 // Función auxiliar que formatea las opciones de respuesta (ya la tienes definida)
