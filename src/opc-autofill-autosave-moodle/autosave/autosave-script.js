@@ -238,11 +238,6 @@ function detectarCambiosPreguntas() {
           const dropY = event.pageY;
           const dropzone = document.elementFromPoint(dropX, dropY);
       
-          // Verifica si el elemento está en la barra lateral
-          if (event.target.closest('#barra-lateral-autoquizfillapp')) {
-            return;
-          }
-      
           // Espera al siguiente frame de animación (un ciclo de render)
           await new Promise(resolve => {
             requestAnimationFrame(resolve);
