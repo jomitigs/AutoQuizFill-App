@@ -4,7 +4,7 @@ import { inputchecked_opcionmultiple } from './questions-types/2_inputchecked_op
 import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_inputradio_opcionmultiple_verdaderofalso.js';
 import { inputtext_respuestacorta } from './questions-types/4_inputtext_respuestacorta.js';
 import { select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
-
+import interact from 'interactjs';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas } from '../autofill-autosave-helpers.js';
 
 // Exporta una función llamada contenedorAutoSave_js
