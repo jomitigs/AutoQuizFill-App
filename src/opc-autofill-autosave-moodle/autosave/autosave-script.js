@@ -209,8 +209,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
 function detectarCambiosPreguntas() {
     console.log('hola');
 
-
-    // Selecciona todos los inputs y selects que quieres escuchar
+    // 1. Escucha los cambios en inputs, selects y checkboxes
     const elementos = document.querySelectorAll(
         'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
     );
@@ -224,97 +223,106 @@ function detectarCambiosPreguntas() {
 
             console.log('[opc-autofill-autosave-moodle: autosave] Cambio detectado');
 
-            // Verificamos si 'questions-AutoSave' existe en sessionStorage
-            let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
-
-            if (!questionsAutoSaveStr) {
-                console.log("'questions-AutoSave' no existe. Llamando a AutoSave_SessionStorage por primera vez.");
-                // Si NO existe, llamamos la función general y guardamos todo por primera vez
-                const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-                await AutoSave_SessionStorage(originalAllFormulations);
-                await AutoSave_ShowResponses();
-
-                // **Aquí** se llama a la función para renderizar expresiones LaTeX
-                // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
-                renderizarPreguntas();
-
-            } else {
-                // Si SÍ existe, lo parseamos
-                const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
-
-                // Ubicamos la .formulation.clearfix donde ocurrió el cambio
-                const formulation = event.target.closest('.formulation.clearfix');
-
-                if (!formulation) {
-                    console.warn('No se encontró el elemento .formulation.clearfix cercano. Saliendo.');
-                    return; // Si por algún motivo no lo encuentra, salimos
-                }
-
-                // Obtenemos el número de la pregunta (por ejemplo con getQuestionNumber)
-                const numeroPregunta = getQuestionNumber(formulation);
-
-                console.log('[opc-autofill-autosave-moodle: autosave] Actualizando Pregunta', numeroPregunta);
-                if (!numeroPregunta) {
-                    console.warn('No se pudo obtener el número de pregunta. Saliendo.');
-                    return; // Si no lo obtienes, salimos
-                }
-
-                // Construimos la llave, por ejemplo "Pregunta1", "Pregunta2", etc.
-                const preguntaKey = `Pregunta${numeroPregunta}`;
-
-                // Revisamos si esa pregunta ya existe en el objeto guardado
-                if (questionsAutoSave[preguntaKey]) {
-                    // Recuperamos ese objeto (ya contiene "tipo", "html", etc.)
-                    const preguntaObj = questionsAutoSave[preguntaKey];
-
-                    // Llamamos la versión reducida que actualiza SOLO ESTA PREGUNTA
-                    await AutoSave_SessionStorage(formulation, numeroPregunta);
-
-                    console.log('AutoSave_ShowResponses iniciado');
-                    await AutoSave_ShowResponses(numeroPregunta);
-
-                    // **Aquí** se llama a la función para renderizar expresiones LaTeX
-                    // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
-                    renderizarPreguntas();
-                } else {
-                    console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
-                    // Si no encuentra la pregunta, podemos forzar a guardar todo de nuevo
-                }
-            }
+            // Realiza el proceso de autoguardado
+            await procesoAutoSave(event.target);
         });
     });
 
+    // 2. Configura los elementos "draghome" para que sean arrastrables
+    interact('.draghome').draggable({
+        inertia: true, // Movimiento con inercia
 
-    // Hacer que los elementos con la clase 'draghome' sean arrastrables
-interact('.draghome').draggable({
-    inertia: true, // Permite un movimiento más fluido con inercia
+        onmove: function (event) {
+            // Si deseas, puedes agregar lógica mientras se arrastra
+            // console.log('Elemento arrastrado:', event.target);
+        },
 
-    onmove: function(event) { // Se ejecuta mientras el elemento está siendo arrastrado
-        //console.log('Elemento arrastrado:', event.target);
-        //console.log('Posición actual:', event.pageX, event.pageY); // Muestra la posición del arrastre en la página
-    },
+        onend: async function (event) {
+            console.log('Arrastre finalizado para:', event.target);
 
-    onend: function(event) { // Se ejecuta cuando el usuario suelta el elemento
-        console.log('Arrastre finalizado para:', event.target);
+            // Detectar la posición donde se soltó el elemento (opcional)
+            const dropX = event.pageX;
+            const dropY = event.pageY;
+            console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
 
-        // Detectar el punto donde se soltó el elemento
-        const dropX = event.pageX;
-        const dropY = event.pageY;
-        console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
+            const dropzone = document.elementFromPoint(dropX, dropY);
+            if (dropzone) {
+                console.log('Elemento soltado sobre:', dropzone);
+                console.log('Clases del área donde se soltó:', dropzone.classList);
+            } else {
+                console.log('No se detectó una dropzone específica.');
+            }
 
-        // Verificar si se soltó dentro de una dropzone válida
-        const dropzone = document.elementFromPoint(dropX, dropY);
-        if (dropzone) {
-            console.log('Elemento soltado sobre:', dropzone);
-            console.log('Clases del área donde se soltó:', dropzone.classList);
+            // Si el elemento soltado está dentro de la barra lateral, se ignora
+            if (event.target.closest('#barra-lateral-autoquizfillapp')) {
+                return;
+            }
+
+            // Realiza el proceso de autoguardado basado en el elemento arrastrado
+            await procesoAutoSave(event.target);
+        }
+    });
+}
+
+/**
+ * Función auxiliar para realizar el proceso de autoguardado
+ * @param {HTMLElement} elemento El elemento que disparó el evento
+ */
+async function procesoAutoSave(elemento) {
+    // Verifica si 'questions-AutoSave' existe en sessionStorage
+    let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
+
+    if (!questionsAutoSaveStr) {
+        console.log("'questions-AutoSave' no existe. Llamando a AutoSave_SessionStorage por primera vez.");
+        // Si no existe, se guarda todo de una vez
+        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+        await AutoSave_SessionStorage(originalAllFormulations);
+        await AutoSave_ShowResponses();
+
+        // Llamada para renderizar expresiones LaTeX (u otro proceso similar)
+        renderizarPreguntas();
+    } else {
+        // Se parsea el objeto guardado
+        const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
+
+        // Ubica el elemento .formulation.clearfix más cercano al elemento disparador
+        const formulation = elemento.closest('.formulation.clearfix');
+
+        if (!formulation) {
+            console.warn('No se encontró el elemento .formulation.clearfix cercano. Saliendo.');
+            return;
+        }
+
+        // Se obtiene el número de la pregunta (por ejemplo, mediante getQuestionNumber)
+        const numeroPregunta = getQuestionNumber(formulation);
+
+        console.log('[opc-autofill-autosave-moodle: autosave] Actualizando Pregunta', numeroPregunta);
+        if (!numeroPregunta) {
+            console.warn('No se pudo obtener el número de pregunta. Saliendo.');
+            return;
+        }
+
+        // Construye la llave de la pregunta, por ejemplo "Pregunta1", "Pregunta2", etc.
+        const preguntaKey = `Pregunta${numeroPregunta}`;
+
+        // Si la pregunta ya existe en el objeto guardado, se actualiza
+        if (questionsAutoSave[preguntaKey]) {
+            await AutoSave_SessionStorage(formulation, numeroPregunta);
+            console.log('AutoSave_ShowResponses iniciado');
+            await AutoSave_ShowResponses(numeroPregunta);
+
+            // Llamada para renderizar expresiones LaTeX
+            renderizarPreguntas();
         } else {
-            console.log('No se detectó una dropzone específica.');
+            console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
+            // Aquí podrías forzar a guardar todo de nuevo o manejar el caso que prefieras.
         }
     }
-});
-
-
 }
+
+
+
+
 
 function AutoSave_ShowResponses(numeroPregunta) {
     return new Promise((resolve, reject) => {
