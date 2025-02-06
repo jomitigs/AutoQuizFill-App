@@ -43664,6 +43664,8 @@
     // Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
     // -----------------------------------------------------------------------
     function detectarCambiosPreguntas() {
+        console.log('hola');
+
 
         // Selecciona todos los inputs y selects que quieres escuchar
         const elementos = document.querySelectorAll(
