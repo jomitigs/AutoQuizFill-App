@@ -43707,33 +43707,44 @@
 
 	    // 2. Configura los elementos "draghome" para que sean arrastrables
 	    interact('.draghome').draggable({
-	        inertia: true,
-	      
+	        inertia: true, // Para un arrastre con inercia
+	  
 	        onmove: function (event) {
-	          // Lógica durante el arrastre (opcional)
-	          // console.log('Elemento se está arrastrando:', event.target);
+	          // Mover el elemento manualmente, si así se desea
+	          // (Por defecto, interact.js no mueve el elemento
+	          //  a menos que lo configuremos con "draggable: { modifiers: [ interact.modifiers.restrictRect(...) ] }", etc.)
+	          // Ejemplo de posición absoluta:
+	          const target = event.target;
+	          const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+	          const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+	  
+	          target.style.transform = `translate(${x}px, ${y}px)`;
+	  
+	          // Guardar las nuevas coordenadas en data-* para usarlas en el siguiente movimiento
+	          target.setAttribute('data-x', x);
+	          target.setAttribute('data-y', y);
 	        },
-	      
+	  
 	        onend: async function (event) {
 	          console.log('Evento onend disparado para:', event.target);
-	      
-	          // Obtén la posición de soltado
+	  
+	          // Posición en que se suelta
 	          const dropX = event.pageX;
 	          const dropY = event.pageY;
 	          console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
-	      
-	          // Mensaje antes de esperar un frame
-	          console.log('Esperando al siguiente ciclo de render (requestAnimationFrame)...');
-	      
-	          // Espera un "frame" para que el DOM se actualice
+	  
+	          // (OPCIONAL) Averiguar sobre qué se soltó
+	          // const dropzone = document.elementFromPoint(dropX, dropY);
+	          // console.log('dropzone:', dropzone);
+	  
+	          // Esperar a que ocurra algún cambio en el DOM
+	          console.log('Esperando mutación en el DOM...');
 	          await new Promise(resolve => {
-	            requestAnimationFrame(() => {
-	              console.log('Callback de requestAnimationFrame: Se ha actualizado el DOM.');
-	              resolve();
-	            });
+	            // Observa el <body> completo o un contenedor específico
+	            waitForDOMChange(document.body, resolve);
 	          });
-	      
-	          console.log('Ahora llamamos a procesoAutoSave...');
+	  
+	          console.log('Se detectó un cambio en el DOM. Ahora procesoAutoSave...');
 	          await procesoAutoSave(event.target);
 	          console.log('procesoAutoSave finalizado.');
 	        }
@@ -43741,6 +43752,17 @@
 	      
 	      
 	}
+
+	function waitForDOMChange(target, callback) {
+	    const observer = new MutationObserver((mutations) => {
+	      // Desconectamos el observer al detectar la primera mutación
+	      observer.disconnect();
+	      callback();
+	    });
+
+	    // Observamos los cambios en los hijos y sus subárboles
+	    observer.observe(target, { childList: true, subtree: true });
+	  }
 
 	async function procesoAutoSave(elemento) {
 	    // Verifica si 'questions-AutoSave' existe en sessionStorage
