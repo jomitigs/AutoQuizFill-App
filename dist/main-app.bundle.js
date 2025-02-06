@@ -43579,7 +43579,6 @@
 	        return;
 	    }
 
-	    console.log(`holaaa`);
 
 	    const funcQuestionType = {
 	        'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,

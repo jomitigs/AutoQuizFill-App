@@ -91,7 +91,6 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         return;
     }
 
-    console.log(`holaaa`);
 
     const funcQuestionType = {
         'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
