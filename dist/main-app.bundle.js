@@ -43739,6 +43739,36 @@
             });
         });
 
+
+        // Hacer que los elementos con la clase 'draghome' sean arrastrables
+    interact('.draghome').draggable({
+        inertia: true, // Permite un movimiento más fluido con inercia
+
+        onmove: function(event) { // Se ejecuta mientras el elemento está siendo arrastrado
+            console.log('Elemento arrastrado:', event.target);
+            console.log('Posición actual:', event.pageX, event.pageY); // Muestra la posición del arrastre en la página
+        },
+
+        onend: function(event) { // Se ejecuta cuando el usuario suelta el elemento
+            console.log('Arrastre finalizado para:', event.target);
+
+            // Detectar el punto donde se soltó el elemento
+            const dropX = event.pageX;
+            const dropY = event.pageY;
+            console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
+
+            // Verificar si se soltó dentro de una dropzone válida
+            const dropzone = document.elementFromPoint(dropX, dropY);
+            if (dropzone) {
+                console.log('Elemento soltado sobre:', dropzone);
+                console.log('Clases del área donde se soltó:', dropzone.classList);
+            } else {
+                console.log('No se detectó una dropzone específica.');
+            }
+        }
+    });
+
+
     }
 
     function AutoSave_ShowResponses(numeroPregunta) {
