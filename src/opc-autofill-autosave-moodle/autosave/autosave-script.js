@@ -486,17 +486,17 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     let enunciado = data.enunciado;
 
                     // Reemplazar cada marcador "[ ]" encontrado por la respuesta formateada.
-                    respuestaArray.forEach(respuesta => {
+                    //respuestaArray.forEach(respuesta => {
                         // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
-                        enunciado = enunciado.replace(/\[\s*\]/,
-                            `<span style="font-weight:500;">[</span>` +
-                            `<span style="color:MediumBlue;">${respuesta}</span>` +
-                            `<span style="font-weight:500;">]</span>`
-                        );
-                    });
+                        //enunciado = enunciado.replace(/\[\s*\]/,
+                            //`<span style="font-weight:500;">[</span>` +
+                            //`<span style="color:MediumBlue;">${respuesta}</span>` +
+                            //`<span style="font-weight:500;">]</span>`
+                        //);
+                   // });
 
                     // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
-                    enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
+                    enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
 
                     // Agregar al HTML el bloque con el enunciado modificado
                     html += `<div class="enunciado">${enunciado}</div>`;
