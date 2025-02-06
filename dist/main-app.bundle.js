@@ -43023,20 +43023,24 @@
 	if (enunciadoElement) {
 	    console.log("Elemento .qtext encontrado dentro del clon.");
 
-	    // Seleccionar todos los <span> que contienen 'place' en su clase, sin importar el número
-	    const placeholders = enunciadoElement.querySelectorAll('span[class*="place"]');
+	    // Seleccionar todos los <span> que contengan 'place' o 'draghome' en su clase
+	    const placeholders = enunciadoElement.querySelectorAll('span[class*="place"], span[class*="draghome"]');
 
 	    placeholders.forEach(span => {
-	        console.log("Reemplazando un placeholder con '[ ]'.");
-
-	        // Crear un nodo de texto con los corchetes
-	        const replacementText = document.createTextNode(' [ ] ');
-
-	        // Reemplazar el <span> con el nodo de texto
-	        span.parentNode.replaceChild(replacementText, span);
+	        if (span.classList.contains("place")) {
+	            console.log("Reemplazando un placeholder con '[ ]'.");
+	            // Crear un nodo de texto con los corchetes
+	            const replacementText = document.createTextNode(' [ ] ');
+	            // Reemplazar el <span> con el nodo de texto
+	            span.parentNode.replaceChild(replacementText, span);
+	        } else {
+	            console.log("Eliminando un span con clase 'draghome'.");
+	            // Simplemente eliminar el <span> sin reemplazo
+	            span.parentNode.removeChild(span);
+	        }
 	    });
 
-	    console.log(`Se han reemplazado ${placeholders.length} placeholders.`);
+	    console.log(`Se han reemplazado ${placeholders.length} elementos.`);
 	} else {
 	    console.log("No se encontró el elemento .qtext dentro del clon.");
 	}
