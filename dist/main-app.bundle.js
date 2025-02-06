@@ -43745,10 +43745,6 @@
 	    });
 	}
 
-	/**
-	 * Función auxiliar para realizar el proceso de autoguardado
-	 * @param {HTMLElement} elemento El elemento que disparó el evento
-	 */
 	async function procesoAutoSave(elemento) {
 	    // Verifica si 'questions-AutoSave' existe en sessionStorage
 	    let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
