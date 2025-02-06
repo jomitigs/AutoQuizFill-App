@@ -43577,11 +43577,8 @@
 	        'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
 	        'select_emparejamiento': select_emparejamiento,
 	        'inputtext_respuestacorta': inputtext_respuestacorta,
-	        'draganddrop_text': async (questionHtml) => {
-	            return await new Promise(resolve => setTimeout(() => {
-	                resolve(draganddrop_text(questionHtml));
-	            }, 1000));
-	        },
+	        'draganddrop_text': draganddrop_text,
+
 	        'draganddrop_image': async (questionHtml) => {
 	            return await new Promise(resolve => setTimeout(() => {
 	                resolve(draganddrop_image(questionHtml));
