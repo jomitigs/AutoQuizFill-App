@@ -43828,10 +43828,7 @@
 
 	                        html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 
-	                    } else {
-	                        html += `<strong>Pregunta ${numeroPregunta}:`;
-	                    }   
-
+	                    }
 
 	                if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
 	                    if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
@@ -43856,28 +43853,32 @@
 	                    // Agregar al HTML el bloque con las respuestas
 	                    html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
 
-	                } else if (data.tipo === 'draganddrop_text') {
+	                } 
+	                else if (data.tipo === 'draganddrop_text') {
 	                    // Verificar si la respuesta correcta es un array o un único valor
 	                    const isArray = Array.isArray(data.respuestaCorrecta);
 	                    const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-
-	                    // Asumimos que 'data.enunciado' es el texto que contiene el marcador "[ ]"
+	                
+	                    // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
 	                    let enunciado = data.enunciado;
-
-	                    // Reemplazamos cada marcador "[ ]" encontrado en el enunciado por la respuesta formateada.
-	                    // Se asume que hay tantos marcadores como respuestas en respuestaArray.
+	                
+	                    // Reemplazar cada marcador "[ ]" encontrado por la respuesta formateada.
 	                    respuestaArray.forEach(respuesta => {
 	                        // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
-	                        enunciado = enunciado.replace(/\[\s*\]/,
+	                        enunciado = enunciado.replace(/\[\s*\]/, 
 	                            `<span style="font-weight:500;">[</span>` +
 	                            `<span style="color:MediumBlue;">${respuesta}</span>` +
 	                            `<span style="font-weight:500;">]</span>`
 	                        );
 	                    });
-
-	                    // Se agrega el enunciado modificado al HTML
+	                
+	                    // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
+	                    enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
+	                
+	                    // Agregar al HTML el bloque con el enunciado modificado
 	                    html += `<div class="enunciado">${enunciado}</div>`;
 	                }
+	                
 
 	                // Se recupera el objeto guardado y se parsea
 	                // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
