@@ -43059,13 +43059,13 @@
 	    qtextPlaces.forEach((placeElement) => {
 	        // Si el lugar está vacío (tiene la clase 'active'), se considera sin respuesta
 	        if (placeElement.classList.contains('active')) {
-	            respuestas.push('n/a');
+	            respuestas.push('');
 	        } else {
 	            // Si el lugar no está vacío, buscar el hermano que contiene la respuesta
 	            const respuestaElement = placeElement.nextElementSibling;
 	            if (respuestaElement && respuestaElement.classList.contains('draghome')) {
 	                const texto = respuestaElement.textContent.trim();
-	                respuestas.push(texto || 'n/a');
+	                respuestas.push(texto || '');
 	            }
 	        }
 	    });
@@ -43797,10 +43797,6 @@
 	    }
 	}
 
-
-
-
-
 	function AutoSave_ShowResponses(numeroPregunta) {
 	    return new Promise((resolve, reject) => {
 	        const container = document.getElementById('respuestasautosave');
@@ -43841,39 +43837,61 @@
 	                            }).join('') + `</div>`;
 	                        }
 	                    } else if (data.tipo === 'inputtext_respuestacorta') {
-	                       
+
 	                        const isArray = Array.isArray(data.respuestaCorrecta);
 	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
 	                        const filteredRespuestas = respuestaArray.filter(Boolean);
 	                        const processedRespuestas = filteredRespuestas.map(processContent);
 	                        const joinedRespuestas = processedRespuestas.join('');
 	                        const respuestas = joinedRespuestas || '<em>___________</em>';
-	                        
+
 	                        // Agregar al HTML el bloque con las respuestas
 	                        html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
+
+	                    } else if (data.tipo === 'draganddrop_text') {
+	                        // Verificar si la respuesta correcta es un array o un único valor
+	                        const isArray = Array.isArray(data.respuestaCorrecta);
+	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
+	                    
+	                        // Asumimos que 'data.enunciado' es el texto que contiene el marcador "[ ]"
+	                        let enunciado = data.enunciado;
+	                    
+	                        // Reemplazamos cada marcador "[ ]" encontrado en el enunciado por la respuesta formateada.
+	                        // Se asume que hay tantos marcadores como respuestas en respuestaArray.
+	                        respuestaArray.forEach(respuesta => {
+	                            // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
+	                            enunciado = enunciado.replace(/\[\s*\]/, 
+	                                `<span style="font-weight:500;">[</span>` +
+	                                `<span style="color:MediumBlue;">${respuesta}</span>` +
+	                                `<span style="font-weight:500;">]</span>`
+	                            );
+	                        });
+	                    
+	                        // Se agrega el enunciado modificado al HTML
+	                        html += `<div class="enunciado">${enunciado}</div>`;
 	                    }
 	                    
 	                    // Se recupera el objeto guardado y se parsea
-	// Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
-	let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
+	                    // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
+	                    let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
-	// Obtenemos las claves del objeto
-	let keysPreguntas = Object.keys(preguntas);
+	                    // Obtenemos las claves del objeto
+	                    let keysPreguntas = Object.keys(preguntas);
 
-	// Calculamos el número máximo de pregunta extrayendo el número de cada clave
-	let maxNumero = 0;
-	keysPreguntas.forEach(function(key) {
-	  // Suponemos que la clave tiene el formato "PreguntaXX"
-	  var num = parseInt(key.replace('Pregunta', ''), 10);
-	  if (num > maxNumero) {
-	    maxNumero = num;
-	  }
-	});
+	                    // Calculamos el número máximo de pregunta extrayendo el número de cada clave
+	                    let maxNumero = 0;
+	                    keysPreguntas.forEach(function (key) {
+	                        // Suponemos que la clave tiene el formato "PreguntaXX"
+	                        var num = parseInt(key.replace('Pregunta', ''), 10);
+	                        if (num > maxNumero) {
+	                            maxNumero = num;
+	                        }
+	                    });
 
-	// Si el número de la pregunta actual no es el último, agregamos el <hr>
-	if (numeroPregunta < maxNumero) {
-	  html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
-	}
+	                    // Si el número de la pregunta actual no es el último, agregamos el <hr>
+	                    if (numeroPregunta < maxNumero) {
+	                        html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
+	                    }
 
 
 
@@ -43891,12 +43909,12 @@
 	                        updatedElement = tempContainer.firstElementChild;
 	                        container.appendChild(updatedElement);
 	                    }
-	                    
+
 	                    // Enfocamos la pregunta actualizada desplazando la vista hacia ella
 	                    if (updatedElement && typeof updatedElement.scrollIntoView === 'function') {
 	                        updatedElement.scrollIntoView({ behavior: 'auto', block: 'center' });
 	                    }
-	                    
+
 	                    return resolve();
 	                } else {
 	                    console.warn(`No se encontró la información para ${key} en los datos guardados.`);
@@ -43956,8 +43974,8 @@
 	function processContent(content) {
 	    if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
 	    return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-	                  .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
-	                  .replace(/(\r\n|\n|\r)/g, '<br>');
+	        .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
+	        .replace(/(\r\n|\n|\r)/g, '<br>');
 	}
 
 	function opcion_AutoFillAutoSave_Moodle_html() {

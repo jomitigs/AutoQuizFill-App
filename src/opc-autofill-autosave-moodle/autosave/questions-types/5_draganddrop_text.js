@@ -59,13 +59,13 @@ export async function draganddrop_text(originalFormulationClearfix) {
     qtextPlaces.forEach((placeElement) => {
         // Si el lugar está vacío (tiene la clase 'active'), se considera sin respuesta
         if (placeElement.classList.contains('active')) {
-            respuestas.push('n/a');
+            respuestas.push('');
         } else {
             // Si el lugar no está vacío, buscar el hermano que contiene la respuesta
             const respuestaElement = placeElement.nextElementSibling;
             if (respuestaElement && respuestaElement.classList.contains('draghome')) {
                 const texto = respuestaElement.textContent.trim();
-                respuestas.push(texto || 'n/a');
+                respuestas.push(texto || '');
             }
         }
     });
