@@ -9,39 +9,54 @@ export async function draganddrop_text(originalFormulationClearfix) {
     // Crear un array para almacenar las respuestas encontradas (se usará como "respuestaCorrecta")
     const respuestas = [];
 
-    // Clonar el elemento original
+    // Clonar el elemento original para procesarlo (así no alteramos el DOM original)
     const clonFormulation = originalFormulationClearfix.cloneNode(true);
-    // Convertir las imágenes dentro del clon a formato Data URI
+
+    // Convertir las imágenes dentro del clon a formato Data URI (opcional, depende de tu caso)
     await File2DataUri(clonFormulation);
 
-    // --- Preprocesado del clon antes de extraer el enunciado ---
-    // 1. Reemplazar los <span> que contengan "place", "drop" y "group" por "[ ]"
-    const spansToReplace = clonFormulation.querySelectorAll('span[class*="place"][class*="drop"][class*="group"]');
-    spansToReplace.forEach(span => {
-        const replacementText = document.createTextNode('[ ]');
-        span.parentNode.replaceChild(replacementText, span);
-    });
-
-    // 2. Eliminar cualquier <span> con clase "draghome" que se encuentre dentro del enunciado
+    // 1) Localizar el elemento que contiene el enunciado
     const enunciadoElement = clonFormulation.querySelector('.qtext');
     if (enunciadoElement) {
-        const draghomeSpans = enunciadoElement.querySelectorAll('span.draghome');
-        draghomeSpans.forEach(span => span.remove());
+        // 2) Fusionar cada `place` con su posible `draghome` ocupante
+        const placeElements = enunciadoElement.querySelectorAll('span[class*="place"][class*="drop"][class*="group"]');
+
+        placeElements.forEach(place => {
+            // Verificar si el siguiente hermano del `place` es un `span.draghome`
+            let occupantText = '';
+            const occupant = (place.nextElementSibling && place.nextElementSibling.classList.contains('draghome'))
+                ? place.nextElementSibling
+                : null;
+
+            // Si hay ocupante, tomamos su texto y lo eliminamos del DOM
+            if (occupant) {
+                occupantText = occupant.textContent.trim();
+                occupant.remove();
+            }
+
+            // Guardamos la respuesta en el array `respuestas`
+            respuestas.push(occupantText || '');
+
+            // Reemplazamos el propio `place` por un TextNode de la forma `[ texto ]` o `[ ]`
+            const textBracket = occupantText ? `[ ${occupantText} ]` : '[ ]';
+            place.replaceWith(document.createTextNode(textBracket));
+        });
     } else {
         console.log("No se encontró el elemento .qtext para el preprocesado del enunciado.");
     }
-    // --- Fin del preprocesado ---
-    console.log("Enunciado Before", enunciadoElement);
 
-    // Extraer el enunciado (ya modificado) del elemento con clase .qtext
+    // Ahora que todos los `span.place...` y `span.draghome` han sido fusionados,
+    // extraemos el enunciado en texto plano (o HTML en orden) con `extractContentInOrder`.
     let enunciado = '';
     if (enunciadoElement) {
         enunciado = await extractContentInOrder(enunciadoElement);
     } else {
         console.log("No se encontró el elemento .qtext para extraer el enunciado.");
     }
-    console.log("Enunciado After",enunciado );
-    // Extraer las opciones de respuesta únicas a partir del div con clase "user-select-none draggrouphomes1"
+    console.log("Enunciado After", enunciado);
+
+    // 3) Recopilar las opciones de respuesta únicas
+    //    (en muchos casos Moodle las pone en un div con clase "user-select-none draggrouphomes1")
     const opcionesRespuestas = [];
     const divOpciones = clonFormulation.querySelectorAll('div.user-select-none.draggrouphomes1');
     divOpciones.forEach(div => {
@@ -54,34 +69,17 @@ export async function draganddrop_text(originalFormulationClearfix) {
         });
     });
 
-
-    const qtextPlaces = originalFormulationClearfix.querySelectorAll('[class*="place"][class*="drop"][class*="group"]');
-
-    qtextPlaces.forEach((placeElement) => {
-        // Buscar el siguiente hermano del elemento 'placeElement'
-        const respuestaElement = placeElement.nextElementSibling;
-    
-        if (respuestaElement && respuestaElement.classList.contains('draghome')) {
-            // Si existe y tiene la clase 'draghome', extraer el texto
-            respuestas.push(respuestaElement.textContent.trim() || '');
-        } else {
-            // Si no existe o no tiene la clase 'draghome', agregar un string vacío
-            respuestas.push('');
-        }
-    });
-    
-
-    // Mostrar en consola las respuestas encontradas y las opciones de respuesta
+    // Mostrar en consola las respuestas encontradas y las opciones
     console.log('Respuestas encontradas:', respuestas);
     console.log('Opciones de respuestas:', opcionesRespuestas);
 
-    // Obtener el feedback de la pregunta
+    // 4) Obtener el feedback de la pregunta (si corresponde)
     const feedback = await feedbackQuestion(originalFormulationClearfix);
 
-    // Construir el objeto questionData con la estructura solicitada, incluyendo la propiedad opcionesRespuestas
+    // 5) Construir el objeto `questionData` con la estructura solicitada
     const questionData = {
-        enunciado: enunciado,
-        respuestaCorrecta: respuestas, // Puede ser un array vacío
+        enunciado: enunciado,           // El texto final del enunciado, con `[ ]` o `[ texto ]`
+        respuestaCorrecta: respuestas,  // Array con el texto que había en cada hueco
         html: clonFormulation.outerHTML,
         tipo: tipo,
         ciclo: localStorage.getItem("ciclo"),
