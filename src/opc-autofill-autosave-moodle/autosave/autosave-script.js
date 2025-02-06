@@ -244,8 +244,8 @@ function detectarCambiosPreguntas() {
 
             const dropzone = document.elementFromPoint(dropX, dropY);
             if (dropzone) {
-                console.log('Elemento soltado sobre:', dropzone);
-                console.log('Clases del área donde se soltó:', dropzone.classList);
+                //console.log('Elemento soltado sobre:', dropzone);
+               // console.log('Clases del área donde se soltó:', dropzone.classList);
             } else {
                //  console.log('No se detectó una dropzone específica.');
             }

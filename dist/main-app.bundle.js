@@ -43724,11 +43724,7 @@
 	            const dropY = event.pageY;
 	            // console.log(`Elemento soltado en posición X: ${dropX}, Y: ${dropY}`);
 
-	            const dropzone = document.elementFromPoint(dropX, dropY);
-	            if (dropzone) {
-	                console.log('Elemento soltado sobre:', dropzone);
-	                console.log('Clases del área donde se soltó:', dropzone.classList);
-	            }
+	            document.elementFromPoint(dropX, dropY);
 
 	            // Si el elemento soltado está dentro de la barra lateral, se ignora
 	            if (event.target.closest('#barra-lateral-autoquizfillapp')) {
