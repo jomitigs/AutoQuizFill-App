@@ -227,42 +227,33 @@ function detectarCambiosPreguntas() {
 
     // 2. Configura los elementos "draghome" para que sean arrastrables
     interact('.draghome').draggable({
-        // Habilita la inercia para que el elemento no se detenga en seco
         inertia: true,
-
-        // Ocurre mientras se arrastra el elemento
-        onmove: function (event) {
-          // Si deseas, agrega aquí la lógica para mover manualmente el elemento
-          // console.log('Elemento arrastrado:', event.target);
+      
+        onmove: function(event) {
+          // Lógica durante el arrastre (opcional)
         },
-
-        // Ocurre cuando se suelta el elemento
-        onend: function (event) {
-          // Detecta las coordenadas donde se soltó
+      
+        onend: async function(event) {
           const dropX = event.pageX;
           const dropY = event.pageY;
-
-          // Localiza el elemento que está en esas coordenadas (posible dropzone)
           const dropzone = document.elementFromPoint(dropX, dropY);
-          if (dropzone) {
-            // console.log('Elemento soltado sobre:', dropzone);
-          } else {
-            // console.log('No se detectó una dropzone específica.');
-          }
-
-          // Verifica si el elemento arrastrado se soltó dentro de la barra lateral
+      
+          // Verifica si el elemento está en la barra lateral
           if (event.target.closest('#barra-lateral-autoquizfillapp')) {
-            // Si está en la barra lateral, no hacemos nada
             return;
           }
-
-          // ****** RETARDO de 2 segundos antes de autoguardado ******
-          setTimeout(async () => {
-            // Llamamos a la función de autoguardado después de 2s
-            await procesoAutoSave(event.target);
-          }, 100);
+      
+          // Espera al siguiente frame de animación (un ciclo de render)
+          await new Promise(resolve => {
+            requestAnimationFrame(resolve);
+          });
+      
+          // Ahora, el DOM ha tenido tiempo de actualizarse.
+          // Llama a procesoAutoSave
+          await procesoAutoSave(event.target);
         }
       });
+      
 }
 
 async function procesoAutoSave(elemento) {
