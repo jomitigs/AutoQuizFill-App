@@ -43741,8 +43741,6 @@
 	        }
 	      });
 	      
-	      
-	      
 	}
 
 	async function procesoAutoSave(elemento) {
@@ -43863,15 +43861,27 @@
 	                        // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
 	                        let enunciado = data.enunciado;
 
-	                        // Reemplazar cada marcador "[ ]" encontrado por la respuesta formateada.
-	                        //respuestaArray.forEach(respuesta => {
-	                            // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
-	                            //enunciado = enunciado.replace(/\[\s*\]/,
-	                                //`<span style="font-weight:500;">[</span>` +
-	                                //`<span style="color:MediumBlue;">${respuesta}</span>` +
-	                                //`<span style="font-weight:500;">]</span>`
-	                            //);
-	                        //});
+	// Expresión regular que busca:
+	//   - El carácter '['
+	//   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
+	//   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
+	enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
+	    // 'textoDentro' es lo que estaba entre los corchetes.
+	  
+	    // Eliminamos espacios en blanco al inicio y final.
+	    // Con esto verificamos si realmente hay contenido dentro o está vacío.
+	    const contenido = textoDentro.trim();
+	  
+	    if (contenido.length > 0) {
+	      // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
+	      return `<span style="font-weight:500;">[</span>` +
+	             `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
+	             `<span style="font-weight:500;">]</span>`;
+	    } else {
+	      // Si no hay contenido, solo estilizamos los corchetes.
+	      return `<span style="font-weight:500;">[ ]</span>`;
+	    }
+	  });
 
 	                        // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
 	                        enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
@@ -43969,15 +43979,27 @@
 	                    // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
 	                    let enunciado = data.enunciado;
 
-	                    // Reemplazar cada marcador "[ ]" encontrado por la respuesta formateada.
-	                    //respuestaArray.forEach(respuesta => {
-	                        // La expresión regular busca un par de corchetes vacíos (posiblemente con espacios)
-	                        //enunciado = enunciado.replace(/\[\s*\]/,
-	                            //`<span style="font-weight:500;">[</span>` +
-	                            //`<span style="color:MediumBlue;">${respuesta}</span>` +
-	                            //`<span style="font-weight:500;">]</span>`
-	                        //);
-	                   // });
+	// Expresión regular que busca:
+	//   - El carácter '['
+	//   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
+	//   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
+	enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
+	    // 'textoDentro' es lo que estaba entre los corchetes.
+	  
+	    // Eliminamos espacios en blanco al inicio y final.
+	    // Con esto verificamos si realmente hay contenido dentro o está vacío.
+	    const contenido = textoDentro.trim();
+	  
+	    if (contenido.length > 0) {
+	      // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
+	      return `<span style="font-weight:500;">[</span>` +
+	             `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
+	             `<span style="font-weight:500;">]</span>`;
+	    } else {
+	      // Si no hay contenido, solo estilizamos los corchetes.
+	      return `<span style="font-weight:500;">[ ]</span>`;
+	    }
+	  });
 
 	                    // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
 	                    enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
