@@ -43571,6 +43571,8 @@
 	        console.error('[AutoSave_SessionStorage] No se pudo ejecutar porque no cumple con los argumentos correctos');
 	        return;
 	    }
+	    
+	    console.log(`holaaa`);
 
 	    const funcQuestionType = {
 	        'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
@@ -43685,7 +43687,6 @@
 	// Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
 	// -----------------------------------------------------------------------
 	function detectarCambiosPreguntas() {
-	    console.log('hola');
 
 	    // 1. Escucha los cambios en inputs, selects y checkboxes
 	    const elementos = document.querySelectorAll(
