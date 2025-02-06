@@ -43054,22 +43054,22 @@
 	        });
 	    });
 
-	    // Seleccionar todos los elementos que corresponden a las áreas de respuesta dentro de .qtext en el original
+
 	    const qtextPlaces = originalFormulationClearfix.querySelectorAll('[class*="place"][class*="drop"][class*="group"]');
-	    // Recorrer cada 'place' para verificar si contiene una respuesta o está vacío
+
 	    qtextPlaces.forEach((placeElement) => {
-	        // Si el lugar está vacío (tiene la clase 'active'), se considera sin respuesta
-	        if (placeElement.classList.contains('active')) {
-	            respuestas.push('');
+	        // Buscar el siguiente hermano del elemento 'placeElement'
+	        const respuestaElement = placeElement.nextElementSibling;
+	    
+	        if (respuestaElement && respuestaElement.classList.contains('draghome')) {
+	            // Si existe y tiene la clase 'draghome', extraer el texto
+	            respuestas.push(respuestaElement.textContent.trim() || '');
 	        } else {
-	            // Si el lugar no está vacío, buscar el hermano que contiene la respuesta
-	            const respuestaElement = placeElement.nextElementSibling;
-	            if (respuestaElement && respuestaElement.classList.contains('draghome')) {
-	                const texto = respuestaElement.textContent.trim();
-	                respuestas.push(texto || '');
-	            }
+	            // Si no existe o no tiene la clase 'draghome', agregar un string vacío
+	            respuestas.push('');
 	        }
 	    });
+	    
 
 	    // Mostrar en consola las respuestas encontradas y las opciones de respuesta
 	    console.log('Respuestas encontradas:', respuestas);
