@@ -43902,7 +43902,6 @@
 	}
 
 	function AutoSave_ShowResponses(numeroPregunta) {
-
 	    return new Promise((resolve, reject) => {
 	        const container = document.getElementById('respuestasautosave');
 	        if (!container) {
@@ -43920,19 +43919,18 @@
 	        try {
 	            const responses = JSON.parse(savedData);
 
-	            // Si se recibe el parámetro, solo procesamos esa pregunta
+	            // Si se recibe el parámetro numeroPregunta, solo procesamos esa pregunta
 	            if (numeroPregunta !== undefined && numeroPregunta !== null) {
 	                const key = 'Pregunta' + numeroPregunta;
 	                const data = responses[key];
-	                if (data) {
-	                    // Construimos el HTML para esa pregunta
+
+	                // Solo mostramos si esa pregunta tiene 'previous: true'
+	                if (data && data.previous === true) {
 
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
 	                    if (data.enunciado && data.tipo !== 'draganddrop_text') {
-
 	                        html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
-
 	                    }
 
 	                    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
@@ -43947,7 +43945,6 @@
 	                            }).join('') + `</div>`;
 	                        }
 	                    } else if (data.tipo === 'inputtext_respuestacorta') {
-
 	                        const isArray = Array.isArray(data.respuestaCorrecta);
 	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
 	                        const filteredRespuestas = respuestaArray.filter(Boolean);
@@ -43955,215 +43952,175 @@
 	                        const joinedRespuestas = processedRespuestas.join('');
 	                        const respuestas = joinedRespuestas || '<em>___________</em>';
 
-	                        // Agregar al HTML el bloque con las respuestas
 	                        html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
-
 	                    } else if (data.tipo === 'draganddrop_text') {
-	                        // Verificar si la respuesta correcta es un array o un único valor
-	                        const isArray = Array.isArray(data.respuestaCorrecta);
-	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-
-	                        // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
+	                        // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
 	                        let enunciado = data.enunciado;
-
-	                        // Expresión regular que busca:
-	                        //   - El carácter '['
-	                        //   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
-	                        //   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
 	                        enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
-	                            // 'textoDentro' es lo que estaba entre los corchetes.
-
-	                            // Eliminamos espacios en blanco al inicio y final.
-	                            // Con esto verificamos si realmente hay contenido dentro o está vacío.
 	                            const contenido = textoDentro.trim();
-
 	                            if (contenido.length > 0) {
-	                                // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
-	                                return `<span style="font-weight:500;">[</span>` +
-	                                    `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
-	                                    `<span style="font-weight:500;">]</span>`;
+	                                return `<span style="font-weight:500;">[</span>
+                                        <span style="font-weight:500; color:MediumBlue;">${contenido}</span>
+                                        <span style="font-weight:500;">]</span>`;
 	                            } else {
-	                                // Si no hay contenido, solo estilizamos los corchetes.
 	                                return `<span style="font-weight:500;">[ ]</span>`;
 	                            }
 	                        });
 
-	                        // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
 	                        enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
-
-	                        // Agregar al HTML el bloque con el enunciado modificado
 	                        html += `<div class="enunciado">${enunciado}</div>`;
 	                    } else if (data.tipo === 'draganddrop_image') {
-	                        // Verificar si la respuesta correcta es un array o un único valor
 	                        const isArray = Array.isArray(data.respuestaCorrecta);
 	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-	                    
-	                        // Obtenemos la imagen principal
 	                        const imagenDrop = data.imagenDrop;
-	                    
-	                        // Construimos el bloque HTML de las opciones encerradas en corchetes
-	                        // con negrita 500 y color mediumblue
+
 	                        const opcionesHTML = respuestaArray
 	                            .map(opc => ` <strong style="font-weight: 500">[</strong> <strong style="font-weight: 500; color: mediumblue;">${opc}</strong><strong style="font-weight: 500">]</strong> `)
 	                            .join(' ');
-	                    
-	                        // Agregamos al HTML la imagen y debajo las opciones
+
 	                        html += `
                             <div>
                                 <div style="margin-bottom: 5px;">
                                     ${opcionesHTML}
                                 </div>
                                 <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
-    
                             </div>
                         `;
 	                    }
-	                    
-	                    // Se recupera el objeto guardado y se parsea
-	                    // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
+
+	                    // Agregamos el hr solo si esta pregunta no es la última dentro de las guardadas
 	                    let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
-
-	                    // Obtenemos las claves del objeto
 	                    let keysPreguntas = Object.keys(preguntas);
-
-	                    // Calculamos el número máximo de pregunta extrayendo el número de cada clave
 	                    let maxNumero = 0;
-	                    keysPreguntas.forEach(function (key) {
-	                        // Suponemos que la clave tiene el formato "PreguntaXX"
-	                        var num = parseInt(key.replace('Pregunta', ''), 10);
+	                    keysPreguntas.forEach(function (keyIt) {
+	                        var num = parseInt(keyIt.replace('Pregunta', ''), 10);
 	                        if (num > maxNumero) {
 	                            maxNumero = num;
 	                        }
 	                    });
-
-	                    // Si el número de la pregunta actual no es el último, agregamos el <hr>
 	                    if (numeroPregunta < maxNumero) {
 	                        html += '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>';
 	                    }
 
-	                    // Buscamos el elemento de esa pregunta dentro del contenedor
+	                    // Actualizamos / insertamos el contenido
 	                    let updatedElement = container.querySelector(`#${key}`);
 	                    if (updatedElement) {
-	                        // Si existe, actualizamos su contenido sin modificar el resto
 	                        updatedElement.outerHTML = html;
-	                        // Luego, reobtenemos el elemento actualizado
 	                        updatedElement = container.querySelector(`#${key}`);
 	                    } else {
-	                        // Si no existe, creamos un nodo a partir del HTML y lo insertamos al final
 	                        const tempContainer = document.createElement('div');
 	                        tempContainer.innerHTML = html;
 	                        updatedElement = tempContainer.firstElementChild;
 	                        container.appendChild(updatedElement);
 	                    }
 
-	                    // Enfocamos la pregunta actualizada desplazando la vista hacia ella
+	                    // Enfocamos la pregunta actualizada
 	                    if (updatedElement && typeof updatedElement.scrollIntoView === 'function') {
 	                        updatedElement.scrollIntoView({ behavior: 'auto', block: 'center' });
 	                    }
-
-	                    return resolve();
 	                } else {
-	                    console.warn(`No se encontró la información para ${key} en los datos guardados.`);
-	                    return resolve();
+	                    console.warn(
+	                        data
+	                            ? `La pregunta ${numeroPregunta} existe, pero no tiene previous: true. No se muestra.`
+	                            : `No se encontró la información para ${key} en los datos guardados.`
+	                    );
 	                }
+	                return resolve();
 	            }
 
-	            // Si no se recibió un parámetro, procesamos y mostramos TODAS las respuestas
+	            // Si no se recibió numeroPregunta, procesamos TODAS las preguntas
+	            // 1) Tomamos todas las entradas
 	            const entries = Object.entries(responses);
-	            container.innerHTML = entries.map(([key, data], index, array) => {
-	                const questionNumber = key.replace(/\D/g, '');
-	                let html = `<div class="preguntaautosave" id="${key}">`;
+	            // 2) Filtramos solo las que tengan previous: true
+	            const filteredEntries = entries.filter(([key, data]) => data.previous === true);
 
+	            // 3) Renderizamos únicamente las preguntas filtradas
+	            container.innerHTML = filteredEntries
+	                .map(([key, data], index, array) => {
+	                    const questionNumber = key.replace(/\D/g, '');
+	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                if (data.enunciado && data.tipo !== 'draganddrop_text') {
-
-	                    html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
-
-	                }
-
-	                if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
-	                    if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-	                        html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+	                    if (data.enunciado && data.tipo !== 'draganddrop_text') {
+	                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
 	                    }
-	                } else if (data.tipo === 'select_emparejamiento') {
-	                    if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
-	                        html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
-	                            const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
-	                            return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
-	                        }).join('') + `</div>`;
-	                    }
-	                } else if (data.tipo === 'inputtext_respuestacorta') {
-	                    const respuestas = (Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [data.respuestaCorrecta])
-	                        .filter(Boolean)
-	                        .map(processContent)
-	                        .join('') || '<em>________-----------</em>';
-	                    html += `<div class="respuestasautosave">${respuestas}</div>`;
 
-	                } else if (data.tipo === 'draganddrop_text') {
-	                    // Verificar si la respuesta correcta es un array o un único valor
-	                    const isArray = Array.isArray(data.respuestaCorrecta);
-	                    const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-
-	                    // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
-	                    let enunciado = data.enunciado;
-
-	                    // Expresión regular que busca:
-	                    //   - El carácter '['
-	                    //   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
-	                    //   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
-	                    enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
-	                        // 'textoDentro' es lo que estaba entre los corchetes.
-
-	                        // Eliminamos espacios en blanco al inicio y final.
-	                        // Con esto verificamos si realmente hay contenido dentro o está vacío.
-	                        const contenido = textoDentro.trim();
-
-	                        if (contenido.length > 0) {
-	                            // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
-	                            return `<span style="font-weight:500;">[</span>` +
-	                                `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
-	                                `<span style="font-weight:500;">]</span>`;
-	                        } else {
-	                            // Si no hay contenido, solo estilizamos los corchetes.
-	                            return `<span style="font-weight:500;">[ ]</span>`;
+	                    if (
+	                        data.tipo === 'inputradio_opcionmultiple_verdaderofalso' ||
+	                        data.tipo === 'inputchecked_opcionmultiple'
+	                    ) {
+	                        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
+	                            html += `<div class="respuestasautosave">${formatResponseOptions(
+                                data.opcionesRespuesta,
+                                data.respuestaCorrecta
+                            )}</div>`;
 	                        }
-	                    });
+	                    } else if (data.tipo === 'select_emparejamiento') {
+	                        if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
+	                            html +=
+	                                `<div class="respuestasautosave">` +
+	                                data.opcionesEnunciados
+	                                    .map((enunciado, i) => {
+	                                        const respuesta = data.respuestaCorrecta[i]?.trim() || 'Elegir...';
+	                                        return `<div>• ${processContent(
+                                            enunciado
+                                        )} - <span style="font-weight:500; color:${
+                                            respuesta !== 'Elegir...' ? 'MediumBlue' : 'black'
+                                        };">${processContent(respuesta)}</span></div>`;
+	                                    })
+	                                    .join('') +
+	                                `</div>`;
+	                        }
+	                    } else if (data.tipo === 'inputtext_respuestacorta') {
+	                        const respuestas = (Array.isArray(data.respuestaCorrecta)
+	                            ? data.respuestaCorrecta
+	                            : [data.respuestaCorrecta]
+	                        )
+	                            .filter(Boolean)
+	                            .map(processContent)
+	                            .join('') || '<em>________-----------</em>';
+	                        html += `<div class="respuestasautosave">${respuestas}</div>`;
+	                    } else if (data.tipo === 'draganddrop_text') {
+	                        let enunciado = data.enunciado;
+	                        enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
+	                            const contenido = textoDentro.trim();
+	                            if (contenido.length > 0) {
+	                                return `<span style="font-weight:500;">[</span>
+                                        <span style="font-weight:500; color:MediumBlue;">${contenido}</span>
+                                        <span style="font-weight:500;">]</span>`;
+	                            } else {
+	                                return `<span style="font-weight:500;">[ ]</span>`;
+	                            }
+	                        });
+	                        enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
+	                        html += `<div class="enunciado">${enunciado}</div>`;
+	                    } else if (data.tipo === 'draganddrop_image') {
+	                        const isArray = Array.isArray(data.respuestaCorrecta);
+	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
+	                        const imagenDrop = data.imagenDrop;
 
-	                    // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
-	                    enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
+	                        const opcionesHTML = respuestaArray
+	                            .map(
+	                                (opc) =>
+	                                    ` <strong style="font-weight: 500">[</strong> <strong style="font-weight: 500; color: mediumblue;">${opc}</strong><strong style="font-weight: 500">]</strong> `
+	                            )
+	                            .join(' ');
 
-	                    // Agregar al HTML el bloque con el enunciado modificado
-	                    html += `<div class="enunciado">${enunciado}</div>`;
-	                } else if (data.tipo === 'draganddrop_image') {
-	                    // Verificar si la respuesta correcta es un array o un único valor
-	                    const isArray = Array.isArray(data.respuestaCorrecta);
-	                    const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-	                
-	                    // Obtenemos la imagen principal
-	                    const imagenDrop = data.imagenDrop;
-	                
-	                    // Construimos el bloque HTML de las opciones encerradas en corchetes
-	                    // con negrita 500 y color mediumblue
-	                    const opcionesHTML = respuestaArray
-	                        .map(opc => ` <strong style="font-weight: 500">[</strong> <strong style="font-weight: 500; color: mediumblue;">${opc}</strong><strong style="font-weight: 500">]</strong> `)
-	                        .join(' ');
-	                
-	                    // Agregamos al HTML la imagen y debajo las opciones
-	                    html += `
-                        <div>
-                            <div style="margin-bottom: 5px;">
-                                ${opcionesHTML}
+	                        html += `
+                            <div>
+                                <div style="margin-bottom: 5px;">
+                                    ${opcionesHTML}
+                                </div>
+                                <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
                             </div>
-                            <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
+                        `;
+	                    }
 
-                        </div>
-                    `;
-	                }
-	                
-	                // Solo agregamos la línea separadora si NO es el último elemento
-	                html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>' : '</div>';
-	                return html;
-	            }).join('');
+	                    // Solo agregamos la línea separadora si NO es el último elemento en el nuevo array filtrado
+	                    html += index < array.length - 1 ? '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>' : '</div>';
+	                    return html;
+	                })
+	                .join('');
+
 	            resolve();
 	        } catch (error) {
 	            console.error('Error al parsear las respuestas:', error);
@@ -44173,7 +44130,9 @@
 	    });
 	}
 
-	// Función auxiliar que formatea las opciones de respuesta (ya la tienes definida)
+	/**
+	 * Función auxiliar que formatea las opciones de respuesta
+	 */
 	function formatResponseOptions(options, selected) {
 	    const selectedSet = new Set(Array.isArray(selected) ? selected.map(s => s.trim()) : [selected?.trim()]);
 	    return options.map((option, i) => {
@@ -44182,10 +44141,15 @@
 	    }).join('');
 	}
 
-	// Función auxiliar que procesa el contenido (ya la tienes definida)
+	/**
+	 * Función auxiliar que procesa el contenido:
+	 * - Si es imagen con URL o base64, la reemplaza por una etiqueta <img>.
+	 * - Si hay saltos de línea, los convierte en <br>.
+	 */
 	function processContent(content) {
 	    if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
-	    return content.replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
+	    return content
+	        .replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
 	        .replace(/(data:image\/(?:png|jpg|jpeg|gif|bmp|webp|svg);base64,[a-zA-Z0-9+/=]+)/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')
 	        .replace(/(\r\n|\n|\r)/g, '<br>');
 	}
