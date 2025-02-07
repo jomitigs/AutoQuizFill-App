@@ -444,15 +444,18 @@ function AutoSave_ShowResponses(numeroPregunta) {
                                 return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
                             }).join('') + `</div>`;
                         }
-                    } else if (data.tipo === 'inputtext_respuestacorta') {
-                        const isArray = Array.isArray(data.respuestaCorrecta);
-                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
-                        const filteredRespuestas = respuestaArray.filter(Boolean);
-                        const processedRespuestas = filteredRespuestas.map(processContent);
-                        const joinedRespuestas = processedRespuestas.join('');
-                        const respuestas = joinedRespuestas || '<em>___________</em>';
 
-                        html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
+                    } else if (data.tipo === 'inputtext_respuestacorta') {
+                        const enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
+                            if (contenido) {
+                                return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${contenido}</span>]</strong>`;
+                            } else {
+                                return `<strong style="font-weight: 500;">[]</strong>`;
+                            }
+                        });
+                        
+                        html += `<div class="respuestasautosave">${enunciadoProcesado}</div>`;
+
                     } else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
                         let enunciado = data.enunciado;
@@ -571,14 +574,17 @@ function AutoSave_ShowResponses(numeroPregunta) {
                                 `</div>`;
                         }
                     } else if (data.tipo === 'inputtext_respuestacorta') {
-                        const respuestas = (Array.isArray(data.respuestaCorrecta)
-                            ? data.respuestaCorrecta
-                            : [data.respuestaCorrecta]
-                        )
-                            .filter(Boolean)
-                            .map(processContent)
-                            .join('') || '<em>________-----------</em>';
-                        html += `<div class="respuestasautosave">${respuestas}</div>`;
+                        const enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
+                            if (contenido) {
+                                return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${contenido}</span>]</strong>`;
+                            } else {
+                                return `<strong style="font-weight: 500;">[]</strong>`;
+                            }
+                        });
+                        
+                        html += `<div class="respuestasautosave">${enunciadoProcesado}</div>`;
+
+
                     } else if (data.tipo === 'draganddrop_text') {
                         let enunciado = data.enunciado;
                         enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
