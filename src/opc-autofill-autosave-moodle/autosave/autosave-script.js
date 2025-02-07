@@ -254,14 +254,6 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
             return;
         }
     
-        // 1) Marcar todas las preguntas EXISTENTES como previous: true
-        for (const key in datosExistentes) {
-            if (Object.hasOwn(datosExistentes, key)) {
-                // O, si prefieres compatibilidad amplia, usa:
-                // if (Object.prototype.hasOwnProperty.call(datosExistentes, key)) {
-                datosExistentes[key].previous = true;
-            }
-        }
     
         // 2) Procesar la nueva (o actualizada) pregunta
         const questionData = await funcion(questionHtml);
