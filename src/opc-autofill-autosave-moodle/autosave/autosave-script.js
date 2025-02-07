@@ -1,4 +1,4 @@
-import { draganddrop_image } from './questions-types/draganddrop_image.js';
+import { draganddrop_image } from './questions-types/6_draganddrop_image.js';
 import { draganddrop_text } from './questions-types/5_draganddrop_text.js';
 import { inputchecked_opcionmultiple } from './questions-types/2_inputchecked_opcionmultiple.js';
 import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_inputradio_opcionmultiple_verdaderofalso.js';
