@@ -42713,8 +42713,9 @@
 	    if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
 	      if (aBlock === 1) {
 	        return 'inputtext_respuestacorta2';
-	      }
+	      } else {
 	      return 'inputtext_respuestacorta';
+	      }
 	    }
 	    
 	  }
@@ -43334,16 +43335,6 @@
 	    return { opcionesRespuesta, respuestaCorrecta };
 	}
 
-	/**
-	 * Función para procesar preguntas de respuesta corta (input text).
-	 * Maneja tres escenarios:
-	 * 1) El input está en medio del texto en .qtext
-	 * 2) El input está al final del texto en .qtext
-	 * 3) El input está fuera de .qtext (por ej, en .ablock .form-inline)
-	 *
-	 * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
-	 * @returns {Object} Objeto con la información extraída de la pregunta.
-	 */
 	async function inputtext_respuestacorta(originalFormulationClearfix) {
 	    const tipo = 'inputtext_respuestacorta';
 
@@ -43375,19 +43366,14 @@
 	                // Lo reemplazamos en el DOM por "[ ]"
 	                const placeholder = document.createTextNode('[ ]');
 	                input.parentNode.replaceChild(placeholder, input);
-	            } else {
-	                // Caso 3: el input está fuera de .qtext
-	                // Lo removemos directamente
-	                input.remove();
-	                // Y en el enunciado final, agregamos un "[ ]" al final
-	                // (puedes agregar un salto de línea <br> si lo prefieres).
-	                clonedQtext.appendChild(document.createTextNode(' '));
-	                clonedQtext.appendChild(document.createTextNode('[ ]'));
 	            }
 	        });
 
 	        // Obtenemos el enunciado resultante (HTML con "[ ]")
 	        enunciado = clonedQtext.innerHTML;
+
+	        enunciadoProcess = await extractContentInOrder(enunciado);
+
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
@@ -43405,7 +43391,7 @@
 
 	    // 6) Construimos el objeto final questionData
 	    const questionData = {
-	        enunciado: enunciado,                 // Texto (HTML) con los [ ] en lugar de <input>
+	        enunciado: enunciadoProcess,                 // Texto (HTML) con los [ ] en lugar de <input>
 	        respuestaCorrecta: respuestaCorrecta, // Valores ingresados en los inputs
 	        html: clonFormulation.outerHTML,      // HTML completo del clon (imágenes en Data URI)
 	        tipo: tipo,
