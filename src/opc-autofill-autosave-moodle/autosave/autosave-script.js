@@ -254,9 +254,11 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
             return;
         }
     
-        // 1) Marcar todas las preguntas existentes como previous: true
+        // 1) Marcar todas las preguntas EXISTENTES como previous: true
         for (const key in datosExistentes) {
             if (Object.hasOwn(datosExistentes, key)) {
+                // O, si prefieres compatibilidad amplia, usa:
+                // if (Object.prototype.hasOwnProperty.call(datosExistentes, key)) {
                 datosExistentes[key].previous = true;
             }
         }
@@ -268,14 +270,15 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         questionData.previous = false;
         datosExistentes[`Pregunta${numberQuestion}`] = questionData;
     
-        // 4) Guardar en sessionStorage
+        // 4) Guardar todo en sessionStorage
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
-            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta (previous:false) y el resto se marcó como previous:true.');
+            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta con previous:false. Todas las demás son previous:true.');
         } catch (error) {
             console.error('Error al guardar en sessionStorage:', error);
         }
     }
+    
     
 }
 
