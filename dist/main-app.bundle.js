@@ -43982,7 +43982,7 @@
 
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                    if (data.enunciado && data.tipo !== 'draganddrop_text') {
+	                    if (data.enunciado && (data.tipo !== 'draganddrop_text' || data.tipo !== 'inputtext_respuestacorta' || data.tipo !== 'inputtext_respuestacorta2')) {
 	                        html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 	                    }
 
@@ -44009,6 +44009,8 @@
 	                        
 	                        html += `<div class="respuestasautosave">${enunciadoProcesado}</div>`;
 
+	                   
+	                   
 	                    } else if (data.tipo === 'draganddrop_text') {
 	                        // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
 	                        let enunciado = data.enunciado;
@@ -44096,7 +44098,7 @@
 	                    const questionNumber = key.replace(/\D/g, '');
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                    if (data.enunciado && data.tipo !== 'draganddrop_text') {
+	                    if (data.enunciado && (data.tipo !== 'draganddrop_text' || data.tipo !== 'inputtext_respuestacorta' || data.tipo !== 'inputtext_respuestacorta2') ) {
 	                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
 	                    }
 
