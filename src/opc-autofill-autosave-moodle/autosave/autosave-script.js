@@ -244,28 +244,39 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         // =====================================
         const questionHtml = questionsHtml[0];
         const numberQuestion = parseInt(numeroQuestionUpdate, 10);
-
+    
         const questionType = determinarTipoPregunta(questionHtml);
         console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
-
+    
         const funcion = funcQuestionType[questionType];
         if (!funcion) {
             console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
             return;
         }
-
+    
+        // 1) Marcar todas las preguntas existentes como previous: true
+        for (const key in datosExistentes) {
+            if (Object.hasOwn(datosExistentes, key)) {
+                datosExistentes[key].previous = true;
+            }
+        }
+    
+        // 2) Procesar la nueva (o actualizada) pregunta
         const questionData = await funcion(questionHtml);
-
-        // Actualiza o crea esta pregunta en los datos existentes
+    
+        // 3) A esta pregunta le asignamos previous: false
+        questionData.previous = false;
         datosExistentes[`Pregunta${numberQuestion}`] = questionData;
-
+    
+        // 4) Guardar en sessionStorage
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
-            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta.');
+            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta (previous:false) y el resto se marcó como previous:true.');
         } catch (error) {
             console.error('Error al guardar en sessionStorage:', error);
         }
     }
+    
 }
 
 
