@@ -215,7 +215,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
                     datosExistentes[key] = questionsHtmlObject[key];
                 }
             }
-            
+
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
 
            
@@ -224,6 +224,15 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
             if (hayPregunta1) {
                 // REEMPLAZAR todo
                 console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
+
+                             // Insertar/actualizar las nuevas
+                for (const key in questionsHtmlObject) {
+                    if (Object.hasOwn(questionsHtmlObject, key)) {
+                        questionsHtmlObject[key].previous = false;
+                        datosExistentes[key] = questionsHtmlObject[key];
+                    }
+                }
+
                 sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
             } else {
                 // MEZCLAR: old -> previous:true, new -> previous:false
