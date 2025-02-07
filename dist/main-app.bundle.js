@@ -43725,15 +43725,18 @@
 	        // Si NO hay datos en sessionStorage, se crea de cero
 	        if (!existeAlmacenamiento) {
 	            console.log('[AutoSave_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
-	            sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
 
-	            // Insertar/actualizar las nuevas
-	            for (const key in questionsHtmlObject) {
+	             // Insertar/actualizar las nuevas
+	             for (const key in questionsHtmlObject) {
 	                if (Object.hasOwn(questionsHtmlObject, key)) {
 	                    questionsHtmlObject[key].previous = false;
 	                    datosExistentes[key] = questionsHtmlObject[key];
 	                }
 	            }
+	            
+	            sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
+
+	           
 	        } else {
 	            // Sí hay datos previos
 	            if (hayPregunta1) {
