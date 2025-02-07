@@ -12,10 +12,10 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
     // 3) Obtenemos la referencia a .qtext dentro del clon.
     const clonedQtext = clonFormulation.querySelector('.qtext');
     let enunciado = '';
+    let enunciadoProcess = '';
 
     if (clonedQtext) {
         // Buscamos todos los <input type="text"> en TODO el clon
-        // (así cubrimos los escenarios dentro y fuera de .qtext)
         const inputs = clonFormulation.querySelectorAll('input[type="text"]');
 
         inputs.forEach((input) => {
@@ -27,7 +27,6 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
 
             // Verificamos si el input está dentro del .qtext
             if (clonedQtext.contains(input)) {
-                // Caso 1 y 2: el input se encuentra en .qtext
                 // Lo reemplazamos en el DOM por "[ ]"
                 const placeholder = document.createTextNode('[ ]');
                 input.parentNode.replaceChild(placeholder, input);
@@ -36,7 +35,6 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
 
         // Obtenemos el enunciado resultante (HTML con "[ ]")
         enunciado = clonedQtext.innerHTML;
-
         enunciadoProcess = await extractContentInOrder(enunciado);
 
     } else {
@@ -56,9 +54,9 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
 
     // 6) Construimos el objeto final questionData
     const questionData = {
-        enunciado: enunciadoProcess,                 // Texto (HTML) con los [ ] en lugar de <input>
-        respuestaCorrecta: respuestaCorrecta, // Valores ingresados en los inputs
-        html: clonFormulation.outerHTML,      // HTML completo del clon (imágenes en Data URI)
+        enunciado: enunciadoProcess,       // Texto (HTML) con los [ ] en lugar de <input>
+        respuestaCorrecta: respuestaCorrecta, 
+        html: clonFormulation.outerHTML,   // HTML completo del clon (imágenes en Data URI)
         tipo: tipo,
         ciclo: localStorage.getItem("ciclo"),
         feedback: feedback
