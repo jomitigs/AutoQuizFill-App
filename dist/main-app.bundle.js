@@ -42960,6 +42960,7 @@
 
 	// Manejar respuestas tipo 'draganddrop_image'
 	async function draganddrop_image(originalFormulationClearfix) {
+	    console.warn("hola.");
 	    // Definir el tipo de pregunta
 	    const tipo = 'draganddrop_image';
 	    console.log(tipo);
