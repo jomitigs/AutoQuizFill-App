@@ -142,8 +142,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
 
     if (esCasoA) {
         // =======================================================
-        // CASO A: Múltiples preguntas,
-        //         o bien 1 sola pero sin numeroQuestionUpdate
+        // CASO A: Múltiples preguntas, o bien 1 sola pero sin numeroQuestionUpdate
         // =======================================================
         const questionsHtmlObject = {};
         let contadorPreguntas = 0;
@@ -209,6 +208,14 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         if (!existeAlmacenamiento) {
             console.log('[AutoSave_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
+
+            // Insertar/actualizar las nuevas
+            for (const key in questionsHtmlObject) {
+                if (Object.hasOwn(questionsHtmlObject, key)) {
+                    questionsHtmlObject[key].previous = false;
+                    datosExistentes[key] = questionsHtmlObject[key];
+                }
+            }
         } else {
             // Sí hay datos previos
             if (hayPregunta1) {
