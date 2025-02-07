@@ -2,9 +2,11 @@ import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../aut
 
 /**
  * Función para procesar preguntas de respuesta corta (input text).
- * Se clona el formulario original, se convierten las imágenes a Data URI,
- * se extrae el enunciado y se recogen los valores ingresados en los inputs de tipo texto.
- * Siempre se crea el objeto questionData, aunque las respuestas puedan estar vacías.
+ * 1) Clona el formulario original.
+ * 2) Convierte las imágenes a Data URI.
+ * 3) Reemplaza cada input text por [ ] dentro del .qtext.
+ * 4) Elimina su <label> asociado (si existe).
+ * 5) Extrae los valores reales escritos en cada input y los guarda en respuestaCorrecta.
  *
  * @param {HTMLElement} originalFormulationClearfix - Elemento DOM original de la pregunta.
  * @returns {Object} Objeto con la información extraída de la pregunta.
@@ -12,22 +14,40 @@ import { feedbackQuestion, File2DataUri, extractContentInOrder } from '../../aut
 export async function inputtext_respuestacorta(originalFormulationClearfix) {
     const tipo = 'inputtext_respuestacorta';
 
-    // Clonamos el elemento original para trabajar sobre una copia sin modificar el DOM.
+    // Clonamos el elemento original para trabajar con una copia.
     const clonFormulation = originalFormulationClearfix.cloneNode(true);
 
-    // Convertimos las imágenes del clon a formato Data URI.
+    // Convertimos a Data URI todas las imágenes del clon.
     await File2DataUri(clonFormulation);
 
-    // Extraemos el enunciado (por ejemplo, contenido dentro de un elemento con clase .qtext).
-    const enunciadoElement = clonFormulation.querySelector('.qtext');
+    // Localizamos el .qtext dentro del clon.
+    const clonedQtext = clonFormulation.querySelector('.qtext');
     let enunciado = '';
-    if (enunciadoElement) {
-        enunciado = await extractContentInOrder(enunciadoElement);
+
+    if (clonedQtext) {
+        // Buscamos todos los inputs de tipo texto dentro del .qtext
+        const inputs = clonedQtext.querySelectorAll('input[type="text"]');
+
+        inputs.forEach((input) => {
+            // Eliminamos el label asociado al input (si existe)
+            const label = clonedQtext.querySelector(`label[for="${input.id}"]`);
+            if (label) {
+                label.remove();
+            }
+
+            // Reemplazamos el input por un texto con corchetes
+            const placeholder = document.createTextNode('[ ]');
+            input.parentNode.replaceChild(placeholder, input);
+        });
+
+        // Extraemos el HTML resultante como enunciado, con los [ ] en lugar de los inputs.
+        enunciado = clonedQtext.innerHTML;
     } else {
         console.log("No se encontró el elemento .qtext para extraer el enunciado.");
     }
 
-    // Recorremos todos los inputs de tipo text para recoger sus valores.
+    // Recorremos los inputs de tipo texto del elemento original (NO del clon),
+    // para recoger el valor que tiene el usuario ingresado (si alguno).
     const respuestaCorrecta = [];
     const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
     allInputText.forEach((inputText) => {
@@ -35,19 +55,19 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
         respuestaCorrecta.push(valor);
     });
 
-    // Se obtiene el feedback de la pregunta.
+    // Obtenemos el feedback de la pregunta
     const feedback = await feedbackQuestion(originalFormulationClearfix);
 
-    // Construimos el objeto questionData, incluso si respuestas está vacío.
+    // Construimos el objeto final
     const questionData = {
-        enunciado: enunciado,
-        respuestaCorrecta: respuestaCorrecta, // Puede ser un array vacío
-        html: clonFormulation.outerHTML,
+        enunciado: enunciado,            // El texto con [ ] en lugar de <input>
+        respuestaCorrecta: respuestaCorrecta,  // Los valores escritos en cada input
+        html: clonFormulation.outerHTML, // El HTML completo del clon (imágenes en Data URI)
         tipo: tipo,
         ciclo: localStorage.getItem("ciclo"),
         feedback: feedback,
     };
 
-    //console.log("Objeto questionData generado:", questionData);
+    // Retornamos la información de la pregunta
     return questionData;
 }
