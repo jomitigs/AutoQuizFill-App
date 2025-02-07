@@ -78,120 +78,187 @@ export function contenedorAutoSave_js() {
 }
 
 async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
-
-    // 1) Verificar si "questionsHtml" es una colección (NodeList o HTMLCollection).
-    //    Si no lo es, se convierte a array para procesarlo de forma uniforme.
-    if (!NodeList.prototype.isPrototypeOf(questionsHtml) && !HTMLCollection.prototype.isPrototypeOf(questionsHtml)) {
+    // --------------------------------------------------------------------------
+    // 1) Verificar si "questionsHtml" es una colección (NodeList, HTMLCollection)
+    //    Si no, convertirlo en array.
+    // --------------------------------------------------------------------------
+    if (
+        !NodeList.prototype.isPrototypeOf(questionsHtml) &&
+        !HTMLCollection.prototype.isPrototypeOf(questionsHtml)
+    ) {
         questionsHtml = [questionsHtml];
     }
 
-    // 2) Si el array está vacío, se muestra un error y se termina la ejecución.
+    // --------------------------------------------------------------------------
+    // 2) Si el array está vacío, terminamos.
+    // --------------------------------------------------------------------------
     if (questionsHtml.length === 0) {
-        console.error('[AutoSave_SessionStorage] No se pudo ejecutar porque no cumple con los argumentos correctos');
+        console.error('[AutoSave_SessionStorage] No se pudo ejecutar: no hay preguntas para procesar.');
         return;
     }
 
-
+    // --------------------------------------------------------------------------
+    // 3) Definición de funciones para distintos tipos de pregunta (ya existentes)
+    // --------------------------------------------------------------------------
     const funcQuestionType = {
         'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
         'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
         'select_emparejamiento': select_emparejamiento,
         'inputtext_respuestacorta': inputtext_respuestacorta,
         'draganddrop_text': draganddrop_text,
-
         'draganddrop_image': async (questionHtml) => {
-            return await new Promise(resolve => setTimeout(() => {
-                resolve(draganddrop_image(questionHtml));
-            }, 1000));
+            // Ejemplo "async"
+            return await new Promise((resolve) =>
+                setTimeout(() => {
+                    resolve(draganddrop_image(questionHtml));
+                }, 1000)
+            );
         }
-        // Otros tipos se pueden agregar de forma similar...
     };
 
-    // ——————————————————————————————————————————————————————
-    // Determinar el caso a ejecutar:
-    //   - Caso A: Si hay más de 1 elemento O si hay 1 elemento y numeroQuestionUpdate es null.
-    //   - Caso B: Si hay 1 elemento y numeroQuestionUpdate tiene un valor.
-    // ——————————————————————————————————————————————————————
-    if (questionsHtml.length > 1 || (questionsHtml.length === 1 && numeroQuestionUpdate === null)) {
-        // *************** Caso A ***************
+    // --------------------------------------------------------------------------
+    // 4) Lectura inicial del sessionStorage (si existe)
+    // --------------------------------------------------------------------------
+    let datosExistentes = {};
+    let existeAlmacenamiento = false;
 
-        // Se crea un objeto nuevo para almacenar la información de todas las preguntas.
+    try {
+        const cadenaAlmacenamiento = sessionStorage.getItem('questions-AutoSave');
+        if (cadenaAlmacenamiento) {
+            datosExistentes = JSON.parse(cadenaAlmacenamiento);
+            existeAlmacenamiento = true;
+        }
+    } catch (err) {
+        console.error('[AutoSave_SessionStorage] Error al parsear sessionStorage:', err);
+        datosExistentes = {};
+    }
+
+    // --------------------------------------------------------------------------
+    // 5) Determinar si es Caso A (múltiples preguntas) o Caso B (1 con número).
+    // --------------------------------------------------------------------------
+    const esCasoA =
+        questionsHtml.length > 1 ||
+        (questionsHtml.length === 1 && numeroQuestionUpdate === null);
+
+    if (esCasoA) {
+        // =======================================================
+        // CASO A: Múltiples preguntas,
+        //         o bien 1 sola pero sin numeroQuestionUpdate
+        // =======================================================
         const questionsHtmlObject = {};
         let contadorPreguntas = 0;
+        const nuevosNumerosPreguntas = [];
 
-        // Iterar sobre cada elemento de "questionsHtml"
+        // Recorrer todas las preguntas que llegan en "questionsHtml"
         for (const questionHtml of questionsHtml) {
-            // Determinar el número de la pregunta:
-            // - Se utiliza numeroQuestionUpdate si tiene un valor.
-            // - Si no, se intenta obtener mediante obtenerNumeroPregunta.
-            // - Finalmente, se incrementa un contador si aún no se determina.
-            const numberQuestion =
-                numeroQuestionUpdate ||
-                getQuestionNumber(questionHtml) ||
-                ++contadorPreguntas;
+            // Determinar el número DE FORMA NUMÉRICA
+            let numberQuestion = null;
 
-            // Determinar el tipo de pregunta mediante la función determinarTipoPregunta.
+            // Si se pasó un numeroQuestionUpdate, se intenta parsear a número
+            if (numeroQuestionUpdate !== null) {
+                const numParam = parseInt(numeroQuestionUpdate, 10);
+                if (!isNaN(numParam)) {
+                    numberQuestion = numParam;
+                }
+            }
+
+            // Si no se obtuvo nada y la pregunta en sí lo tiene:
+            if (numberQuestion === null) {
+                // Aquí asumes que tu getQuestionNumber() retorna un string o número
+                // Y lo conviertes a number:
+                const value = getQuestionNumber(questionHtml);
+                const numFromHtml = parseInt(value, 10);
+                if (!isNaN(numFromHtml)) {
+                    numberQuestion = numFromHtml;
+                }
+            }
+
+            // Si aún es null, usar contador para asignar uno
+            if (numberQuestion === null) {
+                contadorPreguntas++;
+                numberQuestion = contadorPreguntas;
+            }
+
+            // Guardar en array para luego chequear si está la #1
+            nuevosNumerosPreguntas.push(numberQuestion);
+
+            // Determinar tipo de pregunta (asumes que ya existe tu función)
             const questionType = determinarTipoPregunta(questionHtml);
             console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
-            // Buscar la función correspondiente al tipo de pregunta.
+            // Llamar la función correspondiente
             const funcion = funcQuestionType[questionType];
-            let questionData;
-            if (funcion) {
-                // Se invoca la función y se espera que retorne el objeto con la información de la pregunta.
-                questionData = await funcion(questionHtml);
-            } else {
+            if (!funcion) {
                 console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
-                continue;
+                continue; 
             }
 
-            // Se almacena directamente la información de la pregunta, usando la clave "PreguntaNueva" seguida del número.
+            const questionData = await funcion(questionHtml);
+
+            // Agregar al objeto de nuevas preguntas
             questionsHtmlObject[`Pregunta${numberQuestion}`] = questionData;
         }
 
-        // Guardar el objeto completo en sessionStorage.
-        try {
+        // ----------------------------------------------------------------------
+        // LÓGICA PRINCIPAL de "reemplazar" o "mezclar"
+        // ----------------------------------------------------------------------
+        // Checar si en las nuevas preguntas está la #1 (exacto, no 12, 10, etc.)
+        const hayPregunta1 = nuevosNumerosPreguntas.includes(1);
+
+        // Si NO hay datos en sessionStorage, se crea de cero
+        if (!existeAlmacenamiento) {
+            console.log('[AutoSave_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
-            console.log('[AutoSave_SessionStorage] Se ha guardado la información de múltiples preguntas.');
-        } catch (error) {
-            console.error('Error al guardar en sessionStorage:', error);
-        }
+        } else {
+            // Sí hay datos previos
+            if (hayPregunta1) {
+                // REEMPLAZAR todo
+                console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
+                sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
+            } else {
+                // MEZCLAR: old -> previous:true, new -> previous:false
+                console.log('[AutoSave_SessionStorage] No está la #1. Se mezclan datos: antiguos previous:true, nuevos previous:false.');
 
-    } else {
-        // *************** Caso B ***************
+                // a) Marcar existentes
+                for (const key in datosExistentes) {
+                    if (Object.hasOwn(datosExistentes, key)) {
+                        datosExistentes[key].previous = true;
+                    }
+                }
 
-        // Leer la información existente en sessionStorage.
-        let datosExistentes = {};
-        try {
-            const cadenaAlmacenamiento = sessionStorage.getItem('questions-AutoSave');
-            if (cadenaAlmacenamiento) {
-                datosExistentes = JSON.parse(cadenaAlmacenamiento);
+                // b) Insertar/actualizar las nuevas
+                for (const key in questionsHtmlObject) {
+                    if (Object.hasOwn(questionsHtmlObject, key)) {
+                        questionsHtmlObject[key].previous = false;
+                        datosExistentes[key] = questionsHtmlObject[key];
+                    }
+                }
+
+                // c) Guardar resultado
+                sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
             }
-        } catch (err) {
-            console.error('[AutoSave_SessionStorage] Error al parsear sessionStorage:', err);
-            datosExistentes = {};
         }
-
-        // Procesar la única pregunta.
+    } else {
+        // =====================================
+        // CASO B: 1 pregunta con un número
+        // =====================================
         const questionHtml = questionsHtml[0];
-        // En este caso, numeroQuestionUpdate tiene un valor y se usa directamente.
-        const numberQuestion = numeroQuestionUpdate;
+        const numberQuestion = parseInt(numeroQuestionUpdate, 10);
+
         const questionType = determinarTipoPregunta(questionHtml);
         console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
         const funcion = funcQuestionType[questionType];
-        let questionData;
-        if (funcion) {
-            questionData = await funcion(questionHtml);
-        } else {
+        if (!funcion) {
             console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
             return;
         }
 
-        // Se almacena directamente la información de la pregunta, usando la clave "PreguntaNueva" seguida del número.
+        const questionData = await funcion(questionHtml);
+
+        // Actualiza o crea esta pregunta en los datos existentes
         datosExistentes[`Pregunta${numberQuestion}`] = questionData;
 
-        // Guardar el objeto actualizado en sessionStorage.
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
             console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta.');
@@ -200,6 +267,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         }
     }
 }
+
 
 // -----------------------------------------------------------------------
 // Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
