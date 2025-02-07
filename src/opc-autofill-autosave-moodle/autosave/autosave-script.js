@@ -106,6 +106,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
         'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
         'select_emparejamiento': select_emparejamiento,
         'inputtext_respuestacorta': inputtext_respuestacorta,
+        'inputtext_respuestacorta2': inputtext_respuestacorta2,
         'draganddrop_text': draganddrop_text,
         'draganddrop_image': draganddrop_image,
     };
