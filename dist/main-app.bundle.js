@@ -43925,7 +43925,7 @@
 	                const data = responses[key];
 
 	                // Solo mostramos si esa pregunta tiene 'previous: true'
-	                if (data && data.previous === true) {
+	                if (data && data.previous === false) {
 
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
@@ -44032,7 +44032,7 @@
 	            // 1) Tomamos todas las entradas
 	            const entries = Object.entries(responses);
 	            // 2) Filtramos solo las que tengan previous: true
-	            const filteredEntries = entries.filter(([key, data]) => data.previous === true);
+	            const filteredEntries = entries.filter(([key, data]) => data.previous === false);
 
 	            // 3) Renderizamos únicamente las preguntas filtradas
 	            container.innerHTML = filteredEntries
