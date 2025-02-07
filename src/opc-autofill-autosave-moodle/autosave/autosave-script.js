@@ -550,10 +550,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
                     }
 
-                    if (
-                        data.tipo === 'inputradio_opcionmultiple_verdaderofalso' ||
-                        data.tipo === 'inputchecked_opcionmultiple'
-                    ) {
+                    if ( data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
                             html += `<div class="respuestasautosave">${formatResponseOptions(
                                 data.opcionesRespuesta,
