@@ -43936,16 +43936,17 @@
 	                        // Construimos el bloque HTML de las opciones encerradas en corchetes
 	                        // con negrita 500 y color mediumblue
 	                        const opcionesHTML = respuestaArray
-	                            .map(opc => `[ <strong style="font-weight: 500; color: mediumblue;">${opc}</strong> ]`)
+	                            .map(opc => ` <strong style="font-weight: 500">[</strong> <strong style="font-weight: 500; color: mediumblue;">${opc}</strong><strong style="font-weight: 500">]</strong> `)
 	                            .join(' ');
 	                    
 	                        // Agregamos al HTML la imagen y debajo las opciones
 	                        html += `
                             <div>
-                                <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
                                 <div style="margin-top: 1rem;">
                                     ${opcionesHTML}
                                 </div>
+                                <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
+    
                             </div>
                         `;
 	                    }
@@ -44076,16 +44077,17 @@
 	                    // Construimos el bloque HTML de las opciones encerradas en corchetes
 	                    // con negrita 500 y color mediumblue
 	                    const opcionesHTML = respuestaArray
-	                        .map(opc => `[ <strong style="font-weight: 500; color: mediumblue;">${opc}</strong> ]`)
+	                        .map(opc => ` <strong style="font-weight: 500">[</strong> <strong style="font-weight: 500; color: mediumblue;">${opc}</strong><strong style="font-weight: 500">]</strong> `)
 	                        .join(' ');
 	                
 	                    // Agregamos al HTML la imagen y debajo las opciones
 	                    html += `
                         <div>
-                            <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
                             <div style="margin-top: 1rem;">
                                 ${opcionesHTML}
                             </div>
+                            <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
+
                         </div>
                     `;
 	                }
