@@ -43942,7 +43942,7 @@
 	                        // Agregamos al HTML la imagen y debajo las opciones
 	                        html += `
                             <div>
-                                <div style="margin-top: 1rem;">
+                                <div style="margin-bottom: 5px;">
                                     ${opcionesHTML}
                                 </div>
                                 <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
@@ -44083,7 +44083,7 @@
 	                    // Agregamos al HTML la imagen y debajo las opciones
 	                    html += `
                         <div>
-                            <div style="margin-top: 1rem;">
+                            <div style="margin-bottom: 5px;">
                                 ${opcionesHTML}
                             </div>
                             <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
