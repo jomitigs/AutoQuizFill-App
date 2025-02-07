@@ -254,7 +254,6 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
             return;
         }
     
-    
         // 2) Procesar la nueva (o actualizada) pregunta
         const questionData = await funcion(questionHtml);
     

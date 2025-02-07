@@ -43772,7 +43772,6 @@
 	            return;
 	        }
 	    
-	    
 	        // 2) Procesar la nueva (o actualizada) pregunta
 	        const questionData = await funcion(questionHtml);
 	    
