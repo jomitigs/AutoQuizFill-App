@@ -43660,14 +43660,7 @@
 	        'select_emparejamiento': select_emparejamiento,
 	        'inputtext_respuestacorta': inputtext_respuestacorta,
 	        'draganddrop_text': draganddrop_text,
-	        'draganddrop_image': async (questionHtml) => {
-	            // Ejemplo "async"
-	            return await new Promise((resolve) =>
-	                setTimeout(() => {
-	                    resolve(draganddrop_image(questionHtml));
-	                }, 1000)
-	            );
-	        }
+	        'draganddrop_image': draganddrop_image,
 	    };
 
 	    // --------------------------------------------------------------------------
