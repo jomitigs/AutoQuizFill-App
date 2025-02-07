@@ -118,6 +118,8 @@ export function determinarTipoPregunta(formulation_clearfix) {
   const inputCheckboxCount = formulation_clearfix.querySelectorAll('input[type="checkbox"]').length;
   const selectCount = formulation_clearfix.querySelectorAll('select').length;
 
+  const aBlock = document.querySelectorAll(".ablock.form-inline").length;
+
   if (hayUnSoloQtext) {
     if (inputRadioCount > 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
       return 'inputradio_opcionmultiple_verdaderofalso';
@@ -129,8 +131,12 @@ export function determinarTipoPregunta(formulation_clearfix) {
       return 'select_emparejamiento';
     }
     if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
+      if (aBlock === 1) {
+        return 'inputtext_respuestacorta2';
+      }
       return 'inputtext_respuestacorta';
     }
+    
   }
 
   if (draghomesElement && !dropzonesElement) {
