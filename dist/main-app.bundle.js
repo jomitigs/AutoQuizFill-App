@@ -43746,39 +43746,39 @@
 	    // 2. Configura los elementos "draghome" para que sean arrastrables
 	    interact('.draghome').draggable({
 	        inertia: true,
-	      
+
 	        onmove: function (event) {
-	          // Lógica durante el arrastre (opcional)
-	          // console.log('Elemento se está arrastrando:', event.target);
+	            // Lógica durante el arrastre (opcional)
+	            // console.log('Elemento se está arrastrando:', event.target);
 	        },
-	      
+
 	        onend: async function (event) {
-	          console.log('Evento onend disparado para:', event.target);
-	      
-	          // Obtén la posición de soltado
-	          const dropX = event.pageX;
-	          const dropY = event.pageY;
-	          console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
-	      
-	          // Esperar a que ocurra algún cambio en el DOM
-	          console.log('Esperando mutación en el DOM...');
-	          await new Promise(resolve => {
-	            const observer = new MutationObserver(() => {
-	              // Al detectar una mutación, se desconecta el observer
-	              observer.disconnect();
-	              console.log('Se ha detectado un cambio en el DOM');
-	              resolve();
+	            console.log('Evento onend disparado para:', event.target);
+
+	            // Obtén la posición de soltado
+	            const dropX = event.pageX;
+	            const dropY = event.pageY;
+	            console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
+
+	            // Esperar a que ocurra algún cambio en el DOM
+	            console.log('Esperando mutación en el DOM...');
+	            await new Promise(resolve => {
+	                const observer = new MutationObserver(() => {
+	                    // Al detectar una mutación, se desconecta el observer
+	                    observer.disconnect();
+	                    console.log('Se ha detectado un cambio en el DOM');
+	                    resolve();
+	                });
+	                // Observa todo el <body> buscando cambios estructurales (nuevos nodos, etc.)
+	                observer.observe(document.body, { childList: true, subtree: true });
 	            });
-	            // Observa todo el <body> buscando cambios estructurales (nuevos nodos, etc.)
-	            observer.observe(document.body, { childList: true, subtree: true });
-	          });
-	      
-	          console.log('Ahora llamamos a procesoAutoSave...');
-	          await procesoAutoSave(event.target);
-	          console.log('procesoAutoSave finalizado.2');
+
+	            console.log('Ahora llamamos a procesoAutoSave...');
+	            await procesoAutoSave(event.target);
+	            console.log('procesoAutoSave finalizado.2');
 	        }
-	      });
-	      
+	    });
+
 	}
 
 	async function procesoAutoSave(elemento) {
@@ -43834,7 +43834,7 @@
 	}
 
 	function AutoSave_ShowResponses(numeroPregunta) {
-	    
+
 	    return new Promise((resolve, reject) => {
 	        const container = document.getElementById('respuestasautosave');
 	        if (!container) {
@@ -43890,8 +43890,7 @@
 	                        // Agregar al HTML el bloque con las respuestas
 	                        html += `<div class="respuestasautosave" style="font-weight:500; color: MediumBlue;">${respuestas}</div>`;
 
-	                    }
-	                    else if (data.tipo === 'draganddrop_text') {
+	                    } else if (data.tipo === 'draganddrop_text') {
 	                        // Verificar si la respuesta correcta es un array o un único valor
 	                        const isArray = Array.isArray(data.respuestaCorrecta);
 	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
@@ -43899,36 +43898,58 @@
 	                        // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
 	                        let enunciado = data.enunciado;
 
-	// Expresión regular que busca:
-	//   - El carácter '['
-	//   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
-	//   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
-	enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
-	    // 'textoDentro' es lo que estaba entre los corchetes.
-	  
-	    // Eliminamos espacios en blanco al inicio y final.
-	    // Con esto verificamos si realmente hay contenido dentro o está vacío.
-	    const contenido = textoDentro.trim();
-	  
-	    if (contenido.length > 0) {
-	      // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
-	      return `<span style="font-weight:500;">[</span>` +
-	             `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
-	             `<span style="font-weight:500;">]</span>`;
-	    } else {
-	      // Si no hay contenido, solo estilizamos los corchetes.
-	      return `<span style="font-weight:500;">[ ]</span>`;
-	    }
-	  });
+	                        // Expresión regular que busca:
+	                        //   - El carácter '['
+	                        //   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
+	                        //   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
+	                        enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
+	                            // 'textoDentro' es lo que estaba entre los corchetes.
+
+	                            // Eliminamos espacios en blanco al inicio y final.
+	                            // Con esto verificamos si realmente hay contenido dentro o está vacío.
+	                            const contenido = textoDentro.trim();
+
+	                            if (contenido.length > 0) {
+	                                // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
+	                                return `<span style="font-weight:500;">[</span>` +
+	                                    `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
+	                                    `<span style="font-weight:500;">]</span>`;
+	                            } else {
+	                                // Si no hay contenido, solo estilizamos los corchetes.
+	                                return `<span style="font-weight:500;">[ ]</span>`;
+	                            }
+	                        });
 
 	                        // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
 	                        enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
 
 	                        // Agregar al HTML el bloque con el enunciado modificado
 	                        html += `<div class="enunciado">${enunciado}</div>`;
+	                    } else if (data.tipo === 'draganddrop_image') {
+	                        // Verificar si la respuesta correcta es un array o un único valor
+	                        const isArray = Array.isArray(data.respuestaCorrecta);
+	                        const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
+	                    
+	                        // Obtenemos la imagen principal
+	                        const imagenDrop = data.imagenDrop;
+	                    
+	                        // Construimos el bloque HTML de las opciones encerradas en corchetes
+	                        // con negrita 500 y color mediumblue
+	                        const opcionesHTML = respuestaArray
+	                            .map(opc => `[ <strong style="font-weight: 500; color: mediumblue;">${opc}</strong> ]`)
+	                            .join(' ');
+	                    
+	                        // Agregamos al HTML la imagen y debajo las opciones
+	                        html += `
+                            <div>
+                                <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
+                                <div style="margin-top: 1rem;">
+                                    ${opcionesHTML}
+                                </div>
+                            </div>
+                        `;
 	                    }
-
-
+	                    
 	                    // Se recupera el objeto guardado y se parsea
 	                    // Recuperamos el objeto de preguntas del sessionStorage y lo parseamos
 	                    let preguntas = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
@@ -43984,7 +44005,7 @@
 	                const questionNumber = key.replace(/\D/g, '');
 	                let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                
+
 	                if (data.enunciado && data.tipo !== 'draganddrop_text') {
 
 	                    html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
@@ -44017,34 +44038,58 @@
 	                    // Se asume que 'data.enunciado' es el texto que contiene el marcador "[ ]"
 	                    let enunciado = data.enunciado;
 
-	// Expresión regular que busca:
-	//   - El carácter '['
-	//   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
-	//   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
-	enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
-	    // 'textoDentro' es lo que estaba entre los corchetes.
-	  
-	    // Eliminamos espacios en blanco al inicio y final.
-	    // Con esto verificamos si realmente hay contenido dentro o está vacío.
-	    const contenido = textoDentro.trim();
-	  
-	    if (contenido.length > 0) {
-	      // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
-	      return `<span style="font-weight:500;">[</span>` +
-	             `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
-	             `<span style="font-weight:500;">]</span>`;
-	    } else {
-	      // Si no hay contenido, solo estilizamos los corchetes.
-	      return `<span style="font-weight:500;">[ ]</span>`;
-	    }
-	  });
+	                    // Expresión regular que busca:
+	                    //   - El carácter '['
+	                    //   - Cualquier texto (incluido texto vacío) hasta encontrar el carácter ']'
+	                    //   - Capturamos lo que esté entre corchetes en un grupo (para poder usarlo luego)
+	                    enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
+	                        // 'textoDentro' es lo que estaba entre los corchetes.
+
+	                        // Eliminamos espacios en blanco al inicio y final.
+	                        // Con esto verificamos si realmente hay contenido dentro o está vacío.
+	                        const contenido = textoDentro.trim();
+
+	                        if (contenido.length > 0) {
+	                            // Si sí hay contenido dentro, lo ponemos en negrita y de color azul.
+	                            return `<span style="font-weight:500;">[</span>` +
+	                                `<span style="font-weight:500; color:MediumBlue;">${contenido}</span>` +
+	                                `<span style="font-weight:500;">]</span>`;
+	                        } else {
+	                            // Si no hay contenido, solo estilizamos los corchetes.
+	                            return `<span style="font-weight:500;">[ ]</span>`;
+	                        }
+	                    });
 
 	                    // Agregar el encabezado "Pregunta {numeroPregunta}:" en negrita al inicio del enunciado
 	                    enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
 
 	                    // Agregar al HTML el bloque con el enunciado modificado
 	                    html += `<div class="enunciado">${enunciado}</div>`;
+	                } else if (data.tipo === 'draganddrop_image') {
+	                    // Verificar si la respuesta correcta es un array o un único valor
+	                    const isArray = Array.isArray(data.respuestaCorrecta);
+	                    const respuestaArray = isArray ? data.respuestaCorrecta : [data.respuestaCorrecta];
+	                
+	                    // Obtenemos la imagen principal
+	                    const imagenDrop = data.imagenDrop;
+	                
+	                    // Construimos el bloque HTML de las opciones encerradas en corchetes
+	                    // con negrita 500 y color mediumblue
+	                    const opcionesHTML = respuestaArray
+	                        .map(opc => `[ <strong style="font-weight: 500; color: mediumblue;">${opc}</strong> ]`)
+	                        .join(' ');
+	                
+	                    // Agregamos al HTML la imagen y debajo las opciones
+	                    html += `
+                        <div>
+                            <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
+                            <div style="margin-top: 1rem;">
+                                ${opcionesHTML}
+                            </div>
+                        </div>
+                    `;
 	                }
+	                
 	                // Solo agregamos la línea separadora si NO es el último elemento
 	                html += (index < array.length - 1) ? '<hr style="margin-top: 5px; margin-bottom: 5px;"></div>' : '</div>';
 	                return html;
