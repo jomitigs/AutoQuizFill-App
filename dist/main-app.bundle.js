@@ -42716,27 +42716,15 @@
 	    if (selectCount > 0 && inputRadioCount === 0 && inputCheckboxCount === 0 && !dropzonesElement && !draghomesElement) {
 	      return 'select_emparejamiento';
 	    }
-	    console.log("Valores antes de la condición:");
-	    console.log("inputTextCount:", inputTextCount);
-	    console.log("inputRadioCount:", inputRadioCount);
-	    console.log("inputCheckboxCount:", inputCheckboxCount);
-	    console.log("selectCount:", selectCount);
-	    console.log("dropzonesElement:", dropzonesElement);
-	    console.log("draghomesElement:", draghomesElement);
-	    console.log("containsRespuesta:", containsRespuesta);
 	    
 	    if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
 	      console.log("Condición cumplida");
 	      if (containsRespuesta) {
-	        console.log("Retornando: 'inputtext_respuestacorta2'");
 	        return 'inputtext_respuestacorta2';
 	      } else {
-	        console.log("Retornando: 'inputtext_respuestacorta'");
 	        return 'inputtext_respuestacorta';
 	      }
-	    } else {
-	      console.log("Condición no cumplida");
-	    }
+	    } 
 	    
 	    
 	  }
@@ -44074,18 +44062,16 @@
 	                    
 	                    else if (data.tipo === 'inputtext_respuestacorta2') {
 	                        const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
-	                        let respuestaIndex = 0;
-	                    
-	                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
-	                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
-	                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
-	                    
-	                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
-	                        });
 
-	                        enunciadoProcesado = processContent(enunciadoProcesado);
-	                    
-	                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+	                        html += '<div class="respuestasautosave">';
+	                        html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
+	                        
+	                        respuestas.forEach((resp) => {
+	                            html += `<strong style="font-weight: 500;">[</strong><span style="color: mediumblue; font-weight: 500;">${resp}</span><strong style="font-weight: 500;">]</strong> `;
+	                        });
+	                        
+	                        html += '</div>';
+	                        
 	                    
 	                    } 
 	                    
@@ -44235,18 +44221,16 @@
 	                    
 	                    else if (data.tipo === 'inputtext_respuestacorta2') {
 	                        const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
-	                        let respuestaIndex = 0;
-	                    
-	                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
-	                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
-	                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
-	                    
-	                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
-	                        });
 
-	                        enunciadoProcesado = processContent(enunciadoProcesado);
-	                    
-	                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+	                        html += '<div class="respuestasautosave">';
+	                        html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
+	                        
+	                        respuestas.forEach((resp) => {
+	                            html += `<strong style="font-weight: 500;">[</strong><span style="color: mediumblue; font-weight: 500;">${resp}</span><strong style="font-weight: 500;">]</strong> `;
+	                        });
+	                        
+	                        html += '</div>';
+	                        
 	                    
 	                    } 
 	                    

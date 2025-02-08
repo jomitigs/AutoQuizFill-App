@@ -471,18 +471,16 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     
                     else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
-                        let respuestaIndex = 0;
-                    
-                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
-                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
-                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
-                    
-                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
-                        });
 
-                        enunciadoProcesado = processContent(enunciadoProcesado);
-                    
-                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+                        html += '<div class="respuestasautosave">';
+                        html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
+                        
+                        respuestas.forEach((resp) => {
+                            html += `<strong style="font-weight: 500;">[</strong><span style="color: mediumblue; font-weight: 500;">${resp}</span><strong style="font-weight: 500;">]</strong> `;
+                        });
+                        
+                        html += '</div>';
+                        
                     
                     } 
                     
@@ -632,18 +630,16 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     
                     else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
-                        let respuestaIndex = 0;
-                    
-                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
-                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
-                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
-                    
-                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
-                        });
 
-                        enunciadoProcesado = processContent(enunciadoProcesado);
-                    
-                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+                        html += '<div class="respuestasautosave">';
+                        html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
+                        
+                        respuestas.forEach((resp) => {
+                            html += `<strong style="font-weight: 500;">[</strong><span style="color: mediumblue; font-weight: 500;">${resp}</span><strong style="font-weight: 500;">]</strong> `;
+                        });
+                        
+                        html += '</div>';
+                        
                     
                     } 
                     
