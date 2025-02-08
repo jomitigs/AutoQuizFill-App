@@ -42698,10 +42698,7 @@
 	  const inputCheckboxCount = formulation_clearfix.querySelectorAll('input[type="checkbox"]').length;
 	  const selectCount = formulation_clearfix.querySelectorAll('select').length;
 
-	  const blocks = document.querySelectorAll(".ablock.form-inline");
-	  let containsRespuesta = Array.from(blocks).some(block => block.textContent.includes("respuesta"));
-
-	console.log(containsRespuesta); // Devuelve true si al menos un bloque contiene "respuesta"
+	  const aBlock = document.querySelectorAll(".ablock.form-inline").length;
 
 	  if (hayUnSoloQtext) {
 	    if (inputRadioCount > 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
@@ -42714,7 +42711,7 @@
 	      return 'select_emparejamiento';
 	    }
 	    if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
-	      if (containsRespuesta) {
+	      if (aBlock === 1) {
 	        return 'inputtext_respuestacorta2';
 	      } else {
 	      return 'inputtext_respuestacorta';
@@ -44085,7 +44082,7 @@
 	                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
 	                        });
 	                    
-	                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+	                        html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
 	                    }
 	                    
 	                    else if (data.tipo === 'draganddrop_text') {
@@ -44175,8 +44172,6 @@
 	                    const questionNumber = key.replace(/\D/g, '');
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                    console.log("Depuración - Evaluando condición:");
-	                    console.log("data.enunciado:", data.enunciado);
 	                    console.log("data.tipo:", data.tipo);
 	                    
 	                    // Evaluamos cada parte de la condición por separado

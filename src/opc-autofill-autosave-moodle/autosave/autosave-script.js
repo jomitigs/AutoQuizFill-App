@@ -465,7 +465,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                             return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
                         });
                     
-                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
                     }
                     
                     else if (data.tipo === 'draganddrop_text') {
@@ -555,8 +555,6 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     const questionNumber = key.replace(/\D/g, '');
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
-                    console.log("Depuración - Evaluando condición:");
-                    console.log("data.enunciado:", data.enunciado);
                     console.log("data.tipo:", data.tipo);
                     
                     // Evaluamos cada parte de la condición por separado
