@@ -44659,7 +44659,7 @@
 	    // Obtener las preguntas guardadas en sessionStorage
 	    const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
-	    const dataPageNormalizada = normalizarHTML(dataPage);
+	    const dataPageNormalizada = await normalizarHTML(dataPage);
 	    console.log('DataPageNormalizada:', dataPageNormalizada);
 
 	    const dataFirebaseNormalizada = JSON.parse(sessionStorage.getItem('dataFirebaseNormalizada'));
