@@ -8,7 +8,7 @@ import { select_emparejamiento } from './questions-types/3_select_emparejamiento
 import interact from 'interactjs';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML } from '../autofill-autosave-helpers.js';
 
-import { getDataFromFirebase} from '../../config-firebase/firebase-helpers.js';
+import { getDataFromFirebase, getDataFromFirebaseAsync} from '../../config-firebase/firebase-helpers.js';
 
 
 // Exporta una función llamada contenedorAutoSave_js
@@ -41,6 +41,8 @@ export function contenedorAutoSave_js() {
         if (esPaginaQuiz && interruptorAutoSave.checked) {
             if (bodyAutoSave) {
                 bodyAutoSave.style.display = 'flex';
+
+                getDataFromFirebaseAsync();
 
                 console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
@@ -780,7 +782,7 @@ export async function AutoSave_Firebase() {
 
     console.log('Ruta de configuración encontrada:', ruta);
 
-    const dataPageNormalizada = await normalizarHTML(dataPage);
+    const dataPageNormalizada = normalizarHTML(dataPage);
     console.log('DataPageNormalizada:', dataPageNormalizada);
 
     // Obtener datos actuales desde Firebase

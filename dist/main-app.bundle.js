@@ -43001,7 +43001,7 @@
 	 * @param {string|object} input - HTML en forma de string o un objeto que contenga la propiedad "html".
 	 * @returns {Promise<any>} - Resultado normalizado.
 	 */
-	async function normalizarHTML(input) {
+	async function normalizarHTML$1(input) {
 	    // Caso 1: Entrada es un string HTML directo.
 	    if (typeof input === "string") {
 	        return await normalizarHTMLString(input);
@@ -43859,6 +43859,50 @@
 	    }
 	}
 
+	async function getDataFromFirebaseAsync() {
+	    try {
+	        const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+
+	        // Determinar la ruta de referencia
+	        const ruta = switchRutaDinamica
+	            ? sessionStorage.getItem('configRutaDinamic')
+	            : localStorage.getItem('configRuta');
+
+	        if (!ruta) {
+	            console.warn('No se encontró una ruta válida.');
+	            return;
+	        }
+
+	        // Verificamos si ya existe la clave y si la ruta es la misma
+	        const storedData = sessionStorage.getItem('dataFirebaseNormalizada');
+	        if (storedData) {
+	            const parsedData = JSON.parse(storedData);
+	            if (parsedData.ruta === ruta) {
+	                console.log('Los datos ya están almacenados y la ruta no ha cambiado. No se vuelve a ejecutar.');
+	                return;
+	            }
+	        }
+
+	        // Obtenemos la data desde Firebase
+	        const dataFirebase = await getDataFromFirebase(ruta);
+
+	        if (dataFirebase) {
+	            // Normalizamos la data y agregamos la ruta utilizada
+	            const dataFirebaseNormalizada = {
+	                ...await normalizarHTML(dataFirebase),
+	                ruta
+	            };
+
+	            // Guardamos la data en sessionStorage
+	            sessionStorage.setItem('dataFirebaseNormalizada', JSON.stringify(dataFirebaseNormalizada));
+	        } else {
+	            console.warn('No se encontró data en Firebase.');
+	        }
+	    } catch (error) {
+	        console.error(`Error en getDataFromFirebaseAsync: ${error.message}`);
+	    }
+	}
+
 	// Exporta una función llamada contenedorAutoSave_js
 	function contenedorAutoSave_js() {
 	    const SWITCH_ID = 'switch-autosave';
@@ -43889,6 +43933,8 @@
 	        if (esPaginaQuiz && interruptorAutoSave.checked) {
 	            if (bodyAutoSave) {
 	                bodyAutoSave.style.display = 'flex';
+
+	                getDataFromFirebaseAsync();
 
 	                console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
@@ -44628,14 +44674,14 @@
 
 	    console.log('Ruta de configuración encontrada:', ruta);
 
-	    const dataPageNormalizada = await normalizarHTML(dataPage);
+	    const dataPageNormalizada = normalizarHTML$1(dataPage);
 	    console.log('DataPageNormalizada:', dataPageNormalizada);
 
 	    // Obtener datos actuales desde Firebase
 	    const dataFirebase = await getDataFromFirebase(ruta);
 	    console.log('DataFirebase:', dataFirebase);
 
-	    const dataFirebaseNormalizada = await normalizarHTML(dataFirebase);
+	    const dataFirebaseNormalizada = await normalizarHTML$1(dataFirebase);
 	    console.log('DataFirebaseNormalizada:', dataFirebaseNormalizada);
 
 	 
