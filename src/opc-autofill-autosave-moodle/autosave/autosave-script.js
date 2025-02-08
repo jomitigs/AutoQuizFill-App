@@ -435,9 +435,6 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
  
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
-
-                        console.log("Se actualizo el enunciado");
-                        console.log(processContent(data.enunciado));
                        
 
                     }
@@ -575,8 +572,6 @@ function AutoSave_ShowResponses(numeroPregunta) {
                 .map(([key, data], index, array) => {
                     const questionNumber = key.replace(/\D/g, '');
                     let html = `<div class="preguntaautosave" id="${key}">`;
-                    
-                    console.log("data.tipo:", data.tipo);
                     
                     if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
     
