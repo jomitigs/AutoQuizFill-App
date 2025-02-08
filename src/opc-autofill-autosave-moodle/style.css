@@ -374,17 +374,19 @@
     pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */
 }
 
-.icon-button {
+#upload-boton {
+    position: relative;
+    display: inline-block;
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 1.2em; /* Ajusta el tamaño según necesites */
+    font-size: 1em; /* Ajusta el tamaño según necesites */
     color: inherit; /* Mantiene el color del texto */
     margin-left: 10px; /* Espaciado entre el título y el botón */
     transition: color 0.3s ease-in-out;
 }
 
-.icon-button:hover {
+#upload-boton {
     color: mediumblue;
 }
 

@@ -769,7 +769,7 @@ function processContent(content) {
 
 
 export function AutoSave_Firebase() {
-    console-log("hola boton")
+    console.log("hola boton")
 
     //getDataFromFirebase(path);
 
