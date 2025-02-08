@@ -374,7 +374,7 @@
     pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */
 }
 
-#upload-boton {
+#upload-autosave {
     position: relative;
     display: inline-block;
     border: none;
@@ -385,7 +385,6 @@
     transition: color 0.3s ease-in-out;
 }
 
-#upload-boton {
+#upload-autosave:hover {
     color: mediumblue;
 }
-
