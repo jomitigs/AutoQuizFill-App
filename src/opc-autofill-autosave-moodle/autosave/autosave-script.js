@@ -766,11 +766,43 @@ function processContent(content) {
         .replace(/(\r\n|\n|\r)/g, '<br>');
 }
 
+export async function AutoSave_Firebase() {
+    console.log("Ejecutando AutoSave_Firebase...");
 
+    // Obtener las preguntas guardadas en sessionStorage
+    const preguntasPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
-export function AutoSave_Firebase() {
-    console.log("hola boton")
+    if (!preguntasPage) {
+        console.error('No hay preguntas guardadas en sessionStorage.');
+        alert('No hay datos para guardar.');
+        return;
+    }
 
-    //getDataFromFirebase(path);
+    // Obtener estado del switch desde localStorage
+    const switchAutosave = localStorage.getItem('switch-ruta-dinamica') === 'true';
+
+    // Determinar la ruta de referencia
+    const ruta = switchAutosave 
+        ? sessionStorage.getItem('configRutaDinamic') 
+        : localStorage.getItem('configRuta');
+
+    if (!ruta) {
+        console.warn('No se encontró una ruta de configuración válida.');
+        alert('No se ha podido guardar porque la ruta no es válida.');
+        return;
+    }
+
+    console.log('Ruta de configuración encontrada:', ruta);
+
+    // Verificar si la referencia de Firebase es válida
+    if (!referencia) {
+        console.error('No se pudo obtener la referencia de Firebase.');
+        alert('Error al conectar con Firebase.');
+        return;
+    }
+
+    // Obtener datos actuales desde Firebase antes de guardar
+    const datosFirebase = await getDataFromFirebase(ruta);
+    console.log('Datos actuales en Firebase:', datosFirebase);
 
 }
