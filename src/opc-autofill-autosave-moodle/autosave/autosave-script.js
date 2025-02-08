@@ -432,7 +432,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
 
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
-                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta' && data.tipo !== 'inputtext_respuestacorta2') {
+                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
  
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 
@@ -561,7 +561,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     console.log("¿data.tipo !== 'inputtext_respuestacorta'?", data.tipo !== 'inputtext_respuestacorta');
                     console.log("¿data.tipo !== 'inputtext_respuestacorta2'?", data.tipo !== 'inputtext_respuestacorta2');
                     
-                    if (data.enunciado && (data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta' && data.tipo !== 'inputtext_respuestacorta2')) {
+                    if (data.enunciado && (data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta')) {
                         console.log("Condición cumplida, agregando pregunta al HTML.");
                         html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
                     } else {
