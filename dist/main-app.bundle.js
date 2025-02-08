@@ -43399,7 +43399,7 @@
 	}
 
 	async function inputtext_respuestacorta2(originalFormulationClearfix) {
-	    const tipo = 'inputtext_respuestacorta';
+	    const tipo = 'inputtext_respuestacorta2';
 
 	    // 1) Clonamos el elemento original para trabajar sobre la copia.
 	    const clonFormulation = originalFormulationClearfix.cloneNode(true);
