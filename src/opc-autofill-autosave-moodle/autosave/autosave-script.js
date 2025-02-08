@@ -698,12 +698,46 @@ function AutoSave_ShowResponses(numeroPregunta) {
  * Función auxiliar que formatea las opciones de respuesta
  */
 function formatResponseOptions(options, selected) {
-    const selectedSet = new Set(Array.isArray(selected) ? selected.map(s => s.trim()) : [selected?.trim()]);
+    // Convertimos selected en un conjunto para facilitar la comparación
+    const selectedSet = new Set(
+        Array.isArray(selected) 
+            ? selected.map(s => s.trim()) 
+            : [selected?.trim()]
+    );
+    
     return options.map((option, i) => {
-        const literal = options.length > 1 ? String.fromCharCode(97 + i) + '. ' : (i + 1) + '. ';
-        return `<div><span style="font-weight:500; ${selectedSet.has(option.trim()) ? 'color:MediumBlue;' : ''}">${literal}${processContent(option)}</span></div>`;
+        // Creamos el literal (a., b., c. o 1., 2., 3. según corresponda)
+        const literal = options.length > 1 
+            ? String.fromCharCode(97 + i) + '. ' 
+            : (i + 1) + '. ';
+        
+        const isSelected = selectedSet.has(option.trim());
+        // Se detecta si la opción contiene una imagen mediante una expresión regular
+        const containsImage = /<img\s+[^>]*>/.test(option);
+        
+        // Si la opción contiene imagen y está seleccionada, se le aplica el overlay
+        if (containsImage && isSelected) {
+            return `
+                <div class="respuesta">
+                    <span style="font-weight:500;">${literal}</span>
+                    <div class="img-overlay">
+                        ${processContent(option)}
+                    </div>
+                </div>
+            `;
+        } else {
+            // Para el resto se mantiene el estilo (pintando el texto de MediumBlue si está seleccionado)
+            return `
+                <div class="respuesta">
+                    <span style="font-weight:500; ${isSelected ? 'color:MediumBlue;' : ''}">
+                        ${literal}${processContent(option)}
+                    </span>
+                </div>
+            `;
+        }
     }).join('');
 }
+
 
 /**
  * Función auxiliar que procesa el contenido:
