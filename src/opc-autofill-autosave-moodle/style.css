@@ -355,3 +355,21 @@
     font-size: 0.90em;
     color: #34495e;
 }
+
+
+.img-overlay {
+    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */
+    display: inline-block; /* O block según convenga en tu diseño */
+}
+
+.img-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Fondo MediumBlue con 30% de opacidad */
+    background-color: rgba(0, 0, 205, 0.3);
+    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */
+}
