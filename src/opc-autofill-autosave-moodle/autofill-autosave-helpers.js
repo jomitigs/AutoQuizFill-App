@@ -133,13 +133,28 @@ console.log(containsRespuesta); // Devuelve true si al menos un bloque contiene 
     if (selectCount > 0 && inputRadioCount === 0 && inputCheckboxCount === 0 && !dropzonesElement && !draghomesElement) {
       return 'select_emparejamiento';
     }
+    console.log("Valores antes de la condición:");
+    console.log("inputTextCount:", inputTextCount);
+    console.log("inputRadioCount:", inputRadioCount);
+    console.log("inputCheckboxCount:", inputCheckboxCount);
+    console.log("selectCount:", selectCount);
+    console.log("dropzonesElement:", dropzonesElement);
+    console.log("draghomesElement:", draghomesElement);
+    console.log("containsRespuesta:", containsRespuesta);
+    
     if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
+      console.log("Condición cumplida");
       if (containsRespuesta) {
+        console.log("Retornando: 'inputtext_respuestacorta2'");
         return 'inputtext_respuestacorta2';
       } else {
-      return 'inputtext_respuestacorta';
+        console.log("Retornando: 'inputtext_respuestacorta'");
+        return 'inputtext_respuestacorta';
       }
+    } else {
+      console.log("Condición no cumplida");
     }
+    
     
   }
 
