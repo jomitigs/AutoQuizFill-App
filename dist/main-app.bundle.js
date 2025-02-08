@@ -44045,8 +44045,6 @@
 	                // Solo mostramos si esa pregunta tiene 'previous: false'
 	                if (data && data.previous === false) {
 
-	                    console.log("data.tipo:", data.tipo);
-
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
 	                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
@@ -44191,13 +44189,8 @@
 	                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
 	    
 	                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
-
-	                        console.log("Se actualizo el enunciado");
-	                        console.log(processContent(data.enunciado));
 	                       
-	                    } else {
-	                        console.log("Condición NO cumplida, no se agrega la pregunta.");
-	                    }
+	                    } 
 	                    
 
 	                    if ( data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
