@@ -432,7 +432,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
 
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
-                    if (data.enunciado && (data.tipo !== 'draganddrop_text' || data.tipo !== 'inputtext_respuestacorta' || data.tipo !== 'inputtext_respuestacorta2')) {
+                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta' && data.tipo !== 'inputtext_respuestacorta2') {
  
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 
