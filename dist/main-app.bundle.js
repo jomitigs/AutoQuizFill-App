@@ -44048,8 +44048,16 @@
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
 	                    if (data.enunciado && (data.tipo !== 'draganddrop_text' || data.tipo !== 'inputtext_respuestacorta' || data.tipo !== 'inputtext_respuestacorta2')) {
+	                        console.log("Depuración - Evaluando condición:");
+	                        console.log("data.enunciado:", data.enunciado);
+	                        console.log("data.tipo:", data.tipo);
+	                        console.log("Condición (data.tipo !== 'draganddrop_text'):", data.tipo !== 'draganddrop_text');
+	                        console.log("Condición (data.tipo !== 'inputtext_respuestacorta'):", data.tipo !== 'inputtext_respuestacorta');
+	                        console.log("Condición (data.tipo !== 'inputtext_respuestacorta2'):", data.tipo !== 'inputtext_respuestacorta2');
+	                        
 	                        html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 	                    }
+	                    
 
 	                    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
 	                        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
@@ -44164,9 +44172,22 @@
 	                    const questionNumber = key.replace(/\D/g, '');
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                    if (data.enunciado && (data.tipo !== 'draganddrop_text' || data.tipo !== 'inputtext_respuestacorta' || data.tipo !== 'inputtext_respuestacorta2') ) {
+	                    console.log("Depuración - Evaluando condición:");
+	                    console.log("data.enunciado:", data.enunciado);
+	                    console.log("data.tipo:", data.tipo);
+	                    
+	                    // Evaluamos cada parte de la condición por separado
+	                    console.log("¿data.tipo !== 'draganddrop_text'?", data.tipo !== 'draganddrop_text');
+	                    console.log("¿data.tipo !== 'inputtext_respuestacorta'?", data.tipo !== 'inputtext_respuestacorta');
+	                    console.log("¿data.tipo !== 'inputtext_respuestacorta2'?", data.tipo !== 'inputtext_respuestacorta2');
+	                    
+	                    if (data.enunciado && (data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta' && data.tipo !== 'inputtext_respuestacorta2')) {
+	                        console.log("Condición cumplida, agregando pregunta al HTML.");
 	                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
+	                    } else {
+	                        console.log("Condición NO cumplida, no se agrega la pregunta.");
 	                    }
+	                    
 
 	                    if ( data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
 	                        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
