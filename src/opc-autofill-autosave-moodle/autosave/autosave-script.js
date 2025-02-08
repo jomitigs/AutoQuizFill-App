@@ -470,7 +470,26 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         enunciadoProcesado = processContent(enunciadoProcesado);
                     
                         html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
-                    } else if (data.tipo === 'draganddrop_text') {
+                    } 
+                    
+                    else if (data.tipo === 'inputtext_respuestacorta2') {
+                        const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
+                        let respuestaIndex = 0;
+                    
+                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
+                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
+                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
+                    
+                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
+                        });
+
+                        enunciadoProcesado = processContent(enunciadoProcesado);
+                    
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+                    
+                    } 
+                    
+                    else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
                         let enunciado = data.enunciado;
                         enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
@@ -596,9 +615,27 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         }
                    
                    
+                    } else if (data.tipo === 'inputtext_respuestacorta') {
+                        const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
+                        let respuestaIndex = 0;
+                    
+                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
+                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
+                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
+                    
+                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
+                        });
+
+                        enunciadoProcesado = processContent(enunciadoProcesado);
+                    
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+                    
+                    
+                    
+                    
                     } 
                     
-                    else if (data.tipo === 'inputtext_respuestacorta') {
+                    else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
                         let respuestaIndex = 0;
                     
