@@ -43863,7 +43863,7 @@
 	        // 4) Guardar todo en sessionStorage
 	        try {
 	            sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
-	            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta con previous:false. Todas las demás son previous:true.');
+	            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta con previous:false.');
 	        } catch (error) {
 	            console.error('Error al guardar en sessionStorage:', error);
 	        }
@@ -44010,7 +44010,7 @@
 	                const key = 'Pregunta' + numeroPregunta;
 	                const data = responses[key];
 
-	                // Solo mostramos si esa pregunta tiene 'previous: true'
+	                // Solo mostramos si esa pregunta tiene 'previous: false'
 	                if (data && data.previous === false) {
 
 	                    console.log("data.tipo:", data.tipo);
