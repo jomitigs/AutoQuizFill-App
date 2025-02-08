@@ -465,9 +465,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         });
                     
                         html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
-                    }
-                    
-                    else if (data.tipo === 'draganddrop_text') {
+                    } else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
                         let enunciado = data.enunciado;
                         enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
@@ -556,11 +554,6 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     
                     console.log("data.tipo:", data.tipo);
                     
-                    // Evaluamos cada parte de la condición por separado
-                    console.log("¿data.tipo !== 'draganddrop_text'?", data.tipo !== 'draganddrop_text');
-                    console.log("¿data.tipo !== 'inputtext_respuestacorta'?", data.tipo !== 'inputtext_respuestacorta');
-                    console.log("¿data.tipo !== 'inputtext_respuestacorta2'?", data.tipo !== 'inputtext_respuestacorta2');
-                    
                     if (data.enunciado && (data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta')) {
                         console.log("Condición cumplida, agregando pregunta al HTML.");
                         html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
@@ -606,9 +599,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         });
                     
                         html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
-                    }
-                    
-                    else if (data.tipo === 'draganddrop_text') {
+                    } else if (data.tipo === 'draganddrop_text') {
                         let enunciado = data.enunciado;
                         enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
                             const contenido = textoDentro.trim();
