@@ -430,11 +430,11 @@ function AutoSave_ShowResponses(numeroPregunta) {
 
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
+                    console.log("Condición (data.tipo !== 'draganddrop_text'):", data.tipo !== 'draganddrop_text');
+                    console.log("Condición (data.tipo !== 'inputtext_respuestacorta'):", data.tipo !== 'inputtext_respuestacorta');
+                    console.log("Condición (data.tipo !== 'inputtext_respuestacorta2'):", data.tipo !== 'inputtext_respuestacorta2');
+
                     if (data.enunciado && (data.tipo !== 'draganddrop_text' || data.tipo !== 'inputtext_respuestacorta' || data.tipo !== 'inputtext_respuestacorta2')) {
-                        console.log("Condición (data.tipo !== 'draganddrop_text'):", data.tipo !== 'draganddrop_text');
-                        console.log("Condición (data.tipo !== 'inputtext_respuestacorta'):", data.tipo !== 'inputtext_respuestacorta');
-                        console.log("Condición (data.tipo !== 'inputtext_respuestacorta2'):", data.tipo !== 'inputtext_respuestacorta2');
-                        
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
                     }
                     
