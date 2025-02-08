@@ -136,7 +136,6 @@ export function determinarTipoPregunta(formulation_clearfix) {
     }
     
     if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
-      console.log("Condición cumplida");
       if (containsRespuesta) {
         return 'inputtext_respuestacorta2';
       } else {
