@@ -44039,12 +44039,15 @@
 	                        const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 	                        let respuestaIndex = 0;
 	                    
-	                        const enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
+	                        let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
 	                            let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
 	                            respuestaIndex++; // Avanzamos al siguiente elemento en la lista
 	                    
 	                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
 	                        });
+	                    
+	                        // Procesamos el contenido antes de añadirlo a HTML
+	                        enunciadoProcesado = processContent(enunciadoProcesado);
 	                    
 	                        html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
 	                    } else if (data.tipo === 'draganddrop_text') {
