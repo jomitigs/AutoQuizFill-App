@@ -468,7 +468,6 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
                     }
                     
-                    
                     else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
                         let enunciado = data.enunciado;
@@ -657,7 +656,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
             resolve();
         } catch (error) {
             console.error('Error al parsear las respuestas:', error);
-            container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
+            container.innerHTML = '<span style="font-weight:500; color:red;">Error</span>';
             reject(error);
         }
     });
