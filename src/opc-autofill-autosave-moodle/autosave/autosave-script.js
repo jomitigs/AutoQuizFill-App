@@ -465,8 +465,9 @@ function AutoSave_ShowResponses(numeroPregunta) {
                             return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
                         });
                     
-                        html += `<div class="respuestasautosave">${enunciadoProcesado}</div>`;
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
                     }
+                    
                     
                     else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
@@ -608,7 +609,7 @@ function AutoSave_ShowResponses(numeroPregunta) {
                             return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
                         });
                     
-                        html += `<div class="respuestasautosave">${enunciadoProcesado}</div>`;
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
                     }
                     
                     else if (data.tipo === 'draganddrop_text') {
