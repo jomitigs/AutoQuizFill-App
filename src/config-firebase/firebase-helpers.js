@@ -1,5 +1,6 @@
 import { ref, get } from 'firebase/database';
 import { database } from './script.js';
+import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosave-helpers.js";
 
 export async function getDataFromFirebase(path) {
     try {

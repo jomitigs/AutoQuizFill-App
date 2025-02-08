@@ -43001,7 +43001,7 @@
 	 * @param {string|object} input - HTML en forma de string o un objeto que contenga la propiedad "html".
 	 * @returns {Promise<any>} - Resultado normalizado.
 	 */
-	async function normalizarHTML$1(input) {
+	async function normalizarHTML(input) {
 	    // Caso 1: Entrada es un string HTML directo.
 	    if (typeof input === "string") {
 	        return await normalizarHTMLString(input);
@@ -44659,7 +44659,7 @@
 	    // Obtener las preguntas guardadas en sessionStorage
 	    const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
-	    const dataPageNormalizada = normalizarHTML$1(dataPage);
+	    const dataPageNormalizada = normalizarHTML(dataPage);
 	    console.log('DataPageNormalizada:', dataPageNormalizada);
 
 	    const dataFirebaseNormalizada = JSON.parse(sessionStorage.getItem('dataFirebaseNormalizada'));
