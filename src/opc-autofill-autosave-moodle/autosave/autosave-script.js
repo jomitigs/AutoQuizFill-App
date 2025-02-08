@@ -764,13 +764,6 @@ export async function AutoSave_Firebase() {
 
     // Obtener las preguntas guardadas en sessionStorage
     const preguntasPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
-
-    if (!preguntasPage) {
-        console.error('No hay preguntas guardadas en sessionStorage.');
-        alert('No hay datos para guardar.');
-        return;
-    }
-
     // Obtener estado del switch desde localStorage
     const switchAutosave = localStorage.getItem('switch-ruta-dinamica') === 'true';
 
@@ -779,15 +772,15 @@ export async function AutoSave_Firebase() {
         ? sessionStorage.getItem('configRutaDinamic') 
         : localStorage.getItem('configRuta');
 
-    if (!ruta) {
-        console.warn('No se encontró una ruta de configuración válida.');
-        alert('No se ha podido guardar porque la ruta no es válida.');
+    if (!preguntasPage) {
+        console.error('No hay preguntas guardadas en sessionStorage.');
+        alert('No hay datos para guardar.');
         return;
     }
 
     console.log('Ruta de configuración encontrada:', ruta);
 
-    // Obtener datos actuales desde Firebase antes de guardar
+    // Obtener datos actuales desde Firebase
     const datosFirebase = await getDataFromFirebase(ruta);
     console.log('Datos actuales en Firebase:', datosFirebase);
 
