@@ -11131,7 +11131,7 @@
 	        logger = logClient.log.bind(logClient);
 	    }
 	};
-	const log = function (...varArgs) {
+	const log$1 = function (...varArgs) {
 	    if (firstLog_ === true) {
 	        firstLog_ = false;
 	        if (logger === null && SessionStorage.get('logging_enabled') === true) {
@@ -11145,7 +11145,7 @@
 	};
 	const logWrapper = function (prefix) {
 	    return function (...varArgs) {
-	        log(prefix, ...varArgs);
+	        log$1(prefix, ...varArgs);
 	    };
 	};
 	const error = function (...varArgs) {
@@ -11648,7 +11648,7 @@
 	            // TODO: Need to figure out all the cases this is raised and whether
 	            // this makes sense.
 	            if (error && error.code === 'auth/token-not-initialized') {
-	                log('Got auth/token-not-initialized error.  Treating as null token.');
+	                log$1('Got auth/token-not-initialized error.  Treating as null token.');
 	                return null;
 	            }
 	            else {
@@ -12356,11 +12356,11 @@
 	                this.myIFrame.doc.close();
 	            }
 	            catch (e) {
-	                log('frame writing exception');
+	                log$1('frame writing exception');
 	                if (e.stack) {
-	                    log(e.stack);
+	                    log$1(e.stack);
 	                }
-	                log(e);
+	                log$1(e);
 	            }
 	        }
 	    }
@@ -12381,7 +12381,7 @@
 	                const a = iframe.contentWindow.document;
 	                if (!a) {
 	                    // Apologies for the log-spam, I need to do something to keep closure from optimizing out the assignment above.
-	                    log('No IE domain setting required');
+	                    log$1('No IE domain setting required');
 	                }
 	            }
 	            catch (e) {
@@ -12582,7 +12582,7 @@
 	                            }
 	                        };
 	                    newScript.onerror = () => {
-	                        log('Long-poll script failed to load: ' + url);
+	                        log$1('Long-poll script failed to load: ' + url);
 	                        this.sendNewPolls = false;
 	                        this.close();
 	                    };
@@ -14570,7 +14570,7 @@
 	                    this.appCheckTokenProvider_.getToken(forceRefresh)
 	                ]);
 	                if (!canceled) {
-	                    log('getToken() completed. Creating connection.');
+	                    log$1('getToken() completed. Creating connection.');
 	                    this.authToken_ = authToken && authToken.accessToken;
 	                    this.appCheckToken_ = appCheckToken && appCheckToken.token;
 	                    connection = new Connection(connId, this.repoInfo_, this.applicationId_, this.appCheckToken_, this.authToken_, onDataMessage, onReady, onDisconnect, 
@@ -14580,7 +14580,7 @@
 	                    }, lastSessionId);
 	                }
 	                else {
-	                    log('getToken() completed but was canceled');
+	                    log$1('getToken() completed but was canceled');
 	                }
 	            }
 	            catch (error) {
@@ -14598,7 +14598,7 @@
 	        }
 	    }
 	    interrupt(reason) {
-	        log('Interrupting connection for reason: ' + reason);
+	        log$1('Interrupting connection for reason: ' + reason);
 	        this.interruptReasons_[reason] = true;
 	        if (this.realtime_) {
 	            this.realtime_.close();
@@ -14614,7 +14614,7 @@
 	        }
 	    }
 	    resume(reason) {
-	        log('Resuming connection for reason: ' + reason);
+	        log$1('Resuming connection for reason: ' + reason);
 	        delete this.interruptReasons_[reason];
 	        if (isEmpty(this.interruptReasons_)) {
 	            this.reconnectDelay_ = RECONNECT_MIN_DELAY;
@@ -14675,7 +14675,7 @@
 	        return listen;
 	    }
 	    onAuthRevoked_(statusCode, explanation) {
-	        log('Auth token revoked: ' + statusCode + '/' + explanation);
+	        log$1('Auth token revoked: ' + statusCode + '/' + explanation);
 	        this.authToken_ = null;
 	        this.forceTokenRefresh_ = true;
 	        this.realtime_.close();
@@ -14694,7 +14694,7 @@
 	        }
 	    }
 	    onAppCheckRevoked_(statusCode, explanation) {
-	        log('App check token revoked: ' + statusCode + '/' + explanation);
+	        log$1('App check token revoked: ' + statusCode + '/' + explanation);
 	        this.appCheckToken_ = null;
 	        this.forceTokenRefresh_ = true;
 	        // Note: We don't close the connection as the developer may not have
@@ -21317,7 +21317,7 @@
 	            eventList.events[i] = null;
 	            const eventFn = eventData.getEventRunner();
 	            if (logger) {
-	                log('event: ' + eventData.toString());
+	                log$1('event: ' + eventData.toString());
 	            }
 	            exceptionGuard(eventFn);
 	        }
@@ -21662,7 +21662,7 @@
 	    if (repo.persistentConnection_) {
 	        prefix = repo.persistentConnection_.id + ':';
 	    }
-	    log(prefix, ...varArgs);
+	    log$1(prefix, ...varArgs);
 	}
 	function repoCallOnCompleteCallback(repo, callback, status, errorReason) {
 	    if (callback) {
@@ -22822,7 +22822,7 @@
 	            fatal("Can't determine Firebase Database URL. Be sure to include " +
 	                ' a Project ID when calling firebase.initializeApp().');
 	        }
-	        log('Using default host for project ', app.options.projectId);
+	        log$1('Using default host for project ', app.options.projectId);
 	        dbUrl = `${app.options.projectId}-default-rtdb.firebaseio.com`;
 	    }
 	    let parsedUrl = parseRepoInfo(dbUrl, nodeAdmin);
@@ -43939,6 +43939,15 @@
 	        }
 	    });
 
+	    const boton = document.getElementById("upload-autosave");
+
+	    // Verificar que el botón exista en el DOM antes de asignar el evento
+	    if (boton) {
+	        boton.addEventListener("click", AutoSave_Firebase);
+	    } else {
+	        console.error("El botón con ID 'upload-autosave' no fue encontrado.");
+	    }
+
 	}
 
 	async function procesoAutoSave(elemento) {
@@ -44345,6 +44354,15 @@
 	        .replace(/(\r\n|\n|\r)/g, '<br>');
 	}
 
+
+
+	function AutoSave_Firebase() {
+	    console-log("hola boton");
+
+	    //getDataFromFirebase(path);
+
+	}
+
 	function opcion_AutoFillAutoSave_Moodle_html() {
 	    return `
         <div id="autofillautosave_moodle" class="containerOption">
@@ -44407,9 +44425,11 @@
         <!-- Título y Botón -->
         <h2 id="titulo-autoquiz">
             AutoSave
-            <button class="icon-button" onclick="AutoSave_Firebase()">
+
+            <button id="upload-autosave" class="icon-button">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
             </button>
+
         </h2>
 
         <label class="switch-autoquiz">

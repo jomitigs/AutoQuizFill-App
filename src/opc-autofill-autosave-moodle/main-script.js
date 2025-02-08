@@ -68,9 +68,11 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
         <!-- Título y Botón -->
         <h2 id="titulo-autoquiz">
             AutoSave
-            <button class="icon-button" onclick="AutoSave_Firebase()">
+
+            <button id="upload-autosave" class="icon-button">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
             </button>
+
         </h2>
 
         <label class="switch-autoquiz">

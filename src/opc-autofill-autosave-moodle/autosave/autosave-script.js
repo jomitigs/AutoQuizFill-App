@@ -351,6 +351,15 @@ function detectarCambiosPreguntas() {
         }
     });
 
+    const boton = document.getElementById("upload-autosave");
+
+    // Verificar que el botón exista en el DOM antes de asignar el evento
+    if (boton) {
+        boton.addEventListener("click", AutoSave_Firebase);
+    } else {
+        console.error("El botón con ID 'upload-autosave' no fue encontrado.");
+    }
+
 }
 
 async function procesoAutoSave(elemento) {
@@ -760,7 +769,8 @@ function processContent(content) {
 
 
 export function AutoSave_Firebase() {
+    console-log("hola boton")
 
-    getDataFromFirebase(path);
+    //getDataFromFirebase(path);
 
 }
