@@ -1,7 +1,7 @@
 import './style.css';
 
 import { contenedorUsers_js } from './users/script.js';
-import { contenedorRuta_js, contenedorRutaDinamica_js, AutoSave_Firebase } from './ruta/script.js';
+import { contenedorRuta_js, contenedorRutaDinamica_js} from './ruta/script.js';
 
 
 import { contenedorAutoSave_js } from './autosave/autosave-script.js';
