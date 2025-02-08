@@ -122,7 +122,7 @@ export function determinarTipoPregunta(formulation_clearfix) {
   let containsRespuesta = Array.from(blocks).some(block =>
     block.textContent.toLowerCase().includes("respuesta")
   );
-  
+
 
   if (hayUnSoloQtext) {
     if (inputRadioCount > 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
@@ -134,16 +134,16 @@ export function determinarTipoPregunta(formulation_clearfix) {
     if (selectCount > 0 && inputRadioCount === 0 && inputCheckboxCount === 0 && !dropzonesElement && !draghomesElement) {
       return 'select_emparejamiento';
     }
-    
+
     if (inputTextCount === 1 && inputRadioCount === 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
       if (containsRespuesta) {
         return 'inputtext_respuestacorta2';
       } else {
         return 'inputtext_respuestacorta';
       }
-    } 
-    
-    
+    }
+
+
   }
 
   if (draghomesElement && !dropzonesElement) {
@@ -390,37 +390,53 @@ export function renderizarPreguntas() {
 
 }
 
+// Expresiones regulares y conjuntos precompilados
+const regexLaTeX = /\\\((.*?)\\\)/g;
+const regexMathML = /^<math.*<\/math>$/;
+const regexPregunta = /^Pregunta\s*\d+/;
+const regexLiteral = /^[a-zA-Z]\.\s*/;
+const regexRespuestaPregunta = /^(Respuesta\s*\d+\s*Pregunta\s*\d+|Respuesta\s*Pregunta\s*\d+|Vacío\s*\d+\s*Pregunta\s*\d+)/;
+const textosIrrelevantesSet = new Set([
+  'Respuestas',
+  'Respuesta',
+  'Enunciado de la pregunta',
+  'https://profes.ac/pub/logoap.svg',
+  'YWRtaW5AcHJvZmVzLmFj',
+  'Quitar mi elección',
+  'vacío'
+]);
+
 export async function normalizarHTML(input) {
   // Caso 1: Si la entrada es un string, se asume que es HTML directo.
   if (typeof input === "string") {
-      return await normalizarHTMLString(input);
+    return await normalizarHTMLString(input);
   }
 
   // Caso 2: Si la entrada es un objeto (y no es null)
   if (typeof input === "object" && input !== null) {
-      // Caso 2.a: Si el objeto tiene una propiedad "html" (string)
-      if (input.hasOwnProperty("html") && typeof input.html === "string") {
-          return { 
-              ...input, 
-              html: await normalizarHTMLString(input.html) 
+    // Caso 2.a: Si el objeto tiene una propiedad "html" (string)
+    if (input.hasOwnProperty("html") && typeof input.html === "string") {
+      return {
+        ...input,
+        html: await normalizarHTMLString(input.html)
+      };
+    }
+    // Caso 2.b: Si se trata de un objeto con múltiples claves (por ejemplo, preguntas)
+    const resultado = {};
+    for (const key in input) {
+      if (input.hasOwnProperty(key)) {
+        const valor = input[key];
+        if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
+          resultado[key] = {
+            ...valor,
+            html: await normalizarHTMLString(valor.html)
           };
+        } else {
+          resultado[key] = valor;
+        }
       }
-      // Caso 2.b: Si se trata de un objeto con múltiples claves (por ejemplo, preguntas)
-      const resultado = {};
-      for (const key in input) {
-          if (input.hasOwnProperty(key)) {
-              const valor = input[key];
-              if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
-                  resultado[key] = { 
-                      ...valor, 
-                      html: await normalizarHTMLString(valor.html) 
-                  };
-              } else {
-                  resultado[key] = valor;
-              }
-          }
-      }
-      return resultado;
+    }
+    return resultado;
   }
 
   // Si la entrada no es ni string ni objeto, se retorna tal cual.
@@ -443,7 +459,7 @@ async function normalizarHTMLString(html) {
 
   // Si se detecta la presencia de elementos con las clases ".draghome" o ".dropzones", eliminar duplicados.
   if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
-      combinedResults = [...new Set(combinedResults)];
+    combinedResults = [...new Set(combinedResults)];
   }
 
   // Filtrar textos irrelevantes.
@@ -455,29 +471,29 @@ function extractVisibleText(rootNode) {
   const stack = [rootNode];
 
   while (stack.length > 0) {
-      const currentNode = stack.pop();
+    const currentNode = stack.pop();
 
-      currentNode.childNodes.forEach(child => {
-          if (child.nodeType === Node.TEXT_NODE) {
-              const trimmedText = child.textContent.trim();
-              if (trimmedText) {
-                  texts.push(trimmedText);
-              }
-          } else if (child.nodeType === Node.ELEMENT_NODE) {
-              const tag = child.tagName;
-              const type = child.getAttribute('type');
-              const classList = child.classList;
+    currentNode.childNodes.forEach(child => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const trimmedText = child.textContent.trim();
+        if (trimmedText) {
+          texts.push(trimmedText);
+        }
+      } else if (child.nodeType === Node.ELEMENT_NODE) {
+        const tag = child.tagName;
+        const type = child.getAttribute('type');
+        const classList = child.classList;
 
-              // Omitir elementos relacionados a LaTeX o MathJax.
-              if (
-                  (tag === 'SCRIPT' && type === 'math/tex') ||
-                  (tag === 'SPAN' && (classList.contains('MathJax') || classList.contains('MathJax_Preview')))
-              ) {
-                  return;
-              }
-              stack.push(child);
-          }
-      });
+        // Omitir elementos relacionados a LaTeX o MathJax.
+        if (
+          (tag === 'SCRIPT' && type === 'math/tex') ||
+          (tag === 'SPAN' && (classList.contains('MathJax') || classList.contains('MathJax_Preview')))
+        ) {
+          return;
+        }
+        stack.push(child);
+      }
+    });
   }
   return texts;
 }
@@ -489,37 +505,37 @@ async function extractMediaUrls(rootNode) {
   const stack = [rootNode];
 
   while (stack.length > 0) {
-      const currentNode = stack.pop();
+    const currentNode = stack.pop();
 
-      currentNode.childNodes.forEach(child => {
-          if (child.nodeType === Node.ELEMENT_NODE) {
-              const tag = child.tagName.toLowerCase();
-              const src = child.getAttribute('src');
+    currentNode.childNodes.forEach(child => {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        const tag = child.tagName.toLowerCase();
+        const src = child.getAttribute('src');
 
-              // Procesar imágenes.
-              if (tag === 'img' && src && validImageExtensions.test(src)) {
-                  if (src.includes('pluginfile.php')) {
-                      // Convertir la imagen a Data URI usando la función ya existente File2DataUri.
-                      mediaPromises.push(File2DataUri(child));
-                  } else {
-                      urls.push(src);
-                  }
-              }
-              // Procesar videos y audios.
-              else if ((tag === 'video' || tag === 'audio') && src) {
-                  urls.push(src);
-              }
-              stack.push(child);
+        // Procesar imágenes.
+        if (tag === 'img' && src && validImageExtensions.test(src)) {
+          if (src.includes('pluginfile.php')) {
+            // Convertir la imagen a Data URI usando la función ya existente File2DataUri.
+            mediaPromises.push(File2DataUri(child));
+          } else {
+            urls.push(src);
           }
-      });
+        }
+        // Procesar videos y audios.
+        else if ((tag === 'video' || tag === 'audio') && src) {
+          urls.push(src);
+        }
+        stack.push(child);
+      }
+    });
   }
 
   // Esperar a la conversión de imágenes y agregar los resultados.
   const convertedResults = await Promise.all(mediaPromises);
   convertedResults.forEach(result => {
-      if (result) {
-          urls.push(result);
-      }
+    if (result) {
+      urls.push(result);
+    }
   });
   return urls;
 }
@@ -528,34 +544,34 @@ function extractMathExpressions(rootNode) {
   const expressions = [];
   const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
   scripts.forEach(script => {
-      const latex = script.textContent.trim();
-      if (latex) {
-          expressions.push(latex);
-      }
+    const latex = script.textContent.trim();
+    if (latex) {
+      expressions.push(latex);
+    }
   });
   return expressions;
 }
 
 function eliminarTextosIrrelevantes(items) {
   return items.map(item => {
-      // Eliminar delimitadores LaTeX.
-      item = item.replace(regexLaTeX, '$1');
+    // Eliminar delimitadores LaTeX.
+    item = item.replace(regexLaTeX, '$1');
 
-      // Si el item coincide con el patrón MathML, se descarta.
-      if (regexMathML.test(item)) return false;
+    // Si el item coincide con el patrón MathML, se descarta.
+    if (regexMathML.test(item)) return false;
 
-      // Descarta textos que coincidan con patrones de pregunta, literal o respuesta.
-      if (
-          regexPregunta.test(item) ||
-          regexLiteral.test(item) ||
-          regexRespuestaPregunta.test(item)
-      ) {
-          return false;
-      }
+    // Descarta textos que coincidan con patrones de pregunta, literal o respuesta.
+    if (
+      regexPregunta.test(item) ||
+      regexLiteral.test(item) ||
+      regexRespuestaPregunta.test(item)
+    ) {
+      return false;
+    }
 
-      // Descarta si el texto está en el conjunto de irrelevantes.
-      if (textosIrrelevantesSet.has(item)) return false;
+    // Descarta si el texto está en el conjunto de irrelevantes.
+    if (textosIrrelevantesSet.has(item)) return false;
 
-      return item;
+    return item;
   }).filter(item => item !== false);
 }
