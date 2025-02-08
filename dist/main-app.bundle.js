@@ -43346,7 +43346,6 @@
 
 	    // 3) Obtenemos la referencia a .qtext dentro del clon.
 	    const clonedQtext = clonFormulation.querySelector('.qtext');
-	    let enunciado = '';
 	    let enunciadoProcess = '';
 
 	    if (clonedQtext) {
@@ -43369,8 +43368,7 @@
 	        });
 
 	        // Obtenemos el enunciado resultante (HTML con "[ ]")
-	        enunciado = clonedQtext.innerHTML;
-	        enunciadoProcess = await extractContentInOrder(enunciado);
+	        enunciadoProcess = await extractContentInOrder(clonedQtext);
 
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");

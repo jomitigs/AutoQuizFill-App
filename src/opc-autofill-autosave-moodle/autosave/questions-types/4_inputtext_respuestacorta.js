@@ -34,8 +34,7 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
         });
 
         // Obtenemos el enunciado resultante (HTML con "[ ]")
-        enunciado = clonedQtext.innerHTML;
-        enunciadoProcess = await extractContentInOrder(enunciado);
+        enunciadoProcess = await extractContentInOrder(clonedQtext);
 
     } else {
         console.log("No se encontró el elemento .qtext para extraer el enunciado.");
