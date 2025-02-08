@@ -787,13 +787,6 @@ export async function AutoSave_Firebase() {
 
     console.log('Ruta de configuración encontrada:', ruta);
 
-    // Verificar si la referencia de Firebase es válida
-    if (!referencia) {
-        console.error('No se pudo obtener la referencia de Firebase.');
-        alert('Error al conectar con Firebase.');
-        return;
-    }
-
     // Obtener datos actuales desde Firebase antes de guardar
     const datosFirebase = await getDataFromFirebase(ruta);
     console.log('Datos actuales en Firebase:', datosFirebase);
