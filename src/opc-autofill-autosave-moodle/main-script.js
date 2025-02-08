@@ -60,28 +60,34 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
                 </div>
             </div>
 
-            <!-- Contenedor para AutoSave -->
-            <div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
+<!-- Contenedor para AutoSave -->
+<div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
 
-                <div id="header-autosave" class="header-autoquiz">
+    <div id="header-autosave" class="header-autoquiz">
 
-                    <!-- Título y Switch -->
-                    <h2 id="titulo-autoquiz">AutoSave</h2>
+        <!-- Título y Botón -->
+        <h2 id="titulo-autoquiz">
+            AutoSave
+            <button class="icon-button" onclick="AutoSave_Firebase()">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+            </button>
+        </h2>
 
-                    <label class="switch-autoquiz">
-                        <input type="checkbox" id="switch-autosave">
-                        <span class="slider round"></span>
-                    </label>
+        <label class="switch-autoquiz">
+            <input type="checkbox" id="switch-autosave">
+            <span class="slider round"></span>
+        </label>
 
-                </div>
+    </div>
 
-                <!-- Contenido de AutoSave -->
-                <div id="body-autoquiz-autosave">
-                    <div>
-                        <span id="respuestasautosave"></span>
-                    </div>
-                </div>
-            </div>
+    <!-- Contenido de AutoSave -->
+    <div id="body-autoquiz-autosave">
+        <div>
+            <span id="respuestasautosave"></span>
+        </div>
+    </div>
+</div>
+
 </div>
         </div>
     `;

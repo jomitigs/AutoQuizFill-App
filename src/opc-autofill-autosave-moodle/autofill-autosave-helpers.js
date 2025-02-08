@@ -393,3 +393,25 @@ export function renderizarPreguntas() {
 
   console.log('[autofill-autosave-helpers] Se han renderizado las expresiones en "barra-lateral-autoquizfillapp".');
 }
+
+export async function normalizarHTML(html) {
+  const tempDiv = document.createElement('div');
+  const fragment = document.createRange().createContextualFragment(html);
+  tempDiv.appendChild(fragment);
+
+  // Extraer texto visible, URLs de multimedia y expresiones LaTeX
+  const visibleTexts = extractVisibleText(tempDiv);
+  const mediaUrls = await extractMediaUrls(tempDiv);
+  const mathExpressions = extractMathExpressions(tempDiv);
+
+  // Combinar resultados en una sola lista
+  let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
+
+  // Verificar si el HTML tiene clases .draghome o .dropzones y eliminar duplicados en este caso
+  if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
+      combinedResults = [...new Set(combinedResults)];
+  }
+
+  // Eliminar textos irrelevantes
+  return eliminarTextosIrrelevantes(combinedResults);
+}

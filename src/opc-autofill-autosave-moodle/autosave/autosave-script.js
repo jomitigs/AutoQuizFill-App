@@ -8,6 +8,9 @@ import { select_emparejamiento } from './questions-types/3_select_emparejamiento
 import interact from 'interactjs';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas } from '../autofill-autosave-helpers.js';
 
+import { getDataFromFirebase} from '../../config-firebase/firebase-helpers.js';
+
+
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
     const SWITCH_ID = 'switch-autosave';
@@ -755,3 +758,9 @@ function processContent(content) {
 }
 
 
+
+function AutoSave_Firebase() {
+
+    getDataFromFirebase(path);
+
+}
