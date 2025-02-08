@@ -42970,190 +42970,251 @@
 
 	}
 
+	// ============================================================================
 	// Expresiones regulares y conjuntos precompilados
+	// ============================================================================
 	const regexLaTeX = /\\\((.*?)\\\)/g;
 	const regexMathML = /^<math.*<\/math>$/;
 	const regexPregunta = /^Pregunta\s*\d+/;
 	const regexLiteral = /^[a-zA-Z]\.\s*/;
 	const regexRespuestaPregunta = /^(Respuesta\s*\d+\s*Pregunta\s*\d+|Respuesta\s*Pregunta\s*\d+|Vacío\s*\d+\s*Pregunta\s*\d+)/;
 	const textosIrrelevantesSet = new Set([
-	  'Respuestas',
-	  'Respuesta',
-	  'Enunciado de la pregunta',
-	  'https://profes.ac/pub/logoap.svg',
-	  'YWRtaW5AcHJvZmVzLmFj',
-	  'Quitar mi elección',
-	  'vacío'
+	    'Respuestas',
+	    'Respuesta',
+	    'Enunciado de la pregunta',
+	    'https://profes.ac/pub/logoap.svg',
+	    'YWRtaW5AcHJvZmVzLmFj',
+	    'Quitar mi elección',
+	    'vacío'
 	]);
 
+	// ============================================================================
+	// Función principal para normalizar HTML.
+	// Se acepta:
+	//  - Un string HTML directo.
+	//  - Un objeto que contenga la propiedad "html", o múltiples claves cuyos valores contengan "html".
+	// Se procesa de forma concurrente cuando hay muchos elementos.
+	// ============================================================================
+	/**
+	 * Normaliza el HTML recibido, ya sea como string o dentro de un objeto.
+	 *
+	 * @param {string|object} input - HTML en forma de string o un objeto que contenga la propiedad "html".
+	 * @returns {Promise<any>} - Resultado normalizado.
+	 */
 	async function normalizarHTML(input) {
-	  // Caso 1: Si la entrada es un string, se asume que es HTML directo.
-	  if (typeof input === "string") {
-	    return await normalizarHTMLString(input);
-	  }
-
-	  // Caso 2: Si la entrada es un objeto (y no es null)
-	  if (typeof input === "object" && input !== null) {
-	    // Caso 2.a: Si el objeto tiene una propiedad "html" (string)
-	    if (input.hasOwnProperty("html") && typeof input.html === "string") {
-	      return {
-	        ...input,
-	        html: await normalizarHTMLString(input.html)
-	      };
+	    // Caso 1: Entrada es un string HTML directo.
+	    if (typeof input === "string") {
+	        return await normalizarHTMLString(input);
 	    }
-	    // Caso 2.b: Si se trata de un objeto con múltiples claves (por ejemplo, preguntas)
-	    const resultado = {};
-	    for (const key in input) {
-	      if (input.hasOwnProperty(key)) {
-	        const valor = input[key];
-	        if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
-	          resultado[key] = {
-	            ...valor,
-	            html: await normalizarHTMLString(valor.html)
-	          };
-	        } else {
-	          resultado[key] = valor;
+
+	    // Caso 2: Entrada es un objeto (no null).
+	    if (typeof input === "object" && input !== null) {
+	        // Caso 2.a: Si el objeto tiene la propiedad "html" (string).
+	        if (input.hasOwnProperty("html") && typeof input.html === "string") {
+	            return { 
+	                ...input, 
+	                html: await normalizarHTMLString(input.html) 
+	            };
 	        }
-	      }
+	        // Caso 2.b: Objeto con múltiples claves (por ejemplo, 1000 preguntas).
+	        const keys = Object.keys(input);
+	        const promiseArray = keys.map(key => {
+	            const valor = input[key];
+	            if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
+	                return normalizarHTMLString(valor.html).then(normalizedHTML => {
+	                    return { key, value: { ...valor, html: normalizedHTML } };
+	                });
+	            } else {
+	                return Promise.resolve({ key, value: valor });
+	            }
+	        });
+	        const results = await Promise.all(promiseArray);
+	        const resultObject = {};
+	        results.forEach(({ key, value }) => {
+	            resultObject[key] = value;
+	        });
+	        return resultObject;
 	    }
-	    return resultado;
-	  }
 
-	  // Si la entrada no es ni string ni objeto, se retorna tal cual.
-	  return input;
+	    // Si la entrada no es string ni objeto, se retorna tal cual.
+	    return input;
 	}
 
+	// ============================================================================
+	// Función que procesa un string HTML.
+	// Convierte el string en un fragmento DOM, extrae texto visible, URLs de medios y expresiones LaTeX,
+	// combina y filtra los resultados.
+	// ============================================================================
+	/**
+	 * Procesa un string HTML y retorna un arreglo con el contenido normalizado.
+	 *
+	 * @param {string} html - Código HTML a procesar.
+	 * @returns {Promise<Array<string>>} - Arreglo con los contenidos normalizados.
+	 */
 	async function normalizarHTMLString(html) {
-	  // Crear un contenedor temporal para convertir el string en nodos del DOM.
-	  const tempDiv = document.createElement('div');
-	  const fragment = document.createRange().createContextualFragment(html);
-	  tempDiv.appendChild(fragment);
+	    // Crear un contenedor temporal y convertir el string a un fragmento DOM.
+	    const tempDiv = document.createElement('div');
+	    const fragment = document.createRange().createContextualFragment(html);
+	    tempDiv.appendChild(fragment);
 
-	  // Extraer textos visibles, URLs de medios y expresiones LaTeX.
-	  const visibleTexts = extractVisibleText(tempDiv);
-	  const mediaUrls = await extractMediaUrls(tempDiv);
-	  const mathExpressions = extractMathExpressions(tempDiv);
+	    // Extraer datos del DOM.
+	    const visibleTexts = extractVisibleText(tempDiv);
+	    const mediaUrls = await extractMediaUrls(tempDiv);
+	    const mathExpressions = extractMathExpressions(tempDiv);
 
-	  // Combinar todos los resultados en un solo arreglo.
-	  let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
+	    // Combinar resultados.
+	    let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
 
-	  // Si se detecta la presencia de elementos con las clases ".draghome" o ".dropzones", eliminar duplicados.
-	  if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
-	    combinedResults = [...new Set(combinedResults)];
-	  }
+	    // Si se encuentran elementos con ".draghome" o ".dropzones", eliminar duplicados.
+	    if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
+	        combinedResults = [...new Set(combinedResults)];
+	    }
 
-	  // Filtrar textos irrelevantes.
-	  return eliminarTextosIrrelevantes(combinedResults);
+	    // Filtrar textos irrelevantes.
+	    return eliminarTextosIrrelevantes(combinedResults);
 	}
 
+	// ============================================================================
+	// Optimización: Uso de TreeWalker para extraer texto visible de forma eficiente.
+	// ============================================================================
+	/**
+	 * Extrae el texto visible usando un TreeWalker, omitiendo nodos que pertenezcan a elementos que se deben saltar.
+	 *
+	 * @param {Node} rootNode - Nodo raíz a partir del cual recorrer.
+	 * @returns {Array<string>} - Arreglo de textos visibles.
+	 */
 	function extractVisibleText(rootNode) {
-	  const texts = [];
-	  const stack = [rootNode];
+	    const texts = [];
+	    const walker = document.createTreeWalker(
+	        rootNode,
+	        NodeFilter.SHOW_TEXT,
+	        {
+	            acceptNode: function(node) {
+	                // Omitir si el padre es <script type="math/tex"> o <span> con clases MathJax.
+	                if (node.parentNode) {
+	                    const parent = node.parentNode;
+	                    const tag = parent.tagName;
+	                    const type = parent.getAttribute('type');
+	                    if ((tag === 'SCRIPT' && type === 'math/tex') ||
+	                        (tag === 'SPAN' && (parent.classList.contains('MathJax') || parent.classList.contains('MathJax_Preview')))) {
+	                        return NodeFilter.FILTER_SKIP;
+	                    }
+	                }
+	                return NodeFilter.FILTER_ACCEPT;
+	            }
+	        },
+	        false
+	    );
 
-	  while (stack.length > 0) {
-	    const currentNode = stack.pop();
-
-	    currentNode.childNodes.forEach(child => {
-	      if (child.nodeType === Node.TEXT_NODE) {
-	        const trimmedText = child.textContent.trim();
-	        if (trimmedText) {
-	          texts.push(trimmedText);
+	    while (walker.nextNode()) {
+	        const text = walker.currentNode.textContent.trim();
+	        if (text) {
+	            texts.push(text);
 	        }
-	      } else if (child.nodeType === Node.ELEMENT_NODE) {
-	        const tag = child.tagName;
-	        const type = child.getAttribute('type');
-	        const classList = child.classList;
-
-	        // Omitir elementos relacionados a LaTeX o MathJax.
-	        if (
-	          (tag === 'SCRIPT' && type === 'math/tex') ||
-	          (tag === 'SPAN' && (classList.contains('MathJax') || classList.contains('MathJax_Preview')))
-	        ) {
-	          return;
-	        }
-	        stack.push(child);
-	      }
-	    });
-	  }
-	  return texts;
+	    }
+	    return texts;
 	}
 
+	// ============================================================================
+	// Optimización: Uso de querySelectorAll para extraer de forma directa imágenes, videos y audios.
+	// ============================================================================
+	/**
+	 * Extrae URLs de medios (imágenes, videos, audios) del DOM.
+	 * Convierte a Data URI las imágenes cuyo src incluya "pluginfile.php" usando la función File2DataUri.
+	 *
+	 * @param {Node} rootNode - Nodo raíz a partir del cual recorrer.
+	 * @returns {Promise<Array<string>>} - Arreglo de URLs o Data URI de medios.
+	 */
 	async function extractMediaUrls(rootNode) {
-	  let urls = [];
-	  const validImageExtensions = /\.(png|jpe?g|gif|bmp|svg)(\?.*)?$/i;
-	  const mediaPromises = [];
-	  const stack = [rootNode];
+	    const urls = [];
+	    const validImageExtensions = /\.(png|jpe?g|gif|bmp|svg)(\?.*)?$/i;
+	    const mediaPromises = [];
 
-	  while (stack.length > 0) {
-	    const currentNode = stack.pop();
-
-	    currentNode.childNodes.forEach(child => {
-	      if (child.nodeType === Node.ELEMENT_NODE) {
-	        const tag = child.tagName.toLowerCase();
-	        const src = child.getAttribute('src');
-
-	        // Procesar imágenes.
-	        if (tag === 'img' && src && validImageExtensions.test(src)) {
-	          if (src.includes('pluginfile.php')) {
-	            // Convertir la imagen a Data URI usando la función ya existente File2DataUri.
-	            mediaPromises.push(File2DataUri(child));
-	          } else {
-	            urls.push(src);
-	          }
+	    // Extraer imágenes.
+	    const imgElements = rootNode.querySelectorAll("img");
+	    imgElements.forEach(img => {
+	        const src = img.getAttribute("src");
+	        if (src && validImageExtensions.test(src)) {
+	            if (src.includes("pluginfile.php")) {
+	                // Usar la función ya existente File2DataUri (se espera que retorne una promesa).
+	                mediaPromises.push(File2DataUri(img));
+	            } else {
+	                urls.push(src);
+	            }
 	        }
-	        // Procesar videos y audios.
-	        else if ((tag === 'video' || tag === 'audio') && src) {
-	          urls.push(src);
-	        }
-	        stack.push(child);
-	      }
 	    });
-	  }
 
-	  // Esperar a la conversión de imágenes y agregar los resultados.
-	  const convertedResults = await Promise.all(mediaPromises);
-	  convertedResults.forEach(result => {
-	    if (result) {
-	      urls.push(result);
-	    }
-	  });
-	  return urls;
+	    // Extraer videos y audios.
+	    const mediaElements = rootNode.querySelectorAll("video[src], audio[src]");
+	    mediaElements.forEach(el => {
+	        const src = el.getAttribute("src");
+	        if (src) {
+	            urls.push(src);
+	        }
+	    });
+
+	    // Esperar las conversiones y agregar resultados válidos.
+	    const convertedResults = await Promise.all(mediaPromises);
+	    convertedResults.forEach(result => {
+	        if (result) {
+	            urls.push(result);
+	        }
+	    });
+	    return urls;
 	}
 
+	// ============================================================================
+	// Extrae expresiones LaTeX de etiquetas <script type="math/tex">.
+	// ============================================================================
+	/**
+	 * Extrae expresiones LaTeX del DOM.
+	 *
+	 * @param {Node} rootNode - Nodo raíz a partir del cual buscar.
+	 * @returns {Array<string>} - Arreglo de expresiones LaTeX.
+	 */
 	function extractMathExpressions(rootNode) {
-	  const expressions = [];
-	  const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
-	  scripts.forEach(script => {
-	    const latex = script.textContent.trim();
-	    if (latex) {
-	      expressions.push(latex);
-	    }
-	  });
-	  return expressions;
+	    const expressions = [];
+	    const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
+	    scripts.forEach(script => {
+	        const latex = script.textContent.trim();
+	        if (latex) {
+	            expressions.push(latex);
+	        }
+	    });
+	    return expressions;
 	}
 
+	// ============================================================================
+	// Filtra textos irrelevantes utilizando expresiones regulares y un conjunto precompilado.
+	// ============================================================================
+	/**
+	 * Filtra un arreglo de textos eliminando aquellos que sean irrelevantes.
+	 *
+	 * @param {Array<string>} items - Arreglo de textos.
+	 * @returns {Array<string>} - Arreglo filtrado.
+	 */
 	function eliminarTextosIrrelevantes(items) {
-	  return items.map(item => {
-	    // Eliminar delimitadores LaTeX.
-	    item = item.replace(regexLaTeX, '$1');
+	    return items.map(item => {
+	        // Eliminar delimitadores LaTeX.
+	        item = item.replace(regexLaTeX, '$1');
 
-	    // Si el item coincide con el patrón MathML, se descarta.
-	    if (regexMathML.test(item)) return false;
+	        // Si coincide con MathML, se descarta.
+	        if (regexMathML.test(item)) return false;
 
-	    // Descarta textos que coincidan con patrones de pregunta, literal o respuesta.
-	    if (
-	      regexPregunta.test(item) ||
-	      regexLiteral.test(item) ||
-	      regexRespuestaPregunta.test(item)
-	    ) {
-	      return false;
-	    }
+	        // Descarta patrones de pregunta, literal o respuesta.
+	        if (
+	            regexPregunta.test(item) ||
+	            regexLiteral.test(item) ||
+	            regexRespuestaPregunta.test(item)
+	        ) {
+	            return false;
+	        }
 
-	    // Descarta si el texto está en el conjunto de irrelevantes.
-	    if (textosIrrelevantesSet.has(item)) return false;
+	        // Descarta si el texto está en el conjunto de irrelevantes.
+	        if (textosIrrelevantesSet.has(item)) return false;
 
-	    return item;
-	  }).filter(item => item !== false);
+	        return item;
+	    }).filter(item => item !== false);
 	}
 
 	// Manejar respuestas tipo 'draganddrop_image'
