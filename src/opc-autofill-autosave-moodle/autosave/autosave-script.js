@@ -437,6 +437,8 @@ function AutoSave_ShowResponses(numeroPregunta) {
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
 
                         console.log("Se actualizo el enunciado");
+                        console.log(processContent(data.enunciado));
+                       
 
                     }
                     
@@ -557,9 +559,13 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     
                     console.log("data.tipo:", data.tipo);
                     
-                    if (data.enunciado && (data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta')) {
-                        console.log("Condición cumplida, agregando pregunta al HTML.");
+                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
+    
                         html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
+
+                        console.log("Se actualizo el enunciado");
+                        console.log(processContent(data.enunciado));
+                       
                     } else {
                         console.log("Condición NO cumplida, no se agrega la pregunta.");
                     }
