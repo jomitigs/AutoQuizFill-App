@@ -6,7 +6,7 @@ import { inputtext_respuestacorta } from './questions-types/4_inputtext_respuest
 import { inputtext_respuestacorta2 } from './questions-types/4_inputtext_respuestacorta2.js';
 import { select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
 import interact from 'interactjs';
-import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas } from '../autofill-autosave-helpers.js';
+import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML } from '../autofill-autosave-helpers.js';
 
 import { getDataFromFirebase} from '../../config-firebase/firebase-helpers.js';
 
@@ -781,7 +781,10 @@ export async function AutoSave_Firebase() {
     console.log('Ruta de configuración encontrada:', ruta);
 
     // Obtener datos actuales desde Firebase
-    const datosFirebase = await getDataFromFirebase(ruta);
-    console.log('Datos actuales en Firebase:', datosFirebase);
+    const dataFirebase = await getDataFromFirebase(ruta);
+    console.log('Datos actuales en Firebase:', dataFirebase);
+
+    const dataFirebaseNormalizada = await normalizarHTML(dataFirebase);
+    console.log('Datos normalizados:', dataFirebaseNormalizada);
 
 }

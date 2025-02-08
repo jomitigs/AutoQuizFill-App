@@ -390,24 +390,172 @@ export function renderizarPreguntas() {
 
 }
 
-export async function normalizarHTML(html) {
+export async function normalizarHTML(input) {
+  // Caso 1: Si la entrada es un string, se asume que es HTML directo.
+  if (typeof input === "string") {
+      return await normalizarHTMLString(input);
+  }
+
+  // Caso 2: Si la entrada es un objeto (y no es null)
+  if (typeof input === "object" && input !== null) {
+      // Caso 2.a: Si el objeto tiene una propiedad "html" (string)
+      if (input.hasOwnProperty("html") && typeof input.html === "string") {
+          return { 
+              ...input, 
+              html: await normalizarHTMLString(input.html) 
+          };
+      }
+      // Caso 2.b: Si se trata de un objeto con múltiples claves (por ejemplo, preguntas)
+      const resultado = {};
+      for (const key in input) {
+          if (input.hasOwnProperty(key)) {
+              const valor = input[key];
+              if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
+                  resultado[key] = { 
+                      ...valor, 
+                      html: await normalizarHTMLString(valor.html) 
+                  };
+              } else {
+                  resultado[key] = valor;
+              }
+          }
+      }
+      return resultado;
+  }
+
+  // Si la entrada no es ni string ni objeto, se retorna tal cual.
+  return input;
+}
+
+async function normalizarHTMLString(html) {
+  // Crear un contenedor temporal para convertir el string en nodos del DOM.
   const tempDiv = document.createElement('div');
   const fragment = document.createRange().createContextualFragment(html);
   tempDiv.appendChild(fragment);
 
-  // Extraer texto visible, URLs de multimedia y expresiones LaTeX
+  // Extraer textos visibles, URLs de medios y expresiones LaTeX.
   const visibleTexts = extractVisibleText(tempDiv);
   const mediaUrls = await extractMediaUrls(tempDiv);
   const mathExpressions = extractMathExpressions(tempDiv);
 
-  // Combinar resultados en una sola lista
+  // Combinar todos los resultados en un solo arreglo.
   let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
 
-  // Verificar si el HTML tiene clases .draghome o .dropzones y eliminar duplicados en este caso
+  // Si se detecta la presencia de elementos con las clases ".draghome" o ".dropzones", eliminar duplicados.
   if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
       combinedResults = [...new Set(combinedResults)];
   }
 
-  // Eliminar textos irrelevantes
+  // Filtrar textos irrelevantes.
   return eliminarTextosIrrelevantes(combinedResults);
+}
+
+function extractVisibleText(rootNode) {
+  const texts = [];
+  const stack = [rootNode];
+
+  while (stack.length > 0) {
+      const currentNode = stack.pop();
+
+      currentNode.childNodes.forEach(child => {
+          if (child.nodeType === Node.TEXT_NODE) {
+              const trimmedText = child.textContent.trim();
+              if (trimmedText) {
+                  texts.push(trimmedText);
+              }
+          } else if (child.nodeType === Node.ELEMENT_NODE) {
+              const tag = child.tagName;
+              const type = child.getAttribute('type');
+              const classList = child.classList;
+
+              // Omitir elementos relacionados a LaTeX o MathJax.
+              if (
+                  (tag === 'SCRIPT' && type === 'math/tex') ||
+                  (tag === 'SPAN' && (classList.contains('MathJax') || classList.contains('MathJax_Preview')))
+              ) {
+                  return;
+              }
+              stack.push(child);
+          }
+      });
+  }
+  return texts;
+}
+
+async function extractMediaUrls(rootNode) {
+  let urls = [];
+  const validImageExtensions = /\.(png|jpe?g|gif|bmp|svg)(\?.*)?$/i;
+  const mediaPromises = [];
+  const stack = [rootNode];
+
+  while (stack.length > 0) {
+      const currentNode = stack.pop();
+
+      currentNode.childNodes.forEach(child => {
+          if (child.nodeType === Node.ELEMENT_NODE) {
+              const tag = child.tagName.toLowerCase();
+              const src = child.getAttribute('src');
+
+              // Procesar imágenes.
+              if (tag === 'img' && src && validImageExtensions.test(src)) {
+                  if (src.includes('pluginfile.php')) {
+                      // Convertir la imagen a Data URI usando la función ya existente File2DataUri.
+                      mediaPromises.push(File2DataUri(child));
+                  } else {
+                      urls.push(src);
+                  }
+              }
+              // Procesar videos y audios.
+              else if ((tag === 'video' || tag === 'audio') && src) {
+                  urls.push(src);
+              }
+              stack.push(child);
+          }
+      });
+  }
+
+  // Esperar a la conversión de imágenes y agregar los resultados.
+  const convertedResults = await Promise.all(mediaPromises);
+  convertedResults.forEach(result => {
+      if (result) {
+          urls.push(result);
+      }
+  });
+  return urls;
+}
+
+function extractMathExpressions(rootNode) {
+  const expressions = [];
+  const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
+  scripts.forEach(script => {
+      const latex = script.textContent.trim();
+      if (latex) {
+          expressions.push(latex);
+      }
+  });
+  return expressions;
+}
+
+function eliminarTextosIrrelevantes(items) {
+  return items.map(item => {
+      // Eliminar delimitadores LaTeX.
+      item = item.replace(regexLaTeX, '$1');
+
+      // Si el item coincide con el patrón MathML, se descarta.
+      if (regexMathML.test(item)) return false;
+
+      // Descarta textos que coincidan con patrones de pregunta, literal o respuesta.
+      if (
+          regexPregunta.test(item) ||
+          regexLiteral.test(item) ||
+          regexRespuestaPregunta.test(item)
+      ) {
+          return false;
+      }
+
+      // Descarta si el texto está en el conjunto de irrelevantes.
+      if (textosIrrelevantesSet.has(item)) return false;
+
+      return item;
+  }).filter(item => item !== false);
 }
