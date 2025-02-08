@@ -118,10 +118,13 @@ export function determinarTipoPregunta(formulation_clearfix) {
   const inputCheckboxCount = formulation_clearfix.querySelectorAll('input[type="checkbox"]').length;
   const selectCount = formulation_clearfix.querySelectorAll('select').length;
 
-  const blocks = document.querySelectorAll(".ablock.form-inline");
-  let containsRespuesta = Array.from(blocks).some(block => block.textContent.includes("respuesta"));
-
-console.log(containsRespuesta); // Devuelve true si al menos un bloque contiene "respuesta"
+  const blocks = formulation_clearfix.querySelectorAll(".ablock.form-inline");
+  let containsRespuesta = Array.from(blocks).some(block =>
+    block.textContent.toLowerCase().includes("respuesta")
+  );
+  
+  console.log(containsRespuesta);
+  
 
   if (hayUnSoloQtext) {
     if (inputRadioCount > 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
