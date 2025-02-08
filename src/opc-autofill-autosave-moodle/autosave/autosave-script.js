@@ -759,7 +759,7 @@ function processContent(content) {
 
 
 
-function AutoSave_Firebase() {
+export function AutoSave_Firebase() {
 
     getDataFromFirebase(path);
 
