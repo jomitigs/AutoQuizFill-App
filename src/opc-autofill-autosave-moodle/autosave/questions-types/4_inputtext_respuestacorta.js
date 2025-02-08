@@ -11,7 +11,6 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
 
     // 3) Obtenemos la referencia a .qtext dentro del clon.
     const clonedQtext = clonFormulation.querySelector('.qtext');
-    let enunciado = '';
     let enunciadoProcess = '';
 
     if (clonedQtext) {
@@ -33,14 +32,14 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
             }
         });
 
-        // Obtenemos el enunciado resultante (HTML con "[ ]")
+        // Aquí pasamos el nodo, no la cadena HTML
         enunciadoProcess = await extractContentInOrder(clonedQtext);
 
     } else {
         console.log("No se encontró el elemento .qtext para extraer el enunciado.");
     }
 
-    // 4) Recorremos los <input> del original para extraer los valores ingresados (si existen).
+    // 4) Recorremos los <input> del original para extraer los valores ingresados.
     const respuestaCorrecta = [];
     const allInputText = originalFormulationClearfix.querySelectorAll('input[type="text"]');
     allInputText.forEach((inputText) => {
@@ -53,7 +52,7 @@ export async function inputtext_respuestacorta(originalFormulationClearfix) {
 
     // 6) Construimos el objeto final questionData
     const questionData = {
-        enunciado: enunciadoProcess,       // Texto (HTML) con los [ ] en lugar de <input>
+        enunciado: enunciadoProcess,       // Texto con [ ] donde estaban los inputs
         respuestaCorrecta: respuestaCorrecta, 
         html: clonFormulation.outerHTML,   // HTML completo del clon (imágenes en Data URI)
         tipo: tipo,
