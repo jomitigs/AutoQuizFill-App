@@ -44046,7 +44046,7 @@
 	                            return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
 	                        });
 	                    
-	                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+	                        html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
 	                    }
 	                    
 	                    else if (data.tipo === 'draganddrop_text') {
