@@ -119,8 +119,6 @@ export function panel_AutoFillQuizApp(barraLateral) {
     // console.log(`[AutoQuizFill] Función HTML seleccionada: "${ultimoHtml}"`);
 
     let opcionfuncionHtml = `${ultimoJs}_aplit`.split('_')[0];
-    console.log(`[main-panel] Iniciando: "${opcionfuncionHtml}"`);
-
 
     if (funcionHtml) {
       try {
