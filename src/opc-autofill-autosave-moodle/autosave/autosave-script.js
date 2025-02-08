@@ -221,7 +221,7 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
             // Sí hay datos previos
             if (hayPregunta1) {
                 // REEMPLAZAR todo
-                console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
+                //console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
 
                              // Insertar/actualizar las nuevas
                 for (const key in questionsHtmlObject) {

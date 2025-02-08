@@ -42969,7 +42969,6 @@
 	    // Otras opciones opcionales de KaTeX auto-render
 	  });
 
-	  console.log('[autofill-autosave-helpers] Se han renderizado las expresiones en "barra-lateral-autoquizfillapp".');
 	}
 
 	// Manejar respuestas tipo 'draganddrop_image'
@@ -43824,7 +43823,7 @@
 	            // Sí hay datos previos
 	            if (hayPregunta1) {
 	                // REEMPLAZAR todo
-	                console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
+	                //console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
 
 	                             // Insertar/actualizar las nuevas
 	                for (const key in questionsHtmlObject) {

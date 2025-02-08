@@ -389,7 +389,6 @@ export function renderizarPreguntas() {
     // Otras opciones opcionales de KaTeX auto-render
   });
 
-  console.log('[autofill-autosave-helpers] Se han renderizado las expresiones en "barra-lateral-autoquizfillapp".');
 }
 
 export async function normalizarHTML(html) {
