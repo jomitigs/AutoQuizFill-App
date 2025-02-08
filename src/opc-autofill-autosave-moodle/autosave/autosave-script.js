@@ -716,10 +716,11 @@ function formatResponseOptions(options, selected) {
         const containsImage = /<img\s+[^>]*>/.test(processedContent);
         
         if (containsImage && isSelected) {
-            // Si contiene imagen y está seleccionado, se agrega el overlay
+            // Si contiene imagen y está seleccionado, se aplica el overlay
+            // y el literal se muestra en MediumBlue y con font-weight:500
             return `
                 <div class="respuesta">
-                    <span style="font-weight:500;">${literal}</span>
+                    <span style="font-weight:500; color:MediumBlue;">${literal}</span>
                     <div class="img-overlay">
                         ${processedContent}
                     </div>
@@ -737,6 +738,7 @@ function formatResponseOptions(options, selected) {
         }
     }).join('');
 }
+
 
 
 /**
