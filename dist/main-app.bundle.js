@@ -42703,8 +42703,6 @@
 	    block.textContent.toLowerCase().includes("respuesta")
 	  );
 	  
-	  console.log(containsRespuesta);
-	  
 
 	  if (hayUnSoloQtext) {
 	    if (inputRadioCount > 0 && inputCheckboxCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
