@@ -45535,6 +45535,8 @@
 	    
 	    console.log("lastKey1:", lastKey);
 
+	    console.log("lastKey2:", lastKey);
+
 	    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
 	    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
