@@ -766,12 +766,26 @@ function compararHTML(htmlDPN, htmlDFN) {
 // Función principal asíncrona para comparar las preguntas de DPN y DFN.
 // Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
 // =============================================================================
+
 export async function compararPreguntas(dpn, dfn) {
   let dpnExistentes = {};
   let dpnNuevas = {};
-  
+
   // ---------------------------------------------------------------------------
-  // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
+  // 1. Obtener datos de sessionStorage de "questions-AutoSave"
+  // ---------------------------------------------------------------------------
+  let autoSaveData = {};
+  try {
+    const autoSaveStr = sessionStorage.getItem("questions-AutoSave");
+    if (autoSaveStr) {
+      autoSaveData = JSON.parse(autoSaveStr);
+    }
+  } catch (error) {
+    console.warn("No se pudo obtener o parsear sessionStorage 'questions-AutoSave':", error);
+  }
+
+  // ---------------------------------------------------------------------------
+  // 2. Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
   // ---------------------------------------------------------------------------
   let indiceDFN = {};
   for (const claveDFN in dfn) {
@@ -792,12 +806,12 @@ export async function compararPreguntas(dpn, dfn) {
       indiceDFN[tipoPregunta][cantidadHTML] = [];
     }
     
-    // Opcional: Precalcular el contenido de "html" y almacenarlo en caché para DFN.
+    // Opcional: precalcular y almacenar en caché el contenido de "html" para DFN.
     if (!cacheContenidoDFN[claveDFN]) {
       cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
     }
     
-    // Se guarda la clave dentro del objeto para tenerla disponible
+    // Se guarda la clave junto con la pregunta
     indiceDFN[tipoPregunta][cantidadHTML].push({
       clave: claveDFN,
       ...preguntaDFN
@@ -806,17 +820,24 @@ export async function compararPreguntas(dpn, dfn) {
   console.log("Índice DFN creado:", indiceDFN);
   
   // ---------------------------------------------------------------------------
-  // Procesar cada pregunta de DPN concurrentemente.
-  // Se crea una promesa por cada pregunta y se esperan todas con Promise.all.
+  // 3. Procesar cada pregunta de DPN concurrentemente.
   // ---------------------------------------------------------------------------
   const promesasDPN = Object.keys(dpn).map(async (claveDPN) => {
     const preguntaDPN = dpn[claveDPN];
     console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
+
+    // -------------------------------------------------------------------------
+    // Incorporar los datos de autoSave (si existen) en la pregunta DPN
+    // -------------------------------------------------------------------------
+    if (autoSaveData[claveDPN]) {
+      // Se agrega la información obtenida de sessionStorage en una propiedad "autoSave"
+      preguntaDPN.autoSave = autoSaveData[claveDPN];
+    }
     
-    // Si no existe la propiedad "html", se marca como nueva y se guarda la pregunta completa.
+    // Si no existe la propiedad "html", se marca la pregunta como nueva.
     if (!preguntaDPN.html) {
       console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
-      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
+      dpnNuevas[claveDPN] = { clave: claveDPN, ...preguntaDPN };
       return;
     }
     
@@ -826,18 +847,23 @@ export async function compararPreguntas(dpn, dfn) {
     // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
     if (!indiceDFN[tipoDPN]) {
       console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
-      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
+      dpnNuevas[claveDPN] = { clave: claveDPN, ...preguntaDPN };
       return;
     }
     
-    // Definir las cantidades permitidas en "html": si hay más de 10 elementos se permite ±1.
+    // -------------------------------------------------------------------------
+    // Definir las cantidades permitidas en "html"
+    // Si hay más de 10 elementos se permite ±1.
+    // -------------------------------------------------------------------------
     let cantidadesPermitidas = [cantidadDPN];
     if (cantidadDPN > 10) {
       cantidadesPermitidas.push(cantidadDPN - 1, cantidadDPN + 1);
     }
     console.log(`Para DPN "${claveDPN}" se permiten cantidades:`, cantidadesPermitidas);
     
-    // Recolectar candidatos de DFN que cumplan la cantidad en "html".
+    // -------------------------------------------------------------------------
+    // Recolectar candidatos de DFN que cumplan la cantidad en "html"
+    // -------------------------------------------------------------------------
     let candidatos = [];
     cantidadesPermitidas.forEach(cantidad => {
       if (indiceDFN[tipoDPN][cantidad]) {
@@ -846,41 +872,38 @@ export async function compararPreguntas(dpn, dfn) {
     });
     console.log(`Candidatos para DPN "${claveDPN}":`, candidatos);
     
-    // Opcional: Precalcular el contenido para DPN y almacenarlo en caché.
+    // Opcional: precalcular y almacenar en caché el contenido de "html" para DPN.
     if (!cacheContenidoDPN[claveDPN]) {
       cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
     }
     
-    // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
-    // Se usa Promise.any para que se resuelva tan pronto como alguno cumpla la condición.
+    // -------------------------------------------------------------------------
+    // Comparar la pregunta DPN con cada candidato DFN
+    // Se usa Promise.any para resolver tan pronto como un candidato coincida.
+    // -------------------------------------------------------------------------
     const promesasCandidatos = candidatos.map(candidato => {
       return new Promise((resolve, reject) => {
         console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.clave}"`);
         const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
         console.log(`Resultado de comparación:`, resultadoComparacion);
         if (resultadoComparacion.coincide) {
-          // Si hay coincidencia, se resuelve la promesa con todos los datos del candidato.
           resolve(candidato);
         } else {
-          // Si no coincide, se rechaza la promesa.
           reject('No coincide');
         }
       });
     });
     
     try {
-      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
       dpnExistentes[claveDPN] = {
         dpn: { ...preguntaDPN },
         dfn: candidatoCoincidente
       };
     } catch (e) {
-      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
       console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
       dpnNuevas[claveDPN] = { ...preguntaDPN };
     }
-    
   });
   
   // Esperar a que se procesen todas las preguntas de DPN.
@@ -888,7 +911,7 @@ export async function compararPreguntas(dpn, dfn) {
   
   console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
   console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
-  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevas };
+  return { dpnExistentes, dpnNuevas };
 }
 
 
