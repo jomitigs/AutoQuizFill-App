@@ -28,10 +28,12 @@
     "rollup-plugin-obfuscator": "^1.1.0",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-string": "^3.0.0"
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-web-worker-loader": "^1.7.0"
   },
   "dependencies": {
     "fast-levenshtein": "^3.0.0",
+    "fastest-levenshtein": "^1.0.16",
     "firebase": "^11.2.0",
     "interactjs": "^1.10.27",
     "katex": "^0.16.21",
