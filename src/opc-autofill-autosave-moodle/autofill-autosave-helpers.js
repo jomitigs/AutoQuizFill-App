@@ -638,7 +638,7 @@ function eliminarTextosIrrelevantes(items) {
 }
 
 // Importar la librería fast-levenshtein
-const levenshtein = require('fast-levenshtein');
+import levenshtein from 'fast-levenshtein';
 
 // =============================================================================
 // Cachés para optimización: Almacenan el resultado del procesamiento de la propiedad
