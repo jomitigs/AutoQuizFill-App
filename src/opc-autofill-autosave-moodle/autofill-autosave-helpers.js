@@ -921,6 +921,9 @@ export async function compararPreguntas(dpn, dfn) {
   
   console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
   console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
+
+  console.log("verificar");
+
   return { dpnExistentes, dpnNuevas };
 }
 
