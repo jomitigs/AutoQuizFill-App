@@ -879,7 +879,7 @@ export async function compararPreguntas(dpn, dfn) {
     } catch (e) {
       // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
       console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-      dpnNuevas.push({claveDPN});
+      dpnNuevas.push(claveDPN);
     }
   });
   
