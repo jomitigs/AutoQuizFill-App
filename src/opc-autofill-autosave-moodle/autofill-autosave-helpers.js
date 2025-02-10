@@ -896,8 +896,8 @@ export async function compararPreguntas(dpn, dfn) {
 
   // Iterar sobre dpnNuevas para extraer los datos de questions
   dpnNuevas.forEach((clave) => {
-    if (questions[clave]) {
-      dpnNuevasData[clave] = questions[clave]; // Inserta el objeto completo
+    if (dpnOrigin[clave]) {
+      dpnNuevasData[clave] = dpnOrigin[clave]; // Inserta el objeto completo
     }
   });
 
