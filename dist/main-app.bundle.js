@@ -43758,16 +43758,11 @@
 	    }
 	  });
 
-	  const dfnKeys = Object.keys(dfn);
+	 
 
-	  // Encontrar la última clave basada en el número
-	  const lastKey = dfnKeys.reduce((max, key) => {
-	      return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
-	  }, dfnKeys[0]);
 
-	  console.log("lastKey1:", lastKey);
 
-	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData, lastKey: lastKey  };
+	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 	}
 
 	// Manejar respuestas tipo 'draganddrop_image'
@@ -45318,9 +45313,17 @@
 
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
-	    console.log("lastKey2:", comparedData.lastKey);
 
-	    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, comparedData.lastKey);
+	    const dfnKeys = Object.keys(dataFirebaseNormalizada);
+
+	    // Encontrar la última clave basada en el número
+	    const lastKey = dfnKeys.reduce((max, key) => {
+	        return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
+	    }, dfnKeys[0]);
+
+	    console.log("lastKey1:", lastKey);
+
+	    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
 	    console.log("Holi4");
 

@@ -901,15 +901,10 @@ export async function compararPreguntas(dpn, dfn) {
     }
   });
 
-  const dfnKeys = Object.keys(dfn);
+ 
 
-  // Encontrar la última clave basada en el número
-  const lastKey = dfnKeys.reduce((max, key) => {
-      return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
-  }, dfnKeys[0]);
 
-  console.log("lastKey1:", lastKey);
 
-  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData, lastKey: lastKey  };
+  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 }
 
