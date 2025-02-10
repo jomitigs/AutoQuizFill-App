@@ -9,7 +9,7 @@ import interact from 'interactjs';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
 
 import { getDataFromFirebase, getDataFromFirebaseAsync,  saveQuestionsToFirebase} from '../../config-firebase/firebase-helpers.js';
-import { idbGet } from '../../config-firebase/idbSession.js';
+import { idbGet, idbDelete} from '../../config-firebase/idbSession.js';
 
 
 // Exporta una función llamada contenedorAutoSave_js

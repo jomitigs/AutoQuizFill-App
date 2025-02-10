@@ -44650,6 +44650,18 @@
 	  });
 	}
 
+	async function idbDelete(key) {
+	  const db = await openDB();
+	  return new Promise((resolve, reject) => {
+	    const tx = db.transaction('store', 'readwrite');
+	    const store = tx.objectStore('store');
+	    const request = store.delete(key);
+
+	    request.onerror = (event) => reject(event);
+	    request.onsuccess = (event) => resolve(event.target.result);
+	  });
+	}
+
 	// Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
 
 	async function getDataFromFirebase(ruta) {
