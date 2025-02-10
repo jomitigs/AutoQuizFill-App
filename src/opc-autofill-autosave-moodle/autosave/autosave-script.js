@@ -789,6 +789,6 @@ export async function AutoSave_Firebase() {
     await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
     idbDelete('DataFirebaseNormalizada');
-    getDataFromFirebase(ruta)
+    getDataFromFirebaseAsync();
 }
 

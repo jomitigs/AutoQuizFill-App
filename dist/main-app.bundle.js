@@ -45565,7 +45565,7 @@
 	    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
 	    idbDelete('DataFirebaseNormalizada');
-	    getDataFromFirebase(ruta);
+	    getDataFromFirebaseAsync();
 	}
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
