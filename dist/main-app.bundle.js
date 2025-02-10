@@ -45520,11 +45520,16 @@
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
 	    const dfnKeys = Object.keys(dataFirebaseNormalizada);
-
-	    const lastKey = dfnKeys.reduce((max, key) => {
-	        return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
-	    }, dfnKeys[0]);
-
+	    
+	    const lastKey = dfnKeys.length
+	      ? dfnKeys.reduce((max, key) =>
+	          parseInt(key.replace("question", ""), 10) >
+	          parseInt(max.replace("question", ""), 10)
+	            ? key 
+	            : max, 
+	        dfnKeys[0])
+	      : 0;
+	    
 	    console.log("lastKey1:", lastKey);
 
 	    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
