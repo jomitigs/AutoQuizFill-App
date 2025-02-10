@@ -772,15 +772,15 @@ export async function compararPreguntas(dpn, dfn) {
   let indiceDFN = {};
   for (const claveDFN in dfn) {
     const preguntaDFN = dfn[claveDFN];
-    console.log(`Procesando DFN: ${claveDFN}`, preguntaDFN);
 
     if (!preguntaDFN.html) {
-      console.warn(`Elemento DFN "${claveDFN}" no tiene propiedad "html". Se omite.`);
+      console.warn(`DFN "${claveDFN}" no tiene "html". Se omite.`);
       continue;
     }
 
     const cantidadHTML = preguntaDFN.html.length;
     const tipoPregunta = preguntaDFN.tipo;
+
     if (!indiceDFN[tipoPregunta]) {
       indiceDFN[tipoPregunta] = {};
     }
@@ -788,135 +788,75 @@ export async function compararPreguntas(dpn, dfn) {
       indiceDFN[tipoPregunta][cantidadHTML] = [];
     }
 
-    // (Opcional) Si tienes una caché de contenido DFN, aquí podrías precalcularlo.
-    // if (!cacheContenidoDFN[claveDFN]) {
-    //   cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
-    // }
-
     indiceDFN[tipoPregunta][cantidadHTML].push({
       clave: claveDFN,
       ...preguntaDFN
     });
   }
-  console.log("Índice DFN creado:", indiceDFN);
 
   // ---------------------------------------------------------------------------
-  // Procesar cada pregunta de DPN concurrentemente.
+  // Procesar cada pregunta de DPN concurrentemente
   // ---------------------------------------------------------------------------
   const promesasDPN = Object.keys(dpn).map(async (claveDPN) => {
     const preguntaDPN = dpn[claveDPN];
-    console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
 
-    // Si no existe la propiedad "html" en la pregunta DPN
+    // Si no hay "html", se considera nueva
     if (!preguntaDPN.html) {
-      console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
-      dpnNuevas[claveDPN] = { clave: claveDPN, ...preguntaDPN };
+      dpnNuevas[claveDPN] = { clave: claveDPN };
       return;
     }
 
     const tipoDPN = preguntaDPN.tipo;
     const cantidadDPN = preguntaDPN.html.length;
 
-    // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
+    // Si no existe ese tipo en DFN, es nueva
     if (!indiceDFN[tipoDPN]) {
-      console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
-      dpnNuevas[claveDPN] = { clave: claveDPN, ...preguntaDPN };
+      dpnNuevas[claveDPN] = { clave: claveDPN };
       return;
     }
 
-    // Definir cantidades permitidas en "html": si hay más de 10 elementos se permite ±1.
+    // Si la pregunta DPN tiene más de 10 elementos en "html", permitimos ±1 en DFN
     let cantidadesPermitidas = [cantidadDPN];
     if (cantidadDPN > 10) {
       cantidadesPermitidas.push(cantidadDPN - 1, cantidadDPN + 1);
     }
-    console.log(`Para DPN "${claveDPN}" se permiten cantidades:`, cantidadesPermitidas);
 
-    // Recolectar candidatos de DFN que cumplan la cantidad en "html".
+    // Recolectamos candidatos
     let candidatos = [];
     cantidadesPermitidas.forEach((cantidad) => {
       if (indiceDFN[tipoDPN][cantidad]) {
         candidatos = candidatos.concat(indiceDFN[tipoDPN][cantidad]);
       }
     });
-    console.log(`Candidatos para DPN "${claveDPN}":`, candidatos);
 
-    // (Opcional) Precalcular el contenido para DPN y almacenarlo en caché si fuera necesario.
-    // if (!cacheContenidoDPN[claveDPN]) {
-    //   cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
-    // }
-
-    // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
+    // Creamos las promesas de comparación
     const promesasCandidatos = candidatos.map((candidato) => {
       return new Promise((resolve, reject) => {
-        console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.clave}"`);
-        const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
-
-        if (resultadoComparacion.coincide) {
-          resolve(candidato); // Coincidencia encontrada
+        const resultado = compararHTML(preguntaDPN.html, candidato.html);
+        if (resultado.coincide) {
+          resolve(candidato);
         } else {
-          reject("No coincide"); // No coincide
+          reject("No coincide");
         }
       });
     });
 
+    // Esperamos a ver si alguno coincide
     try {
-      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
-
-      // ----------------------------------------------------------------------------
-      // LECTURA DE SESSIONSTORAGE CON FALLBACK
-      // ----------------------------------------------------------------------------
-      const questionsAutoSave = sessionStorage.getItem("questions-AutoSave");
-      let autoSaveData = null;
-
-      if (questionsAutoSave) {
-        try {
-          const parsedAutoSave = JSON.parse(questionsAutoSave);
-
-          // Fallback: si parsedAutoSave[claveDPN] existe, lo usamos;
-          // de lo contrario, usamos todo el objeto (parsedAutoSave).
-          autoSaveData = parsedAutoSave[claveDPN] ?? parsedAutoSave;
-        } catch (error) {
-          console.warn("No se pudo parsear 'questions-AutoSave' como JSON:", error);
-        }
-      }
-
-      dpnExistentes[claveDPN] = {
-        dpn: { ...preguntaDPN },
-        dfn: candidatoCoincidente,
-        autoSave: autoSaveData,
-      };
+      // Si se llega aquí, existe coincidencia
+      dpnExistentes[claveDPN] = { clave: claveDPN };
     } catch (e) {
-      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
-      console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-
-      // ----------------------------------------------------------------------------
-      // LECTURA DE SESSIONSTORAGE CON FALLBACK (misma lógica que arriba)
-      // ----------------------------------------------------------------------------
-      const questionsAutoSave = sessionStorage.getItem("questions-AutoSave");
-      let autoSaveData = null;
-
-      if (questionsAutoSave) {
-        try {
-          const parsedAutoSave = JSON.parse(questionsAutoSave);
-          autoSaveData = parsedAutoSave[claveDPN] ?? parsedAutoSave;
-        } catch (error) {
-          console.warn("No se pudo parsear 'questions-AutoSave' como JSON:", error);
-        }
-      }
-
-      dpnNuevas[claveDPN] = {
-        ...preguntaDPN,
-        autoSave: autoSaveData,
-      };
+      // No hubo coincidencia
+      dpnNuevas[claveDPN] = { clave: claveDPN };
     }
   });
 
-  // Esperar a que se procesen todas las preguntas de DPN.
+  // Esperar a que todas las preguntas de DPN terminen su comparación
   await Promise.all(promesasDPN);
 
-  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
-  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
+  console.log("dpnExistentes:", dpnExistentes);
+  console.log("dpnNuevas:", dpnNuevas);
   return { dpnExistentes, dpnNuevas };
 }
 
