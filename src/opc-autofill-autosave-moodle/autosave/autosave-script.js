@@ -10,7 +10,6 @@ import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normal
 
 import { getDataFromFirebase, getDataFromFirebaseAsync} from '../../config-firebase/firebase-helpers.js';
 
-
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
     const SWITCH_ID = 'switch-autosave';
@@ -756,7 +755,7 @@ export async function AutoSave_Firebase() {
     const dataPageNormalizada = await normalizarHTML(dataPage);
     console.log('DataPageNormalizada:', dataPageNormalizada);
 
-    const dataFirebaseNormalizada = JSON.parse(sessionStorage.getItem('dataFirebaseNormalizada'));
+    const dataFirebaseNormalizada = await idbGet(dataFirebaseNormalizada);
     console.log('DataFirebaseNormalizada:', dataFirebaseNormalizada);
 
     const comparedData = compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada)

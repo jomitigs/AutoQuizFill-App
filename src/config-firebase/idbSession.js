@@ -1,6 +1,6 @@
 // idbSession.js
 
-// Genera o recupera un identificador único para la pestaña
+// Genera o recupera un identificador único para la pestaña (se almacena en sessionStorage)
 let tabSessionId = sessionStorage.getItem('tabSessionId');
 if (!tabSessionId) {
   tabSessionId = Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -12,14 +12,6 @@ if (!tabSessionId) {
  */
 export function getTabSessionId() {
   return tabSessionId;
-}
-
-/**
- * Retorna una clave "namespaced" usando el ID único de la pestaña.
- * @param {string} key - La clave lógica definida por el usuario.
- */
-export function getNamespacedKey(key) {
-  return `${tabSessionId}_${key}`;
 }
 
 /**

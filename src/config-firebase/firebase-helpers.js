@@ -1,112 +1,97 @@
+// main.js
+
+// Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
 import { ref, get } from 'firebase/database';
-import { database } from './script.js';
+import { database } from './script.js'; // Asegúrate de que la ruta sea correcta
+// Importa la función para normalizar datos (ajusta la ruta según tu estructura de carpetas)
 import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosave-helpers.js";
-import { idbGet, idbSet, idbDelete, getNamespacedKey } from './idbSession.js';
+// Importa las funciones de IndexedDB
+import { idbGet, idbSet, idbDelete, getTabSessionId } from './idbSession.js';
 
-
+/**
+ * Obtiene datos desde Firebase a partir de una ruta.
+ * @param {string} path - La ruta en la base de datos de Firebase.
+ * @returns {object|null} Los datos obtenidos o null si no existen.
+ */
 export async function getDataFromFirebase(path) {
-    try {
-        const reference = ref(database, path);
-        const snapshot = await get(reference);
+  try {
+    const reference = ref(database, path);
+    const snapshot = await get(reference);
 
-        if (snapshot.exists()) {
-            return snapshot.val(); // Returns data in JSON format
-        } else {
-            console.warn(`No data found at path: ${path}`);
-            return null;
-        }
-    } catch (error) {
-        console.error(`Error getting data from Firebase: ${error.message}`);
-        throw error;
+    if (snapshot.exists()) {
+      return snapshot.val(); // Retorna los datos en formato JSON
+    } else {
+      console.warn(`No se encontró data en la ruta: ${path}`);
+      return null;
     }
+  } catch (error) {
+    console.error(`Error al obtener data desde Firebase: ${error.message}`);
+    throw error;
+  }
 }
 
+/**
+ * Función para crear o actualizar datos en SessionStorageDB (IndexedDB).
+ * Muestra en la consola la clave y el dato que se va a insertar, y luego lo almacena.
+ * @param {string} customKey - La clave que se usará para almacenar los datos.
+ * @param {*} data - Los datos a almacenar.
+ */
 async function createDataInSessionStorageDB(customKey, data) {
-    // Genera la clave "namespaced" utilizando el ID único de la pestaña
-    const dataKey = getNamespacedKey(customKey);
-    console.log("==> Creando datos en SessionStorageDB:");
-    console.log("Clave utilizada:", dataKey);
-    console.log("Dato a insertar:", data);
-
-    await idbSet(dataKey, data);
-    console.log("Datos almacenados correctamente en IndexedDB bajo la clave:", dataKey);
+  console.log("==> Creando datos en SessionStorageDB:");
+  console.log("Clave utilizada:", customKey);
+  console.log("Dato a insertar:", data);
+  
+  await idbSet(customKey, data);
+  console.log("Datos almacenados correctamente en IndexedDB bajo la clave:", customKey);
 }
 
+/**
+ * Función principal que obtiene datos desde Firebase y los almacena en IndexedDB.
+ * La actualización se realiza solo si no existe data o si el tabSessionId del dato almacenado
+ * es diferente al de la pestaña actual.
+ */
 export async function getDataFromFirebaseAsync() {
+  // Define la clave fija para almacenar la data
+  const customKey = "dataFirebaseNormalizada";
 
-    const customKey = "dataFirebaseNormalizada"
+  try {
+    // Obtiene la ruta desde localStorage según una configuración
+    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+    const ruta = switchRutaDinamica
+      ? localStorage.getItem('configRutaDinamic')
+      : localStorage.getItem('configRuta');
 
-    try {
-        // Ejemplo de condición: usar una ruta configurada en localStorage
-        const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
-        const ruta = switchRutaDinamica
-            ? localStorage.getItem('configRutaDinamic')
-            : localStorage.getItem('configRuta');
-
-        if (!ruta) {
-            console.warn("No se encontró una ruta válida.");
-            return;
-        }
-
-        // Genera la clave "namespaced" para consultar si ya existe la data
-        const dataKey = getNamespacedKey(customKey);
-        const storedData = await idbGet(dataKey);
-
-        // Condición: Si ya existe data y la ruta coincide, no se crea nada nuevo
-        if (storedData && storedData.ruta === ruta) {
-            console.log("Ya existe data para esta ruta con la clave indicada. No se crea nueva entrada.");
-            return;
-        }
-
-        // Obtiene la data simulada desde Firebase
-        const dataFirebase = await getDataFromFirebase(ruta);
-        if (dataFirebase) {
-            // Normaliza la data y añade la ruta utilizada
-            const normalizedData = {
-                ...await normalizarHTML(dataFirebase),
-                ruta: ruta
-            };
-
-            // Llama a la función que crea los datos en SessionStorageDB
-            await createDataInSessionStorageDB(customKey, normalizedData);
-        } else {
-            console.warn("No se encontró data en Firebase.");
-        }
-    } catch (error) {
-        console.error("Error en getDataFromFirebaseAsync:", error);
+    if (!ruta) {
+      console.warn("No se encontró una ruta válida.");
+      return;
     }
-}
 
+    // Consulta la data almacenada en IndexedDB utilizando la clave
+    const storedData = await idbGet(customKey);
+    const currentTabSessionId = getTabSessionId();
 
-function deleteSessionStorageDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.deleteDatabase("SessionStorageDB");
-
-        request.onsuccess = function () {
-            console.log("SessionStorageDB eliminada con éxito.");
-            resolve();
-        };
-
-        request.onerror = function (event) {
-            console.error("Error al eliminar SessionStorageDB:", event);
-            reject(event);
-        };
-
-        request.onblocked = function () {
-            console.warn("La eliminación de SessionStorageDB fue bloqueada.");
-        };
-    });
-}
-
-window.addEventListener('beforeunload', async () => {
-    try {
-        await deleteSessionStorageDB();
-    } catch (error) {
-        console.error("Error al eliminar la base de datos SessionStorageDB:", error);
+    // Si existe data y el tabSessionId es igual al actual, no se actualiza
+    if (storedData && storedData.tabSessionId === currentTabSessionId) {
+      console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
+      return;
     }
-});
 
+    // Se obtienen nuevos datos desde Firebase
+    const dataFirebase = await getDataFromFirebase(ruta);
+    if (dataFirebase) {
+      // Normaliza la data y añade la ruta y el tabSessionId actual
+      const normalizedData = {
+        ...await normalizarHTML(dataFirebase),
+        ruta,
+        tabSessionId: currentTabSessionId
+      };
 
-
-
-
+      // Crea o actualiza la data en SessionStorageDB
+      await createDataInSessionStorageDB(customKey, normalizedData);
+    } else {
+      console.warn("No se encontró data en Firebase.");
+    }
+  } catch (error) {
+    console.error("Error en getDataFromFirebaseAsync:", error);
+  }
+}
