@@ -45320,7 +45320,7 @@
 
 	    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, comparedData.lastKey);
 
-	    console.log("Holi3");
+	    console.log("Holi4");
 
 	}
 
