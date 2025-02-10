@@ -43743,8 +43743,6 @@
 	  // Esperar a que se procesen todas las preguntas de DPN.
 	  await Promise.all(promesasDPN);
 
-	  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
-	  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
 
 	  // Recuperar los datos del sessionStorage
 	  let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
@@ -43760,6 +43758,8 @@
 	    }
 	  });
 
+	  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
+	  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevasData);
 
 	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 	}
