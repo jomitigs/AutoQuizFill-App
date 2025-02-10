@@ -1,7 +1,7 @@
 // main.js
 
 // Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
-import { getDatabase, ref, get, push, set } from "firebase/database";
+import { ref, get, push, set } from "firebase/database";
 
 import { database } from './script.js'; // Asegúrate de que la ruta sea correcta
 // Importa la función para normalizar datos (ajusta la ruta según tu estructura de carpetas)
@@ -44,8 +44,6 @@ export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
     throw error;
   }
 }
-
-
 
 async function createDataInSessionStorageDB(customKey, data) {
   console.log("==> Creando datos en SessionStorageDB:");

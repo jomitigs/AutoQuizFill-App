@@ -44491,8 +44491,6 @@
 	  }
 	}
 
-
-
 	async function createDataInSessionStorageDB(customKey, data) {
 	  console.log("==> Creando datos en SessionStorageDB:");
 	  console.log("Clave utilizada:", customKey);
