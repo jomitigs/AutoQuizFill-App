@@ -6,7 +6,7 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
-import { nodeResolve } from '@rollup/plugin-node-resolve'
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import workerLoader from 'rollup-plugin-web-worker-loader';
 
 
