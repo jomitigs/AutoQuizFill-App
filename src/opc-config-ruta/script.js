@@ -5,6 +5,8 @@ import './style.css'; // Importa el archivo de estilos CSS
 
 import { ref, get } from 'firebase/database';
 import { database } from '../config-firebase/script.js';
+import { getDataFromFirebaseAsync } from '../config-firebase/firebase-helpers.js';
+
 
 // Exporta las funciones que necesitas utilizar en otros módulos
 export function opcionConfigRuta_html() {
@@ -445,4 +447,5 @@ function guardarConfigRuta() {
 
 
     comprobarRutaCiclo_ConfigRuta(); // Verifica y muestra la nueva ruta y ciclo
+    getDataFromFirebaseAsync();
 }

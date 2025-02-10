@@ -45669,6 +45669,7 @@
 	// src/opc-config-ruta/script.js
 
 
+
 	// Exporta las funciones que necesitas utilizar en otros módulos
 	function opcionConfigRuta_html() {
 	    return `
@@ -46108,6 +46109,7 @@
 
 
 	    comprobarRutaCiclo_ConfigRuta(); // Verifica y muestra la nueva ruta y ciclo
+	    getDataFromFirebaseAsync();
 	}
 
 	// Exportación nombrada de la función para que pueda ser importada en otro script
