@@ -44455,6 +44455,23 @@
 	// main.js
 
 
+	async function getDataFromFirebase(ruta) {
+	  try {
+	    const reference = ref(database, ruta);
+	    const snapshot = await get(reference);
+
+	    if (snapshot.exists()) {
+	      return snapshot.val(); // Retorna los datos en formato JSON
+	    } else {
+	      console.warn(`No se encontró data en la ruta: ${ruta}`);
+	      return null;
+	    }
+	  } catch (error) {
+	    console.error(`Error al obtener data desde Firebase: ${error.message}`);
+	    throw error;
+	  }
+	}
+
 
 	async function saveQuestionsToFirebase(ruta, datos, lastKey) {
 	  try {
@@ -44490,6 +44507,7 @@
 	    throw error;
 	  }
 	}
+
 
 	async function createDataInSessionStorageDB(customKey, data) {
 	  console.log("==> Creando datos en SessionStorageDB:");

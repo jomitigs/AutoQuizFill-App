@@ -1,13 +1,30 @@
 // main.js
 
 // Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
-import { ref, get, push, set } from "firebase/database";
+import { getDatabase, ref, get, push, set } from "firebase/database";
 
 import { database } from './script.js'; // Asegúrate de que la ruta sea correcta
 // Importa la función para normalizar datos (ajusta la ruta según tu estructura de carpetas)
 import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosave-helpers.js";
 // Importa las funciones de IndexedDB
 import { idbGet, idbSet, idbDelete, getTabSessionId } from './idbSession.js';
+
+export async function getDataFromFirebase(ruta) {
+  try {
+    const reference = ref(database, ruta);
+    const snapshot = await get(reference);
+
+    if (snapshot.exists()) {
+      return snapshot.val(); // Retorna los datos en formato JSON
+    } else {
+      console.warn(`No se encontró data en la ruta: ${ruta}`);
+      return null;
+    }
+  } catch (error) {
+    console.error(`Error al obtener data desde Firebase: ${error.message}`);
+    throw error;
+  }
+}
 
 
 export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
@@ -44,6 +61,7 @@ export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
     throw error;
   }
 }
+
 
 async function createDataInSessionStorageDB(customKey, data) {
   console.log("==> Creando datos en SessionStorageDB:");
@@ -99,3 +117,7 @@ export async function getDataFromFirebaseAsync() {
     console.error("Error en getDataFromFirebaseAsync:", error);
   }
 }
+
+
+
+
