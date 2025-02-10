@@ -43624,8 +43624,8 @@
 	// Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
 	// =============================================================================
 	async function compararPreguntas(dpn, dfn) {
-	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { claveDPN, claveDFN }
-	  let dpnNuevas = [];      // Almacena las claves de las preguntas de DPN sin coincidencia
+	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
+	  let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
 	  
 	  // ---------------------------------------------------------------------------
 	  // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
@@ -43654,6 +43654,7 @@
 	      cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
 	    }
 	    
+	    // Se guarda la clave dentro del objeto para tenerla disponible
 	    indiceDFN[tipoPregunta][cantidadHTML].push({
 	      clave: claveDFN,
 	      ...preguntaDFN
@@ -43669,10 +43670,10 @@
 	    const preguntaDPN = dpn[claveDPN];
 	    console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
 	    
-	    // Si no existe la propiedad "html", se marca como nueva.
+	    // Si no existe la propiedad "html", se marca como nueva y se guarda la pregunta completa.
 	    if (!preguntaDPN.html) {
 	      console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
-	      dpnNuevas.push(claveDPN);
+	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	      return;
 	    }
 	    
@@ -43682,7 +43683,7 @@
 	    // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
 	    if (!indiceDFN[tipoDPN]) {
 	      console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
-	      dpnNuevas.push(claveDPN);
+	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	      return;
 	    }
 	    
@@ -43715,8 +43716,8 @@
 	        const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
 	        console.log(`Resultado de comparación:`, resultadoComparacion);
 	        if (resultadoComparacion.coincide) {
-	          // Si hay coincidencia, se resuelve la promesa con la clave del candidato.
-	          resolve({ claveDFN: candidato.clave });
+	          // Si hay coincidencia, se resuelve la promesa con todos los datos del candidato.
+	          resolve(candidato);
 	        } else {
 	          // Si no coincide, se rechaza la promesa.
 	          reject('No coincide');
@@ -43726,12 +43727,15 @@
 	    
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
-	      const res = await Promise.any(promesasCandidatos);
-	      dpnExistentes.push({ claveDPN: claveDPN, claveDFN: res.claveDFN });
+	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
+	      dpnExistentes.push({
+	        dpn: { clave: claveDPN, ...preguntaDPN },
+	        dfn: candidatoCoincidente
+	      });
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
 	      console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-	      dpnNuevas.push(claveDPN);
+	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	    }
 	  });
 	  
@@ -45251,7 +45255,7 @@
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
-	    console.log("Holaa");
+	    console.log("Holi");
 
 	}
 
