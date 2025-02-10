@@ -888,6 +888,20 @@ export async function compararPreguntas(dpn, dfn) {
   
   console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
   console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
+
+  // Recuperar los datos del sessionStorage
+const data = sessionStorage.getItem("questions-AutoSave");
+
+
+    // Convertir de JSON a objeto de JavaScript
+    const questions = JSON.parse(data);
+    
+    // Acceder a Pregunta1
+    const pregunta1 = questions.Pregunta1;
+    
+    // Mostrar en la consola
+    console.log(pregunta1);
+
   return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevas };
 }
 
