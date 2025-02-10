@@ -45300,7 +45300,6 @@
 	      ? localStorage.getItem('configRutaDinamic')
 	      : localStorage.getItem('configRuta');
 
-	    // Obtener las preguntas guardadas en sessionStorage
 	    const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
 	    const dataPageNormalizada = await normalizarHTML(dataPage);
@@ -45309,24 +45308,24 @@
 	    const dataFirebaseNormalizada = await idbGet("dataFirebaseNormalizada");
 	    console.log('DataFirebaseNormalizada:', dataFirebaseNormalizada);
 
-	    const comparedData = compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
+	    // 🟢 ESPERAR a que `compararPreguntas` termine antes de seguir
+	    const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
 
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
 	    const dfnKeys = Object.keys(dataFirebaseNormalizada);
 
-	    // Encontrar la última clave basada en el número
 	    const lastKey = dfnKeys.reduce((max, key) => {
 	        return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
 	    }, dfnKeys[0]);
 
 	    console.log("lastKey1:", lastKey);
 
-	    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
+	    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
+	    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
 	    console.log("Holi4");
-
 	}
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
