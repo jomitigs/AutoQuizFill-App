@@ -24,7 +24,7 @@ export default {
     }
   },
   plugins: [
-    workerLoader(),
+    workerLoader({ inline: true }),
     resolve({ browser: true }),
     commonjs(),
     string({ include: '**/*.html' }),
