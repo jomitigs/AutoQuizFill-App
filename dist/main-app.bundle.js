@@ -44370,16 +44370,10 @@
 	  sessionStorage.setItem('tabSessionId', tabSessionId);
 	}
 
-	/**
-	 * Retorna el identificador único de la pestaña.
-	 */
 	function getTabSessionId() {
 	  return tabSessionId;
 	}
 
-	/**
-	 * Abre (o crea) la base de datos "SessionStorageDB" con un almacén llamado "store".
-	 */
 	function openDB() {
 	  return new Promise((resolve, reject) => {
 	    const request = indexedDB.open('SessionStorageDB', 1);
@@ -44397,10 +44391,6 @@
 	  });
 	}
 
-	/**
-	 * Obtiene un ítem de la base de datos usando la clave especificada.
-	 * @param {string} key - La clave para recuperar el dato.
-	 */
 	async function idbGet(key) {
 	  const db = await openDB();
 	  return new Promise((resolve, reject) => {
@@ -44413,11 +44403,6 @@
 	  });
 	}
 
-	/**
-	 * Guarda un ítem en la base de datos usando la clave especificada.
-	 * @param {string} key - La clave en la que se almacenará el dato.
-	 * @param {*} value - El valor a almacenar.
-	 */
 	async function idbSet(key, value) {
 	  const db = await openDB();
 	  return new Promise((resolve, reject) => {
@@ -44499,7 +44484,9 @@
 	    if (storedData && storedData.tabSessionId === currentTabSessionId) {
 	      console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
 	      return;
-	    }
+	    } else {
+	        console.log("Actualizando data indexada.");
+	      }
 
 	    // Se obtienen nuevos datos desde Firebase
 	    const dataFirebase = await getDataFromFirebase(ruta);

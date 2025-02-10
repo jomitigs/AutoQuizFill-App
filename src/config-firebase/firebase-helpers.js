@@ -74,7 +74,9 @@ export async function getDataFromFirebaseAsync() {
     if (storedData && storedData.tabSessionId === currentTabSessionId) {
       console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
       return;
-    }
+    } else {
+        console.log("Actualizando data indexada.");
+      }
 
     // Se obtienen nuevos datos desde Firebase
     const dataFirebase = await getDataFromFirebase(ruta);

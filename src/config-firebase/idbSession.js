@@ -7,16 +7,10 @@ if (!tabSessionId) {
   sessionStorage.setItem('tabSessionId', tabSessionId);
 }
 
-/**
- * Retorna el identificador único de la pestaña.
- */
 export function getTabSessionId() {
   return tabSessionId;
 }
 
-/**
- * Abre (o crea) la base de datos "SessionStorageDB" con un almacén llamado "store".
- */
 export function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('SessionStorageDB', 1);
@@ -34,10 +28,6 @@ export function openDB() {
   });
 }
 
-/**
- * Obtiene un ítem de la base de datos usando la clave especificada.
- * @param {string} key - La clave para recuperar el dato.
- */
 export async function idbGet(key) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -50,11 +40,6 @@ export async function idbGet(key) {
   });
 }
 
-/**
- * Guarda un ítem en la base de datos usando la clave especificada.
- * @param {string} key - La clave en la que se almacenará el dato.
- * @param {*} value - El valor a almacenar.
- */
 export async function idbSet(key, value) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -67,10 +52,6 @@ export async function idbSet(key, value) {
   });
 }
 
-/**
- * Elimina un ítem específico de la base de datos usando la clave.
- * @param {string} key - La clave del dato a eliminar.
- */
 export async function idbDelete(key) {
   const db = await openDB();
   return new Promise((resolve, reject) => {
