@@ -45266,7 +45266,7 @@
 	    const dataPageNormalizada = await normalizarHTML(dataPage);
 	    console.log('DataPageNormalizada:', dataPageNormalizada);
 
-	    const dataFirebaseNormalizada = await idbGet(dataFirebaseNormalizada);
+	    const dataFirebaseNormalizada = await idbGet("dataFirebaseNormalizada");
 	    console.log('DataFirebaseNormalizada:', dataFirebaseNormalizada);
 
 	    const comparedData = compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
