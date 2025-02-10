@@ -8,20 +8,15 @@ import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosav
 // Importa las funciones de IndexedDB
 import { idbGet, idbSet, idbDelete, getTabSessionId } from './idbSession.js';
 
-/**
- * Obtiene datos desde Firebase a partir de una ruta.
- * @param {string} path - La ruta en la base de datos de Firebase.
- * @returns {object|null} Los datos obtenidos o null si no existen.
- */
-export async function getDataFromFirebase(path) {
+export async function getDataFromFirebase(ruta) {
   try {
-    const reference = ref(database, path);
+    const reference = ref(database, ruta);
     const snapshot = await get(reference);
 
     if (snapshot.exists()) {
       return snapshot.val(); // Retorna los datos en formato JSON
     } else {
-      console.warn(`No se encontró data en la ruta: ${path}`);
+      console.warn(`No se encontró data en la ruta: ${ruta}`);
       return null;
     }
   } catch (error) {
@@ -30,12 +25,36 @@ export async function getDataFromFirebase(path) {
   }
 }
 
-/**
- * Función para crear o actualizar datos en SessionStorageDB (IndexedDB).
- * Muestra en la consola la clave y el dato que se va a insertar, y luego lo almacena.
- * @param {string} customKey - La clave que se usará para almacenar los datos.
- * @param {*} data - Los datos a almacenar.
- */
+export async function saveDataToFirebase(ruta, datos) {
+    console.log(`Guardando datos en la ruta: ${ruta}`);
+  
+    // Inicializar la base de datos y la referencia a la ruta especificada
+    const db = getDatabase();
+    const refDB = ref(db, ruta);
+  
+    try {
+      // Verificar si 'datos' es un array o un único objeto
+      if (Array.isArray(datos)) {
+        for (const dato of datos) {
+          // Agregar la clave 'estado'
+          const datoConEstado = { ...dato, estado: 'no verificado' };
+          // Crear una nueva entrada con una clave única
+          const newRef = push(refDB);
+          await set(newRef, datoConEstado);
+          console.log("Guardado:", datoConEstado);
+        }
+      } else {
+        const datoConEstado = { ...datos, estado: 'no verificado' };
+        const newRef = push(refDB);
+        await set(newRef, datoConEstado);
+        console.log("Guardado:", datoConEstado);
+      }
+    } catch (error) {
+      console.error("Error al guardar en Firebase:", error);
+    }
+  }
+
+
 async function createDataInSessionStorageDB(customKey, data) {
   console.log("==> Creando datos en SessionStorageDB:");
   console.log("Clave utilizada:", customKey);
@@ -45,11 +64,6 @@ async function createDataInSessionStorageDB(customKey, data) {
   console.log("Datos almacenados correctamente en IndexedDB bajo la clave:", customKey);
 }
 
-/**
- * Función principal que obtiene datos desde Firebase y los almacena en IndexedDB.
- * La actualización se realiza solo si no existe data o si el tabSessionId del dato almacenado
- * es diferente al de la pestaña actual.
- */
 export async function getDataFromFirebaseAsync() {
   // Define la clave fija para almacenar la data
   const customKey = "dataFirebaseNormalizada";

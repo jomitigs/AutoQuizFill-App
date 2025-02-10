@@ -43624,8 +43624,8 @@
 	// Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
 	// =============================================================================
 	async function compararPreguntas(dpn, dfn) {
-	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { claveDPN, claveDFN }
-	  let dpnNuevas = [];      // Almacena las claves de las preguntas de DPN sin coincidencia
+	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
+	  let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
 	  
 	  // ---------------------------------------------------------------------------
 	  // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
@@ -43654,6 +43654,7 @@
 	      cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
 	    }
 	    
+	    // Se guarda la clave dentro del objeto para tenerla disponible
 	    indiceDFN[tipoPregunta][cantidadHTML].push({
 	      clave: claveDFN,
 	      ...preguntaDFN
@@ -43669,10 +43670,10 @@
 	    const preguntaDPN = dpn[claveDPN];
 	    console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
 	    
-	    // Si no existe la propiedad "html", se marca como nueva.
+	    // Si no existe la propiedad "html", se marca como nueva y se guarda la pregunta completa.
 	    if (!preguntaDPN.html) {
 	      console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
-	      dpnNuevas.push(claveDPN);
+	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	      return;
 	    }
 	    
@@ -43682,7 +43683,7 @@
 	    // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
 	    if (!indiceDFN[tipoDPN]) {
 	      console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
-	      dpnNuevas.push(claveDPN);
+	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	      return;
 	    }
 	    
@@ -43715,8 +43716,8 @@
 	        const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
 	        console.log(`Resultado de comparación:`, resultadoComparacion);
 	        if (resultadoComparacion.coincide) {
-	          // Si hay coincidencia, se resuelve la promesa con la clave del candidato.
-	          resolve({ claveDFN: candidato.clave });
+	          // Si hay coincidencia, se resuelve la promesa con todos los datos del candidato.
+	          resolve(candidato);
 	        } else {
 	          // Si no coincide, se rechaza la promesa.
 	          reject('No coincide');
@@ -43726,12 +43727,15 @@
 	    
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
-	      const res = await Promise.any(promesasCandidatos);
-	      dpnExistentes.push({ claveDPN: claveDPN, claveDFN: res.claveDFN });
+	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
+	      dpnExistentes.push({
+	        dpn: { clave: claveDPN, ...preguntaDPN },
+	        dfn: candidatoCoincidente
+	      });
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
 	      console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-	      dpnNuevas.push(claveDPN);
+	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	    }
 	  });
 	  
@@ -44425,20 +44429,15 @@
 	// main.js
 
 
-	/**
-	 * Obtiene datos desde Firebase a partir de una ruta.
-	 * @param {string} path - La ruta en la base de datos de Firebase.
-	 * @returns {object|null} Los datos obtenidos o null si no existen.
-	 */
-	async function getDataFromFirebase(path) {
+	async function getDataFromFirebase(ruta) {
 	  try {
-	    const reference = ref(database, path);
+	    const reference = ref(database, ruta);
 	    const snapshot = await get(reference);
 
 	    if (snapshot.exists()) {
 	      return snapshot.val(); // Retorna los datos en formato JSON
 	    } else {
-	      console.warn(`No se encontró data en la ruta: ${path}`);
+	      console.warn(`No se encontró data en la ruta: ${ruta}`);
 	      return null;
 	    }
 	  } catch (error) {
@@ -44447,12 +44446,7 @@
 	  }
 	}
 
-	/**
-	 * Función para crear o actualizar datos en SessionStorageDB (IndexedDB).
-	 * Muestra en la consola la clave y el dato que se va a insertar, y luego lo almacena.
-	 * @param {string} customKey - La clave que se usará para almacenar los datos.
-	 * @param {*} data - Los datos a almacenar.
-	 */
+
 	async function createDataInSessionStorageDB(customKey, data) {
 	  console.log("==> Creando datos en SessionStorageDB:");
 	  console.log("Clave utilizada:", customKey);
@@ -44462,11 +44456,6 @@
 	  console.log("Datos almacenados correctamente en IndexedDB bajo la clave:", customKey);
 	}
 
-	/**
-	 * Función principal que obtiene datos desde Firebase y los almacena en IndexedDB.
-	 * La actualización se realiza solo si no existe data o si el tabSessionId del dato almacenado
-	 * es diferente al de la pestaña actual.
-	 */
 	async function getDataFromFirebaseAsync() {
 	  // Define la clave fija para almacenar la data
 	  const customKey = "dataFirebaseNormalizada";
