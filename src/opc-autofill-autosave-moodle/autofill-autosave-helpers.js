@@ -174,36 +174,43 @@ export async function File2DataUri(files) {
     console.log("Tipo de entrada no soportado. Proporcione un elemento HTML, una imagen o un audio.");
   }
 
+
   // --- Procesar imágenes ---
-  for (const imagen of imagenes) {
-    // Procesar solo imágenes cuya URL contenga 'pluginfile.php'
-    if (imagen.src.includes('pluginfile.php')) {
-      try {
-        // Esperar a que la imagen se cargue (ya sea de caché o en tiempo real)
-        await new Promise((resolver, rechazar) => {
-          if (imagen.complete) {
-            resolver();
-          } else {
-            imagen.onload = resolver;
-            imagen.onerror = rechazar;
-          }
-        });
+for (const imagen of imagenes) {
+  // Procesar solo imágenes cuya URL contenga 'pluginfile.php'
+  if (imagen.src.includes('pluginfile.php')) {
+    try {
+      console.log(`Intentando procesar imagen: ${imagen.src}`);
 
-        // Dibujar la imagen en un canvas para obtener su Data URI
-        const lienzo = document.createElement('canvas');
-        const contexto = lienzo.getContext('2d');
-        lienzo.width = imagen.naturalWidth;
-        lienzo.height = imagen.naturalHeight;
-        contexto.drawImage(imagen, 0, 0);
+      // Esperar a que la imagen se cargue (ya sea de caché o en tiempo real)
+      await new Promise((resolver, rechazar) => {
+        if (imagen.complete) {
+          resolver();
+        } else {
+          imagen.onload = resolver;
+          imagen.onerror = (error) => {
+            console.error(`Error al cargar la imagen: ${imagen.src}`, error);
+            rechazar(error);
+          };
+        }
+      });
 
-        const dataUriImagen = lienzo.toDataURL();
-        imagen.src = dataUriImagen;
-      } catch (error) {
-        console.error('Error en la conversión de la imagen:', error);
-      }
+      // Dibujar la imagen en un canvas para obtener su Data URI
+      const lienzo = document.createElement('canvas');
+      const contexto = lienzo.getContext('2d');
+      lienzo.width = imagen.naturalWidth;
+      lienzo.height = imagen.naturalHeight;
+      contexto.drawImage(imagen, 0, 0);
+
+      const dataUriImagen = lienzo.toDataURL();
+      console.log(`Imagen procesada con éxito: ${imagen.src}`);
+      imagen.src = dataUriImagen;
+    } catch (error) {
+      console.error(`Error en la conversión de la imagen: ${imagen.src}`, error);
     }
-    // Si la imagen no contiene 'pluginfile.php', se deja sin cambios.
   }
+}
+
 
   // --- Procesar audios ---
   const umbralDuracionAudio = 60; // Duración umbral en segundos
