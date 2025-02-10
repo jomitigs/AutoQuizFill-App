@@ -43042,40 +43042,40 @@
 
 
 	  // --- Procesar imágenes ---
-	for (const imagen of imagenes) {
-	  // Procesar solo imágenes cuya URL contenga 'pluginfile.php'
-	  if (imagen.src.includes('pluginfile.php')) {
-	    try {
-	      console.log(`Intentando procesar imagen: ${imagen.src}`);
+	  for (const imagen of imagenes) {
+	    // Procesar solo imágenes cuya URL contenga 'pluginfile.php'
+	    if (imagen.src.includes('pluginfile.php')) {
+	      try {
+	        console.log(`Intentando procesar imagen: ${imagen.src}`);
 
-	      // Esperar a que la imagen se cargue (ya sea de caché o en tiempo real)
-	      await new Promise((resolver, rechazar) => {
-	        if (imagen.complete) {
-	          resolver();
-	        } else {
-	          imagen.onload = resolver;
-	          imagen.onerror = (error) => {
-	            console.error(`Error al cargar la imagen: ${imagen.src}`, error);
-	            rechazar(error);
-	          };
-	        }
-	      });
+	        // Esperar a que la imagen se cargue (ya sea de caché o en tiempo real)
+	        await new Promise((resolver, rechazar) => {
+	          if (imagen.complete) {
+	            resolver();
+	          } else {
+	            imagen.onload = resolver;
+	            imagen.onerror = (error) => {
+	              console.error(`Error al cargar la imagen: ${imagen.src}`, error);
+	              rechazar(error);
+	            };
+	          }
+	        });
 
-	      // Dibujar la imagen en un canvas para obtener su Data URI
-	      const lienzo = document.createElement('canvas');
-	      const contexto = lienzo.getContext('2d');
-	      lienzo.width = imagen.naturalWidth;
-	      lienzo.height = imagen.naturalHeight;
-	      contexto.drawImage(imagen, 0, 0);
+	        // Dibujar la imagen en un canvas para obtener su Data URI
+	        const lienzo = document.createElement('canvas');
+	        const contexto = lienzo.getContext('2d');
+	        lienzo.width = imagen.naturalWidth;
+	        lienzo.height = imagen.naturalHeight;
+	        contexto.drawImage(imagen, 0, 0);
 
-	      const dataUriImagen = lienzo.toDataURL();
-	      console.log(`Imagen procesada con éxito: ${imagen.src}`);
-	      imagen.src = dataUriImagen;
-	    } catch (error) {
-	      console.error(`Error en la conversión de la imagen: ${imagen.src}`, error);
+	        const dataUriImagen = lienzo.toDataURL();
+	        console.log(`Imagen procesada con éxito: ${imagen.src}`);
+	        imagen.src = dataUriImagen;
+	      } catch (error) {
+	        console.error(`Error en la conversión de la imagen: ${imagen.src}`, error);
+	      }
 	    }
 	  }
-	}
 
 
 	  // --- Procesar audios ---
@@ -43273,13 +43273,13 @@
 	const regexLiteral = /^[a-zA-Z]\.\s*/;
 	const regexRespuestaPregunta = /^(Respuesta\s*\d+\s*Pregunta\s*\d+|Respuesta\s*Pregunta\s*\d+|Vacío\s*\d+\s*Pregunta\s*\d+)/;
 	const textosIrrelevantesSet = new Set([
-	    'Respuestas',
-	    'Respuesta',
-	    'Enunciado de la pregunta',
-	    'https://profes.ac/pub/logoap.svg',
-	    'YWRtaW5AcHJvZmVzLmFj',
-	    'Quitar mi elección',
-	    'vacío'
+	  'Respuestas',
+	  'Respuesta',
+	  'Enunciado de la pregunta',
+	  'https://profes.ac/pub/logoap.svg',
+	  'YWRtaW5AcHJvZmVzLmFj',
+	  'Quitar mi elección',
+	  'vacío'
 	]);
 
 	// ============================================================================
@@ -43296,42 +43296,42 @@
 	 * @returns {Promise<any>} - Resultado normalizado.
 	 */
 	async function normalizarHTML(input) {
-	    // Caso 1: Entrada es un string HTML directo.
-	    if (typeof input === "string") {
-	        return await normalizarHTMLString(input);
-	    }
+	  // Caso 1: Entrada es un string HTML directo.
+	  if (typeof input === "string") {
+	    return await normalizarHTMLString(input);
+	  }
 
-	    // Caso 2: Entrada es un objeto (no null).
-	    if (typeof input === "object" && input !== null) {
-	        // Caso 2.a: Si el objeto tiene la propiedad "html" (string).
-	        if (input.hasOwnProperty("html") && typeof input.html === "string") {
-	            return { 
-	                ...input, 
-	                html: await normalizarHTMLString(input.html) 
-	            };
-	        }
-	        // Caso 2.b: Objeto con múltiples claves (por ejemplo, 1000 preguntas).
-	        const keys = Object.keys(input);
-	        const promiseArray = keys.map(key => {
-	            const valor = input[key];
-	            if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
-	                return normalizarHTMLString(valor.html).then(normalizedHTML => {
-	                    return { key, value: { ...valor, html: normalizedHTML } };
-	                });
-	            } else {
-	                return Promise.resolve({ key, value: valor });
-	            }
-	        });
-	        const results = await Promise.all(promiseArray);
-	        const resultObject = {};
-	        results.forEach(({ key, value }) => {
-	            resultObject[key] = value;
-	        });
-	        return resultObject;
+	  // Caso 2: Entrada es un objeto (no null).
+	  if (typeof input === "object" && input !== null) {
+	    // Caso 2.a: Si el objeto tiene la propiedad "html" (string).
+	    if (input.hasOwnProperty("html") && typeof input.html === "string") {
+	      return {
+	        ...input,
+	        html: await normalizarHTMLString(input.html)
+	      };
 	    }
+	    // Caso 2.b: Objeto con múltiples claves (por ejemplo, 1000 preguntas).
+	    const keys = Object.keys(input);
+	    const promiseArray = keys.map(key => {
+	      const valor = input[key];
+	      if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
+	        return normalizarHTMLString(valor.html).then(normalizedHTML => {
+	          return { key, value: { ...valor, html: normalizedHTML } };
+	        });
+	      } else {
+	        return Promise.resolve({ key, value: valor });
+	      }
+	    });
+	    const results = await Promise.all(promiseArray);
+	    const resultObject = {};
+	    results.forEach(({ key, value }) => {
+	      resultObject[key] = value;
+	    });
+	    return resultObject;
+	  }
 
-	    // Si la entrada no es string ni objeto, se retorna tal cual.
-	    return input;
+	  // Si la entrada no es string ni objeto, se retorna tal cual.
+	  return input;
 	}
 
 	// ============================================================================
@@ -43346,26 +43346,26 @@
 	 * @returns {Promise<Array<string>>} - Arreglo con los contenidos normalizados.
 	 */
 	async function normalizarHTMLString(html) {
-	    // Crear un contenedor temporal y convertir el string a un fragmento DOM.
-	    const tempDiv = document.createElement('div');
-	    const fragment = document.createRange().createContextualFragment(html);
-	    tempDiv.appendChild(fragment);
+	  // Crear un contenedor temporal y convertir el string a un fragmento DOM.
+	  const tempDiv = document.createElement('div');
+	  const fragment = document.createRange().createContextualFragment(html);
+	  tempDiv.appendChild(fragment);
 
-	    // Extraer datos del DOM.
-	    const visibleTexts = extractVisibleText(tempDiv);
-	    const mediaUrls = await extractMediaUrls(tempDiv);
-	    const mathExpressions = extractMathExpressions(tempDiv);
+	  // Extraer datos del DOM.
+	  const visibleTexts = extractVisibleText(tempDiv);
+	  const mediaUrls = await extractMediaUrls(tempDiv);
+	  const mathExpressions = extractMathExpressions(tempDiv);
 
-	    // Combinar resultados.
-	    let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
+	  // Combinar resultados.
+	  let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
 
-	    // Si se encuentran elementos con ".draghome" o ".dropzones", eliminar duplicados.
-	    if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
-	        combinedResults = [...new Set(combinedResults)];
-	    }
+	  // Si se encuentran elementos con ".draghome" o ".dropzones", eliminar duplicados.
+	  if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
+	    combinedResults = [...new Set(combinedResults)];
+	  }
 
-	    // Filtrar textos irrelevantes.
-	    return eliminarTextosIrrelevantes(combinedResults);
+	  // Filtrar textos irrelevantes.
+	  return eliminarTextosIrrelevantes(combinedResults);
 	}
 
 	// ============================================================================
@@ -43378,35 +43378,35 @@
 	 * @returns {Array<string>} - Arreglo de textos visibles.
 	 */
 	function extractVisibleText(rootNode) {
-	    const texts = [];
-	    const walker = document.createTreeWalker(
-	        rootNode,
-	        NodeFilter.SHOW_TEXT,
-	        {
-	            acceptNode: function(node) {
-	                // Omitir si el padre es <script type="math/tex"> o <span> con clases MathJax.
-	                if (node.parentNode) {
-	                    const parent = node.parentNode;
-	                    const tag = parent.tagName;
-	                    const type = parent.getAttribute('type');
-	                    if ((tag === 'SCRIPT' && type === 'math/tex') ||
-	                        (tag === 'SPAN' && (parent.classList.contains('MathJax') || parent.classList.contains('MathJax_Preview')))) {
-	                        return NodeFilter.FILTER_SKIP;
-	                    }
-	                }
-	                return NodeFilter.FILTER_ACCEPT;
-	            }
-	        },
-	        false
-	    );
-
-	    while (walker.nextNode()) {
-	        const text = walker.currentNode.textContent.trim();
-	        if (text) {
-	            texts.push(text);
+	  const texts = [];
+	  const walker = document.createTreeWalker(
+	    rootNode,
+	    NodeFilter.SHOW_TEXT,
+	    {
+	      acceptNode: function (node) {
+	        // Omitir si el padre es <script type="math/tex"> o <span> con clases MathJax.
+	        if (node.parentNode) {
+	          const parent = node.parentNode;
+	          const tag = parent.tagName;
+	          const type = parent.getAttribute('type');
+	          if ((tag === 'SCRIPT' && type === 'math/tex') ||
+	            (tag === 'SPAN' && (parent.classList.contains('MathJax') || parent.classList.contains('MathJax_Preview')))) {
+	            return NodeFilter.FILTER_SKIP;
+	          }
 	        }
+	        return NodeFilter.FILTER_ACCEPT;
+	      }
+	    },
+	    false
+	  );
+
+	  while (walker.nextNode()) {
+	    const text = walker.currentNode.textContent.trim();
+	    if (text) {
+	      texts.push(text);
 	    }
-	    return texts;
+	  }
+	  return texts;
 	}
 
 	// ============================================================================
@@ -43420,41 +43420,41 @@
 	 * @returns {Promise<Array<string>>} - Arreglo de URLs o Data URI de medios.
 	 */
 	async function extractMediaUrls(rootNode) {
-	    const urls = [];
-	    const validImageExtensions = /\.(png|jpe?g|gif|bmp|svg)(\?.*)?$/i;
-	    const mediaPromises = [];
+	  const urls = [];
+	  const validImageExtensions = /\.(png|jpe?g|gif|bmp|svg)(\?.*)?$/i;
+	  const mediaPromises = [];
 
-	    // Extraer imágenes.
-	    const imgElements = rootNode.querySelectorAll("img");
-	    imgElements.forEach(img => {
-	        const src = img.getAttribute("src");
-	        if (src && validImageExtensions.test(src)) {
-	            if (src.includes("pluginfile.php")) {
-	                // Usar la función ya existente File2DataUri (se espera que retorne una promesa).
-	                mediaPromises.push(File2DataUri(img));
-	            } else {
-	                urls.push(src);
-	            }
-	        }
-	    });
+	  // Extraer imágenes.
+	  const imgElements = rootNode.querySelectorAll("img");
+	  imgElements.forEach(img => {
+	    const src = img.getAttribute("src");
+	    if (src && validImageExtensions.test(src)) {
+	      if (src.includes("pluginfile.php")) {
+	        // Usar la función ya existente File2DataUri (se espera que retorne una promesa).
+	        mediaPromises.push(File2DataUri(img));
+	      } else {
+	        urls.push(src);
+	      }
+	    }
+	  });
 
-	    // Extraer videos y audios.
-	    const mediaElements = rootNode.querySelectorAll("video[src], audio[src]");
-	    mediaElements.forEach(el => {
-	        const src = el.getAttribute("src");
-	        if (src) {
-	            urls.push(src);
-	        }
-	    });
+	  // Extraer videos y audios.
+	  const mediaElements = rootNode.querySelectorAll("video[src], audio[src]");
+	  mediaElements.forEach(el => {
+	    const src = el.getAttribute("src");
+	    if (src) {
+	      urls.push(src);
+	    }
+	  });
 
-	    // Esperar las conversiones y agregar resultados válidos.
-	    const convertedResults = await Promise.all(mediaPromises);
-	    convertedResults.forEach(result => {
-	        if (result) {
-	            urls.push(result);
-	        }
-	    });
-	    return urls;
+	  // Esperar las conversiones y agregar resultados válidos.
+	  const convertedResults = await Promise.all(mediaPromises);
+	  convertedResults.forEach(result => {
+	    if (result) {
+	      urls.push(result);
+	    }
+	  });
+	  return urls;
 	}
 
 	// ============================================================================
@@ -43467,15 +43467,15 @@
 	 * @returns {Array<string>} - Arreglo de expresiones LaTeX.
 	 */
 	function extractMathExpressions(rootNode) {
-	    const expressions = [];
-	    const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
-	    scripts.forEach(script => {
-	        const latex = script.textContent.trim();
-	        if (latex) {
-	            expressions.push(latex);
-	        }
-	    });
-	    return expressions;
+	  const expressions = [];
+	  const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
+	  scripts.forEach(script => {
+	    const latex = script.textContent.trim();
+	    if (latex) {
+	      expressions.push(latex);
+	    }
+	  });
+	  return expressions;
 	}
 
 	// ============================================================================
@@ -43488,27 +43488,27 @@
 	 * @returns {Array<string>} - Arreglo filtrado.
 	 */
 	function eliminarTextosIrrelevantes(items) {
-	    return items.map(item => {
-	        // Eliminar delimitadores LaTeX.
-	        item = item.replace(regexLaTeX, '$1');
+	  return items.map(item => {
+	    // Eliminar delimitadores LaTeX.
+	    item = item.replace(regexLaTeX, '$1');
 
-	        // Si coincide con MathML, se descarta.
-	        if (regexMathML.test(item)) return false;
+	    // Si coincide con MathML, se descarta.
+	    if (regexMathML.test(item)) return false;
 
-	        // Descarta patrones de pregunta, literal o respuesta.
-	        if (
-	            regexPregunta.test(item) ||
-	            regexLiteral.test(item) ||
-	            regexRespuestaPregunta.test(item)
-	        ) {
-	            return false;
-	        }
+	    // Descarta patrones de pregunta, literal o respuesta.
+	    if (
+	      regexPregunta.test(item) ||
+	      regexLiteral.test(item) ||
+	      regexRespuestaPregunta.test(item)
+	    ) {
+	      return false;
+	    }
 
-	        // Descarta si el texto está en el conjunto de irrelevantes.
-	        if (textosIrrelevantesSet.has(item)) return false;
+	    // Descarta si el texto está en el conjunto de irrelevantes.
+	    if (textosIrrelevantesSet.has(item)) return false;
 
-	        return item;
-	    }).filter(item => item !== false);
+	    return item;
+	  }).filter(item => item !== false);
 	}
 
 	// =============================================================================
@@ -43602,20 +43602,20 @@
 	function compararHTML(htmlDPN, htmlDFN) {
 	  let contenidoDPN = obtenerContenidoSeparadoYConcatenado(htmlDPN);
 	  let contenidoDFN = obtenerContenidoSeparadoYConcatenado(htmlDFN);
-	  
+
 	  // Se pueden almacenar en caché utilizando algún identificador único si se requiere
 	  // (en este ejemplo se utiliza directamente el array "html" como parámetro).
-	  
+
 	  // Si los textos concatenados son idénticos, se omite el cálculo completo.
 	  if (contenidoDPN.textoConcatenado === contenidoDFN.textoConcatenado) {
 	    const mediosOk = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
 	    return { coincide: mediosOk, similitudTexto: 100, mediosCoinciden: mediosOk };
 	  }
-	  
+
 	  const similitudTexto = calcularSimilitudTexto(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
 	  const mediosCoinciden = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
 	  const coincide = (similitudTexto >= 99) && mediosCoinciden;
-	  
+
 	  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
 	}
 
@@ -43626,7 +43626,7 @@
 	async function compararPreguntas(dpn, dfn) {
 	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
 	  let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
-	  
+
 	  // ---------------------------------------------------------------------------
 	  // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
 	  // ---------------------------------------------------------------------------
@@ -43634,12 +43634,12 @@
 	  for (const claveDFN in dfn) {
 	    const preguntaDFN = dfn[claveDFN];
 	    console.log(`Procesando DFN: ${claveDFN}`, preguntaDFN);
-	    
+
 	    if (!preguntaDFN.html) {
 	      console.warn(`Elemento DFN "${claveDFN}" no tiene propiedad "html". Se omite.`);
 	      continue;
 	    }
-	    
+
 	    const cantidadHTML = preguntaDFN.html.length;
 	    const tipoPregunta = preguntaDFN.tipo;
 	    if (!indiceDFN[tipoPregunta]) {
@@ -43648,12 +43648,12 @@
 	    if (!indiceDFN[tipoPregunta][cantidadHTML]) {
 	      indiceDFN[tipoPregunta][cantidadHTML] = [];
 	    }
-	    
+
 	    // Opcional: Precalcular el contenido de "html" y almacenarlo en caché para DFN.
 	    if (!cacheContenidoDFN[claveDFN]) {
 	      cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
 	    }
-	    
+
 	    // Se guarda la clave dentro del objeto para tenerla disponible
 	    indiceDFN[tipoPregunta][cantidadHTML].push({
 	      clave: claveDFN,
@@ -43661,7 +43661,7 @@
 	    });
 	  }
 	  console.log("Índice DFN creado:", indiceDFN);
-	  
+
 	  // ---------------------------------------------------------------------------
 	  // Procesar cada pregunta de DPN concurrentemente.
 	  // Se crea una promesa por cada pregunta y se esperan todas con Promise.all.
@@ -43669,31 +43669,31 @@
 	  const promesasDPN = Object.keys(dpn).map(async (claveDPN) => {
 	    const preguntaDPN = dpn[claveDPN];
 	    console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
-	    
+
 	    // Si no existe la propiedad "html", se marca como nueva y se guarda la pregunta completa.
 	    if (!preguntaDPN.html) {
 	      console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
 	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	      return;
 	    }
-	    
+
 	    const tipoDPN = preguntaDPN.tipo;
 	    const cantidadDPN = preguntaDPN.html.length;
-	    
+
 	    // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
 	    if (!indiceDFN[tipoDPN]) {
 	      console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
 	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
 	      return;
 	    }
-	    
+
 	    // Definir las cantidades permitidas en "html": si hay más de 10 elementos se permite ±1.
 	    let cantidadesPermitidas = [cantidadDPN];
 	    if (cantidadDPN > 10) {
 	      cantidadesPermitidas.push(cantidadDPN - 1, cantidadDPN + 1);
 	    }
 	    console.log(`Para DPN "${claveDPN}" se permiten cantidades:`, cantidadesPermitidas);
-	    
+
 	    // Recolectar candidatos de DFN que cumplan la cantidad en "html".
 	    let candidatos = [];
 	    cantidadesPermitidas.forEach(cantidad => {
@@ -43702,12 +43702,12 @@
 	      }
 	    });
 	    console.log(`Candidatos para DPN "${claveDPN}":`, candidatos);
-	    
+
 	    // Opcional: Precalcular el contenido para DPN y almacenarlo en caché.
 	    if (!cacheContenidoDPN[claveDPN]) {
 	      cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
 	    }
-	    
+
 	    // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
 	    // Se usa Promise.any para que se resuelva tan pronto como alguno cumpla la condición.
 	    const promesasCandidatos = candidatos.map(candidato => {
@@ -43724,13 +43724,13 @@
 	        }
 	      });
 	    });
-	    
+
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
 
 	      dpnExistentes.push({
-	        dpn: {claveDPN},
+	        dpn: { claveDPN },
 	        dfn: candidatoCoincidente
 	      });
 	    } catch (e) {
@@ -43739,27 +43739,29 @@
 	      dpnNuevas.push(claveDPN);
 	    }
 	  });
-	  
+
 	  // Esperar a que se procesen todas las preguntas de DPN.
 	  await Promise.all(promesasDPN);
-	  
+
 	  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
 	  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
 
 	  // Recuperar los datos del sessionStorage
-	const data = sessionStorage.getItem("questions-AutoSave");
+	  let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
+
+	  dpnOrigin = JSON.parse(dpnOrigin);
+
+	  const dpnNuevasData = {};
+
+	  // Iterar sobre dpnNuevas para extraer los datos de questions
+	  dpnNuevas.forEach((clave) => {
+	    if (questions[clave]) {
+	      dpnNuevasData[clave] = questions[clave]; // Inserta el objeto completo
+	    }
+	  });
 
 
-	    // Convertir de JSON a objeto de JavaScript
-	    const questions = JSON.parse(data);
-	    
-	    // Acceder a Pregunta1
-	    const pregunta1 = questions.Pregunta1;
-	    
-	    // Mostrar en la consola
-	    console.log(pregunta1);
-
-	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevas };
+	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 	}
 
 	// Manejar respuestas tipo 'draganddrop_image'
