@@ -44371,8 +44371,8 @@
 	}
 
 	/**
-	 * Devuelve una clave “namespaced” usando el id de la pestaña.
-	 * @param {string} key - La clave lógica.
+	 * Retorna una clave "namespaced" usando el ID único de la pestaña.
+	 * @param {string} key - La clave lógica definida por el usuario.
 	 */
 	function getNamespacedKey(key) {
 	  return `${tabSessionId}_${key}`;
@@ -44385,11 +44385,11 @@
 	  return new Promise((resolve, reject) => {
 	    const request = indexedDB.open('SessionStorageDB', 1);
 
-	    request.onerror = event => reject(event);
+	    request.onerror = (event) => reject(event);
 
-	    request.onsuccess = event => resolve(event.target.result);
+	    request.onsuccess = (event) => resolve(event.target.result);
 
-	    request.onupgradeneeded = event => {
+	    request.onupgradeneeded = (event) => {
 	      const db = event.target.result;
 	      if (!db.objectStoreNames.contains('store')) {
 	        db.createObjectStore('store');
@@ -44399,7 +44399,7 @@
 	}
 
 	/**
-	 * Obtiene un ítem de la base de datos por la clave dada.
+	 * Obtiene un ítem de la base de datos usando la clave especificada.
 	 * @param {string} key - La clave para recuperar el dato.
 	 */
 	async function idbGet(key) {
@@ -44409,13 +44409,13 @@
 	    const store = tx.objectStore('store');
 	    const request = store.get(key);
 
-	    request.onerror = event => reject(event);
-	    request.onsuccess = event => resolve(event.target.result);
+	    request.onerror = (event) => reject(event);
+	    request.onsuccess = (event) => resolve(event.target.result);
 	  });
 	}
 
 	/**
-	 * Guarda un ítem en la base de datos con la clave dada.
+	 * Guarda un ítem en la base de datos usando la clave especificada.
 	 * @param {string} key - La clave en la que se almacenará el dato.
 	 * @param {*} value - El valor a almacenar.
 	 */
@@ -44426,24 +44426,8 @@
 	    const store = tx.objectStore('store');
 	    const request = store.put(value, key);
 
-	    request.onerror = event => reject(event);
-	    request.onsuccess = event => resolve(event.target.result);
-	  });
-	}
-
-	/**
-	 * Elimina un ítem específico de la base de datos por la clave.
-	 * @param {string} key - La clave del dato a eliminar.
-	 */
-	async function idbDelete(key) {
-	  const db = await openDB();
-	  return new Promise((resolve, reject) => {
-	    const tx = db.transaction('store', 'readwrite');
-	    const store = tx.objectStore('store');
-	    const request = store.delete(key);
-
-	    request.onerror = event => reject(event);
-	    request.onsuccess = event => resolve(event.target.result);
+	    request.onerror = (event) => reject(event);
+	    request.onsuccess = (event) => resolve(event.target.result);
 	  });
 	}
 
@@ -44451,7 +44435,7 @@
 	    try {
 	        const reference = ref(database, path);
 	        const snapshot = await get(reference);
-	        
+
 	        if (snapshot.exists()) {
 	            return snapshot.val(); // Returns data in JSON format
 	        } else {
@@ -44464,61 +44448,90 @@
 	    }
 	}
 
+	async function createDataInSessionStorageDB(customKey, data) {
+	    // Genera la clave "namespaced" utilizando el ID único de la pestaña
+	    const dataKey = getNamespacedKey(customKey);
+	    console.log("==> Creando datos en SessionStorageDB:");
+	    console.log("Clave utilizada:", dataKey);
+	    console.log("Dato a insertar:", data);
+
+	    await idbSet(dataKey, data);
+	    console.log("Datos almacenados correctamente en IndexedDB bajo la clave:", dataKey);
+	}
+
 	async function getDataFromFirebaseAsync() {
+
+	    const customKey = "dataFirebaseNormalizada";
+
 	    try {
-	      const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
-	  
-	      // Determinar la ruta de referencia usando localStorage para la configuración.
-	      const ruta = switchRutaDinamica
-	        ? localStorage.getItem('configRutaDinamic')
-	        : localStorage.getItem('configRuta');
-	  
-	      if (!ruta) {
-	        console.warn('No se encontró una ruta válida.');
-	        return;
-	      }
-	  
-	      // Genera la clave "namespaced" para esta pestaña
-	      const dataKey = getNamespacedKey('dataFirebaseNormalizada');
-	  
-	      // Verifica si ya existe la data en IndexedDB y si la ruta coincide
-	      const storedData = await idbGet(dataKey);
-	      if (storedData && storedData.ruta === ruta) {
-	        console.log('Los datos ya están almacenados y la ruta no ha cambiado. No se vuelve a ejecutar.');
-	        return;
-	      }
-	  
-	      // Obtén la data desde Firebase
-	      const dataFirebase = await getDataFromFirebase(ruta);
-	  
-	      if (dataFirebase) {
-	        // Normaliza la data y agrega la ruta utilizada
-	        const dataFirebaseNormalizada = {
-	          ...await normalizarHTML(dataFirebase),
-	          ruta
+	        // Ejemplo de condición: usar una ruta configurada en localStorage
+	        const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+	        const ruta = switchRutaDinamica
+	            ? localStorage.getItem('configRutaDinamic')
+	            : localStorage.getItem('configRuta');
+
+	        if (!ruta) {
+	            console.warn("No se encontró una ruta válida.");
+	            return;
+	        }
+
+	        // Genera la clave "namespaced" para consultar si ya existe la data
+	        const dataKey = getNamespacedKey(customKey);
+	        const storedData = await idbGet(dataKey);
+
+	        // Condición: Si ya existe data y la ruta coincide, no se crea nada nuevo
+	        if (storedData && storedData.ruta === ruta) {
+	            console.log("Ya existe data para esta ruta con la clave indicada. No se crea nueva entrada.");
+	            return;
+	        }
+
+	        // Obtiene la data simulada desde Firebase
+	        const dataFirebase = await getDataFromFirebase(ruta);
+	        if (dataFirebase) {
+	            // Normaliza la data y añade la ruta utilizada
+	            const normalizedData = {
+	                ...await normalizarHTML(dataFirebase),
+	                ruta: ruta
+	            };
+
+	            // Llama a la función que crea los datos en SessionStorageDB
+	            await createDataInSessionStorageDB(customKey, normalizedData);
+	        } else {
+	            console.warn("No se encontró data en Firebase.");
+	        }
+	    } catch (error) {
+	        console.error("Error en getDataFromFirebaseAsync:", error);
+	    }
+	}
+
+
+	function deleteSessionStorageDB() {
+	    return new Promise((resolve, reject) => {
+	        const request = indexedDB.deleteDatabase("SessionStorageDB");
+
+	        request.onsuccess = function () {
+	            console.log("SessionStorageDB eliminada con éxito.");
+	            resolve();
 	        };
-	  
-	        // Guarda la data en IndexedDB para esta pestaña
-	        await idbSet(dataKey, dataFirebaseNormalizada);
-	        console.log('Datos guardados en IndexedDB para la pestaña:', dataFirebaseNormalizada);
-	      } else {
-	        console.warn('No se encontró data en Firebase.');
-	      }
-	    } catch (error) {
-	      console.error(`Error en getDataFromFirebaseAsync: ${error.message}`);
-	    }
-	  }
-	  
-	  // Al cerrar la pestaña se limpia el dato correspondiente a esta sesión
-	  window.addEventListener('beforeunload', async () => {
+
+	        request.onerror = function (event) {
+	            console.error("Error al eliminar SessionStorageDB:", event);
+	            reject(event);
+	        };
+
+	        request.onblocked = function () {
+	            console.warn("La eliminación de SessionStorageDB fue bloqueada.");
+	        };
+	    });
+	}
+
+	window.addEventListener('beforeunload', async () => {
 	    try {
-	      const dataKey = getNamespacedKey('dataFirebaseNormalizada');
-	      await idbDelete(dataKey);
-	      console.log('Datos de la pestaña limpiados en IndexedDB');
+	        await deleteSessionStorageDB();
 	    } catch (error) {
-	      console.error("Error al limpiar los datos de la pestaña en IndexedDB:", error);
+	        console.error("Error al eliminar la base de datos SessionStorageDB:", error);
 	    }
-	  });
+	});
 
 	// Exporta una función llamada contenedorAutoSave_js
 	function contenedorAutoSave_js() {
