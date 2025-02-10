@@ -44479,14 +44479,12 @@
 	    // Consulta la data almacenada en IndexedDB utilizando la clave
 	    const storedData = await idbGet(customKey);
 	    const currentTabSessionId = getTabSessionId();
-
+	  
 	    // Si existe data y el tabSessionId es igual al actual, no se actualiza
-	    if (storedData && storedData.tabSessionId === currentTabSessionId) {
+	    if (storedData && storedData.tabSessionId === currentTabSessionId && storedData.ruta === ruta) {
 	      console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
 	      return;
-	    } else {
-	        console.log("Actualizando data indexada.");
-	      }
+	    }
 
 	    // Se obtienen nuevos datos desde Firebase
 	    const dataFirebase = await getDataFromFirebase(ruta);
