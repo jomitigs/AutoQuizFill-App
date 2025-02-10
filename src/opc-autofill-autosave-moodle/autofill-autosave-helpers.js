@@ -767,26 +767,21 @@ function compararHTML(htmlDPN, htmlDFN) {
 // Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
 // =============================================================================
 export async function compararPreguntas(dpn, dfn) {
-  // Si dfn está vacío, se consideran todas las preguntas de dpn como nuevas.
-  if (!dfn || Object.keys(dfn).length === 0) {
-    console.log("El objeto DFN está vacío. Se marcarán todas las preguntas de DPN como nuevas.");
+  // Si dfn es vacío o solo contiene los metadatos ("ruta" y "tabSessionId"),
+  // se omite la comparación y se consideran todas las preguntas de dpnOrigin como nuevas.
+  const clavesDFN = Object.keys(dfn);
+  if (
+    clavesDFN.length === 0 ||
+    (clavesDFN.length === 2 &&
+      dfn.hasOwnProperty("ruta") &&
+      dfn.hasOwnProperty("tabSessionId"))
+  ) {
+    console.log("dfn está vacío o solo contiene metadatos. Se asignan todas las preguntas de dpnOrigin como nuevas.");
     let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
     dpnOrigin = JSON.parse(dpnOrigin);
-    const dpnNuevasData = {};
-
-    // Se recorre cada pregunta de dpn y se extraen los datos completos de dpnOrigin.
-    Object.keys(dpn).forEach((clave) => {
-      if (dpnOrigin && dpnOrigin[clave]) {
-        dpnNuevasData[clave] = dpnOrigin[clave];
-      }
-    });
-
-    return { dpnExistentes: [], dpnNuevas: dpnNuevasData };
+    return { dpnExistentes: [], dpnNuevas: dpnOrigin };
   }
 
-  // ---------------------------------------------------------------------------
-  // Variables para almacenar las preguntas coincidentes y las nuevas
-  // ---------------------------------------------------------------------------
   let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
   let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
 
@@ -891,7 +886,6 @@ export async function compararPreguntas(dpn, dfn) {
     try {
       // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
-
       dpnExistentes.push({
         dpn: { claveDPN },
         dfn: candidatoCoincidente
