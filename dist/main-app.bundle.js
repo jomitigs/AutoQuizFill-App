@@ -45521,15 +45521,17 @@
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
 	    const dfnKeys = Object.keys(dataFirebaseNormalizada);
+	    
+	    const validKeys = dfnKeys.filter(key => key !== "ruta" && key !== "tabSessionId");
 
-	    const lastKey = dfnKeys.length
-	      ? dfnKeys.reduce((max, key) =>
-	          parseInt(key.replace("question", ""), 10) >
-	          parseInt(max.replace("question", ""), 10)
+	    const lastKey = validKeys.length
+	    ? validKeys.reduce((max, key) =>
+	        parseInt(key.replace("question", ""), 10) >
+	        parseInt(max.replace("question", ""), 10)
 	            ? key 
-	            : max, 
-	        dfnKeys[0])
-	      : 0;
+	            : max,
+	        validKeys[0])
+	    : 0;
 	    
 	    console.log("lastKey1:", lastKey);
 
