@@ -6,7 +6,7 @@ import { inputtext_respuestacorta } from './questions-types/4_inputtext_respuest
 import { inputtext_respuestacorta2 } from './questions-types/4_inputtext_respuestacorta2.js';
 import { select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
 import interact from 'interactjs';
-import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML } from '../autofill-autosave-helpers.js';
+import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
 
 import { getDataFromFirebase, getDataFromFirebaseAsync} from '../../config-firebase/firebase-helpers.js';
 
@@ -292,10 +292,6 @@ async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = nul
     
 }
 
-
-// -----------------------------------------------------------------------
-// Función que detecta los cambios y actúa según exista o no 'questions-AutoSave'
-// -----------------------------------------------------------------------
 function detectarCambiosPreguntas() {
 
     // 1. Escucha los cambios en inputs, selects y checkboxes
@@ -701,9 +697,6 @@ function AutoSave_ShowResponses(numeroPregunta) {
     });
 }
 
-/**
- * Función auxiliar que formatea las opciones de respuesta
- */
 function formatResponseOptions(options, selected) {
     // Convertimos selected en un conjunto para facilitar la comparación
     const selectedSet = new Set(
@@ -746,13 +739,6 @@ function formatResponseOptions(options, selected) {
     }).join('');
 }
 
-
-
-/**
- * Función auxiliar que procesa el contenido:
- * - Si es imagen con URL o base64, la reemplaza por una etiqueta <img>.
- * - Si hay saltos de línea, los convierte en <br>.
- */
 function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
     return content
@@ -773,6 +759,9 @@ export async function AutoSave_Firebase() {
     const dataFirebaseNormalizada = JSON.parse(sessionStorage.getItem('dataFirebaseNormalizada'));
     console.log('DataFirebaseNormalizada:', dataFirebaseNormalizada);
 
- 
+    const comparedData = compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada)
+
+    console.log("DPN Existentes:", comparedData.dpnExistentes);
+    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
 }

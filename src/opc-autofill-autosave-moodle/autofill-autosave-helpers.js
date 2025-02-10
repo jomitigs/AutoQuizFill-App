@@ -637,3 +637,288 @@ function eliminarTextosIrrelevantes(items) {
     }).filter(item => item !== false);
 }
 
+
+// ========================================================================
+// Función principal para comparar las preguntas de DPN y DFN.
+// Realiza un pre‑filtrado de DFN basado en 'tipo' y la cantidad de elementos en 'html',
+// luego utiliza la función compararHTML para evaluar la similitud de contenido.
+// Al encontrar una coincidencia (texto ≥ 99% y medios 100%), se almacena en 'dpnExistentes'.
+// Si no se encuentra coincidencia, se almacena en 'dpnNuevas'.
+// ========================================================================
+export function compararPreguntas(dpn, dfn) {
+  // Arreglo para almacenar coincidencias encontradas (objetos con claves de DPN y DFN).
+  let dpnExistentes = [];
+  // Arreglo para almacenar las claves de DPN que no tuvieron coincidencia en DFN.
+  let dpnNuevas = [];
+  
+  // ========================================================================
+  // Pre‑indexar DFN para optimizar la búsqueda de candidatos.
+  // Se agrupa DFN por 'tipo' y por la cantidad de elementos en la lista 'html'.
+  // ========================================================================
+  let indiceDFN = {}; // Objeto para almacenar el índice.
+  
+  // Iterar sobre cada clave en el objeto DFN.
+  for (const claveDFN in dfn) {
+    // Obtener el objeto de la pregunta de DFN.
+    const preguntaDFN = dfn[claveDFN];
+    // Obtener el tipo de la pregunta.
+    const tipoPregunta = preguntaDFN.tipo;
+    // Obtener la cantidad de elementos en 'html'.
+    const cantidadHTML = preguntaDFN.html.length;
+    
+    // Si aún no existe el índice para este tipo, inicializarlo.
+    if (!indiceDFN[tipoPregunta]) {
+      indiceDFN[tipoPregunta] = {};
+    }
+    // Si aún no existe el arreglo para esta cantidad de elementos, inicializarlo.
+    if (!indiceDFN[tipoPregunta][cantidadHTML]) {
+      indiceDFN[tipoPregunta][cantidadHTML] = [];
+    }
+    // Agregar la pregunta al índice, incluyendo su clave.
+    indiceDFN[tipoPregunta][cantidadHTML].push({
+      clave: claveDFN,      // Clave de la pregunta en DFN.
+      ...preguntaDFN        // Propiedades de la pregunta.
+    });
+  }
+  
+  // ========================================================================
+  // Iterar sobre cada pregunta en DPN.
+  // ========================================================================
+  for (const claveDPN in dpn) {
+    // Obtener el objeto de la pregunta de DPN.
+    const preguntaDPN = dpn[claveDPN];
+    // Obtener el tipo de la pregunta.
+    const tipoDPN = preguntaDPN.tipo;
+    // Obtener la cantidad de elementos en la lista 'html'.
+    const cantidadDPN = preguntaDPN.html.length;
+    
+    // Si en DFN no existen preguntas del mismo tipo, se marca la pregunta como nueva.
+    if (!indiceDFN[tipoDPN]) {
+      dpnNuevas.push(claveDPN);
+      continue; // Pasar a la siguiente pregunta de DPN.
+    }
+    
+    // ========================================================================
+    // Definir las cantidades permitidas en la lista 'html'.
+    // Si la cantidad es mayor a 10 se permite una variación de ±1; de lo contrario, se requiere coincidencia exacta.
+    // ========================================================================
+    let cantidadesPermitidas = [cantidadDPN];
+    if (cantidadDPN > 10) {
+      cantidadesPermitidas.push(cantidadDPN - 1, cantidadDPN + 1);
+    }
+    
+    // ========================================================================
+    // Recolectar candidatos de DFN que cumplan con el filtro de cantidad de elementos en 'html'.
+    // ========================================================================
+    let candidatos = [];
+    // Iterar sobre cada cantidad permitida.
+    cantidadesPermitidas.forEach(cantidad => {
+      // Si existen candidatos para este tipo y cantidad, agregarlos al arreglo de candidatos.
+      if (indiceDFN[tipoDPN][cantidad]) {
+        candidatos = candidatos.concat(indiceDFN[tipoDPN][cantidad]);
+      }
+    });
+    
+    // Bandera para indicar si se encontró coincidencia.
+    let coincidenciaEncontrada = false;
+    
+    // ========================================================================
+    // Comparar el contenido 'html' de la pregunta DPN con cada candidato en DFN.
+    // ========================================================================
+    for (const candidato of candidatos) {
+      // Utilizar la función compararHTML para evaluar la similitud.
+      const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
+      
+      // Si se cumple que el texto tiene al menos 99% de similitud y los medios coinciden al 100%.
+      if (resultadoComparacion.coincide) {
+        // Agregar la coincidencia a 'dpnExistentes' con las claves correspondientes.
+        dpnExistentes.push({ claveDPN: claveDPN, claveDFN: candidato.clave });
+        // Marcar que se encontró una coincidencia y salir del ciclo de candidatos.
+        coincidenciaEncontrada = true;
+        break; // Early exit: ya se encontró coincidencia para esta pregunta.
+      }
+    }
+    
+    // ========================================================================
+    // Si no se encontró ningún candidato que coincida, marcar la pregunta DPN como nueva.
+    // ========================================================================
+    if (!coincidenciaEncontrada) {
+      dpnNuevas.push(claveDPN);
+    }
+  }
+  
+  // Retornar un objeto con las preguntas existentes y las nuevas.
+  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevas };
+}
+
+// ========================================================================
+// Función para comparar el contenido de la clave 'html' de dos preguntas.
+// Separa el contenido en texto y medios y evalúa la similitud.
+// ========================================================================
+function compararHTML(htmlDPN, htmlDFN) {
+  // Separar el contenido de DPN en texto y medios.
+  const { texto: textoDPN, medios: mediosDPN } = separarContenido(htmlDPN);
+  // Separar el contenido del candidato DFN en texto y medios.
+  const { texto: textoDFN, medios: mediosDFN } = separarContenido(htmlDFN);
+  
+  // Comparar el texto y obtener el porcentaje de similitud.
+  const similitudTexto = compararTexto(textoDPN, textoDFN);
+  // Comparar los medios de forma exacta.
+  const mediosCoinciden = compararMedios(mediosDPN, mediosDFN);
+  
+  // Determinar si se cumple la condición: similitud del 99% en texto y 100% en medios.
+  const coincide = (similitudTexto >= 99) && mediosCoinciden;
+  
+  // Retornar un objeto con el resultado de la comparación.
+  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
+}
+
+
+
+// ========================================================================
+// Función para calcular la distancia de Levenshtein entre dos cadenas.
+// Permite medir la diferencia entre dos textos.
+// ========================================================================
+function calcularDistanciaLevenshtein(cadena1, cadena2) {
+  // Si la primera cadena está vacía, la distancia es la longitud de la segunda.
+  if (cadena1.length === 0) return cadena2.length;
+  // Si la segunda cadena está vacía, la distancia es la longitud de la primera.
+  if (cadena2.length === 0) return cadena1.length;
+
+  // Crear una matriz para almacenar las distancias parciales.
+  const matriz = [];
+  
+  // Inicializar la primera columna de la matriz.
+  for (let i = 0; i <= cadena2.length; i++) {
+    matriz[i] = [i];
+  }
+  
+  // Inicializar la primera fila de la matriz.
+  for (let j = 0; j <= cadena1.length; j++) {
+    matriz[0][j] = j;
+  }
+  
+  // Rellenar la matriz comparando cada carácter.
+  for (let i = 1; i <= cadena2.length; i++) {
+    for (let j = 1; j <= cadena1.length; j++) {
+      // Si los caracteres actuales son iguales, no se suma costo.
+      if (cadena2.charAt(i - 1) === cadena1.charAt(j - 1)) {
+        matriz[i][j] = matriz[i - 1][j - 1];
+      } else {
+        // Si son distintos, se toma el mínimo entre sustitución, inserción o eliminación.
+        matriz[i][j] = Math.min(
+          matriz[i - 1][j - 1] + 1, // sustitución
+          matriz[i][j - 1] + 1,     // inserción
+          matriz[i - 1][j] + 1      // eliminación
+        );
+      }
+    }
+  }
+  
+  // Retornar la distancia de Levenshtein entre las dos cadenas.
+  return matriz[cadena2.length][cadena1.length];
+}
+
+// ========================================================================
+// Función para calcular el porcentaje de similitud entre dos textos.
+// Se basa en la distancia de Levenshtein y devuelve un valor de 0 a 100.
+// ========================================================================
+function calcularSimilitudTexto(texto1, texto2) {
+  // Si ambas cadenas están vacías, se considera 100% de similitud.
+  if (texto1.length === 0 && texto2.length === 0) return 100;
+  // Calcular la distancia entre los textos.
+  const distancia = calcularDistanciaLevenshtein(texto1, texto2);
+  // Determinar la longitud máxima entre los dos textos.
+  const longitudMaxima = Math.max(texto1.length, texto2.length);
+  // Calcular el porcentaje de similitud.
+  const similitud = ((longitudMaxima - distancia) / longitudMaxima) * 100;
+  // Retornar el porcentaje de similitud.
+  return similitud;
+}
+
+// ========================================================================
+// Función para separar el contenido de la lista 'html' en dos arreglos:
+// uno para el contenido de texto y otro para los enlaces de medios (imágenes, audios o data URIs).
+// ========================================================================
+function separarContenido(listaHTML) {
+  // Arreglos para almacenar el texto y los medios.
+  let contenidoTexto = [];
+  let contenidoMedios = [];
+  
+  // Iterar sobre cada elemento de la lista 'html'.
+  listaHTML.forEach(elemento => {
+    // Verificar si el elemento es una cadena.
+    if (typeof elemento === 'string') {
+      // Si el elemento contiene "http://", "https://" o "data:" se considera un medio.
+      if (elemento.includes("http://") || elemento.includes("https://") || elemento.includes("data:")) {
+        contenidoMedios.push(elemento); // Agregar a medios.
+      } else {
+        contenidoTexto.push(elemento); // Agregar a texto.
+      }
+    } else {
+      // En caso de que el elemento no sea una cadena, se asume que es un objeto con propiedades.
+      // Se evalúa según una propiedad 'tipo' (por ejemplo, 'media' para medios).
+      if (elemento.tipo === 'media') {
+        contenidoMedios.push(elemento.contenido);
+      } else {
+        contenidoTexto.push(elemento.contenido);
+      }
+    }
+  });
+  
+  // Retornar un objeto con ambos arreglos.
+  return { texto: contenidoTexto, medios: contenidoMedios };
+}
+
+// ========================================================================
+// Función para comparar dos arreglos de texto.
+// Concatena los arreglos en una cadena y calcula la similitud entre ambos.
+// ========================================================================
+function compararTexto(arregloTexto1, arregloTexto2) {
+  // Concatenar los textos y eliminar espacios adicionales.
+  const texto1 = arregloTexto1.join(" ").trim();
+  const texto2 = arregloTexto2.join(" ").trim();
+  // Retornar el porcentaje de similitud entre ambos textos.
+  return calcularSimilitudTexto(texto1, texto2);
+}
+
+// ========================================================================
+// Función para comparar dos arreglos de medios (enlaces).
+// Se requiere que para cada elemento en el primer arreglo exista una coincidencia exacta en el segundo,
+// sin importar el orden.
+// ========================================================================
+function compararMedios(arregloMedios1, arregloMedios2) {
+  // Si las longitudes son diferentes, no pueden ser iguales.
+  if (arregloMedios1.length !== arregloMedios2.length) return false;
+  
+  // Clonar el arreglo de medios del DFN para marcar elementos ya emparejados.
+  let mediosNoEmparejados = arregloMedios2.slice();
+  
+  // Iterar sobre cada medio del primer arreglo.
+  for (const medio1 of arregloMedios1) {
+    // Buscar un medio coincidente en el arreglo de medios no emparejados.
+    const indiceCoincidente = mediosNoEmparejados.findIndex(medio2 => compararContenidoMedios(medio1, medio2));
+    // Si no se encuentra coincidencia, retornar false.
+    if (indiceCoincidente === -1) {
+      return false;
+    } else {
+      // Remover el medio emparejado para evitar duplicados.
+      mediosNoEmparejados.splice(indiceCoincidente, 1);
+    }
+  }
+  
+  // Si todos los medios se emparejaron correctamente, retornar true.
+  return true;
+}
+
+// ========================================================================
+// Función para comparar dos elementos de medios.
+// Aquí se simula una comparación exacta (pixel por pixel) comprobando igualdad exacta.
+// En una implementación real se podría utilizar un algoritmo de huella digital perceptual.
+// ========================================================================
+function compararContenidoMedios(medio1, medio2) {
+  // Retornar true si ambos medios son exactamente iguales.
+  return medio1 === medio2;
+}
+
+
