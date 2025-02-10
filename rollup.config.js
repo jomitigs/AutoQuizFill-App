@@ -6,7 +6,7 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
-import workerLoader from 'rollup-plugin-web-worker-loader';
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 // Verifica si es producción
 const isProduction = process.env.BUILD_PROD === 'true';
@@ -18,14 +18,13 @@ export default {
     format: 'iife',
     name: 'AutoQuizFillApp',
     globals: {
-      'rollup-plugin-web-worker-loader!./worker.js': 'WorkerConstructor',
       'mathjax-full': 'MathJax',
       'mathjax-full/js/output/mathml.js': 'MathJax'
     }
   },
   plugins: [
-    workerLoader({ inline: true }),
     resolve({ browser: true }),
+    nodeResolve(),  
     commonjs(),
     string({ include: '**/*.html' }),
     postcss({
@@ -39,3 +38,4 @@ export default {
     html({ include: '**/*.html' }),
   ].filter(Boolean),
 };
+

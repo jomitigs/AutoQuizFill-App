@@ -637,11 +637,8 @@ function eliminarTextosIrrelevantes(items) {
     }).filter(item => item !== false);
 }
 
-// src/main.js
-
-// IMPORTANTE: La sintaxis 'rollup-plugin-web-worker-loader!./worker.js' 
-// (con el prefijo y el signo de exclamación) es la que requiere este plugin.
-import WorkerConstructor from 'rollup-plugin-web-worker-loader!./worker.js';
+// Importar la librería fast-levenshtein
+const levenshtein = require('fast-levenshtein');
 
 // =============================================================================
 // Cachés para optimización: Almacenan el resultado del procesamiento de la propiedad
@@ -651,31 +648,22 @@ const cacheContenidoDPN = {};
 const cacheContenidoDFN = {};
 
 // =============================================================================
-// Función asíncrona para calcular la distancia de Levenshtein entre dos cadenas usando el Worker.
+// Función para calcular la distancia de Levenshtein entre dos cadenas.
+// Permite medir la diferencia entre dos textos.
 // =============================================================================
-function calcularDistanciaLevenshteinAsync(cadena1, cadena2) {
-  return new Promise((resolve, reject) => {
-    const worker = new WorkerConstructor(); // Crear instancia del Worker.
-    worker.onmessage = (e) => {
-      resolve(e.data.distancia);
-      worker.terminate();
-    };
-    worker.onerror = (err) => {
-      reject(err);
-      worker.terminate();
-    };
-    worker.postMessage({ cadena1, cadena2 });
-  });
+function calcularDistanciaLevenshtein(cadena1, cadena2) {
+  // La función get de fast-levenshtein retorna la distancia entre ambas cadenas.
+  return levenshtein.get(cadena1, cadena2);
 }
 
 // =============================================================================
-// Función asíncrona para calcular el porcentaje de similitud entre dos textos.
-// Si los textos son exactamente iguales se retorna 100 sin llamar al Worker.
+// Función para calcular el porcentaje de similitud entre dos textos.
+// Si los textos son exactamente iguales se retorna 100 sin calcular la distancia.
 // =============================================================================
-async function calcularSimilitudTextoAsync(texto1, texto2) {
+function calcularSimilitudTexto(texto1, texto2) {
   if (texto1 === texto2) return 100;
   if (texto1.length === 0 && texto2.length === 0) return 100;
-  const distancia = await calcularDistanciaLevenshteinAsync(texto1, texto2);
+  const distancia = calcularDistanciaLevenshtein(texto1, texto2);
   const longitudMaxima = Math.max(texto1.length, texto2.length);
   const similitud = ((longitudMaxima - distancia) / longitudMaxima) * 100;
   return similitud;
@@ -690,12 +678,14 @@ function obtenerContenidoSeparadoYConcatenado(listaHTML) {
   let contenidoMedios = [];
   listaHTML.forEach(elemento => {
     if (typeof elemento === 'string') {
+      // Si la cadena contiene "http://" o "https://" o "data:" se considera un medio.
       if (elemento.includes("http://") || elemento.includes("https://") || elemento.includes("data:")) {
         contenidoMedios.push(elemento);
       } else {
         contenidoTexto.push(elemento);
       }
     } else {
+      // Si es un objeto, se asume que tiene la propiedad "tipo".
       if (elemento.tipo === 'media') {
         contenidoMedios.push(elemento.contenido);
       } else {
@@ -704,16 +694,16 @@ function obtenerContenidoSeparadoYConcatenado(listaHTML) {
     }
   });
   const textoConcatenado = contenidoTexto.join(" ").trim();
-  return { texto: contenidoTexto, medios: contenidoMedios, textoConcatenado };
+  return { texto: contenidoTexto, medios: contenidoMedios, textoConcatenado: textoConcatenado };
 }
 
 // =============================================================================
-// Función asíncrona para comparar dos arreglos de texto utilizando los textos concatenados.
+// Función para comparar dos arreglos de texto utilizando los textos concatenados.
 // =============================================================================
-async function compararTextoAsync(arregloTexto1, arregloTexto2) {
+function compararTexto(arregloTexto1, arregloTexto2) {
   const texto1 = arregloTexto1.join(" ").trim();
   const texto2 = arregloTexto2.join(" ").trim();
-  return await calcularSimilitudTextoAsync(texto1, texto2);
+  return calcularSimilitudTexto(texto1, texto2);
 }
 
 // =============================================================================
@@ -744,23 +734,27 @@ function compararContenidoMedios(medio1, medio2) {
 }
 
 // =============================================================================
-// Función asíncrona para comparar el contenido de "html" de dos preguntas.
+// Función para comparar el contenido de "html" de dos preguntas.
 // Se aprovechan los datos precalculados (o se generan y almacenan en caché si es la primera vez).
 // =============================================================================
-async function compararHTMLAsync(htmlDPN, htmlDFN) {
+function compararHTML(htmlDPN, htmlDFN) {
   let contenidoDPN = obtenerContenidoSeparadoYConcatenado(htmlDPN);
   let contenidoDFN = obtenerContenidoSeparadoYConcatenado(htmlDFN);
   
+  // Se pueden almacenar en caché utilizando algún identificador único si se requiere
+  // (en este ejemplo se utiliza directamente el array "html" como parámetro).
+  
+  // Si los textos concatenados son idénticos, se omite el cálculo completo.
   if (contenidoDPN.textoConcatenado === contenidoDFN.textoConcatenado) {
     const mediosOk = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
     return { coincide: mediosOk, similitudTexto: 100, mediosCoinciden: mediosOk };
   }
   
-  const similitudTexto = await calcularSimilitudTextoAsync(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
+  const similitudTexto = calcularSimilitudTexto(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
   const mediosCoinciden = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
   const coincide = (similitudTexto >= 99) && mediosCoinciden;
   
-  return { coincide, similitudTexto, mediosCoinciden };
+  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
 }
 
 // =============================================================================
@@ -793,6 +787,7 @@ export async function compararPreguntas(dpn, dfn) {
       indiceDFN[tipoPregunta][cantidadHTML] = [];
     }
     
+    // Opcional: Precalcular el contenido de "html" y almacenarlo en caché para DFN.
     if (!cacheContenidoDFN[claveDFN]) {
       cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
     }
@@ -806,11 +801,13 @@ export async function compararPreguntas(dpn, dfn) {
   
   // ---------------------------------------------------------------------------
   // Procesar cada pregunta de DPN concurrentemente.
+  // Se crea una promesa por cada pregunta y se esperan todas con Promise.all.
   // ---------------------------------------------------------------------------
   const promesasDPN = Object.keys(dpn).map(async (claveDPN) => {
     const preguntaDPN = dpn[claveDPN];
     console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
     
+    // Si no existe la propiedad "html", se marca como nueva.
     if (!preguntaDPN.html) {
       console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
       dpnNuevas.push(claveDPN);
@@ -820,18 +817,21 @@ export async function compararPreguntas(dpn, dfn) {
     const tipoDPN = preguntaDPN.tipo;
     const cantidadDPN = preguntaDPN.html.length;
     
+    // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
     if (!indiceDFN[tipoDPN]) {
       console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
       dpnNuevas.push(claveDPN);
       return;
     }
     
+    // Definir las cantidades permitidas en "html": si hay más de 10 elementos se permite ±1.
     let cantidadesPermitidas = [cantidadDPN];
     if (cantidadDPN > 10) {
       cantidadesPermitidas.push(cantidadDPN - 1, cantidadDPN + 1);
     }
     console.log(`Para DPN "${claveDPN}" se permiten cantidades:`, cantidadesPermitidas);
     
+    // Recolectar candidatos de DFN que cumplan la cantidad en "html".
     let candidatos = [];
     cantidadesPermitidas.forEach(cantidad => {
       if (indiceDFN[tipoDPN][cantidad]) {
@@ -840,39 +840,43 @@ export async function compararPreguntas(dpn, dfn) {
     });
     console.log(`Candidatos para DPN "${claveDPN}":`, candidatos);
     
+    // Opcional: Precalcular el contenido para DPN y almacenarlo en caché.
     if (!cacheContenidoDPN[claveDPN]) {
       cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
     }
     
+    // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
+    // Se usa Promise.any para que se resuelva tan pronto como alguno cumpla la condición.
     const promesasCandidatos = candidatos.map(candidato => {
-      return new Promise(async (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.clave}"`);
-        try {
-          const resultadoComparacion = await compararHTMLAsync(preguntaDPN.html, candidato.html);
-          console.log(`Resultado de comparación:`, resultadoComparacion);
-          if (resultadoComparacion.coincide) {
-            resolve({ claveDFN: candidato.clave });
-          } else {
-            reject('No coincide');
-          }
-        } catch (err) {
-          reject(err);
+        const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
+        console.log(`Resultado de comparación:`, resultadoComparacion);
+        if (resultadoComparacion.coincide) {
+          // Si hay coincidencia, se resuelve la promesa con la clave del candidato.
+          resolve({ claveDFN: candidato.clave });
+        } else {
+          // Si no coincide, se rechaza la promesa.
+          reject('No coincide');
         }
       });
     });
     
     try {
+      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const res = await Promise.any(promesasCandidatos);
-      dpnExistentes.push({ claveDPN, claveDFN: res.claveDFN });
+      dpnExistentes.push({ claveDPN: claveDPN, claveDFN: res.claveDFN });
     } catch (e) {
+      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
       console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
       dpnNuevas.push(claveDPN);
     }
   });
   
+  // Esperar a que se procesen todas las preguntas de DPN.
   await Promise.all(promesasDPN);
   
   console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
   console.log("Preguntas nuevas (dpnNuevas):", dpnNuevas);
-  return { dpnExistentes, dpnNuevas };
+  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevas };
 }
