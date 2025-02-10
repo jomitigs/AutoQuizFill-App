@@ -6,9 +6,7 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
 import workerLoader from 'rollup-plugin-web-worker-loader';
-
 
 // Verifica si es producción
 const isProduction = process.env.BUILD_PROD === 'true';
@@ -28,7 +26,6 @@ export default {
   plugins: [
     workerLoader(),
     resolve({ browser: true }),
-    nodeResolve(),  
     commonjs(),
     string({ include: '**/*.html' }),
     postcss({
@@ -42,4 +39,3 @@ export default {
     html({ include: '**/*.html' }),
   ].filter(Boolean),
 };
-
