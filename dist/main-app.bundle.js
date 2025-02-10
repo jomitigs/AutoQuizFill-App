@@ -45520,7 +45520,7 @@
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
 	    const dfnKeys = Object.keys(dataFirebaseNormalizada);
-	    
+
 	    const lastKey = dfnKeys.length
 	      ? dfnKeys.reduce((max, key) =>
 	          parseInt(key.replace("question", ""), 10) >
@@ -45535,7 +45535,8 @@
 	    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
 	    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
-	    console.log("Holi4");
+	    idbDelete('DataFirebaseNormalizada');
+	    getDataFromFirebase(ruta);
 	}
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
