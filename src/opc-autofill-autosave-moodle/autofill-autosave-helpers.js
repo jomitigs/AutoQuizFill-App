@@ -767,6 +767,26 @@ function compararHTML(htmlDPN, htmlDFN) {
 // Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
 // =============================================================================
 export async function compararPreguntas(dpn, dfn) {
+  // Si dfn está vacío, se consideran todas las preguntas de dpn como nuevas.
+  if (!dfn || Object.keys(dfn).length === 0) {
+    console.log("El objeto DFN está vacío. Se marcarán todas las preguntas de DPN como nuevas.");
+    let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
+    dpnOrigin = JSON.parse(dpnOrigin);
+    const dpnNuevasData = {};
+
+    // Se recorre cada pregunta de dpn y se extraen los datos completos de dpnOrigin.
+    Object.keys(dpn).forEach((clave) => {
+      if (dpnOrigin && dpnOrigin[clave]) {
+        dpnNuevasData[clave] = dpnOrigin[clave];
+      }
+    });
+
+    return { dpnExistentes: [], dpnNuevas: dpnNuevasData };
+  }
+
+  // ---------------------------------------------------------------------------
+  // Variables para almacenar las preguntas coincidentes y las nuevas
+  // ---------------------------------------------------------------------------
   let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
   let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
 
@@ -886,10 +906,8 @@ export async function compararPreguntas(dpn, dfn) {
   // Esperar a que se procesen todas las preguntas de DPN.
   await Promise.all(promesasDPN);
 
-
   // Recuperar los datos del sessionStorage
   let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
-
   dpnOrigin = JSON.parse(dpnOrigin);
 
   const dpnNuevasData = {};
@@ -901,10 +919,7 @@ export async function compararPreguntas(dpn, dfn) {
     }
   });
 
- 
-
-
-
   return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 }
+
 
