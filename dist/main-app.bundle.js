@@ -43765,11 +43765,6 @@
 	      return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
 	  }, dfnKeys[0]);
 
-	  console.log("LastKey:", lastKey);
-
-	  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
-	  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevasData);
-
 	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData, lastKey: lastKey  };
 	}
 
@@ -45321,7 +45316,7 @@
 
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
-	    console.log("DPN Nuevas:", comparedData.lastKey);
+	    console.log("lastKey:", comparedData.lastKey);
 
 	    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, comparedData.lastKey);
 

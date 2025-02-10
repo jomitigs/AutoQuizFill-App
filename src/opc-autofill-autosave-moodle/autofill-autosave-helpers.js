@@ -908,11 +908,6 @@ export async function compararPreguntas(dpn, dfn) {
       return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
   }, dfnKeys[0]);
 
-  console.log("LastKey:", lastKey);
-
-  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
-  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevasData);
-
   return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData, lastKey: lastKey  };
 }
 
