@@ -43758,6 +43758,18 @@
 	    }
 	  });
 
+	  const dfnKeys = Object.keys(dfn);
+
+	// Encontrar la última clave basada en el número
+	const ultimaClave = dfnKeys.reduce((max, key) => {
+	    return parseInt(key.replace("question", "")) > parseInt(max.replace("question", "")) ? key : max;
+	}, dfnKeys[0]);
+
+	// Obtener el valor del último elemento
+	const ultimoElemento = dfn[ultimaClave];
+
+	console.log("LastKey:", ultimoElemento);
+
 	  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
 	  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevasData);
 
@@ -44462,6 +44474,7 @@
 	    throw error;
 	  }
 	}
+
 
 
 	async function createDataInSessionStorageDB(customKey, data) {

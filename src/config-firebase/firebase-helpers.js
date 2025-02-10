@@ -1,7 +1,8 @@
 // main.js
 
 // Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
-import { ref, get } from 'firebase/database';
+import { getDatabase, ref, get, push, set } from "firebase/database";
+
 import { database } from './script.js'; // Asegúrate de que la ruta sea correcta
 // Importa la función para normalizar datos (ajusta la ruta según tu estructura de carpetas)
 import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosave-helpers.js";
@@ -25,34 +26,53 @@ export async function getDataFromFirebase(ruta) {
   }
 }
 
-export async function saveDataToFirebase(ruta, datos) {
+
+export async function saveQuestionsToFirebase(ruta, datos) {
     console.log(`Guardando datos en la ruta: ${ruta}`);
-  
+
     // Inicializar la base de datos y la referencia a la ruta especificada
     const db = getDatabase();
     const refDB = ref(db, ruta);
-  
+
     try {
-      // Verificar si 'datos' es un array o un único objeto
-      if (Array.isArray(datos)) {
-        for (const dato of datos) {
-          // Agregar la clave 'estado'
-          const datoConEstado = { ...dato, estado: 'no verificado' };
-          // Crear una nueva entrada con una clave única
-          const newRef = push(refDB);
-          await set(newRef, datoConEstado);
-          console.log("Guardado:", datoConEstado);
+        // Obtener las preguntas existentes en la ruta
+        const snapshot = await get(refDB);
+        const existingData = snapshot.val() || {}; // Si no hay datos, inicializar como un objeto vacío
+        
+        // Obtener las claves existentes (ejemplo: questions0001, questions0002, ...)
+        const existingKeys = Object.keys(existingData)
+            .filter(key => key.startsWith("questions")) // Filtrar solo claves que sigan el patrón "questionsXXXX"
+            .map(key => key.replace("questions", "")) // Extraer solo el número (XXXX)
+            .map(num => parseInt(num, 10)) // Convertir a número
+            .filter(num => !isNaN(num)) // Filtrar valores inválidos
+            .sort((a, b) => a - b); // Ordenar numéricamente
+
+        // Determinar el siguiente número en la secuencia
+        let nextNumber = 1;
+        for (let i = 0; i < existingKeys.length; i++) {
+            if (existingKeys[i] !== i + 1) {
+                nextNumber = i + 1;
+                break;
+            }
         }
-      } else {
-        const datoConEstado = { ...datos, estado: 'no verificado' };
-        const newRef = push(refDB);
-        await set(newRef, datoConEstado);
-        console.log("Guardado:", datoConEstado);
-      }
+        if (nextNumber === existingKeys.length + 1) {
+            nextNumber = existingKeys.length + 1;
+        }
+
+        // Recorrer cada pregunta en "datos" y guardarla con la clave correcta
+        for (const [key, value] of Object.entries(datos)) {
+            const questionKey = `questions${String(nextNumber).padStart(4, '0')}`; // Formato: questions0001, questions0002, ...
+            const questionData = { ...value, estado: 'no verificado' }; // Agregar estado
+            await set(ref(db, `${ruta}/${questionKey}`), questionData); // Guardar en Firebase
+
+            console.log(`Guardado en Firebase: ${questionKey}`, questionData);
+            nextNumber++; // Incrementar el número para la siguiente pregunta
+        }
     } catch (error) {
-      console.error("Error al guardar en Firebase:", error);
+        console.error("Error al guardar en Firebase:", error);
     }
-  }
+}
+
 
 
 async function createDataInSessionStorageDB(customKey, data) {
