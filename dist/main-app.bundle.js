@@ -42879,7 +42879,6 @@
 	window.katex = katex;
 	window.renderMathInElement = renderMathInElement;
 
-
 	async function feedbackQuestion(originalFormulationClearfix) {
 	  // console.log('Iniciando feedbackQuestion');
 

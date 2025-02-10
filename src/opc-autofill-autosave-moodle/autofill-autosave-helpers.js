@@ -2,11 +2,12 @@
 // src/katex-entry.js
 import katex from 'katex';
 import renderMathInElement from 'katex/contrib/auto-render';
+// Importar la librería fast-levenshtein
+import levenshtein from 'fast-levenshtein';
 
 // Exponemos a window para que sea global
 window.katex = katex;
 window.renderMathInElement = renderMathInElement;
-
 
 export async function feedbackQuestion(originalFormulationClearfix) {
   // console.log('Iniciando feedbackQuestion');
@@ -636,9 +637,6 @@ function eliminarTextosIrrelevantes(items) {
         return item;
     }).filter(item => item !== false);
 }
-
-// Importar la librería fast-levenshtein
-import levenshtein from 'fast-levenshtein';
 
 // =============================================================================
 // Cachés para optimización: Almacenan el resultado del procesamiento de la propiedad
