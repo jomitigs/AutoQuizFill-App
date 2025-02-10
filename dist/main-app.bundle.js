@@ -43624,8 +43624,8 @@
 	// Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
 	// =============================================================================
 	async function compararPreguntas(dpn, dfn) {
-	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
-	  let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
+	  let dpnExistentes = {};
+	  let dpnNuevas = {};
 	  
 	  // ---------------------------------------------------------------------------
 	  // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
@@ -43728,19 +43728,16 @@
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
-	      dpnExistentes.push({
-	        [claveDPN]: {
-	          dpn: { ...preguntaDPN },
-	          dfn: candidatoCoincidente
-	        }
-	      });
+	      dpnExistentes[claveDPN] = {
+	        dpn: { ...preguntaDPN },
+	        dfn: candidatoCoincidente
+	      };
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
 	      console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-	      dpnNuevas.push({
-	        [claveDPN]: { ...preguntaDPN }
-	      });
+	      dpnNuevas[claveDPN] = { ...preguntaDPN };
 	    }
+	    
 	  });
 	  
 	  // Esperar a que se procesen todas las preguntas de DPN.
