@@ -1,4 +1,5 @@
-import workerpool from 'workerpool';
+import * as workerpool from 'workerpool';
+
 import levenshtein from 'fast-levenshtein';
 
 // Definir la función usando fast-levenshtein

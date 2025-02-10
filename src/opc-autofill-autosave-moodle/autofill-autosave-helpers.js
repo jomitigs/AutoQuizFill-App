@@ -640,7 +640,8 @@ function eliminarTextosIrrelevantes(items) {
 // main.js
 
 // Importar workerpool (asegúrate de tener configurado Rollup con @rollup/plugin-node-resolve y @rollup/plugin-commonjs)
-import workerpool from 'workerpool';
+import * as workerpool from 'workerpool';
+
 
 // Crear un pool de workers a partir del archivo comparacionWorker.js
 const pool = workerpool.pool('./comparacionWorker.js');

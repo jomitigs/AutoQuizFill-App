@@ -6,9 +6,9 @@ import terser from '@rollup/plugin-terser';
 import { string } from 'rollup-plugin-string';
 import obfuscator from 'rollup-plugin-obfuscator';
 import cssnano from 'cssnano';
-import { nodeResolve } from '@rollup/plugin-node-resolve'
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import polyfillNode from 'rollup-plugin-polyfill-node';
-
+import alias from '@rollup/plugin-alias';
 
 // Verifica si es producción
 const isProduction = process.env.BUILD_PROD === 'true';
@@ -20,54 +20,58 @@ export default {
     format: 'iife',
     name: 'AutoQuizFillApp',
     globals: {
+      // Si usas polyfillNode, puedes asignar globals para esos módulos.
+      // O bien, si los sustituyes por shims vacíos, puedes asignarlos a 'null' o a un objeto vacío.
+      'worker_threads': 'null',
+      'os': 'null',
+      'child_process': 'null',
       'mathjax-full': 'MathJax',
       'mathjax-full/js/output/mathml.js': 'MathJax'
     }
   },
+  // Opcional: Si no quieres que se intente incluir estos módulos, puedes marcarlos como externos.
+  // Pero si usas alias para reemplazarlos, es mejor quitarlos de "external".
+  // external: ['worker_threads', 'os', 'child_process'],
   plugins: [
+    // Alias para reemplazar módulos de Node que no existen en el navegador.
+    alias({
+      entries: [
+        { find: 'worker_threads', replacement: './src/empty.js' },
+        { find: 'os', replacement: './src/empty.js' },
+        { find: 'child_process', replacement: './src/empty.js' }
+      ]
+    }),
+    // Incluir polyfillNode para otros built-ins de Node
+    polyfillNode(),
     resolve({ browser: true }),
-    nodeResolve(),  
+    nodeResolve(),
     commonjs(),
     string({ include: '**/*.html' }),
     postcss({
       extensions: ['.css'],
       inject: true,
       minimize: isProduction,
-      plugins: isProduction ? [cssnano({ preset: ['default', { discardComments: { removeAll: true } }] })] : [],
+      plugins: isProduction
+        ? [cssnano({ preset: ['default', { discardComments: { removeAll: true } }] })]
+        : [],
     }),
     isProduction && terser({ format: { comments: false }, compress: { drop_console: true } }),
-    isProduction &&
-  obfuscator({
-    // Ofusca el código de manera compacta
-    compact: true,
-    // Aplica flattening del flujo de control para dificultar la lectura
-    controlFlowFlattening: true,
-    controlFlowFlatteningThreshold: 0.75,
-    // Inyecta código muerto para confundir el análisis estático
-    deadCodeInjection: true,
-    deadCodeInjectionThreshold: 0.4,
-    // Deshabilita la salida por consola (opcional)
-    disableConsoleOutput: true,
-    // Utiliza generador de nombres de identificadores en hexadecimal
-    identifierNamesGenerator: 'hexadecimal',
-    // No renombra variables globales
-    renameGlobals: false,
-    // Rota el arreglo de strings para ofuscar el contenido de los mismos
-    rotateStringArray: true,
-    // Activa el mecanismo de autodefensa del código ofuscado
-    selfDefending: true,
-    // Utiliza un arreglo de strings para ofuscar literales
-    stringArray: true,
-    // Codifica los strings del arreglo utilizando base64 (también se puede usar 'rc4')
-    stringArrayEncoding: ['base64'],
-    // Umbral para incluir strings en el arreglo ofuscado
-    stringArrayThreshold: 0.75,
-    // Ofusca las claves de los objetos
-    transformObjectKeys: true,
-    // No utiliza secuencias de escape Unicode en los strings
-    unicodeEscapeSequence: false
-  }),
+    isProduction && obfuscator({
+      compact: true,
+      controlFlowFlattening: true,
+      controlFlowFlatteningThreshold: 0.75,
+      deadCodeInjection: true,
+      deadCodeInjectionThreshold: 0.4,
+      disableConsoleOutput: true,
+      identifierNamesGenerator: 'hexadecimal',
+      renameGlobals: false,
+      rotateStringArray: true,
+      stringArray: true,
+      stringArrayEncoding: ['base64'],
+      stringArrayThreshold: 0.75,
+      transformObjectKeys: true,
+      unicodeEscapeSequence: false
+    }),
     html({ include: '**/*.html' }),
   ].filter(Boolean),
 };
-
