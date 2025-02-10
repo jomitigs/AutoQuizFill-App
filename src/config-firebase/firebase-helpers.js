@@ -28,40 +28,53 @@ export async function getDataFromFirebase(ruta) {
 
 
 export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
-  try {
-    // 1. Extraer el prefijo y la parte numérica de lastKey.
-    // Se asume que lastKey tiene el formato "questionXXXX" donde XXXX es un número de 4 dígitos.
-    const prefixMatch = lastKey.match(/^[a-zA-Z]+/);
-    if (!prefixMatch) {
-      throw new Error("Formato de lastKey inválido");
+    try {
+      // 1. Extraer el prefijo y la parte numérica de lastKey.
+      // Se asume que lastKey tiene el formato "questionXXXX" donde XXXX es un número de 4 dígitos.
+      const prefixMatch = lastKey.match(/^[a-zA-Z]+/);
+      if (!prefixMatch) {
+        throw new Error("Formato de lastKey inválido");
+      }
+      const prefix = prefixMatch[0];
+      const numberPart = parseInt(lastKey.replace(prefix, ""), 10);
+      if (isNaN(numberPart)) {
+        throw new Error("La parte numérica de lastKey no es válida");
+      }
+  
+      // 2. Renombrar claves y preparar datos para la actualización.
+      const newQuestions = {};
+      let currentNumber = numberPart;
+  
+      for (const key of Object.keys(datos)) {
+        currentNumber++; // Incrementamos para la nueva pregunta
+  
+        // Clave con 4 dígitos (ej. question0005)
+        const newKey = prefix + String(currentNumber).padStart(4, "0");
+  
+        // Copiamos los datos para no mutar el objeto original
+        const questionData = { ...datos[key] };
+  
+        // 2.1. Eliminar la propiedad "previous" si existe
+        delete questionData.previous;
+  
+        // 2.2. Agregar la propiedad "estado" con valor "no verificado"
+        questionData.estado = "no verificado";
+  
+        // Guardamos en el objeto final con la nueva clave
+        newQuestions[newKey] = questionData;
+      }
+  
+      // 3. Usar `update` en lugar de `set` para agregar/mezclar sin reemplazar toda la rama.
+      const dbRef = ref(database, ruta);
+      await update(dbRef, newQuestions);
+  
+      console.log("Preguntas guardadas correctamente en Firebase");
+      return newQuestions; // Opcional, por si quieres usar el resultado en otro lugar.
+    } catch (error) {
+      console.error("Error al guardar las preguntas en Firebase:", error);
+      throw error;
     }
-    const prefix = prefixMatch[0];
-    const numberPart = parseInt(lastKey.replace(prefix, ""), 10);
-    if (isNaN(numberPart)) {
-      throw new Error("La parte numérica de lastKey no es válida");
-    }
-
-    // 2. Renombrar las claves principales de "datos" secuencialmente.
-    const newQuestions = {};
-    let currentNumber = numberPart;
-    for (const key of Object.keys(datos)) {
-      currentNumber++; // Incrementamos para la nueva pregunta
-      // Creamos la nueva clave con el número formateado a 4 dígitos
-      const newKey = prefix + String(currentNumber).padStart(4, "0");
-      newQuestions[newKey] = datos[key];
-    }
-
-    // 3. Guardar el objeto en Firebase en la ruta indicada.
-    const dbRef = ref(database, ruta);
-    await set(dbRef, newQuestions);
-
-    console.log("Preguntas guardadas correctamente en Firebase");
-  } catch (error) {
-    console.error("Error al guardar las preguntas en Firebase:", error);
-    throw error;
   }
-}
-
 
 async function createDataInSessionStorageDB(customKey, data) {
   console.log("==> Creando datos en SessionStorageDB:");
