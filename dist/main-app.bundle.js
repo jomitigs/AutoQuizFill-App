@@ -43728,14 +43728,15 @@
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
+
 	      dpnExistentes.push({
-	        dpn: { clave: claveDPN, ...preguntaDPN },
+	        dpn: {claveDPN},
 	        dfn: candidatoCoincidente
 	      });
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
 	      console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
+	      dpnNuevas.push({claveDPN});
 	    }
 	  });
 	  
@@ -45255,7 +45256,7 @@
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
-	    console.log("Holi");
+	    console.log("Hola");
 
 	}
 

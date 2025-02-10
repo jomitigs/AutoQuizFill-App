@@ -871,14 +871,15 @@ export async function compararPreguntas(dpn, dfn) {
     try {
       // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
+
       dpnExistentes.push({
-        dpn: { clave: claveDPN, ...preguntaDPN },
+        dpn: {claveDPN},
         dfn: candidatoCoincidente
       });
     } catch (e) {
       // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
       console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
+      dpnNuevas.push({claveDPN});
     }
   });
   
