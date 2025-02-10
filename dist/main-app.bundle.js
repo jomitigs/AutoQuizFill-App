@@ -44401,7 +44401,7 @@
 	 * Obtiene un ítem de la base de datos usando la clave especificada.
 	 * @param {string} key - La clave para recuperar el dato.
 	 */
-	async function idbGet$1(key) {
+	async function idbGet(key) {
 	  const db = await openDB();
 	  return new Promise((resolve, reject) => {
 	    const tx = db.transaction('store', 'readonly');
@@ -44492,7 +44492,7 @@
 	    }
 
 	    // Consulta la data almacenada en IndexedDB utilizando la clave
-	    const storedData = await idbGet$1(customKey);
+	    const storedData = await idbGet(customKey);
 	    const currentTabSessionId = getTabSessionId();
 
 	    // Si existe data y el tabSessionId es igual al actual, no se actualiza
