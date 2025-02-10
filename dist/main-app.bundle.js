@@ -43770,7 +43770,7 @@
 	  console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
 	  console.log("Preguntas nuevas (dpnNuevas):", dpnNuevasData);
 
-	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
+	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData, lastKey: lastKey  };
 	}
 
 	// Manejar respuestas tipo 'draganddrop_image'
@@ -44455,19 +44455,38 @@
 	// main.js
 
 
-	async function getDataFromFirebase(ruta) {
-	  try {
-	    const reference = ref(database, ruta);
-	    const snapshot = await get(reference);
 
-	    if (snapshot.exists()) {
-	      return snapshot.val(); // Retorna los datos en formato JSON
-	    } else {
-	      console.warn(`No se encontró data en la ruta: ${ruta}`);
-	      return null;
+	async function saveQuestionsToFirebase(ruta, datos, lastKey) {
+	  try {
+	    // 1. Extraer el prefijo y la parte numérica de lastKey.
+	    // Se asume que lastKey tiene el formato "questionXXXX" donde XXXX es un número de 4 dígitos.
+	    const prefixMatch = lastKey.match(/^[a-zA-Z]+/);
+	    if (!prefixMatch) {
+	      throw new Error("Formato de lastKey inválido");
 	    }
+	    const prefix = prefixMatch[0];
+	    const numberPart = parseInt(lastKey.replace(prefix, ""), 10);
+	    if (isNaN(numberPart)) {
+	      throw new Error("La parte numérica de lastKey no es válida");
+	    }
+
+	    // 2. Renombrar las claves principales de "datos" secuencialmente.
+	    const newQuestions = {};
+	    let currentNumber = numberPart;
+	    for (const key of Object.keys(datos)) {
+	      currentNumber++; // Incrementamos para la nueva pregunta
+	      // Creamos la nueva clave con el número formateado a 4 dígitos
+	      const newKey = prefix + String(currentNumber).padStart(4, "0");
+	      newQuestions[newKey] = datos[key];
+	    }
+
+	    // 3. Guardar el objeto en Firebase en la ruta indicada.
+	    const dbRef = ref(database, ruta);
+	    await set(dbRef, newQuestions);
+
+	    console.log("Preguntas guardadas correctamente en Firebase");
 	  } catch (error) {
-	    console.error(`Error al obtener data desde Firebase: ${error.message}`);
+	    console.error("Error al guardar las preguntas en Firebase:", error);
 	    throw error;
 	  }
 	}
@@ -45268,6 +45287,11 @@
 	async function AutoSave_Firebase() {
 	    console.log("Ejecutando AutoSave_Firebase...");
 
+	    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+	    const ruta = switchRutaDinamica
+	      ? localStorage.getItem('configRutaDinamic')
+	      : localStorage.getItem('configRuta');
+
 	    // Obtener las preguntas guardadas en sessionStorage
 	    const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
@@ -45282,7 +45306,9 @@
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
-	    console.log("Holi2");
+	    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, comparedData.lastKey);
+
+	    console.log("Holi3");
 
 	}
 

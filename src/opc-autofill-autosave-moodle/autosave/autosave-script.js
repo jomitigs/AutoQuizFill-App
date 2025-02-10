@@ -8,7 +8,7 @@ import { select_emparejamiento } from './questions-types/3_select_emparejamiento
 import interact from 'interactjs';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
 
-import { getDataFromFirebase, getDataFromFirebaseAsync} from '../../config-firebase/firebase-helpers.js';
+import { getDataFromFirebase, getDataFromFirebaseAsync,  saveQuestionsToFirebase} from '../../config-firebase/firebase-helpers.js';
 import { idbGet } from '../../config-firebase/idbSession.js';
 
 
@@ -751,6 +751,11 @@ function processContent(content) {
 export async function AutoSave_Firebase() {
     console.log("Ejecutando AutoSave_Firebase...");
 
+    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+    const ruta = switchRutaDinamica
+      ? localStorage.getItem('configRutaDinamic')
+      : localStorage.getItem('configRuta');
+
     // Obtener las preguntas guardadas en sessionStorage
     const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
@@ -765,6 +770,8 @@ export async function AutoSave_Firebase() {
     console.log("DPN Existentes:", comparedData.dpnExistentes);
     console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
-    console.log("Holi2");
+    saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, comparedData.lastKey)
+
+    console.log("Holi3");
 
 }

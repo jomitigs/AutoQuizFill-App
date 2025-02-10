@@ -9,68 +9,40 @@ import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosav
 // Importa las funciones de IndexedDB
 import { idbGet, idbSet, idbDelete, getTabSessionId } from './idbSession.js';
 
-export async function getDataFromFirebase(ruta) {
-  try {
-    const reference = ref(database, ruta);
-    const snapshot = await get(reference);
 
-    if (snapshot.exists()) {
-      return snapshot.val(); // Retorna los datos en formato JSON
-    } else {
-      console.warn(`No se encontró data en la ruta: ${ruta}`);
-      return null;
+export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
+  try {
+    // 1. Extraer el prefijo y la parte numérica de lastKey.
+    // Se asume que lastKey tiene el formato "questionXXXX" donde XXXX es un número de 4 dígitos.
+    const prefixMatch = lastKey.match(/^[a-zA-Z]+/);
+    if (!prefixMatch) {
+      throw new Error("Formato de lastKey inválido");
     }
+    const prefix = prefixMatch[0];
+    const numberPart = parseInt(lastKey.replace(prefix, ""), 10);
+    if (isNaN(numberPart)) {
+      throw new Error("La parte numérica de lastKey no es válida");
+    }
+
+    // 2. Renombrar las claves principales de "datos" secuencialmente.
+    const newQuestions = {};
+    let currentNumber = numberPart;
+    for (const key of Object.keys(datos)) {
+      currentNumber++; // Incrementamos para la nueva pregunta
+      // Creamos la nueva clave con el número formateado a 4 dígitos
+      const newKey = prefix + String(currentNumber).padStart(4, "0");
+      newQuestions[newKey] = datos[key];
+    }
+
+    // 3. Guardar el objeto en Firebase en la ruta indicada.
+    const dbRef = ref(database, ruta);
+    await set(dbRef, newQuestions);
+
+    console.log("Preguntas guardadas correctamente en Firebase");
   } catch (error) {
-    console.error(`Error al obtener data desde Firebase: ${error.message}`);
+    console.error("Error al guardar las preguntas en Firebase:", error);
     throw error;
   }
-}
-
-
-export async function saveQuestionsToFirebase(ruta, datos) {
-    console.log(`Guardando datos en la ruta: ${ruta}`);
-
-    // Inicializar la base de datos y la referencia a la ruta especificada
-    const db = getDatabase();
-    const refDB = ref(db, ruta);
-
-    try {
-        // Obtener las preguntas existentes en la ruta
-        const snapshot = await get(refDB);
-        const existingData = snapshot.val() || {}; // Si no hay datos, inicializar como un objeto vacío
-        
-        // Obtener las claves existentes (ejemplo: questions0001, questions0002, ...)
-        const existingKeys = Object.keys(existingData)
-            .filter(key => key.startsWith("questions")) // Filtrar solo claves que sigan el patrón "questionsXXXX"
-            .map(key => key.replace("questions", "")) // Extraer solo el número (XXXX)
-            .map(num => parseInt(num, 10)) // Convertir a número
-            .filter(num => !isNaN(num)) // Filtrar valores inválidos
-            .sort((a, b) => a - b); // Ordenar numéricamente
-
-        // Determinar el siguiente número en la secuencia
-        let nextNumber = 1;
-        for (let i = 0; i < existingKeys.length; i++) {
-            if (existingKeys[i] !== i + 1) {
-                nextNumber = i + 1;
-                break;
-            }
-        }
-        if (nextNumber === existingKeys.length + 1) {
-            nextNumber = existingKeys.length + 1;
-        }
-
-        // Recorrer cada pregunta en "datos" y guardarla con la clave correcta
-        for (const [key, value] of Object.entries(datos)) {
-            const questionKey = `questions${String(nextNumber).padStart(4, '0')}`; // Formato: questions0001, questions0002, ...
-            const questionData = { ...value, estado: 'no verificado' }; // Agregar estado
-            await set(ref(db, `${ruta}/${questionKey}`), questionData); // Guardar en Firebase
-
-            console.log(`Guardado en Firebase: ${questionKey}`, questionData);
-            nextNumber++; // Incrementar el número para la siguiente pregunta
-        }
-    } catch (error) {
-        console.error("Error al guardar en Firebase:", error);
-    }
 }
 
 

@@ -913,6 +913,6 @@ export async function compararPreguntas(dpn, dfn) {
   console.log("Preguntas existentes (dpnExistentes):", dpnExistentes);
   console.log("Preguntas nuevas (dpnNuevas):", dpnNuevasData);
 
-  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
+  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData, lastKey: lastKey  };
 }
 
