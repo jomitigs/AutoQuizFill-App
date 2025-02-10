@@ -20,6 +20,7 @@ export default {
     format: 'iife',
     name: 'AutoQuizFillApp',
     globals: {
+      'rollup-plugin-web-worker-loader!./worker.js': 'WorkerConstructor',
       'mathjax-full': 'MathJax',
       'mathjax-full/js/output/mathml.js': 'MathJax'
     }
