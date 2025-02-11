@@ -603,7 +603,7 @@ async function normalizarHTMLString(html) {
   // - .custom-watermark
   // - .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]
   tempDiv.querySelectorAll(
-    '.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]'
+    '.accesshide, .custom-watermark,.validationerror , .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]'
   ).forEach(el => el.remove());
 
   // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
@@ -640,9 +640,6 @@ async function normalizarHTMLString(html) {
 
   return combinedResults; // Retornar la lista filtrada
 }
-
-
-
 
 async function extractContent(node) {
   // Declaramos un arreglo que contendrá cada palabra, expresión matemática o imagen encontrada.
