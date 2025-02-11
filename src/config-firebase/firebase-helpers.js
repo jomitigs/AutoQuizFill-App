@@ -137,6 +137,10 @@ export async function getDataFromFirebaseAsync(reset = false) {
   }
   
 
+  export async function saveExistingQuestionsToFirebase(ruta, datos) {
+    console.log(datos);
+  }
+
 
 
 

@@ -43584,8 +43584,7 @@
 	      const claveDFN = candidatoCoincidente.clave;
 
 	      dpnExistentes.push({
-	        dpn: { claveDPN },
-	        dfn: { claveDFN }
+	        claveDPN: {claveDPN}
 	      });
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
@@ -44697,6 +44696,11 @@
 	      console.error("Error en getDataFromFirebaseAsync:", error);
 	    }
 	  }
+	  
+
+	  async function saveExistingQuestionsToFirebase(ruta, datos) {
+	    console.log(datos);
+	  }
 
 	// Exporta una función llamada contenedorAutoSave_js
 	function contenedorAutoSave_js() {
@@ -45472,10 +45476,12 @@
 	    console.log("lastKey1:", lastKey);
 
 	    // 🟢 Aseguramos que `saveNewQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
-	    await saveNewQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
+	    saveNewQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
+
+	    saveExistingQuestionsToFirebase(ruta, comparedData.dpnExistentes);
 
 	   // Si estás dentro de una función async
-	    await getDataFromFirebaseAsync(true);
+	    getDataFromFirebaseAsync(true);
 
 	}
 
