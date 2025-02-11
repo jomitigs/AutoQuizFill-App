@@ -43669,6 +43669,13 @@
 	  tempDiv.querySelectorAll('.answernumber')
 	         .forEach(el => el.remove());
 
+	  // Eliminar <option selected="selected" value="0">Elegir...</option>
+	  tempDiv.querySelectorAll('option[selected="selected"][value="0"]').forEach(el => {
+	    if (el.textContent.trim() === 'Elegir...') {
+	      el.remove();
+	    }
+	  });
+
 	  // Extraer el contenido utilizando la función extractContent (se asume que esta función devuelve una lista)
 	  let combinedResults = await extractContent(tempDiv);
 
@@ -43677,6 +43684,7 @@
 
 	  return combinedResults; // Retornar la lista filtrada
 	}
+
 
 
 	async function extractContent(node) {
