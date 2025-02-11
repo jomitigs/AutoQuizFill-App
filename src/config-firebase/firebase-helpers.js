@@ -17,9 +17,6 @@ export async function getDataFromFirebase(ruta) {
       return snapshot.val();
     } else {
       console.warn(`No se encontró data en la ruta: ${ruta}`);
-      // Para pruebas, asigna un objeto no vacío. Luego, si deseas, puedes ajustar el valor.
-      await set(reference, { createdAt: new Date().toISOString() });
-      console.log(`Ruta "${ruta}" creada en Firebase.`);
       return {};
     }
   } catch (error) {
