@@ -788,7 +788,7 @@ export async function AutoSave_Firebase() {
     // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
     await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
-    idbDelete('DataFirebaseNormalizada');
+    idbDelete("DataFirebaseNormalizada");
     getDataFromFirebaseAsync();
 }
 
