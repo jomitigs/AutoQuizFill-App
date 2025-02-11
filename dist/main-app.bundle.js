@@ -43457,24 +43457,6 @@
 	}
 
 	// ============================================================================
-	// Expresiones regulares y conjuntos precompilados
-	// ============================================================================
-	const regexLaTeX = /\\\((.*?)\\\)/g;
-	const regexMathML = /^<math.*<\/math>$/;
-	const regexPregunta = /^Pregunta\s*\d+/;
-	const regexLiteral = /^[a-zA-Z]\.\s*/;
-	const regexRespuestaPregunta = /^(Respuesta\s*\d+\s*Pregunta\s*\d+|Respuesta\s*Pregunta\s*\d+|Vacío\s*\d+\s*Pregunta\s*\d+)/;
-	const textosIrrelevantesSet = new Set([
-	  'Respuestas',
-	  'Respuesta',
-	  'Enunciado de la pregunta',
-	  'https://profes.ac/pub/logoap.svg',
-	  'YWRtaW5AcHJvZmVzLmFj',
-	  'Quitar mi elección',
-	  'vacío'
-	]);
-
-	// ============================================================================
 	// Función principal para normalizar HTML.
 	// Se acepta:
 	//  - Un string HTML directo.
@@ -43526,181 +43508,118 @@
 	  return input;
 	}
 
-	// ============================================================================
-	// Función que procesa un string HTML.
-	// Convierte el string en un fragmento DOM, extrae texto visible, URLs de medios y expresiones LaTeX,
-	// combina y filtra los resultados.
-	// ============================================================================
-	/**
-	 * Procesa un string HTML y retorna un arreglo con el contenido normalizado.
-	 *
-	 * @param {string} html - Código HTML a procesar.
-	 * @returns {Promise<Array<string>>} - Arreglo con los contenidos normalizados.
-	 */
+
+	async function extractContent(node) {
+	  // Declaramos un arreglo que contendrá cada palabra, expresión matemática o imagen encontrada.
+	  let tokens = [];
+
+	  // Recorremos cada nodo hijo del nodo actual.
+	  for (const child of node.childNodes) {
+	    // ------------------------------------------------------------------------
+	    // 1) Nodos de texto: se separa el contenido en palabras
+	    // ------------------------------------------------------------------------
+	    if (child.nodeType === Node.TEXT_NODE) {
+	      const text = child.textContent;
+	      // Si el texto existe y no es únicamente un salto de línea...
+	      if (text && text.trim() !== '') {
+	        // Se separa el texto en palabras (se ignoran los espacios en blanco adicionales)
+	        const words = text.trim().split(/\s+/);
+	        // Se añaden todas las palabras al arreglo de tokens
+	        tokens.push(...words);
+	      }
+
+	      // ------------------------------------------------------------------------
+	      // 2) Nodos de elemento
+	      // ------------------------------------------------------------------------
+	    } else if (child.nodeType === Node.ELEMENT_NODE) {
+	      const tagName = child.tagName.toLowerCase();
+
+	      // ------------------------------------------------------------------------
+	      // Ignorar nodos <span> de MathJax o MathJax_Preview
+	      // ------------------------------------------------------------------------
+	      if (
+	        tagName === 'span' &&
+	        (child.classList.contains('MathJax') || child.classList.contains('MathJax_Preview'))
+	      ) {
+	        continue; // No procesamos este nodo ni sus hijos
+	      }
+
+	      // ------------------------------------------------------------------------
+	      // A) Elemento <script type="math/tex">: se extrae el código LaTeX
+	      // ------------------------------------------------------------------------
+	      if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
+	        const latexCode = child.textContent.trim();
+	        if (latexCode) {
+	          // Se añade la expresión matemática, encerrándola en delimitadores
+	          tokens.push(`\\(${latexCode}\\)`);
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // B) Elemento <img>: se extrae el atributo src
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'img') {
+	        const src = child.getAttribute('src');
+	        if (src) {
+	          tokens.push(src);
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // C) Elementos <sub> y <sup>: se conserva la etiqueta completa
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'sub' || tagName === 'sup') {
+	        tokens.push(child.outerHTML);
+
+	        // ------------------------------------------------------------------------
+	        // D) Elemento <p>: se procesa de forma recursiva (opcionalmente se
+	        //    podría insertar un marcador de salto de línea si lo necesitas)
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'p') {
+	        const childTokens = await extractContent(child);
+	        if (childTokens && childTokens.length > 0) {
+	          tokens.push(...childTokens);
+	          // Si deseas marcar el final de un párrafo, podrías descomentar la siguiente línea:
+	          // tokens.push('\n');
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // E) Elemento <br>: se añade un salto de línea (si te interesa conservarlo)
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'br') {
+	        tokens.push('\n');
+
+	        // ------------------------------------------------------------------------
+	        // F) Otros elementos: se procesan recursivamente
+	        // ------------------------------------------------------------------------
+	      } else {
+	        const childTokens = await extractContent(child);
+	        if (childTokens && childTokens.length > 0) {
+	          tokens.push(...childTokens);
+	        }
+	      }
+	    }
+	  }
+
+	  return tokens;
+	}
+
 	async function normalizarHTMLString(html) {
 	  // Crear un contenedor temporal y convertir el string a un fragmento DOM.
 	  const tempDiv = document.createElement('div');
 	  const fragment = document.createRange().createContextualFragment(html);
 	  tempDiv.appendChild(fragment);
 
-	  // Extraer datos del DOM.
-	  const visibleTexts = extractVisibleText(tempDiv);
-	  const mediaUrls = await extractMediaUrls(tempDiv);
-	  const mathExpressions = extractMathExpressions(tempDiv);
-
-	  // Combinar resultados.
-	  let combinedResults = [...visibleTexts, ...mediaUrls, ...mathExpressions];
+	  // Extraer contenido del DOM utilizando la función extractContent.
+	  let combinedResults = await extractContent(tempDiv);
 
 	  // Si se encuentran elementos con ".draghome" o ".dropzones", eliminar duplicados.
-	  if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
-	    combinedResults = [...new Set(combinedResults)];
-	  }
+	  //if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
+	    //combinedResults = [...new Set(combinedResults)];
+	  //}
 
-	  // Filtrar textos irrelevantes.
-	  return eliminarTextosIrrelevantes(combinedResults);
-	}
+	  // Filtrar textos irrelevantes y retornar el resultado.
+	  // return eliminarTextosIrrelevantes(combinedResults);
 
-	// ============================================================================
-	// Optimización: Uso de TreeWalker para extraer texto visible de forma eficiente.
-	// ============================================================================
-	/**
-	 * Extrae el texto visible usando un TreeWalker, omitiendo nodos que pertenezcan a elementos que se deben saltar.
-	 *
-	 * @param {Node} rootNode - Nodo raíz a partir del cual recorrer.
-	 * @returns {Array<string>} - Arreglo de textos visibles.
-	 */
-	function extractVisibleText(rootNode) {
-	  const texts = [];
-	  const walker = document.createTreeWalker(
-	    rootNode,
-	    NodeFilter.SHOW_TEXT,
-	    {
-	      acceptNode: function (node) {
-	        // Omitir si el padre es <script type="math/tex"> o <span> con clases MathJax.
-	        if (node.parentNode) {
-	          const parent = node.parentNode;
-	          const tag = parent.tagName;
-	          const type = parent.getAttribute('type');
-	          if ((tag === 'SCRIPT' && type === 'math/tex') ||
-	            (tag === 'SPAN' && (parent.classList.contains('MathJax') || parent.classList.contains('MathJax_Preview')))) {
-	            return NodeFilter.FILTER_SKIP;
-	          }
-	        }
-	        return NodeFilter.FILTER_ACCEPT;
-	      }
-	    },
-	    false
-	  );
-
-	  while (walker.nextNode()) {
-	    const text = walker.currentNode.textContent.trim();
-	    if (text) {
-	      texts.push(text);
-	    }
-	  }
-	  return texts;
-	}
-
-	// ============================================================================
-	// Optimización: Uso de querySelectorAll para extraer de forma directa imágenes, videos y audios.
-	// ============================================================================
-	/**
-	 * Extrae URLs de medios (imágenes, videos, audios) del DOM.
-	 * Convierte a Data URI las imágenes cuyo src incluya "pluginfile.php" usando la función File2DataUri.
-	 *
-	 * @param {Node} rootNode - Nodo raíz a partir del cual recorrer.
-	 * @returns {Promise<Array<string>>} - Arreglo de URLs o Data URI de medios.
-	 */
-	async function extractMediaUrls(rootNode) {
-	  const urls = [];
-	  const validImageExtensions = /\.(png|jpe?g|gif|bmp|svg)(\?.*)?$/i;
-	  const mediaPromises = [];
-
-	  // Extraer imágenes.
-	  const imgElements = rootNode.querySelectorAll("img");
-	  imgElements.forEach(img => {
-	    const src = img.getAttribute("src");
-	    if (src && validImageExtensions.test(src)) {
-	      if (src.includes("pluginfile.php")) {
-	        // Usar la función ya existente File2DataUri (se espera que retorne una promesa).
-	        mediaPromises.push(File2DataUri(img));
-	      } else {
-	        urls.push(src);
-	      }
-	    }
-	  });
-
-	  // Extraer videos y audios.
-	  const mediaElements = rootNode.querySelectorAll("video[src], audio[src]");
-	  mediaElements.forEach(el => {
-	    const src = el.getAttribute("src");
-	    if (src) {
-	      urls.push(src);
-	    }
-	  });
-
-	  // Esperar las conversiones y agregar resultados válidos.
-	  const convertedResults = await Promise.all(mediaPromises);
-	  convertedResults.forEach(result => {
-	    if (result) {
-	      urls.push(result);
-	    }
-	  });
-	  return urls;
-	}
-
-	// ============================================================================
-	// Extrae expresiones LaTeX de etiquetas <script type="math/tex">.
-	// ============================================================================
-	/**
-	 * Extrae expresiones LaTeX del DOM.
-	 *
-	 * @param {Node} rootNode - Nodo raíz a partir del cual buscar.
-	 * @returns {Array<string>} - Arreglo de expresiones LaTeX.
-	 */
-	function extractMathExpressions(rootNode) {
-	  const expressions = [];
-	  const scripts = rootNode.querySelectorAll('script[type="math/tex"]');
-	  scripts.forEach(script => {
-	    const latex = script.textContent.trim();
-	    if (latex) {
-	      expressions.push(latex);
-	    }
-	  });
-	  return expressions;
-	}
-
-	// ============================================================================
-	// Filtra textos irrelevantes utilizando expresiones regulares y un conjunto precompilado.
-	// ============================================================================
-	/**
-	 * Filtra un arreglo de textos eliminando aquellos que sean irrelevantes.
-	 *
-	 * @param {Array<string>} items - Arreglo de textos.
-	 * @returns {Array<string>} - Arreglo filtrado.
-	 */
-	function eliminarTextosIrrelevantes(items) {
-	  return items.map(item => {
-	    // Eliminar delimitadores LaTeX.
-	    item = item.replace(regexLaTeX, '$1');
-
-	    // Si coincide con MathML, se descarta.
-	    if (regexMathML.test(item)) return false;
-
-	    // Descarta patrones de pregunta, literal o respuesta.
-	    if (
-	      regexPregunta.test(item) ||
-	      regexLiteral.test(item) ||
-	      regexRespuestaPregunta.test(item)
-	    ) {
-	      return false;
-	    }
-
-	    // Descarta si el texto está en el conjunto de irrelevantes.
-	    if (textosIrrelevantesSet.has(item)) return false;
-
-	    return item;
-	  }).filter(item => item !== false);
+	  return combinedResults;
 	}
 
 	// =============================================================================
