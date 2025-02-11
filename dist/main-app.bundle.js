@@ -22822,7 +22822,7 @@
 	 */
 	function remove(ref) {
 	    validateWritablePath('remove', ref._path);
-	    return set(ref, null);
+	    return set$1(ref, null);
 	}
 	/**
 	 * Writes data to this Database location.
@@ -22853,7 +22853,7 @@
 	 *   array, or null).
 	 * @returns Resolves when write to server is complete.
 	 */
-	function set(ref, value) {
+	function set$1(ref, value) {
 	    ref = getModularInstance(ref);
 	    validateWritablePath('set', ref._path);
 	    validateFirebaseDataArg('set', value, ref._path);
@@ -44647,21 +44647,23 @@
 	// Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
 
 	async function getDataFromFirebase(ruta) {
-	  try {
-	    const reference = ref(database, ruta);
-	    const snapshot = await get(reference);
-
-	    if (snapshot.exists()) {
-	      return snapshot.val(); // Retorna los datos en formato JSON
-	    } else {
-	      console.warn(`No se encontró data en la ruta: ${ruta}`);
-	      return null;
+	    try {
+	      const reference = ref(database, ruta);
+	      const snapshot = await get(reference);
+	  
+	      if (snapshot.exists()) {
+	        return snapshot.val(); // Retorna los datos en formato JSON
+	      } else {
+	        console.warn(`No se encontró data en la ruta: ${ruta}`);
+	        // Se crea la ruta inicializándola con un objeto vacío (puedes cambiar {} por otro valor por defecto)
+	        await set(reference, {});
+	        return null;
+	      }
+	    } catch (error) {
+	      console.error(`Error al obtener data desde Firebase: ${error.message}`);
+	      throw error;
 	    }
-	  } catch (error) {
-	    console.error(`Error al obtener data desde Firebase: ${error.message}`);
-	    throw error;
 	  }
-	}
 
 
 	async function saveQuestionsToFirebase(ruta, datos, lastKey) {
@@ -46881,7 +46883,7 @@
 
 	  // Guarda el currentOrigin en la base de datos
 	  const originRef = ref(database, `users/${uid}/currentOrigin`);
-	  set(originRef, currentOrigin)
+	  set$1(originRef, currentOrigin)
 	    .then(() => {
 	      // Escucha cambios en el currentOrigin
 	      onValue(originRef, (snapshot) => {

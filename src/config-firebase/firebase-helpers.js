@@ -8,21 +8,23 @@ import { normalizarHTML } from "../opc-autofill-autosave-moodle/autofill-autosav
 import { idbGet, idbSet, idbDelete, getTabSessionId } from './idbSession.js';
 
 export async function getDataFromFirebase(ruta) {
-  try {
-    const reference = ref(database, ruta);
-    const snapshot = await get(reference);
-
-    if (snapshot.exists()) {
-      return snapshot.val(); // Retorna los datos en formato JSON
-    } else {
-      console.warn(`No se encontró data en la ruta: ${ruta}`);
-      return null;
+    try {
+      const reference = ref(database, ruta);
+      const snapshot = await get(reference);
+  
+      if (snapshot.exists()) {
+        return snapshot.val(); // Retorna los datos en formato JSON
+      } else {
+        console.warn(`No se encontró data en la ruta: ${ruta}`);
+        // Se crea la ruta inicializándola con un objeto vacío (puedes cambiar {} por otro valor por defecto)
+        await set(reference, {});
+        return null;
+      }
+    } catch (error) {
+      console.error(`Error al obtener data desde Firebase: ${error.message}`);
+      throw error;
     }
-  } catch (error) {
-    console.error(`Error al obtener data desde Firebase: ${error.message}`);
-    throw error;
   }
-}
 
 
 export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
