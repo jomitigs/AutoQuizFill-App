@@ -43508,16 +43508,116 @@
 	  return input;
 	}
 
+
+	async function extractContent(node) {
+	  // Declaramos un arreglo que contendrá cada palabra, expresión matemática o imagen encontrada.
+	  let tokens = [];
+
+	  // Recorremos cada nodo hijo del nodo actual.
+	  for (const child of node.childNodes) {
+	    // ------------------------------------------------------------------------
+	    // 1) Nodos de texto: se separa el contenido en palabras
+	    // ------------------------------------------------------------------------
+	    if (child.nodeType === Node.TEXT_NODE) {
+	      const text = child.textContent;
+	      // Si el texto existe y no es únicamente un salto de línea...
+	      if (text && text.trim() !== '') {
+	        // Se separa el texto en palabras (se ignoran los espacios en blanco adicionales)
+	        const words = text.trim().split(/\s+/);
+	        // Se añaden todas las palabras al arreglo de tokens
+	        tokens.push(...words);
+	      }
+
+	      // ------------------------------------------------------------------------
+	      // 2) Nodos de elemento
+	      // ------------------------------------------------------------------------
+	    } else if (child.nodeType === Node.ELEMENT_NODE) {
+	      const tagName = child.tagName.toLowerCase();
+
+	      // ------------------------------------------------------------------------
+	      // Ignorar nodos <span> de MathJax o MathJax_Preview
+	      // ------------------------------------------------------------------------
+	      if (
+	        tagName === 'span' &&
+	        (child.classList.contains('MathJax') || child.classList.contains('MathJax_Preview'))
+	      ) {
+	        continue; // No procesamos este nodo ni sus hijos
+	      }
+
+	      // ------------------------------------------------------------------------
+	      // A) Elemento <script type="math/tex">: se extrae el código LaTeX
+	      // ------------------------------------------------------------------------
+	      if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
+	        const latexCode = child.textContent.trim();
+	        if (latexCode) {
+	          // Se añade la expresión matemática, encerrándola en delimitadores
+	          tokens.push(`\\(${latexCode}\\)`);
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // B) Elemento <img>: se extrae el atributo src
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'img') {
+	        const src = child.getAttribute('src');
+	        if (src) {
+	          tokens.push(src);
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // C) Elementos <sub> y <sup>: se conserva la etiqueta completa
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'sub' || tagName === 'sup') {
+	        tokens.push(child.outerHTML);
+
+	        // ------------------------------------------------------------------------
+	        // D) Elemento <p>: se procesa de forma recursiva (opcionalmente se
+	        //    podría insertar un marcador de salto de línea si lo necesitas)
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'p') {
+	        const childTokens = await extractContent(child);
+	        if (childTokens && childTokens.length > 0) {
+	          tokens.push(...childTokens);
+	          // Si deseas marcar el final de un párrafo, podrías descomentar la siguiente línea:
+	          // tokens.push('\n');
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // E) Elemento <br>: se añade un salto de línea (si te interesa conservarlo)
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'br') {
+	        tokens.push('\n');
+
+	        // ------------------------------------------------------------------------
+	        // F) Otros elementos: se procesan recursivamente
+	        // ------------------------------------------------------------------------
+	      } else {
+	        const childTokens = await extractContent(child);
+	        if (childTokens && childTokens.length > 0) {
+	          tokens.push(...childTokens);
+	        }
+	      }
+	    }
+	  }
+
+	  return tokens;
+	}
+
 	async function normalizarHTMLString(html) {
 	  // Crear un contenedor temporal y convertir el string a un fragmento DOM.
 	  const tempDiv = document.createElement('div');
 	  const fragment = document.createRange().createContextualFragment(html);
 	  tempDiv.appendChild(fragment);
 
-	  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
+	  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y
+	  // "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
 	  tempDiv.querySelectorAll('.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]').forEach(el => el.remove());
 
-	  return tempDiv.innerHTML; // Retornar el HTML limpio
+	  // Extraer el contenido utilizando la función extractContent y esperar su resultado.
+	  // Se asume que extractContent devuelve una lista.
+	  let combinedResults = await extractContent(tempDiv);
+
+	  // Retornar la lista de resultados.
+	  return combinedResults;
 	}
 
 	// =============================================================================

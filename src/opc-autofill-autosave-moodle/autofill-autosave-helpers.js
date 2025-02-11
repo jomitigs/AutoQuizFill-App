@@ -568,10 +568,16 @@ async function normalizarHTMLString(html) {
   const fragment = document.createRange().createContextualFragment(html);
   tempDiv.appendChild(fragment);
 
-  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
+  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y
+  // "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
   tempDiv.querySelectorAll('.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]').forEach(el => el.remove());
 
-  return tempDiv.innerHTML; // Retornar el HTML limpio
+  // Extraer el contenido utilizando la función extractContent y esperar su resultado.
+  // Se asume que extractContent devuelve una lista.
+  let combinedResults = await extractContent(tempDiv);
+
+  // Retornar la lista de resultados.
+  return combinedResults;
 }
 
 
