@@ -43456,278 +43456,6 @@
 
 	}
 
-	// ============================================================================
-	// Función principal para normalizar HTML.
-	// Se acepta:
-	//  - Un string HTML directo.
-	//  - Un objeto que contenga la propiedad "html", o múltiples claves cuyos valores contengan "html".
-	// Se procesa de forma concurrente cuando hay muchos elementos.
-	// ============================================================================
-	/**
-	 * Normaliza el HTML recibido, ya sea como string o dentro de un objeto.
-	 *
-	 * @param {string|object} input - HTML en forma de string o un objeto que contenga la propiedad "html".
-	 * @returns {Promise<any>} - Resultado normalizado.
-	 */
-	async function normalizarHTML(input) {
-	  // Caso 1: Entrada es un string HTML directo.
-	  if (typeof input === "string") {
-	    return await normalizarHTMLString(input);
-	  }
-
-	  // Caso 2: Entrada es un objeto (no null).
-	  if (typeof input === "object" && input !== null) {
-	    // Caso 2.a: Si el objeto tiene la propiedad "html" (string).
-	    if (input.hasOwnProperty("html") && typeof input.html === "string") {
-	      return {
-	        ...input,
-	        html: await normalizarHTMLString(input.html)
-	      };
-	    }
-	    // Caso 2.b: Objeto con múltiples claves (por ejemplo, 1000 preguntas).
-	    const keys = Object.keys(input);
-	    const promiseArray = keys.map(key => {
-	      const valor = input[key];
-	      if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
-	        return normalizarHTMLString(valor.html).then(normalizedHTML => {
-	          return { key, value: { ...valor, html: normalizedHTML } };
-	        });
-	      } else {
-	        return Promise.resolve({ key, value: valor });
-	      }
-	    });
-	    const results = await Promise.all(promiseArray);
-	    const resultObject = {};
-	    results.forEach(({ key, value }) => {
-	      resultObject[key] = value;
-	    });
-	    return resultObject;
-	  }
-
-	  // Si la entrada no es string ni objeto, se retorna tal cual.
-	  return input;
-	}
-
-
-	async function extractContent(node) {
-	  // Declaramos un arreglo que contendrá cada palabra, expresión matemática o imagen encontrada.
-	  let tokens = [];
-
-	  // Recorremos cada nodo hijo del nodo actual.
-	  for (const child of node.childNodes) {
-	    // ------------------------------------------------------------------------
-	    // 1) Nodos de texto: se separa el contenido en palabras
-	    // ------------------------------------------------------------------------
-	    if (child.nodeType === Node.TEXT_NODE) {
-	      const text = child.textContent;
-	      // Si el texto existe y no es únicamente un salto de línea...
-	      if (text && text.trim() !== '') {
-	        // Se separa el texto en palabras (se ignoran los espacios en blanco adicionales)
-	        const words = text.trim().split(/\s+/);
-	        // Se añaden todas las palabras al arreglo de tokens
-	        tokens.push(...words);
-	      }
-
-	      // ------------------------------------------------------------------------
-	      // 2) Nodos de elemento
-	      // ------------------------------------------------------------------------
-	    } else if (child.nodeType === Node.ELEMENT_NODE) {
-	      const tagName = child.tagName.toLowerCase();
-
-	      // ------------------------------------------------------------------------
-	      // Ignorar nodos <span> de MathJax o MathJax_Preview
-	      // ------------------------------------------------------------------------
-	      if (
-	        tagName === 'span' &&
-	        (child.classList.contains('MathJax') || child.classList.contains('MathJax_Preview'))
-	      ) {
-	        continue; // No procesamos este nodo ni sus hijos
-	      }
-
-	      // ------------------------------------------------------------------------
-	      // A) Elemento <script type="math/tex">: se extrae el código LaTeX
-	      // ------------------------------------------------------------------------
-	      if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
-	        const latexCode = child.textContent.trim();
-	        if (latexCode) {
-	          // Se añade la expresión matemática, encerrándola en delimitadores
-	          tokens.push(`\\(${latexCode}\\)`);
-	        }
-
-	        // ------------------------------------------------------------------------
-	        // B) Elemento <img>: se extrae el atributo src
-	        // ------------------------------------------------------------------------
-	      } else if (tagName === 'img') {
-	        const src = child.getAttribute('src');
-	        if (src) {
-	          tokens.push(src);
-	        }
-
-	        // ------------------------------------------------------------------------
-	        // C) Elementos <sub> y <sup>: se conserva la etiqueta completa
-	        // ------------------------------------------------------------------------
-	      } else if (tagName === 'sub' || tagName === 'sup') {
-	        tokens.push(child.outerHTML);
-
-	        // ------------------------------------------------------------------------
-	        // D) Elemento <p>: se procesa de forma recursiva (opcionalmente se
-	        //    podría insertar un marcador de salto de línea si lo necesitas)
-	        // ------------------------------------------------------------------------
-	      } else if (tagName === 'p') {
-	        const childTokens = await extractContent(child);
-	        if (childTokens && childTokens.length > 0) {
-	          tokens.push(...childTokens);
-	          // Si deseas marcar el final de un párrafo, podrías descomentar la siguiente línea:
-	          // tokens.push('\n');
-	        }
-
-	        // ------------------------------------------------------------------------
-	        // E) Elemento <br>: se añade un salto de línea (si te interesa conservarlo)
-	        // ------------------------------------------------------------------------
-	      } else if (tagName === 'br') {
-	        tokens.push('\n');
-
-	        // ------------------------------------------------------------------------
-	        // F) Otros elementos: se procesan recursivamente
-	        // ------------------------------------------------------------------------
-	      } else {
-	        const childTokens = await extractContent(child);
-	        if (childTokens && childTokens.length > 0) {
-	          tokens.push(...childTokens);
-	        }
-	      }
-	    }
-	  }
-
-	  return tokens;
-	}
-
-	async function normalizarHTMLString(html) {
-	  // Crear un contenedor temporal y convertir el string a un fragmento DOM.
-	  const tempDiv = document.createElement('div');
-	  const fragment = document.createRange().createContextualFragment(html);
-	  tempDiv.appendChild(fragment);
-
-	  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y
-	  // "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
-	  tempDiv.querySelectorAll('.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]').forEach(el => el.remove());
-
-	  // Extraer el contenido utilizando la función extractContent y esperar su resultado.
-	  // Se asume que extractContent devuelve una lista.
-	  let combinedResults = await extractContent(tempDiv);
-
-	  // Retornar la lista de resultados.
-	  return combinedResults;
-	}
-
-	// =============================================================================
-	// Cachés para optimización: Almacenan el resultado del procesamiento de la propiedad
-	// "html" para cada pregunta, evitando recalcular la separación de contenido en cada comparación.
-	// =============================================================================
-	const cacheContenidoDPN = {};
-	const cacheContenidoDFN = {};
-
-	// =============================================================================
-	// Función para calcular la distancia de Levenshtein entre dos cadenas.
-	// Permite medir la diferencia entre dos textos.
-	// =============================================================================
-	function calcularDistanciaLevenshtein(cadena1, cadena2) {
-	  // La función get de fast-levenshtein retorna la distancia entre ambas cadenas.
-	  return levenshtein.get(cadena1, cadena2);
-	}
-
-	// =============================================================================
-	// Función para calcular el porcentaje de similitud entre dos textos.
-	// Si los textos son exactamente iguales se retorna 100 sin calcular la distancia.
-	// =============================================================================
-	function calcularSimilitudTexto(texto1, texto2) {
-	  if (texto1 === texto2) return 100;
-	  if (texto1.length === 0 && texto2.length === 0) return 100;
-	  const distancia = calcularDistanciaLevenshtein(texto1, texto2);
-	  const longitudMaxima = Math.max(texto1.length, texto2.length);
-	  const similitud = ((longitudMaxima - distancia) / longitudMaxima) * 100;
-	  return similitud;
-	}
-
-	// =============================================================================
-	// Función para procesar la lista "html": Separa en dos arreglos (texto y medios)
-	// y genera un string con todo el texto concatenado.
-	// =============================================================================
-	function obtenerContenidoSeparadoYConcatenado(listaHTML) {
-	  let contenidoTexto = [];
-	  let contenidoMedios = [];
-	  listaHTML.forEach(elemento => {
-	    if (typeof elemento === 'string') {
-	      // Si la cadena contiene "http://" o "https://" o "data:" se considera un medio.
-	      if (elemento.includes("http://") || elemento.includes("https://") || elemento.includes("data:")) {
-	        contenidoMedios.push(elemento);
-	      } else {
-	        contenidoTexto.push(elemento);
-	      }
-	    } else {
-	      // Si es un objeto, se asume que tiene la propiedad "tipo".
-	      if (elemento.tipo === 'media') {
-	        contenidoMedios.push(elemento.contenido);
-	      } else {
-	        contenidoTexto.push(elemento.contenido);
-	      }
-	    }
-	  });
-	  const textoConcatenado = contenidoTexto.join(" ").trim();
-	  return { texto: contenidoTexto, medios: contenidoMedios, textoConcatenado: textoConcatenado };
-	}
-
-	// =============================================================================
-	// Función para comparar dos arreglos de medios (enlaces).
-	// Se requiere que ambos arreglos tengan la misma cantidad y que sus elementos sean idénticos,
-	// sin importar el orden.
-	// =============================================================================
-	function compararMedios(arregloMedios1, arregloMedios2) {
-	  if (arregloMedios1.length !== arregloMedios2.length) return false;
-	  let mediosNoEmparejados = arregloMedios2.slice();
-	  for (const medio1 of arregloMedios1) {
-	    const indiceCoincidente = mediosNoEmparejados.findIndex(medio2 => compararContenidoMedios(medio1, medio2));
-	    if (indiceCoincidente === -1) {
-	      return false;
-	    } else {
-	      mediosNoEmparejados.splice(indiceCoincidente, 1);
-	    }
-	  }
-	  return true;
-	}
-
-	// =============================================================================
-	// Función para comparar dos elementos de medios (simulación de comparación exacta).
-	// En una implementación real se podría utilizar una comparación de píxeles o pHash.
-	// =============================================================================
-	function compararContenidoMedios(medio1, medio2) {
-	  return medio1 === medio2;
-	}
-
-	// =============================================================================
-	// Función para comparar el contenido de "html" de dos preguntas.
-	// Se aprovechan los datos precalculados (o se generan y almacenan en caché si es la primera vez).
-	// =============================================================================
-	function compararHTML(htmlDPN, htmlDFN) {
-	  let contenidoDPN = obtenerContenidoSeparadoYConcatenado(htmlDPN);
-	  let contenidoDFN = obtenerContenidoSeparadoYConcatenado(htmlDFN);
-
-	  // Se pueden almacenar en caché utilizando algún identificador único si se requiere
-	  // (en este ejemplo se utiliza directamente el array "html" como parámetro).
-
-	  // Si los textos concatenados son idénticos, se omite el cálculo completo.
-	  if (contenidoDPN.textoConcatenado === contenidoDFN.textoConcatenado) {
-	    const mediosOk = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
-	    return { coincide: mediosOk, similitudTexto: 100, mediosCoinciden: mediosOk };
-	  }
-
-	  const similitudTexto = calcularSimilitudTexto(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
-	  const mediosCoinciden = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
-	  const coincide = (similitudTexto >= 99) && mediosCoinciden;
-
-	  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
-	}
-
 	// =============================================================================
 	// Función principal asíncrona para comparar las preguntas de DPN y DFN.
 	// Se utiliza procesamiento concurrente para comparar candidatos en paralelo.
@@ -43881,6 +43609,264 @@
 	  });
 
 	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
+	}
+
+	async function normalizarHTML(input) {
+	  // Caso 1: Entrada es un string HTML directo.
+	  if (typeof input === "string") {
+	    return await normalizarHTMLString(input);
+	  }
+
+	  // Caso 2: Entrada es un objeto (no null).
+	  if (typeof input === "object" && input !== null) {
+	    // Caso 2.a: Si el objeto tiene la propiedad "html" (string).
+	    if (input.hasOwnProperty("html") && typeof input.html === "string") {
+	      return {
+	        ...input,
+	        html: await normalizarHTMLString(input.html)
+	      };
+	    }
+	    // Caso 2.b: Objeto con múltiples claves (por ejemplo, 1000 preguntas).
+	    const keys = Object.keys(input);
+	    const promiseArray = keys.map(key => {
+	      const valor = input[key];
+	      if (typeof valor === "object" && valor !== null && typeof valor.html === "string") {
+	        return normalizarHTMLString(valor.html).then(normalizedHTML => {
+	          return { key, value: { ...valor, html: normalizedHTML } };
+	        });
+	      } else {
+	        return Promise.resolve({ key, value: valor });
+	      }
+	    });
+	    const results = await Promise.all(promiseArray);
+	    const resultObject = {};
+	    results.forEach(({ key, value }) => {
+	      resultObject[key] = value;
+	    });
+	    return resultObject;
+	  }
+
+	  // Si la entrada no es string ni objeto, se retorna tal cual.
+	  return input;
+	}
+
+	async function normalizarHTMLString(html) {
+	  // Crear un contenedor temporal y convertir el string a un fragmento DOM.
+	  const tempDiv = document.createElement('div');
+	  const fragment = document.createRange().createContextualFragment(html);
+	  tempDiv.appendChild(fragment);
+
+	  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y
+	  // "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
+	  tempDiv.querySelectorAll('.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]').forEach(el => el.remove());
+
+	  // Extraer el contenido utilizando la función extractContent y esperar su resultado.
+	  // Se asume que extractContent devuelve una lista.
+	  let combinedResults = await extractContent(tempDiv);
+
+	  // Retornar la lista de resultados.
+	  return combinedResults;
+	}
+
+	async function extractContent(node) {
+	  // Declaramos un arreglo que contendrá cada palabra, expresión matemática o imagen encontrada.
+	  let tokens = [];
+
+	  // Recorremos cada nodo hijo del nodo actual.
+	  for (const child of node.childNodes) {
+	    // ------------------------------------------------------------------------
+	    // 1) Nodos de texto: se separa el contenido en palabras
+	    // ------------------------------------------------------------------------
+	    if (child.nodeType === Node.TEXT_NODE) {
+	      const text = child.textContent;
+	      // Si el texto existe y no es únicamente un salto de línea...
+	      if (text && text.trim() !== '') {
+	        // Se separa el texto en palabras (se ignoran los espacios en blanco adicionales)
+	        const words = text.trim().split(/\s+/);
+	        // Se añaden todas las palabras al arreglo de tokens
+	        tokens.push(...words);
+	      }
+
+	      // ------------------------------------------------------------------------
+	      // 2) Nodos de elemento
+	      // ------------------------------------------------------------------------
+	    } else if (child.nodeType === Node.ELEMENT_NODE) {
+	      const tagName = child.tagName.toLowerCase();
+
+	      // ------------------------------------------------------------------------
+	      // Ignorar nodos <span> de MathJax o MathJax_Preview
+	      // ------------------------------------------------------------------------
+	      if (
+	        tagName === 'span' &&
+	        (child.classList.contains('MathJax') || child.classList.contains('MathJax_Preview'))
+	      ) {
+	        continue; // No procesamos este nodo ni sus hijos
+	      }
+
+	      // ------------------------------------------------------------------------
+	      // A) Elemento <script type="math/tex">: se extrae el código LaTeX
+	      // ------------------------------------------------------------------------
+	      if (tagName === 'script' && child.getAttribute('type') === 'math/tex') {
+	        const latexCode = child.textContent.trim();
+	        if (latexCode) {
+	          // Se añade la expresión matemática, encerrándola en delimitadores
+	          tokens.push(`\\(${latexCode}\\)`);
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // B) Elemento <img>: se extrae el atributo src
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'img') {
+	        const src = child.getAttribute('src');
+	        if (src) {
+	          tokens.push(src);
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // C) Elementos <sub> y <sup>: se conserva la etiqueta completa
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'sub' || tagName === 'sup') {
+	        tokens.push(child.outerHTML);
+
+	        // ------------------------------------------------------------------------
+	        // D) Elemento <p>: se procesa de forma recursiva (opcionalmente se
+	        //    podría insertar un marcador de salto de línea si lo necesitas)
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'p') {
+	        const childTokens = await extractContent(child);
+	        if (childTokens && childTokens.length > 0) {
+	          tokens.push(...childTokens);
+	          // Si deseas marcar el final de un párrafo, podrías descomentar la siguiente línea:
+	          // tokens.push('\n');
+	        }
+
+	        // ------------------------------------------------------------------------
+	        // E) Elemento <br>: se añade un salto de línea (si te interesa conservarlo)
+	        // ------------------------------------------------------------------------
+	      } else if (tagName === 'br') {
+	        tokens.push('\n');
+
+	        // ------------------------------------------------------------------------
+	        // F) Otros elementos: se procesan recursivamente
+	        // ------------------------------------------------------------------------
+	      } else {
+	        const childTokens = await extractContent(child);
+	        if (childTokens && childTokens.length > 0) {
+	          tokens.push(...childTokens);
+	        }
+	      }
+	    }
+	  }
+
+	  return tokens;
+	}
+
+	// =============================================================================
+	// Cachés para optimización: Almacenan el resultado del procesamiento de la propiedad
+	// "html" para cada pregunta, evitando recalcular la separación de contenido en cada comparación.
+	// =============================================================================
+	const cacheContenidoDPN = {};
+	const cacheContenidoDFN = {};
+
+	// =============================================================================
+	// Función para calcular la distancia de Levenshtein entre dos cadenas.
+	// Permite medir la diferencia entre dos textos.
+	// =============================================================================
+	function calcularDistanciaLevenshtein(cadena1, cadena2) {
+	  // La función get de fast-levenshtein retorna la distancia entre ambas cadenas.
+	  return levenshtein.get(cadena1, cadena2);
+	}
+
+	// =============================================================================
+	// Función para calcular el porcentaje de similitud entre dos textos.
+	// Si los textos son exactamente iguales se retorna 100 sin calcular la distancia.
+	// =============================================================================
+	function calcularSimilitudTexto(texto1, texto2) {
+	  if (texto1 === texto2) return 100;
+	  if (texto1.length === 0 && texto2.length === 0) return 100;
+	  const distancia = calcularDistanciaLevenshtein(texto1, texto2);
+	  const longitudMaxima = Math.max(texto1.length, texto2.length);
+	  const similitud = ((longitudMaxima - distancia) / longitudMaxima) * 100;
+	  return similitud;
+	}
+
+	// =============================================================================
+	// Función para procesar la lista "html": Separa en dos arreglos (texto y medios)
+	// y genera un string con todo el texto concatenado.
+	// =============================================================================
+	function obtenerContenidoSeparadoYConcatenado(listaHTML) {
+	  let contenidoTexto = [];
+	  let contenidoMedios = [];
+	  listaHTML.forEach(elemento => {
+	    if (typeof elemento === 'string') {
+	      // Si la cadena contiene "http://" o "https://" o "data:" se considera un medio.
+	      if (elemento.includes("http://") || elemento.includes("https://") || elemento.includes("data:")) {
+	        contenidoMedios.push(elemento);
+	      } else {
+	        contenidoTexto.push(elemento);
+	      }
+	    } else {
+	      // Si es un objeto, se asume que tiene la propiedad "tipo".
+	      if (elemento.tipo === 'media') {
+	        contenidoMedios.push(elemento.contenido);
+	      } else {
+	        contenidoTexto.push(elemento.contenido);
+	      }
+	    }
+	  });
+	  const textoConcatenado = contenidoTexto.join(" ").trim();
+	  return { texto: contenidoTexto, medios: contenidoMedios, textoConcatenado: textoConcatenado };
+	}
+
+	// =============================================================================
+	// Función para comparar dos arreglos de medios (enlaces).
+	// Se requiere que ambos arreglos tengan la misma cantidad y que sus elementos sean idénticos,
+	// sin importar el orden.
+	// =============================================================================
+	function compararMedios(arregloMedios1, arregloMedios2) {
+	  if (arregloMedios1.length !== arregloMedios2.length) return false;
+	  let mediosNoEmparejados = arregloMedios2.slice();
+	  for (const medio1 of arregloMedios1) {
+	    const indiceCoincidente = mediosNoEmparejados.findIndex(medio2 => compararContenidoMedios(medio1, medio2));
+	    if (indiceCoincidente === -1) {
+	      return false;
+	    } else {
+	      mediosNoEmparejados.splice(indiceCoincidente, 1);
+	    }
+	  }
+	  return true;
+	}
+
+	// =============================================================================
+	// Función para comparar dos elementos de medios (simulación de comparación exacta).
+	// En una implementación real se podría utilizar una comparación de píxeles o pHash.
+	// =============================================================================
+	function compararContenidoMedios(medio1, medio2) {
+	  return medio1 === medio2;
+	}
+
+	// =============================================================================
+	// Función para comparar el contenido de "html" de dos preguntas.
+	// Se aprovechan los datos precalculados (o se generan y almacenan en caché si es la primera vez).
+	// =============================================================================
+	function compararHTML(htmlDPN, htmlDFN) {
+	  let contenidoDPN = obtenerContenidoSeparadoYConcatenado(htmlDPN);
+	  let contenidoDFN = obtenerContenidoSeparadoYConcatenado(htmlDFN);
+
+	  // Se pueden almacenar en caché utilizando algún identificador único si se requiere
+	  // (en este ejemplo se utiliza directamente el array "html" como parámetro).
+
+	  // Si los textos concatenados son idénticos, se omite el cálculo completo.
+	  if (contenidoDPN.textoConcatenado === contenidoDFN.textoConcatenado) {
+	    const mediosOk = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
+	    return { coincide: mediosOk, similitudTexto: 100, mediosCoinciden: mediosOk };
+	  }
+
+	  const similitudTexto = calcularSimilitudTexto(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
+	  const mediosCoinciden = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
+	  const coincide = (similitudTexto >= 99) && mediosCoinciden;
+
+	  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
 	}
 
 	// Manejar respuestas tipo 'draganddrop_image'
