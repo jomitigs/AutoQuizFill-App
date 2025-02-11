@@ -791,7 +791,7 @@ export async function compararPreguntas(dpn, dfn) {
   let indiceDFN = {};
   for (const claveDFN in dfn) {
     const preguntaDFN = dfn[claveDFN];
-    console.log(`Procesando DFN: ${claveDFN}`, preguntaDFN);
+    // console.log(`Procesando DFN: ${claveDFN}`, preguntaDFN);
 
     if (!preguntaDFN.html) {
       console.warn(`Elemento DFN "${claveDFN}" no tiene propiedad "html". Se omite.`);
@@ -870,10 +870,11 @@ export async function compararPreguntas(dpn, dfn) {
     // Se usa Promise.any para que se resuelva tan pronto como alguno cumpla la condición.
     const promesasCandidatos = candidatos.map(candidato => {
       return new Promise((resolve, reject) => {
-        console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.clave}"`);
+        // console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.clave}"`);
         const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
-        console.log(`Resultado de comparación:`, resultadoComparacion);
+        // console.log(`Resultado de comparación:`, resultadoComparacion);
         if (resultadoComparacion.coincide) {
+          console.log(`Resultado de comparación:`, resultadoComparacion);
           // Si hay coincidencia, se resuelve la promesa con todos los datos del candidato.
           resolve(candidato);
         } else {
