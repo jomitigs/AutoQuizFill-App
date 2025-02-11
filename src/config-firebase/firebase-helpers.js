@@ -84,58 +84,53 @@ async function createDataInSessionStorageDB(customKey, data) {
 }
 
 export async function getDataFromFirebaseAsync() {
-    // Define la clave fija para almacenar la data
-    const customKey = "dataFirebaseNormalizada";
+  // Define la clave fija para almacenar la data
+  const customKey = "dataFirebaseNormalizada";
+
+  try {
+    // Obtiene la ruta desde localStorage según una configuración
+    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+    const ruta = switchRutaDinamica
+      ? localStorage.getItem('configRutaDinamic')
+      : localStorage.getItem('configRuta');
+
+    if (!ruta) {
+      console.warn("No se encontró una ruta válida.");
+      return;
+    }
+
+    // Consulta la data almacenada en IndexedDB utilizando la clave
+    const storedData = await idbGet(customKey);
+    const currentTabSessionId = getTabSessionId();
   
-    try {
-      // Obtiene la ruta desde localStorage según una configuración
-      const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
-      const ruta = switchRutaDinamica
-        ? localStorage.getItem('configRutaDinamic')
-        : localStorage.getItem('configRuta');
-  
-      if (!ruta) {
-        console.warn("No se encontró una ruta válida.");
-        return;
-      }
-  
-      // Consulta la data almacenada en IndexedDB utilizando la clave
-      const storedData = await idbGet(customKey);
-      const currentTabSessionId = getTabSessionId();
-  
-      // Si existe data y el tabSessionId es igual al actual y la ruta coincide...
-      if (storedData && storedData.tabSessionId === currentTabSessionId && storedData.ruta === ruta) {
-        // Verifica si dentro de storedData solo existen las claves 'ruta' y 'tabSessionId'
-        const keys = Object.keys(storedData);
-        if (!(keys.length === 2 && keys.includes('ruta') && keys.includes('tabSessionId'))) {
-          console.log("La data ya pertenece a esta pestaña (tabSessionId igual) y contiene información adicional. No se actualiza.");
-          return;
-        }
-        // En caso de que sólo existan las dos claves, se procede a actualizar la data.
-      }
-  
-      // Se obtienen nuevos datos desde Firebase
-      let dataFirebase = await getDataFromFirebase(ruta);
-  
-      if (!dataFirebase) {
-        console.warn("No se encontró data en Firebase. Se creará una estructura vacía.");
-        dataFirebase = {}; // Se asigna un objeto vacío
-      }
-  
+    // Si existe data y el tabSessionId es igual al actual, no se actualiza
+    if (storedData &&
+        storedData.tabSessionId === currentTabSessionId &&
+        storedData.ruta === ruta &&
+        Object.keys(storedData).length !== 2) {
+      console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
+      return;
+    }
+
+    // Se obtienen nuevos datos desde Firebase
+    const dataFirebase = await getDataFromFirebase(ruta);
+    if (dataFirebase) {
       // Normaliza la data y añade la ruta y el tabSessionId actual
       const normalizedData = {
         ...await normalizarHTML(dataFirebase),
         ruta,
         tabSessionId: currentTabSessionId
       };
-  
+
       // Crea o actualiza la data en SessionStorageDB
       await createDataInSessionStorageDB(customKey, normalizedData);
-    } catch (error) {
-      console.error("Error en getDataFromFirebaseAsync:", error);
+    } else {
+      console.warn("No se encontró data en Firebase.");
     }
+  } catch (error) {
+    console.error("Error en getDataFromFirebaseAsync:", error);
   }
-  
+}
 
 
 
