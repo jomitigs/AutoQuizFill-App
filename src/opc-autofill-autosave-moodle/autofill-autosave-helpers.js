@@ -523,9 +523,11 @@ export async function compararPreguntas(dpn, dfn) {
     try {
       // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
+      const claveDFN = candidatoCoincidente.clave;
+
       dpnExistentes.push({
         dpn: { claveDPN },
-        dfn: candidatoCoincidente
+        dfn: { claveDFN }
       });
     } catch (e) {
       // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.

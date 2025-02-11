@@ -27,7 +27,7 @@ export async function getDataFromFirebase(ruta) {
 
 
 
-export async function saveQuestionsToFirebase(ruta, datos, lastKey) {
+export async function saveNewQuestionsToFirebase(ruta, datos, lastKey) {
     try {
       // 1. Extraer el prefijo y la parte numérica de lastKey.
       // Se asume que lastKey tiene el formato "questionXXXX" donde XXXX es un número de 4 dígitos.

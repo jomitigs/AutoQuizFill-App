@@ -8,7 +8,7 @@ import { select_emparejamiento } from './questions-types/3_select_emparejamiento
 import interact from 'interactjs';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
 
-import { getDataFromFirebase, getDataFromFirebaseAsync,  saveQuestionsToFirebase} from '../../config-firebase/firebase-helpers.js';
+import { getDataFromFirebase, getDataFromFirebaseAsync,  saveNewQuestionsToFirebase} from '../../config-firebase/firebase-helpers.js';
 import { idbGet, idbDelete} from '../../config-firebase/idbSession.js';
 
 
@@ -785,8 +785,8 @@ export async function AutoSave_Firebase() {
     
     console.log("lastKey1:", lastKey);
 
-    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
-    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
+    // 🟢 Aseguramos que `saveNewQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
+    await saveNewQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
    // Si estás dentro de una función async
     await getDataFromFirebaseAsync(true);

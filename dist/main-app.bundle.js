@@ -43581,9 +43581,11 @@
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
+	      const claveDFN = candidatoCoincidente.clave;
+
 	      dpnExistentes.push({
 	        dpn: { claveDPN },
-	        dfn: candidatoCoincidente
+	        dfn: { claveDFN }
 	      });
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
@@ -44587,7 +44589,7 @@
 
 
 
-	async function saveQuestionsToFirebase(ruta, datos, lastKey) {
+	async function saveNewQuestionsToFirebase(ruta, datos, lastKey) {
 	    try {
 	      // 1. Extraer el prefijo y la parte numérica de lastKey.
 	      // Se asume que lastKey tiene el formato "questionXXXX" donde XXXX es un número de 4 dígitos.
@@ -45469,8 +45471,8 @@
 	    
 	    console.log("lastKey1:", lastKey);
 
-	    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
-	    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
+	    // 🟢 Aseguramos que `saveNewQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
+	    await saveNewQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
 
 	   // Si estás dentro de una función async
 	    await getDataFromFirebaseAsync(true);
