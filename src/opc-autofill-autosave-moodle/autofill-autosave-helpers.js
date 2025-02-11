@@ -568,19 +568,12 @@ async function normalizarHTMLString(html) {
   const fragment = document.createRange().createContextualFragment(html);
   tempDiv.appendChild(fragment);
 
-  // Extraer contenido del DOM utilizando la función extractContent.
-  let combinedResults = await extractContent(tempDiv);
+  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
+  tempDiv.querySelectorAll('.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]').forEach(el => el.remove());
 
-  // Si se encuentran elementos con ".draghome" o ".dropzones", eliminar duplicados.
-  //if (tempDiv.querySelector('.draghome') || tempDiv.querySelector('.dropzones')) {
-    //combinedResults = [...new Set(combinedResults)];
-  //}
-
-  // Filtrar textos irrelevantes y retornar el resultado.
-  return eliminarTextosIrrelevantes(combinedResults);
-
-  // return combinedResults;
+  return tempDiv.innerHTML; // Retornar el HTML limpio
 }
+
 
 function eliminarTextosIrrelevantes(items) {
   return items.map(item => {
