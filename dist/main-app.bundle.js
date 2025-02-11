@@ -43729,7 +43729,7 @@
 	        const latexCode = child.textContent.trim();
 	        if (latexCode) {
 	          // Se añade la expresión matemática, encerrándola en delimitadores
-	          tokens.push(`\\(${latexCode}\\)`);
+	          tokens.push(latexCode);
 	        }
 
 	        // ------------------------------------------------------------------------
