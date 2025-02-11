@@ -787,7 +787,9 @@ export async function AutoSave_Firebase() {
 
     // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
     await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
-    
-    getDataFromFirebaseAsync();
+
+   // Si estás dentro de una función async
+    await getDataFromFirebaseAsync(true);
+
 }
 
