@@ -44647,23 +44647,26 @@
 	// Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
 
 	async function getDataFromFirebase(ruta) {
-	    try {
-	      const reference = ref(database, ruta);
-	      const snapshot = await get(reference);
-	  
-	      if (snapshot.exists()) {
-	        return snapshot.val(); // Retorna los datos en formato JSON
-	      } else {
-	        console.warn(`No se encontró data en la ruta: ${ruta}`);
-	        // Se crea la ruta inicializándola con un objeto vacío (puedes cambiar {} por otro valor por defecto)
-	        await set(reference, {});
-	        return null;
-	      }
-	    } catch (error) {
-	      console.error(`Error al obtener data desde Firebase: ${error.message}`);
-	      throw error;
+	  try {
+	    const reference = ref(database, ruta);
+	    const snapshot = await get(reference);
+
+	    if (snapshot.exists()) {
+	      console.log(`Datos encontrados en la ruta "${ruta}":`, snapshot.val());
+	      return snapshot.val();
+	    } else {
+	      console.warn(`No se encontró data en la ruta: ${ruta}`);
+	      // Para pruebas, asigna un objeto no vacío. Luego, si deseas, puedes ajustar el valor.
+	      await set(reference, { createdAt: new Date().toISOString() });
+	      console.log(`Ruta "${ruta}" creada en Firebase.`);
+	      return null;
 	    }
+	  } catch (error) {
+	    console.error(`Error al obtener data desde Firebase: ${error.message}`);
+	    throw error;
 	  }
+	}
+
 
 
 	async function saveQuestionsToFirebase(ruta, datos, lastKey) {
@@ -44755,6 +44758,7 @@
 
 	    // Se obtienen nuevos datos desde Firebase
 	    const dataFirebase = await getDataFromFirebase(ruta);
+	    
 	    if (dataFirebase) {
 	      // Normaliza la data y añade la ruta y el tabSessionId actual
 	      const normalizedData = {
