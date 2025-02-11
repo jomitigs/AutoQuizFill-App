@@ -43457,6 +43457,24 @@
 	}
 
 	// ============================================================================
+	// Expresiones regulares y conjuntos precompilados
+	// ============================================================================
+	const regexLaTeX = /\\\((.*?)\\\)/g;
+	const regexMathML = /^<math.*<\/math>$/;
+	const regexPregunta = /^Pregunta\s*\d+/;
+	const regexLiteral = /^[a-zA-Z]\.\s*/;
+	const regexRespuestaPregunta = /^(Respuesta\s*\d+\s*Pregunta\s*\d+|Respuesta\s*Pregunta\s*\d+|Vacío\s*\d+\s*Pregunta\s*\d+)/;
+	const textosIrrelevantesSet = new Set([
+	  'Respuestas',
+	  'Respuesta',
+	  'Enunciado de la pregunta',
+	  'https://profes.ac/pub/logoap.svg',
+	  'YWRtaW5AcHJvZmVzLmFj',
+	  'Quitar mi elección',
+	  'vacío'
+	]);
+
+	// ============================================================================
 	// Función principal para normalizar HTML.
 	// Se acepta:
 	//  - Un string HTML directo.
@@ -43617,9 +43635,33 @@
 	  //}
 
 	  // Filtrar textos irrelevantes y retornar el resultado.
-	  // return eliminarTextosIrrelevantes(combinedResults);
+	  return eliminarTextosIrrelevantes(combinedResults);
 
-	  return combinedResults;
+	  // return combinedResults;
+	}
+
+	function eliminarTextosIrrelevantes(items) {
+	  return items.map(item => {
+	    // Eliminar delimitadores LaTeX.
+	    item = item.replace(regexLaTeX, '$1');
+
+	    // Si coincide con MathML, se descarta.
+	    if (regexMathML.test(item)) return false;
+
+	    // Descarta patrones de pregunta, literal o respuesta.
+	    if (
+	      regexPregunta.test(item) ||
+	      regexLiteral.test(item) ||
+	      regexRespuestaPregunta.test(item)
+	    ) {
+	      return false;
+	    }
+
+	    // Descarta si el texto está en el conjunto de irrelevantes.
+	    if (textosIrrelevantesSet.has(item)) return false;
+
+	    return item;
+	  }).filter(item => item !== false);
 	}
 
 	// =============================================================================

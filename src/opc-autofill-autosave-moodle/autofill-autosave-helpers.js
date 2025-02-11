@@ -577,9 +577,9 @@ async function normalizarHTMLString(html) {
   //}
 
   // Filtrar textos irrelevantes y retornar el resultado.
-  // return eliminarTextosIrrelevantes(combinedResults);
+  return eliminarTextosIrrelevantes(combinedResults);
 
-  return combinedResults;
+  // return combinedResults;
 }
 
 function eliminarTextosIrrelevantes(items) {
