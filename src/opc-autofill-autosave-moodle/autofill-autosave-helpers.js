@@ -598,17 +598,28 @@ async function normalizarHTMLString(html) {
   const fragment = document.createRange().createContextualFragment(html);
   tempDiv.appendChild(fragment);
 
-  // Eliminar todos los elementos con class="accesshide", "custom-watermark" y
-  // "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
-  tempDiv.querySelectorAll('.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]').forEach(el => el.remove());
+  // Eliminar elementos con class="accesshide", "custom-watermark" y "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
+  tempDiv.querySelectorAll(
+    '.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]'
+  ).forEach(el => el.remove());
 
-  // Extraer el contenido utilizando la función extractContent y esperar su resultado.
-  // Se asume que extractContent devuelve una lista.
+  // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
+  tempDiv.querySelectorAll('legend.prompt.h6.font-weight-normal.sr-only')
+         .forEach(el => el.remove());
+
+  // Eliminar elementos con class="answernumber"
+  tempDiv.querySelectorAll('.answernumber')
+         .forEach(el => el.remove());
+
+  // Extraer el contenido utilizando la función extractContent (se asume que esta función devuelve una lista)
   let combinedResults = await extractContent(tempDiv);
 
-  // Retornar la lista de resultados.
-  return combinedResults;
+  // Filtrar la lista final para eliminar elementos vacíos o que contengan solo espacios y saltos de línea.
+  combinedResults = combinedResults.filter(item => item.trim() !== '');
+
+  return combinedResults; // Retornar la lista filtrada
 }
+
 
 async function extractContent(node) {
   // Declaramos un arreglo que contendrá cada palabra, expresión matemática o imagen encontrada.
