@@ -598,7 +598,10 @@ async function normalizarHTMLString(html) {
   const fragment = document.createRange().createContextualFragment(html);
   tempDiv.appendChild(fragment);
 
-  // Eliminar elementos con class="accesshide", "custom-watermark" y "qtype_multichoice_clearchoice sr-only" con aria-hidden="true"
+  // Eliminar elementos con las siguientes clases y atributos:
+  // - .accesshide
+  // - .custom-watermark
+  // - .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]
   tempDiv.querySelectorAll(
     '.accesshide, .custom-watermark, .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]'
   ).forEach(el => el.remove());
@@ -607,18 +610,29 @@ async function normalizarHTMLString(html) {
   tempDiv.querySelectorAll('legend.prompt.h6.font-weight-normal.sr-only')
          .forEach(el => el.remove());
 
-  // Eliminar elementos con class="answernumber"
+  // Eliminar elementos con la clase "answernumber"
   tempDiv.querySelectorAll('.answernumber')
          .forEach(el => el.remove());
 
-  // Eliminar <option selected="selected" value="0">Elegir...</option>
+  // Eliminar el <option> con selected="selected", value="0" y texto "Elegir..."
   tempDiv.querySelectorAll('option[selected="selected"][value="0"]').forEach(el => {
     if (el.textContent.trim() === 'Elegir...') {
       el.remove();
     }
   });
 
-  // Extraer el contenido utilizando la función extractContent (se asume que esta función devuelve una lista)
+  // Eliminar <span> que tengan las clases fijas "draghome", "dragplaceholder" y "active"
+  // y que además tengan una clase que siga el patrón "choice" (con número variable)
+  // y otra que siga el patrón "group" (con número variable).
+  tempDiv.querySelectorAll('span.draghome.dragplaceholder.active').forEach(el => {
+    const tieneClaseChoice = Array.from(el.classList).some(cls => /^choice\d+$/.test(cls));
+    const tieneClaseGroup  = Array.from(el.classList).some(cls => /^group\d+$/.test(cls));
+    if (tieneClaseChoice && tieneClaseGroup) {
+      el.remove();
+    }
+  });
+
+  // Extraer el contenido utilizando la función extractContent (se asume que devuelve una lista)
   let combinedResults = await extractContent(tempDiv);
 
   // Filtrar la lista final para eliminar elementos vacíos o que contengan solo espacios y saltos de línea.
@@ -626,6 +640,7 @@ async function normalizarHTMLString(html) {
 
   return combinedResults; // Retornar la lista filtrada
 }
+
 
 
 
