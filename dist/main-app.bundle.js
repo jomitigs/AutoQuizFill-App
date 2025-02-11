@@ -44644,54 +44644,6 @@
 	  });
 	}
 
-	async function idbDelete(key) {
-	  try {
-	    // Abrir la base de datos usando tu función openDB
-	    const db = await openDB();
-	    console.log(`Intentando eliminar la llave "${key}"...`);
-
-	    return new Promise((resolve, reject) => {
-	      // Iniciar una transacción de lectura-escritura en el object store "store"
-	      const tx = db.transaction('store', 'readwrite');
-	      const store = tx.objectStore('store');
-	      const deleteRequest = store.delete(key);
-
-	      // Manejo de error al eliminar
-	      deleteRequest.onerror = (event) => {
-	        console.error(`Error al eliminar la llave "${key}":`, event);
-	        reject(event);
-	      };
-
-	      // Éxito en la eliminación
-	      deleteRequest.onsuccess = (event) => {
-	        console.log(`La llave "${key}" ha sido eliminada. Verificando...`);
-
-	        // Transacción para verificar que la llave ya no exista
-	        const verifyTx = db.transaction('store', 'readonly');
-	        const verifyStore = verifyTx.objectStore('store');
-	        const getRequest = verifyStore.get(key);
-
-	        getRequest.onsuccess = (e) => {
-	          if (e.target.result === undefined) {
-	            console.log(`Confirmación: la llave "${key}" ya no existe en la base de datos.`);
-	          } else {
-	            console.warn(`Advertencia: la llave "${key}" todavía existe con el valor:`, e.target.result);
-	          }
-	          resolve();
-	        };
-
-	        getRequest.onerror = (e) => {
-	          console.error(`Error al verificar la eliminación de la llave "${key}":`, e);
-	          reject(e);
-	        };
-	      };
-	    });
-	  } catch (err) {
-	    console.error(`Error al abrir la base de datos:`, err);
-	    throw err;
-	  }
-	}
-
 	// Importa funciones de Firebase para obtener datos y la instancia de la base de datos.
 
 	async function getDataFromFirebase(ruta) {
@@ -44789,16 +44741,21 @@
 	      // Consulta la data almacenada en IndexedDB utilizando la clave
 	      const storedData = await idbGet(customKey);
 	      const currentTabSessionId = getTabSessionId();
-	    
-	      // Si existe data y el tabSessionId es igual al actual, no se actualiza
+	  
+	      // Si existe data y el tabSessionId es igual al actual y la ruta coincide...
 	      if (storedData && storedData.tabSessionId === currentTabSessionId && storedData.ruta === ruta) {
-	        console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
-	        return;
+	        // Verifica si dentro de storedData solo existen las claves 'ruta' y 'tabSessionId'
+	        const keys = Object.keys(storedData);
+	        if (!(keys.length === 2 && keys.includes('ruta') && keys.includes('tabSessionId'))) {
+	          console.log("La data ya pertenece a esta pestaña (tabSessionId igual) y contiene información adicional. No se actualiza.");
+	          return;
+	        }
+	        // En caso de que sólo existan las dos claves, se procede a actualizar la data.
 	      }
 	  
 	      // Se obtienen nuevos datos desde Firebase
 	      let dataFirebase = await getDataFromFirebase(ruta);
-	      
+	  
 	      if (!dataFirebase) {
 	        console.warn("No se encontró data en Firebase. Se creará una estructura vacía.");
 	        dataFirebase = {}; // Se asigna un objeto vacío
@@ -45593,8 +45550,7 @@
 
 	    // 🟢 Aseguramos que `saveQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
 	    await saveQuestionsToFirebase(ruta, comparedData.dpnNuevas, lastKey);
-
-	    idbDelete("DataFirebaseNormalizada");
+	    
 	    getDataFromFirebaseAsync();
 	}
 

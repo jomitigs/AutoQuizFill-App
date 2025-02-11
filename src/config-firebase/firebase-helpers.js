@@ -102,16 +102,21 @@ export async function getDataFromFirebaseAsync() {
       // Consulta la data almacenada en IndexedDB utilizando la clave
       const storedData = await idbGet(customKey);
       const currentTabSessionId = getTabSessionId();
-    
-      // Si existe data y el tabSessionId es igual al actual, no se actualiza
+  
+      // Si existe data y el tabSessionId es igual al actual y la ruta coincide...
       if (storedData && storedData.tabSessionId === currentTabSessionId && storedData.ruta === ruta) {
-        console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
-        return;
+        // Verifica si dentro de storedData solo existen las claves 'ruta' y 'tabSessionId'
+        const keys = Object.keys(storedData);
+        if (!(keys.length === 2 && keys.includes('ruta') && keys.includes('tabSessionId'))) {
+          console.log("La data ya pertenece a esta pestaña (tabSessionId igual) y contiene información adicional. No se actualiza.");
+          return;
+        }
+        // En caso de que sólo existan las dos claves, se procede a actualizar la data.
       }
   
       // Se obtienen nuevos datos desde Firebase
       let dataFirebase = await getDataFromFirebase(ruta);
-      
+  
       if (!dataFirebase) {
         console.warn("No se encontró data en Firebase. Se creará una estructura vacía.");
         dataFirebase = {}; // Se asigna un objeto vacío
