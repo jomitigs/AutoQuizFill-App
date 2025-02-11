@@ -526,7 +526,7 @@ export async function compararPreguntas(dpn, dfn) {
       const claveDFN = candidatoCoincidente.clave;
 
       dpnExistentes.push({
-        claveDPN: {claveDPN}
+        claveDPN: {claveDFN}
       });
     } catch (e) {
       // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
