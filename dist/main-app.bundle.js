@@ -22822,7 +22822,7 @@
 	 */
 	function remove(ref) {
 	    validateWritablePath('remove', ref._path);
-	    return set$1(ref, null);
+	    return set(ref, null);
 	}
 	/**
 	 * Writes data to this Database location.
@@ -22853,7 +22853,7 @@
 	 *   array, or null).
 	 * @returns Resolves when write to server is complete.
 	 */
-	function set$1(ref, value) {
+	function set(ref, value) {
 	    ref = getModularInstance(ref);
 	    validateWritablePath('set', ref._path);
 	    validateFirebaseDataArg('set', value, ref._path);
@@ -46883,7 +46883,7 @@
 
 	  // Guarda el currentOrigin en la base de datos
 	  const originRef = ref(database, `users/${uid}/currentOrigin`);
-	  set$1(originRef, currentOrigin)
+	  set(originRef, currentOrigin)
 	    .then(() => {
 	      // Escucha cambios en el currentOrigin
 	      onValue(originRef, (snapshot) => {
