@@ -81,10 +81,7 @@
   }
   
   /* Reglas compartidas para cada subcontenedor */
-  .subcontainer-autoquiz-autosave,
   .subcontainer-autoquiz-autofill {
-    /* Permiten que se expandan para repartir el espacio disponible */
-    /* Si el contenido es muy largo, no excederán 268px */
     max-height: 50%;
     background-color: #f4f4f4;
     padding: 5px 5px 5px 10px;
@@ -92,6 +89,17 @@
     border: 1px solid #dcdcdc;
     margin: 0;
   }
+
+
+    /* Reglas compartidas para cada subcontenedor */
+    .subcontainer-autoquiz-autosave {
+      flex: 1;
+      background-color: #f4f4f4;
+      padding: 5px 5px 5px 10px;
+      border-radius: 8px;
+      border: 1px solid #dcdcdc;
+      margin: 0;
+    }
   
   
   /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
