@@ -60,7 +60,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
     // 2) Si el array está vacío, terminamos.
     // --------------------------------------------------------------------------
     if (questionsHtml.length === 0) {
-        console.error('[AutoSave_SessionStorage] No se pudo ejecutar: no hay preguntas para procesar.');
+        console.error('[AutoSaveQuestions_SessionStorage] No se pudo ejecutar: no hay preguntas para procesar.');
         return;
     }
 
@@ -90,7 +90,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
             existeAlmacenamiento = true;
         }
     } catch (err) {
-        console.error('[AutoSave_SessionStorage] Error al parsear sessionStorage:', err);
+        console.error('[AutoSaveQuestions_SessionStorage] Error al parsear sessionStorage:', err);
         datosExistentes = {};
     }
 
@@ -144,7 +144,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
             // Determinar tipo de pregunta (asumes que ya existe tu función)
             const questionType = determinarTipoPregunta(questionHtml);
-            console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
+            console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
             // Llamar la función correspondiente
             const funcion = funcQuestionType[questionType];
@@ -167,7 +167,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
         // Si NO hay datos en sessionStorage, se crea de cero
         if (!existeAlmacenamiento) {
-            console.log('[AutoSave_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
+            console.log('[AutoSaveQuestions_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
 
             // Insertar/actualizar las nuevas
             for (const key in questionsHtmlObject) {
@@ -184,7 +184,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
             // Sí hay datos previos
             if (hayPregunta1) {
                 // REEMPLAZAR todo
-                //console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
+                //console.log('[AutoSaveQuestions_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
 
                 // Insertar/actualizar las nuevas
                 for (const key in questionsHtmlObject) {
@@ -197,7 +197,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
                 sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
             } else {
                 // MEZCLAR: old -> previous:true, new -> previous:false
-                console.log('[AutoSave_SessionStorage] No está la #1. Se mezclan datos: antiguos previous:true, nuevos previous:false.');
+                console.log('[AutoSaveQuestions_SessionStorage] No está la #1. Se mezclan datos: antiguos previous:true, nuevos previous:false.');
 
                 // a) Marcar existentes
                 for (const key in datosExistentes) {
@@ -226,7 +226,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
         const numberQuestion = parseInt(numeroQuestionUpdate, 10);
 
         const questionType = determinarTipoPregunta(questionHtml);
-        console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
+        console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
         const funcion = funcQuestionType[questionType];
         if (!funcion) {
@@ -244,7 +244,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
         // 4) Guardar todo en sessionStorage
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
-            console.log('[AutoSave_SessionStorage] Se ha actualizado la información de 1 pregunta con previous:false.');
+            console.log('[AutoSaveQuestions_SessionStorage] Se ha actualizado la información de 1 pregunta con previous:false.');
         } catch (error) {
             console.error('Error al guardar en sessionStorage:', error);
         }
@@ -326,10 +326,10 @@ async function procesoAutoSave(elemento) {
     let questionsAutoSaveStr = sessionStorage.getItem('questions-AutoSave');
 
     if (!questionsAutoSaveStr) {
-        console.log("'questions-AutoSave' no existe. Llamando a AutoSave_SessionStorage por primera vez.");
+        console.log("'questions-AutoSave' no existe. Llamando a AutoSaveQuestions_SessionStorage por primera vez.");
         // Si no existe, se guarda todo de una vez
         const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-        await AutoSave_SessionStorage(originalAllFormulations);
+        await AutoSaveQuestions_SessionStorage(originalAllFormulations);
         await AutoSave_ShowResponses();
 
         // Llamada para renderizar expresiones LaTeX (u otro proceso similar)
@@ -360,14 +360,14 @@ async function procesoAutoSave(elemento) {
 
         // Si la pregunta ya existe en el objeto guardado, se actualiza
         if (questionsAutoSave[preguntaKey]) {
-            await AutoSave_SessionStorage(formulation, numeroPregunta);
+            await AutoSaveQuestions_SessionStorage(formulation, numeroPregunta);
             console.log('AutoSave_ShowResponses iniciado');
             await AutoSave_ShowResponses(numeroPregunta);
 
             // Llamada para renderizar expresiones LaTeX
             renderizarPreguntas();
         } else {
-            console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSave_SessionStorage.`);
+            console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSaveQuestions_SessionStorage.`);
             // Aquí podrías forzar a guardar todo de nuevo o manejar el caso que prefieras.
         }
     }
