@@ -87,7 +87,7 @@
     border-radius: 8px;
     border: 1px solid #dcdcdc;
     margin: 0;
-    flex-grow: 0 1 auto;        /* Altura basada en el contenido (auto) */
+    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */
     max-height: 50%;  
     overflow-y: auto;
   }
@@ -99,7 +99,7 @@
     border-radius: 8px;
     border: 1px solid #dcdcdc;
     margin-bottom: 20px;
-    flex-grow: 0 1 auto;        /* Altura basada en el contenido (auto) */
+    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */
     max-height: 50%;  
     overflow-y: auto; 
 
