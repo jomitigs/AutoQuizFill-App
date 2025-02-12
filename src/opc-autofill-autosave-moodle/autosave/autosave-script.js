@@ -5,40 +5,18 @@ import { inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_in
 import { inputtext_respuestacorta } from './questions-types/4_inputtext_respuestacorta.js';
 import { inputtext_respuestacorta2 } from './questions-types/4_inputtext_respuestacorta2.js';
 import { select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
-import interact from 'interactjs';
-import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
 
-import { getDataFromFirebase, getDataFromFirebaseAsync,  saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase} from '../../config-firebase/firebase-helpers.js';
-import { idbGet, idbDelete} from '../../config-firebase/idbSession.js';
+
+import interact from 'interactjs';
+import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas, normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
+
+import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../../config-firebase/firebase-helpers.js';
+import { idbGet, idbDelete } from '../../config-firebase/idbSession.js';
 
 
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
-    // Constantes para la identificación de elementos y configuración del AutoSave
-    const SWITCH_AUTOSAVE_ID = 'switch-autosave';             // ID del interruptor que activa/desactiva el AutoSave
-    const SWITCH_AUTOSAVE = 'autosave-autoquizfillapp';       // Clave para almacenar el estado del AutoSave en localStorage
-    const BODY_ID_AUTOSAVE = 'body-autoquiz-autosave';        // ID del contenedor visual relacionado con el AutoSave
-   
-    const ACTIVADO = 'activado';                               // Valor que indica que el AutoSave está activado
-    const DESACTIVADO = 'desactivado';                         // Valor que indica que el AutoSave está desactivado
-
-    // Obtener referencias a los elementos del DOM
-    const interruptorAutoSave = document.getElementById(SWITCH_AUTOSAVE_ID);
-    const bodyAutoSave = document.getElementById(BODY_ID_AUTOSAVE);
-
-    // Verificar que el interruptor exista; de lo contrario, registrar un error y salir
-    if (!interruptorAutoSave) {
-        console.error(`Error: No se encontró el elemento con ID '${SWITCH_AUTOSAVE_ID}'`);
-        return;
-    }
-
-    // Recuperar el estado guardado del AutoSave (si no existe, se considera desactivado)
-    const estadoGuardado_switchAutoSave = localStorage.getItem(SWITCH_AUTOSAVE) || DESACTIVADO;
-    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoGuardado_switchAutoSave}`);
-
-    // Actualizar el estado visual del interruptor según el estado guardado
-    interruptorAutoSave.checked = estadoGuardado_switchAutoSave === ACTIVADO;
-
+    
     const actualizarVisibilidadBody = async () => {
         // Determinar si la URL actual corresponde a la página de intento de quiz
         const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
@@ -75,17 +53,6 @@ export function contenedorAutoSave_js() {
 
     // Llamar a la función para actualizar la visibilidad del contenedor sin bloquear la ejecución
     actualizarVisibilidadBody();
-
-    // Configurar el listener para detectar cambios en el estado del interruptor de AutoSave
-    interruptorAutoSave.addEventListener('change', () => {
-        // Determinar el nuevo estado basado en si el interruptor está marcado o no
-        const estadoNuevo = interruptorAutoSave.checked ? ACTIVADO : DESACTIVADO;
-        // Guardar el nuevo estado en localStorage
-        localStorage.setItem(SWITCH_AUTOSAVE, estadoNuevo);
-        console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoNuevo}`);
-        // Actualizar la visibilidad y funcionalidad del contenedor según el nuevo estado (sin await para no bloquear)
-        actualizarVisibilidadBody();
-    });
 }
 
 export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
@@ -194,7 +161,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
             const funcion = funcQuestionType[questionType];
             if (!funcion) {
                 console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
-                continue; 
+                continue;
             }
 
             const questionData = await funcion(questionHtml);
@@ -213,8 +180,8 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
         if (!existeAlmacenamiento) {
             console.log('[AutoSave_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
 
-             // Insertar/actualizar las nuevas
-             for (const key in questionsHtmlObject) {
+            // Insertar/actualizar las nuevas
+            for (const key in questionsHtmlObject) {
                 if (Object.hasOwn(questionsHtmlObject, key)) {
                     questionsHtmlObject[key].previous = false;
                     datosExistentes[key] = questionsHtmlObject[key];
@@ -223,14 +190,14 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
 
-           
+
         } else {
             // Sí hay datos previos
             if (hayPregunta1) {
                 // REEMPLAZAR todo
                 //console.log('[AutoSave_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
 
-                             // Insertar/actualizar las nuevas
+                // Insertar/actualizar las nuevas
                 for (const key in questionsHtmlObject) {
                     if (Object.hasOwn(questionsHtmlObject, key)) {
                         questionsHtmlObject[key].previous = false;
@@ -268,23 +235,23 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
         // =====================================
         const questionHtml = questionsHtml[0];
         const numberQuestion = parseInt(numeroQuestionUpdate, 10);
-    
+
         const questionType = determinarTipoPregunta(questionHtml);
         console.log(`[AutoSave_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
-    
+
         const funcion = funcQuestionType[questionType];
         if (!funcion) {
             console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
             return;
         }
-    
+
         // 2) Procesar la nueva (o actualizada) pregunta
         const questionData = await funcion(questionHtml);
-    
+
         // 3) A esta pregunta le asignamos previous: false
         questionData.previous = false;
         datosExistentes[`Pregunta${numberQuestion}`] = questionData;
-    
+
         // 4) Guardar todo en sessionStorage
         try {
             sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
@@ -293,8 +260,8 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
             console.error('Error al guardar en sessionStorage:', error);
         }
     }
-    
-    
+
+
 }
 
 function detectarCambiosPreguntas() {
@@ -446,12 +413,12 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
                     if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
- 
+
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
-                       
+
 
                     }
-                    
+
 
                     if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
@@ -468,35 +435,35 @@ function AutoSave_ShowResponses(numeroPregunta) {
                     } else if (data.tipo === 'inputtext_respuestacorta') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
                         let respuestaIndex = 0;
-                    
+
                         let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
                             let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
                             respuestaIndex++; // Avanzamos al siguiente elemento en la lista
-                    
+
                             return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
                         });
-                    
+
                         // Procesamos el contenido antes de añadirlo a HTML
                         enunciadoProcesado = processContent(enunciadoProcesado);
-                    
+
                         html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
-                    } 
-                    
+                    }
+
                     else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 
                         html += '<div class="respuestasautosave">';
                         html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
-                        
+
                         respuestas.forEach((resp) => {
                             html += `<strong style="font-weight: 500;">[</strong><span style="color: mediumblue; font-weight: 500;">${resp}</span><strong style="font-weight: 500;">]</strong> `;
                         });
-                        
+
                         html += '</div>';
-                        
-                    
-                    } 
-                    
+
+
+                    }
+
                     else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
                         let enunciado = data.enunciado;
@@ -583,15 +550,15 @@ function AutoSave_ShowResponses(numeroPregunta) {
                 .map(([key, data], index, array) => {
                     const questionNumber = key.replace(/\D/g, '');
                     let html = `<div class="preguntaautosave" id="${key}">`;
-                    
-                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
-    
-                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
-                       
-                    } 
-                    
 
-                    if ( data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
+                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
+
+                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
+
+                    }
+
+
+                    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
                             html += `<div class="respuestasautosave">${formatResponseOptions(
                                 data.opcionesRespuesta,
@@ -607,50 +574,49 @@ function AutoSave_ShowResponses(numeroPregunta) {
                                         const respuesta = data.respuestaCorrecta[i]?.trim() || 'Elegir...';
                                         return `<div>• ${processContent(
                                             enunciado
-                                        )} - <span style="font-weight:500; color:${
-                                            respuesta !== 'Elegir...' ? 'MediumBlue' : 'black'
-                                        };">${processContent(respuesta)}</span></div>`;
+                                        )} - <span style="font-weight:500; color:${respuesta !== 'Elegir...' ? 'MediumBlue' : 'black'
+                                            };">${processContent(respuesta)}</span></div>`;
                                     })
                                     .join('') +
                                 `</div>`;
                         }
-                   
-                   
+
+
                     } else if (data.tipo === 'inputtext_respuestacorta') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
                         let respuestaIndex = 0;
-                    
+
                         let enunciadoProcesado = data.enunciado.replace(/\[(.*?)\]/g, (match, contenido) => {
                             let respuesta = respuestas[respuestaIndex] !== undefined ? respuestas[respuestaIndex] : '';
                             respuestaIndex++; // Avanzamos al siguiente elemento en la lista
-                    
+
                             return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${respuesta}</span>]</strong>`;
                         });
 
                         enunciadoProcesado = processContent(enunciadoProcesado);
-                    
+
                         html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
-                    
-                    
-                    
-                    
-                    } 
-                    
+
+
+
+
+                    }
+
                     else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 
                         html += '<div class="respuestasautosave">';
                         html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
-                        
+
                         respuestas.forEach((resp) => {
                             html += `<strong style="font-weight: 500;">[</strong><span style="color: mediumblue; font-weight: 500;">${resp}</span><strong style="font-weight: 500;">]</strong> `;
                         });
-                        
+
                         html += '</div>';
-                        
-                    
-                    } 
-                    
+
+
+                    }
+
                     else if (data.tipo === 'draganddrop_text') {
                         let enunciado = data.enunciado;
                         enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
@@ -709,17 +675,17 @@ function formatResponseOptions(options, selected) {
             ? selected.map(s => s.trim())
             : [selected?.trim()]
     );
-    
+
     return options.map((option, i) => {
         const literal = options.length > 1
             ? String.fromCharCode(97 + i) + '. '
             : (i + 1) + '. ';
-        
+
         const isSelected = selectedSet.has(option.trim());
         // Procesamos el contenido y luego verificamos si contiene una imagen
         const processedContent = processContent(option);
         const containsImage = /<img\s+[^>]*>/.test(processedContent);
-        
+
         if (containsImage && isSelected) {
             // Si contiene imagen y está seleccionado, se aplica el overlay
             // y el literal se muestra en MediumBlue y con font-weight:500
@@ -757,8 +723,8 @@ export async function AutoSave_Firebase() {
 
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
     const ruta = switchRutaDinamica
-      ? localStorage.getItem('configRutaDinamic')
-      : localStorage.getItem('configRuta');
+        ? localStorage.getItem('configRutaDinamic')
+        : localStorage.getItem('configRuta');
 
     const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
 
@@ -775,18 +741,18 @@ export async function AutoSave_Firebase() {
     console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
     const dfnKeys = Object.keys(dataFirebaseNormalizada);
-    
+
     const validKeys = dfnKeys.filter(key => key !== "ruta" && key !== "tabSessionId");
 
     const lastKey = validKeys.length
-    ? validKeys.reduce((max, key) =>
-        parseInt(key.replace("question", ""), 10) >
-        parseInt(max.replace("question", ""), 10)
-            ? key 
-            : max,
-        validKeys[0])
-    : "question0000";
-    
+        ? validKeys.reduce((max, key) =>
+            parseInt(key.replace("question", ""), 10) >
+                parseInt(max.replace("question", ""), 10)
+                ? key
+                : max,
+            validKeys[0])
+        : "question0000";
+
     console.log("lastKey1:", lastKey);
 
     // 🟢 Aseguramos que `saveNewQuestionsToFirebase` solo se ejecute después de que `compararPreguntas` termine
@@ -794,7 +760,7 @@ export async function AutoSave_Firebase() {
 
     saveExistingQuestionsToFirebase(ruta, comparedData.dpnExistentes);
 
-   // Si estás dentro de una función async
+    // Si estás dentro de una función async
     getDataFromFirebaseAsync(true);
 
 }

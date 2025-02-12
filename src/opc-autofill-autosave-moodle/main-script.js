@@ -6,6 +6,7 @@ import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas, normalizarHTML, compararPreguntas } from './autofill-autosave-helpers.js';
 
 import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage } from './autosave/autosave-script.js';
+import { contenedorAutoFill_js } from './autofill/autofill-script.js';
 
 import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../config-firebase/firebase-helpers.js';
 import { idbGet, idbDelete } from '../config-firebase/idbSession.js';
@@ -157,6 +158,15 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
             getDataFromFirebaseAsync();
             const originalFormulations = document.querySelectorAll(".formulation.clearfix");
             await AutoSaveQuestions_SessionStorage(originalFormulations);
+
+            if (stateAutoFill === "activado") {
+                // contenedorAutoFill_js();
+            }
+            else if (stateAutoSave === "activado") {
+                contenedorAutoSave_js();
+            }
+
+        } else {
         }
 
         // Registrar los listeners solo una vez.
