@@ -168,7 +168,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
                 contenedorAutoSave_js();
             } else if (stateAutoFill === "desactivado") {
                 bodyAutoFill.style.display = 'none';
-            }else if (stateAutoSave === "desactivado") {
+            } else if (stateAutoSave === "desactivado") {
                 bodyAutoSave.style.display = 'none';
             }
             renderizarPreguntas();
@@ -176,6 +176,8 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
         } else {
             sessionStorage.removeItem('questions-AutoSave');
+            bodyAutoFill.style.display = 'none';
+            bodyAutoSave.style.display = 'none';
         }
 
         // Registrar los listeners solo una vez.
