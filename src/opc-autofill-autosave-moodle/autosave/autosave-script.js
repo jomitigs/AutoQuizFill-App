@@ -116,7 +116,6 @@ export function contenedorAutoSave_js() {
     });
 }
 
-
 export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
     // --------------------------------------------------------------------------
     // 1) Verificar si "questionsHtml" es una colección (NodeList, HTMLCollection)
