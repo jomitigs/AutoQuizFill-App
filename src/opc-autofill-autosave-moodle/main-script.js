@@ -1,14 +1,14 @@
 import './style.css';
 
 import { contenedorUsers_js } from './users/script.js';
-import { contenedorRuta_js, contenedorRutaDinamica_js} from './ruta/script.js';
+import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
-import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from './autofill-autosave-helpers.js';
+import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas, normalizarHTML, compararPreguntas } from './autofill-autosave-helpers.js';
 
 import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage } from './autosave/autosave-script.js';
 
-import { getDataFromFirebase, getDataFromFirebaseAsync,  saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase} from '../config-firebase/firebase-helpers.js';
-import { idbGet, idbDelete} from '../config-firebase/idbSession.js';
+import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../config-firebase/firebase-helpers.js';
+import { idbGet, idbDelete } from '../config-firebase/idbSession.js';
 
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
@@ -111,6 +111,12 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
     const url = window.location.href;
     let esMoodle = esPaginaMoodle();
 
+    const interruptorAutoSave = document.getElementById("switch-autosave");
+    const interruptorAutoFill = document.getElementById("switch-autofill");
+
+    const switchAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+    const switchAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
+
     if (esMoodle) {
         console.log("[opc-autofill-autosave-moodle: main]  Esta página está construida con Moodle");
     } else {
@@ -127,7 +133,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
 
-    if (esMoodle && switchRutaDinamica === 'true'  ) {
+    if (esMoodle && switchRutaDinamica === 'true') {
         console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta Dinamica...');
         await contenedorRutaDinamica_js();
     } else {
@@ -135,47 +141,55 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         contenedorRuta_js();
     }
 
-    // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
-    if (esMoodle) {
-        const autofillContainer = document.getElementById('container-autofill');
-        const autosaveContainer = document.getElementById('container-autosave');
-        autofillContainer.style.display = 'block';
-        autosaveContainer.style.display = 'block';
+    const autofillContainer = document.getElementById('container-autofill');
+    const autosaveContainer = document.getElementById('container-autosave');
+    autofillContainer.style.display = 'block';
+    autosaveContainer.style.display = 'block';
 
-        // Iniciar la obtención de datos desde Firebase de manera asíncrona
-        getDataFromFirebaseAsync();
+    const autosave_autofill = async () => {
 
-        // Seleccionar todos los elementos que contienen las formulaciones originales de las preguntas
-        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-        // Guardar en SessionStorage el estado actual de las preguntas y esperar a que termine el proceso
-        await AutoSaveQuestions_SessionStorage(originalAllFormulations);
+        // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
+        if (esMoodle && (switchAutoSave === "activado" || switchAutoFill === "activado")) {
 
-        // contenedorAutoFill_js();
-        // contenedorAutoSave_js();
+            // Iniciar la obtención de datos desde Firebase de manera asíncrona
+            getDataFromFirebaseAsync();
 
-        // renderizarPreguntas('#barra-lateral-autoquizfillapp');
-        // renderizarPreguntas();
-    }
+            // Seleccionar todos los elementos que contienen las formulaciones originales de las preguntas
+            const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+            // Guardar en SessionStorage el estado actual de las preguntas y esperar a que termine el proceso
+            await AutoSaveQuestions_SessionStorage(originalAllFormulations);
 
-    // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'
-    // if (esMoodle && url.includes('grade/report/overview/index.php')) {
-    //     extractRevision();
-    //     viewRevisiones();
-    // }
+            // contenedorAutoFill_js();
+            // contenedorAutoSave_js();
 
-    // Mostrar contenedor de autosavereview si estamos en 'mod/quiz/review.php'
-    //if (esMoodle && url.includes('mod/quiz/review.php')) {
-        // const autoSaveReviewContainer = document.getElementById('container-autosavereview');
-        // autoSaveReviewContainer.style.display = 'block';
-        // contenedorAutoSaveReview_js();
-    //}
+            // renderizarPreguntas('#barra-lateral-autoquizfillapp');
+            // renderizarPreguntas();
+        }
 
-    // Mostrar contenedor de verified si estamos en cualquiera de las páginas especificadas
-    //if (esMoodle && url.includes('mod/quiz/review.php') || url.includes('grade/report/overview/index.php') || url.includes('course/user.php')) {
-        //const verifiedContainer = document.getElementById('container-verified');
-       // verifiedContainer.style.display = 'block';
-        //     await opcionVerified_js();
-    //}
+    };
+
+    // Llamar a la función para actualizar la visibilidad del contenedor sin bloquear la ejecución
+    autosave_autofill();
+
+    interruptorAutoSave.addEventListener('change', () => {
+        // Determinar el nuevo estado basado en si el interruptor está marcado o no
+        const estadoNuevo = interruptorAutoSave.checked ? "activado" : "desactivado";
+        // Guardar el nuevo estado en localStorage
+        localStorage.setItem("autosave-autoquizfillapp", estadoNuevo);
+        console.log(`AutoSave: ${estadoNuevo}`);
+        // Actualizar la visibilidad y funcionalidad del contenedor según el nuevo estado (sin await para no bloquear)
+        autosave_autofill();
+    });
+
+    interruptorAutoFill.addEventListener('change', () => {
+        // Determinar el nuevo estado basado en si el interruptor está marcado o no
+        const estadoNuevo = interruptorAutoFill.checked ? "activado" : "desactivado";
+        // Guardar el nuevo estado en localStorage
+        localStorage.setItem("autofill-autoquizfillapp", estadoNuevo);
+        console.log(`AutoFill: ${estadoNuevo}`);
+        // Actualizar la visibilidad y funcionalidad del contenedor según el nuevo estado (sin await para no bloquear)
+        autosave_autofill();
+    });
 }
 
 // Función para verificar si la página está construida con Moodle

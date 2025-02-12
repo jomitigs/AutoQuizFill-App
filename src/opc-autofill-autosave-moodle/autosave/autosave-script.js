@@ -19,10 +19,6 @@ export function contenedorAutoSave_js() {
     const SWITCH_AUTOSAVE = 'autosave-autoquizfillapp';       // Clave para almacenar el estado del AutoSave en localStorage
     const BODY_ID_AUTOSAVE = 'body-autoquiz-autosave';        // ID del contenedor visual relacionado con el AutoSave
    
-    const SWITCH_AUTOFILL_ID = 'switch-autofill';             // ID del interruptor que activa/desactiva el AutoFill
-    const SWITCH_AUTOFILL = 'autofill-autoquizfillapp';       // Clave para almacenar el estado del AutoFill en localStorage
-    const BODY_ID_AUTOFILL = 'body-autoquiz-autofill';        // ID del contenedor visual relacionado con el AutoSave
-   
     const ACTIVADO = 'activado';                               // Valor que indica que el AutoSave está activado
     const DESACTIVADO = 'desactivado';                         // Valor que indica que el AutoSave está desactivado
 
@@ -30,13 +26,9 @@ export function contenedorAutoSave_js() {
     const interruptorAutoSave = document.getElementById(SWITCH_AUTOSAVE_ID);
     const bodyAutoSave = document.getElementById(BODY_ID_AUTOSAVE);
 
-    const interruptorAutoFill = document.getElementById(SWITCH_AUTOFILL_ID);
-    const bodyAutoFill = document.getElementById(BODY_ID_AUTOFILL);
-
     // Verificar que el interruptor exista; de lo contrario, registrar un error y salir
-    if (!interruptorAutoSave && !interruptorAutoFill) {
+    if (!interruptorAutoSave) {
         console.error(`Error: No se encontró el elemento con ID '${SWITCH_AUTOSAVE_ID}'`);
-        console.error(`Error: No se encontró el elemento con ID '${SWITCH_AUTOFILL_ID}'`);
         return;
     }
 
@@ -47,20 +39,6 @@ export function contenedorAutoSave_js() {
     // Actualizar el estado visual del interruptor según el estado guardado
     interruptorAutoSave.checked = estadoGuardado_switchAutoSave === ACTIVADO;
 
-    // Recuperar el estado guardado del AutoFill (si no existe, se considera desactivado)
-    const estadoGuardado_switchAutoFill = localStorage.getItem(SWITCH_AUTOFILL) || DESACTIVADO;
-    console.log(`[opc-autofill-autosave-moodle: autosave] AutoFill: ${estadoGuardado_switchAutoSave}`);
-
-    // Actualizar el estado visual del interruptor según el estado guardado
-    interruptorAutoFill.checked = estadoGuardado_switchAutoFill === ACTIVADO;
-
-    // Ejemplo de importación de funciones auxiliares:
-    // import { renderizarPreguntas } from './autofill-autosave-helpers.js';
-
-    /**
-     * Función asíncrona que actualiza la visibilidad del contenedor del AutoSave
-     * y gestiona la ejecución de la lógica asociada según la página y el estado del interruptor.
-     */
     const actualizarVisibilidadBody = async () => {
         // Determinar si la URL actual corresponde a la página de intento de quiz
         const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
@@ -75,12 +53,6 @@ export function contenedorAutoSave_js() {
 
                 // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
                 await AutoSave_ShowResponses();
-
-                // Llamar a la función para renderizar expresiones LaTeX en el contenedor correspondiente
-                // Ejemplo sin parámetros:
-                
-                // O, en caso de que la función acepte un selector:
-                // renderizarPreguntas('#barra-lateral-autoquizfillapp');
 
                 // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
                 detectarCambiosPreguntas();
