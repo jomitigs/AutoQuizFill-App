@@ -136,78 +136,89 @@ export async function getDataFromFirebaseAsync(reset = false) {
     }
   }
   
-  export async function saveExistingQuestionsToFirebase(ruta, datos) {
-    try {
-      // Itera sobre cada entrada en el objeto 'datos'
-      for (const preguntaKey in datos) {
-        if (datos.hasOwnProperty(preguntaKey)) {
-          // Se obtiene la clave en Firebase (por ejemplo, "question0411")
-          const firebaseKey = datos[preguntaKey];
-  
-          // 1. Obtiene el dato fuente (source) desde "questions-AutoSave/<PreguntaX>"
-          const autoSaveRef = ref(database, `questions-AutoSave/${preguntaKey}`);
-          const autoSaveSnapshot = await get(autoSaveRef);
-          if (!autoSaveSnapshot.exists()) {
-            console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
-            continue; // Si no existe la información fuente, se pasa a la siguiente pregunta.
+export async function saveExistingQuestionsToFirebase(ruta, datos) {
+  try {
+    // 1. Obtener la información de questions-AutoSave desde sessionStorage
+    const autoSaveString = sessionStorage.getItem("questions-AutoSave");
+    let autoSaveFull = {};
+    if (autoSaveString) {
+      try {
+        autoSaveFull = JSON.parse(autoSaveString);
+      } catch (err) {
+        console.error("Error al parsear el sessionStorage de questions-AutoSave:", err);
+      }
+    } else {
+      console.warn("No se encontró 'questions-AutoSave' en sessionStorage.");
+    }
+
+    // 2. Leer en bloque el nodo destino en Firebase
+    const destSnapshot = await get(ref(database, ruta));
+    const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
+
+    // 3. Armar el objeto de actualizaciones para hacer un único update en Firebase
+    const updates = {};
+
+    // Itera sobre cada entrada en el objeto "datos"
+    for (const preguntaKey in datos) {
+      if (Object.prototype.hasOwnProperty.call(datos, preguntaKey)) {
+        // La clave en Firebase destino para esta pregunta (ej. "question0411")
+        const firebaseKey = datos[preguntaKey];
+
+        // Obtiene el dato fuente desde sessionStorage (questions-AutoSave)
+        const sourceData = autoSaveFull[preguntaKey];
+        if (!sourceData) {
+          console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave (sessionStorage).`);
+          continue; // Si no existe la información fuente, se pasa a la siguiente pregunta.
+        }
+
+        // Obtiene el dato actual en destino para la clave firebaseKey
+        const destData = (destFull && destFull[firebaseKey]) ? destFull[firebaseKey] : {};
+
+        let updatedData = {};
+
+        // Si el registro destino tiene estado "verificado"
+        if (destData.estado === "verificado") {
+          // No se actualizan otros campos, solo se evalúa el feedback:
+          if (
+            sourceData.feedback && sourceData.feedback.trim() !== "" &&
+            (!destData.feedback || destData.feedback.trim() === "")
+          ) {
+            updatedData.feedback = sourceData.feedback;
           }
-          const sourceData = autoSaveSnapshot.val();
-  
-          // 2. Obtiene el dato destino desde "<ruta>/<firebaseKey>"
-          const destRef = ref(database, `${ruta}/${firebaseKey}`);
-          const destSnapshot = await get(destRef);
-          let destData = {};
-          if (destSnapshot.exists()) {
-            destData = destSnapshot.val();
-          } else {
-            console.warn(`No se encontró información para ${firebaseKey} en la ruta ${ruta}. Se procederá a crearla.`);
-          }
-  
-          // Variable para armar los datos que se van a actualizar
-          let updatedData = {};
-  
-          // 3. Aplicar reglas según el estado actual en el destino
-          if (destData && destData.estado === "verificado") {
-            // REGLA PARA REGISTROS VERIFICADOS:
-            // Si el estado es "verificado", NO se actualizan otros campos, excepto el feedback.
-            // Se actualiza el feedback solo si el source tiene un valor no vacío y el destino no tiene feedback.
-            if (sourceData.feedback && sourceData.feedback.trim() !== "") {
-              if (!destData.feedback || destData.feedback.trim() === "") {
-                updatedData.feedback = sourceData.feedback;
-              }
-            }
-            // Ningún otro campo se actualiza
-          } else {
-            // REGLA PARA REGISTROS NO VERIFICADOS:
-            // Se actualizan todos los campos usando los datos del source...
-            updatedData = { ...sourceData };
-  
-            // ...con la regla especial para "feedback":
-            // Si el feedback del source está vacío y el destino ya tiene un valor (no vacío),
-            // se conserva el feedback del destino.
-            if (
-              (!sourceData.feedback || sourceData.feedback.trim() === "") &&
-              destData.feedback &&
-              destData.feedback.trim() !== ""
-            ) {
-              updatedData.feedback = destData.feedback;
-            }
-          }
-  
-          // Solo se ejecuta la actualización si hay algún campo que modificar
-          if (Object.keys(updatedData).length > 0) {
-            await update(destRef, updatedData);
-            console.log(`Se ha actualizado ${firebaseKey} con la información de ${preguntaKey}.`);
-          } else {
-            console.log(`No se realizaron actualizaciones para ${firebaseKey} (no se cumplían las condiciones).`);
+        } else {
+          // Si el registro NO está verificado, se copian todos los campos del source...
+          updatedData = { ...sourceData };
+
+          // ...con la regla especial para feedback:
+          // Si el source tiene feedback vacío y el destino ya tiene un feedback no vacío,
+          // se conserva el feedback del destino.
+          if (
+            (!sourceData.feedback || sourceData.feedback.trim() === "") &&
+            destData.feedback && destData.feedback.trim() !== ""
+          ) {
+            updatedData.feedback = destData.feedback;
           }
         }
+
+        // Si se determinó actualizar algún campo, se agrega al objeto "updates"
+        if (Object.keys(updatedData).length > 0) {
+          updates[firebaseKey] = updatedData;
+        }
       }
-      console.log("Proceso de actualización completado.");
-    } catch (error) {
-      console.error("Error al actualizar las preguntas en Firebase:", error);
-      throw error;
     }
+
+    // 4. Realiza un único update en Firebase si hay cambios
+    if (Object.keys(updates).length > 0) {
+      await update(ref(database, ruta), updates);
+      console.log("Se han actualizado las siguientes entradas:", updates);
+    } else {
+      console.log("No se realizaron actualizaciones, no se cumplieron las condiciones.");
+    }
+  } catch (error) {
+    console.error("Error al actualizar las preguntas en Firebase:", error);
+    throw error;
   }
+}
+
   
 
