@@ -86,7 +86,6 @@
     /* Permiten que se expandan para repartir el espacio disponible */
     /* Si el contenido es muy largo, no excederán 268px */
     max-height: 50%;
-    overflow-y: auto;
     background-color: #f4f4f4;
     padding: 5px 5px 5px 10px;
     border-radius: 8px;
@@ -120,9 +119,10 @@
  /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
 #body-autoquiz-autosave {
     flex-direction: column;
-    gap: 0px;
-    font-size: 12px;
-    width: 100%;
+    font-size: 10px;
+    overflow-y: auto;
+    height: unset;
+    height: calc(100% - 30px);
   }
   
   /* Reglas para el elemento de la pregunta */
@@ -154,11 +154,13 @@
 
 /* Header de AutoFill: título y switch */
 .header-autoquiz {
-    margin-top: 0px;
+     margin-top: 0px;
     margin-bottom: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    height: 30px;
 }
 
 .header-autoquiz h2 {
@@ -381,7 +383,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    font-size: 1em; /* Ajusta el tamaño según necesites */
+    font-size:0.9em; /* Ajusta el tamaño según necesites */
     color: inherit; /* Mantiene el color del texto */
     transition: color 0.3s ease-in-out;
 }
