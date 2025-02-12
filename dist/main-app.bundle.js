@@ -43661,7 +43661,7 @@
 	  // - .custom-watermark
 	  // - .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]
 	  tempDiv.querySelectorAll(
-	    '.accesshide, .custom-watermark,.validationerror , .sr-only , .qtype_multichoice_clearchoice[aria-hidden="true"]'
+	    '.accesshide, .custom-watermark,.validationerror , .sr-only , .qtype_multichoice_clearchoice'
 	  ).forEach(el => el.remove());
 
 	  // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
