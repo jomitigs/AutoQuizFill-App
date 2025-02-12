@@ -116,7 +116,8 @@
 
   
  /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
-#body-autoquiz-autosave {
+#body-autoquiz-autosave,
+#body-autoquiz-autofill {
     flex-direction: column;
     font-size: 11px;
     overflow-y: auto;
@@ -124,20 +125,24 @@
   }
 
     /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
-    #body-autoquiz-autosave::-webkit-scrollbar {
+    #body-autoquiz-autosave::-webkit-scrollbar,
+    #body-autoquiz-autofill::-webkit-scrollbar {
       width: 0.4em; /* Ancho de la barra de desplazamiento */
     }
     
-    #body-autoquiz-autosave::-webkit-scrollbar-thumb {
+    #body-autoquiz-autosave::-webkit-scrollbar-thumb,
+    #body-autoquiz-autofill::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */
       border-radius: 10px;
     }
     
-    #body-autoquiz-autosave::-webkit-scrollbar-track {
+    #body-autoquiz-autosave::-webkit-scrollbar-track,
+    #body-autoquiz-autofill::-webkit-scrollbar-track {
       background: transparent; /* Fondo transparente */
     }
     
-    #body-autoquiz-autosave::-webkit-scrollbar-button {
+    #body-autoquiz-autosave::-webkit-scrollbar-button,
+    #body-autoquiz-autofill::-webkit-scrollbar-button {
       display: none; /* Oculta botones (flechas) */
     }
   
@@ -170,7 +175,7 @@
 
 /* Header de AutoFill: título y switch */
 .header-autoquiz {
-     margin-top: 0px;
+    margin-top: 0px;
     margin-bottom: 0px;
     display: flex;
     justify-content: space-between;
@@ -232,46 +237,6 @@
 .switch-autoquiz input:checked+.slider:before {
     transform: translateX(14px);
 }
-
-/* Contenedor del cuerpo de AutoFill (contenido dinámico) */
-.body-autoquiz {
-    /* Se puede ajustar según el contenido interno */
-    display: none;
-    /* En AutoFill se oculta por defecto */
-}
-
-/* --------------------------------------------------------------------------
-     5.2. Subcontenedor de AutoSave
-     -------------------------------------------------------------------------- */
-
-/* Header de AutoSave: título y switch */
-.header-autoquiz h2 {
-    /* Se reutiliza el mismo estilo que en AutoFill */
-    font-size: 22px;
-    font-weight: 600;
-    color: #34495e;
-    margin: 0;
-}
-
-/* Cuerpo de AutoSave */
-.body-autoquiz {
-    /* Se muestra por defecto en AutoSave */
-    display: block;
-}
-
-/* Estilo para los datos (ej. respuestas) en AutoSave */
-.dato-autoquiz {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0;
-    color: #34495e;
-    flex-wrap: wrap;
-    width: 100%;
-    word-wrap: break-word;
-    word-break: break-word;
-}
-
 
 /* ==========================================================================
      2. Sección de Usuarios
