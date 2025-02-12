@@ -98,14 +98,18 @@
     border: 1px solid #dcdcdc;
     min-height: auto; /* Altura mínima ajustable */
     margin-bottom: 20px;
+    overflow-y: auto;
+
 }
 
-@media (min-height: 256px) {
+@media (min-height: 50%) {
     .subcontainer-autoquiz-autosave {
         flex: 1;
-        height: auto; /* Mantiene la altura dinámica */
+        height: -webkit-fill-available;
     }
 }
+
+
 
   
  /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
