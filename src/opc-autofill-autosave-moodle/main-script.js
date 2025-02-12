@@ -3,8 +3,13 @@ import './style.css';
 import { contenedorUsers_js } from './users/script.js';
 import { contenedorRuta_js, contenedorRutaDinamica_js} from './ruta/script.js';
 
+import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas,  normalizarHTML, compararPreguntas } from './autofill-autosave-helpers.js';
 
-import { contenedorAutoSave_js } from './autosave/autosave-script.js';
+import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage } from './autosave/autosave-script.js';
+
+import { getDataFromFirebase, getDataFromFirebaseAsync,  saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase} from '../config-firebase/firebase-helpers.js';
+import { idbGet, idbDelete} from '../config-firebase/idbSession.js';
+
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
@@ -37,6 +42,10 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
             <div id="container-autofillautosave">
 
+            
+
+
+
             <!-- Nuevo contenedor para AutoFill-->
             <div id="container-autofill" class="subcontainer-autoquiz-autofill" style="display: none;">
 
@@ -59,6 +68,9 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
                 </div>
             </div>
+
+
+
 
 <!-- Contenedor para AutoSave -->
 <div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
@@ -124,13 +136,25 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
     }
 
     // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
-    if (esMoodle || url.includes('http://127.0.0.1:5500/dist/index.html')) {
+    if (esMoodle) {
         const autofillContainer = document.getElementById('container-autofill');
         const autosaveContainer = document.getElementById('container-autosave');
         autofillContainer.style.display = 'block';
         autosaveContainer.style.display = 'block';
-        //contenedorAutoFill_js();
-        contenedorAutoSave_js();
+
+        // Iniciar la obtención de datos desde Firebase de manera asíncrona
+        getDataFromFirebaseAsync();
+
+        // Seleccionar todos los elementos que contienen las formulaciones originales de las preguntas
+        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+        // Guardar en SessionStorage el estado actual de las preguntas y esperar a que termine el proceso
+        await AutoSaveQuestions_SessionStorage(originalAllFormulations);
+
+        // contenedorAutoFill_js();
+        // contenedorAutoSave_js();
+
+        // renderizarPreguntas('#barra-lateral-autoquizfillapp');
+        // renderizarPreguntas();
     }
 
     // Ejecutar extractRevision() solo si el URL contiene 'grade/report/overview/index.php'

@@ -14,77 +14,110 @@ import { idbGet, idbDelete} from '../../config-firebase/idbSession.js';
 
 // Exporta una función llamada contenedorAutoSave_js
 export function contenedorAutoSave_js() {
-    const SWITCH_ID = 'switch-autosave';
-    const BODY_ID = 'body-autoquiz-autosave';
-    const STORAGE_KEY = 'autosave-autoquizfillapp';
-    const ACTIVADO = 'activado';
-    const DESACTIVADO = 'desactivado';
+    // Constantes para la identificación de elementos y configuración del AutoSave
+    const SWITCH_AUTOSAVE_ID = 'switch-autosave';             // ID del interruptor que activa/desactiva el AutoSave
+    const SWITCH_AUTOSAVE = 'autosave-autoquizfillapp';       // Clave para almacenar el estado del AutoSave en localStorage
+    const BODY_ID_AUTOSAVE = 'body-autoquiz-autosave';        // ID del contenedor visual relacionado con el AutoSave
+   
+    const SWITCH_AUTOFILL_ID = 'switch-autofill';             // ID del interruptor que activa/desactiva el AutoFill
+    const SWITCH_AUTOFILL = 'autofill-autoquizfillapp';       // Clave para almacenar el estado del AutoFill en localStorage
+    const BODY_ID_AUTOFILL = 'body-autoquiz-autofill';        // ID del contenedor visual relacionado con el AutoSave
+   
+    const ACTIVADO = 'activado';                               // Valor que indica que el AutoSave está activado
+    const DESACTIVADO = 'desactivado';                         // Valor que indica que el AutoSave está desactivado
 
-    const interruptorAutoSave = document.getElementById(SWITCH_ID);
-    const bodyAutoSave = document.getElementById(BODY_ID);
+    // Obtener referencias a los elementos del DOM
+    const interruptorAutoSave = document.getElementById(SWITCH_AUTOSAVE_ID);
+    const bodyAutoSave = document.getElementById(BODY_ID_AUTOSAVE);
 
-    if (!interruptorAutoSave) {
-        console.error(`Error: No se encontró el elemento con ID '${SWITCH_ID}'`);
+    const interruptorAutoFill = document.getElementById(SWITCH_AUTOFILL_ID);
+    const bodyAutoFill = document.getElementById(BODY_ID_AUTOFILL);
+
+    // Verificar que el interruptor exista; de lo contrario, registrar un error y salir
+    if (!interruptorAutoSave && !interruptorAutoFill) {
+        console.error(`Error: No se encontró el elemento con ID '${SWITCH_AUTOSAVE_ID}'`);
+        console.error(`Error: No se encontró el elemento con ID '${SWITCH_AUTOFILL_ID}'`);
         return;
     }
 
-    const estadoGuardado = localStorage.getItem(STORAGE_KEY) || DESACTIVADO;
-    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoGuardado}`);
+    // Recuperar el estado guardado del AutoSave (si no existe, se considera desactivado)
+    const estadoGuardado_switchAutoSave = localStorage.getItem(SWITCH_AUTOSAVE) || DESACTIVADO;
+    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoGuardado_switchAutoSave}`);
 
-    interruptorAutoSave.checked = estadoGuardado === ACTIVADO;
+    // Actualizar el estado visual del interruptor según el estado guardado
+    interruptorAutoSave.checked = estadoGuardado_switchAutoSave === ACTIVADO;
 
-    // Ejemplo de importación:
+    // Recuperar el estado guardado del AutoFill (si no existe, se considera desactivado)
+    const estadoGuardado_switchAutoFill = localStorage.getItem(SWITCH_AUTOFILL) || DESACTIVADO;
+    console.log(`[opc-autofill-autosave-moodle: autosave] AutoFill: ${estadoGuardado_switchAutoSave}`);
+
+    // Actualizar el estado visual del interruptor según el estado guardado
+    interruptorAutoFill.checked = estadoGuardado_switchAutoFill === ACTIVADO;
+
+    // Ejemplo de importación de funciones auxiliares:
     // import { renderizarPreguntas } from './autofill-autosave-helpers.js';
 
+    /**
+     * Función asíncrona que actualiza la visibilidad del contenedor del AutoSave
+     * y gestiona la ejecución de la lógica asociada según la página y el estado del interruptor.
+     */
     const actualizarVisibilidadBody = async () => {
+        // Determinar si la URL actual corresponde a la página de intento de quiz
         const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
 
         if (esPaginaQuiz && interruptorAutoSave.checked) {
+            // Si estamos en la página de quiz y el AutoSave está activado:
             if (bodyAutoSave) {
+                // Mostrar el contenedor relacionado con el AutoSave
                 bodyAutoSave.style.display = 'flex';
-
-                getDataFromFirebaseAsync();
 
                 console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
-                const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-                await AutoSave_SessionStorage(originalAllFormulations); // Espera a que termine esa función
-
+                // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
                 await AutoSave_ShowResponses();
 
-                // **Aquí** se llama a la función para renderizar expresiones LaTeX
-                // (por ejemplo, en un contenedor con id="barra-lateral-autoquizfillapp").
-                renderizarPreguntas();
-                // O si tu función acepta un selector:
+                // Llamar a la función para renderizar expresiones LaTeX en el contenedor correspondiente
+                // Ejemplo sin parámetros:
+                
+                // O, en caso de que la función acepte un selector:
                 // renderizarPreguntas('#barra-lateral-autoquizfillapp');
 
+                // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
                 detectarCambiosPreguntas();
                 console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
             }
 
         } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
+            // Si estamos en la página de quiz pero el AutoSave está desactivado:
             if (bodyAutoSave) {
+                // Ocultar el contenedor del AutoSave
                 bodyAutoSave.style.display = 'none';
+                // Eliminar del sessionStorage los datos relacionados con las preguntas auto-guardadas
                 sessionStorage.removeItem('questions-AutoSave');
             }
         } else if (!esPaginaQuiz) {
+            // Si la página actual no es compatible con el AutoSave, se informa por consola
             console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
         }
     };
 
-    // **Llamar la función sin await para que no bloquee la ejecución**
+    // Llamar a la función para actualizar la visibilidad del contenedor sin bloquear la ejecución
     actualizarVisibilidadBody();
 
-    // **Manejar cambios en el interruptor**
+    // Configurar el listener para detectar cambios en el estado del interruptor de AutoSave
     interruptorAutoSave.addEventListener('change', () => {
+        // Determinar el nuevo estado basado en si el interruptor está marcado o no
         const estadoNuevo = interruptorAutoSave.checked ? ACTIVADO : DESACTIVADO;
-        localStorage.setItem(STORAGE_KEY, estadoNuevo);
+        // Guardar el nuevo estado en localStorage
+        localStorage.setItem(SWITCH_AUTOSAVE, estadoNuevo);
         console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave: ${estadoNuevo}`);
-        actualizarVisibilidadBody(); // Llamar sin await
+        // Actualizar la visibilidad y funcionalidad del contenedor según el nuevo estado (sin await para no bloquear)
+        actualizarVisibilidadBody();
     });
 }
 
-async function AutoSave_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
+
+export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
     // --------------------------------------------------------------------------
     // 1) Verificar si "questionsHtml" es una colección (NodeList, HTMLCollection)
     //    Si no, convertirlo en array.
