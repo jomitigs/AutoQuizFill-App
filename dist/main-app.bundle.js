@@ -45838,6 +45838,16 @@
   </label>
 </div>
 
+<h5 id="titulo-config">AutoSave</h5>
+
+<div id="botonterminaryguardar-autosave-switch" class="opc-config-switch-container" style="display: none">
+  <span class="opc-config-switch-label">Mostrar Boton Guardar y Terminar</span>
+  <label class="opc-config-switch">
+    <input type="checkbox" id="botonterminaryguardar-autosave-switch-checkbox" class="opc-config-switch-checkbox">
+    <span class="opc-config-slider round"></span>
+  </label>
+</div>
+
 
         </div>
 
