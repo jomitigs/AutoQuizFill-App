@@ -44715,7 +44715,7 @@
 	    const destSnapshot = await get(ref(database, ruta));
 	    const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
 
-	    // 3. Preparar el objeto de actualizaciones (solo se actualizarán los campos de autosave)
+	    // 3. Preparar el objeto de actualizaciones
 	    const updates = {};
 
 	    // Itera sobre cada entrada en el objeto "datos"
@@ -44725,43 +44725,59 @@
 	      // La clave en Firebase destino para esta pregunta (ejemplo: "question0411")
 	      const firebaseKey = datos[preguntaKey];
 
-	      // Obtiene los datos fuente desde "questions-AutoSave"
+	      // Obtiene la información fuente de questions-AutoSave
 	      const sourceData = autoSaveFull[preguntaKey];
 	      if (!sourceData) {
 	        console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
-	        continue; // Si no existe la información fuente, se salta a la siguiente pregunta.
+	        continue;
 	      }
 
-	      // Obtiene el dato actual en Firebase para la clave firebaseKey
+	      // Obtiene el dato actual en Firebase para esta clave
 	      const destData = destFull[firebaseKey] || {};
 
-	      // Comenzamos con una copia de los datos que ya están en Firebase
-	      let updatedData = { ...destData };
+	      let updatedData = {};
 
-	      // Solo se actualizan (o se sobrescriben) los campos que vienen en sourceData.
-	      for (const key in sourceData) {
-	        if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
-	          updatedData[key] = sourceData[key];
+	      if (destData.estado === "verificado") {
+	        // Si el registro está verificado: no se actualizan otros campos
+	        // Se actualiza únicamente el feedback si:
+	        //  - source tiene feedback no vacío, y
+	        //  - en Firebase no hay feedback (o está vacío)
+	        if (
+	          sourceData.feedback && sourceData.feedback.trim() !== "" &&
+	          (!destData.feedback || destData.feedback.trim() === "")
+	        ) {
+	          updatedData.feedback = sourceData.feedback;
+	        }
+	      } else {
+	        // Si el registro NO está verificado:
+	        // Comenzamos partiendo de lo que ya existe en Firebase...
+	        updatedData = { ...destData };
+
+	        // ...y sobrescribimos únicamente los campos que vienen en sourceData.
+	        for (const key in sourceData) {
+	          if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
+	            updatedData[key] = sourceData[key];
+	          }
+	        }
+
+	        // Se elimina la clave "previous" (si existe) para que no se guarde en Firebase
+	        if (updatedData.hasOwnProperty("previous")) {
+	          delete updatedData.previous;
+	        }
+
+	        // Regla especial para "feedback":
+	        // Si el feedback del source está vacío y ya existe un feedback en Firebase, se conserva el existente.
+	        if (
+	          (!sourceData.feedback || sourceData.feedback.trim() === "") &&
+	          destData.feedback && destData.feedback.trim() !== ""
+	        ) {
+	          updatedData.feedback = destData.feedback;
 	        }
 	      }
 
-	      // Se elimina la clave "previous" si existe, ya que no se debe guardar en Firebase
-	      if (updatedData.hasOwnProperty("previous")) {
-	        delete updatedData.previous;
-	      }
-
-	      // Regla especial para "feedback":
-	      // Si el feedback del source está vacío y el dato destino ya tiene un feedback no vacío,
-	      // se conserva el feedback que ya existe en Firebase.
-	      if (
-	        (!sourceData.feedback || sourceData.feedback.trim() === "") &&
-	        destData.feedback && destData.feedback.trim() !== ""
-	      ) {
-	        updatedData.feedback = destData.feedback;
-	      }
-
-	      // Si updatedData es diferente de lo que ya existe en Firebase, se agrega a las actualizaciones.
-	      if (JSON.stringify(updatedData) !== JSON.stringify(destData)) {
+	      // Agrega la actualización si hay cambios (para evitar actualizaciones innecesarias)
+	      if (Object.keys(updatedData).length > 0 &&
+	          JSON.stringify(updatedData) !== JSON.stringify(destData)) {
 	        updates[firebaseKey] = updatedData;
 	      }
 	    }
