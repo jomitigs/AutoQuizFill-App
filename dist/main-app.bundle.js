@@ -44698,12 +44698,15 @@
 
 	async function saveExistingQuestionsToFirebase(ruta, datos) {
 	  try {
+	    console.log("Iniciando la actualización de preguntas en Firebase.");
+
 	    // 1. Obtener la información de "questions-AutoSave" desde sessionStorage
 	    const autoSaveString = sessionStorage.getItem("questions-AutoSave");
 	    let autoSaveFull = {};
 	    if (autoSaveString) {
 	      try {
 	        autoSaveFull = JSON.parse(autoSaveString);
+	        console.log("Datos obtenidos de 'questions-AutoSave':", autoSaveFull);
 	      } catch (err) {
 	        console.error("Error al parsear 'questions-AutoSave' desde sessionStorage:", err);
 	      }
@@ -44714,6 +44717,7 @@
 	    // 2. Leer en bloque el nodo destino en Firebase
 	    const destSnapshot = await get(ref(database, ruta));
 	    const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
+	    console.log(`Datos actuales en Firebase en la ruta '${ruta}':`, destFull);
 
 	    // 3. Preparar el objeto de actualizaciones
 	    const updates = {};
@@ -44722,70 +44726,85 @@
 	    for (const preguntaKey in datos) {
 	      if (!Object.prototype.hasOwnProperty.call(datos, preguntaKey)) continue;
 
-	      // La clave en Firebase destino para esta pregunta (ejemplo: "question0411")
+	      // La clave en Firebase para esta pregunta (ejemplo: "question0411")
 	      const firebaseKey = datos[preguntaKey];
+	      console.log(`\nProcesando ${preguntaKey} con firebaseKey: ${firebaseKey}`);
 
-	      // Obtiene la información fuente de questions-AutoSave
+	      // Obtener los datos fuente desde questions-AutoSave
 	      const sourceData = autoSaveFull[preguntaKey];
 	      if (!sourceData) {
-	        console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
+	        console.warn(`No se encontró información para ${preguntaKey} en 'questions-AutoSave'.`);
 	        continue;
 	      }
+	      console.log(`Datos fuente para ${preguntaKey}:`, sourceData);
 
-	      // Obtiene el dato actual en Firebase para esta clave
+	      // Obtener los datos actuales en Firebase para esta clave
 	      const destData = destFull[firebaseKey] || {};
+	      console.log(`Datos actuales en Firebase para ${firebaseKey}:`, destData);
 
 	      let updatedData = {};
 
+	      // Caso 1: Si el registro en Firebase está verificado
 	      if (destData.estado === "verificado") {
-	        // Si el registro está verificado: no se actualizan otros campos
-	        // Se actualiza únicamente el feedback si:
-	        //  - source tiene feedback no vacío, y
-	        //  - en Firebase no hay feedback (o está vacío)
+	        console.log(`El registro ${firebaseKey} está verificado.`);
+	        // Actualiza únicamente el feedback si se cumplen las condiciones
 	        if (
 	          sourceData.feedback && sourceData.feedback.trim() !== "" &&
 	          (!destData.feedback || destData.feedback.trim() === "")
 	        ) {
 	          updatedData.feedback = sourceData.feedback;
+	          console.log(
+	            `Actualizando 'feedback' para ${firebaseKey}:\n` +
+	            `- Source feedback: "${sourceData.feedback}"\n` +
+	            `- Dest feedback: "${destData.feedback || "(vacío)"}"`
+	          );
+	        } else {
+	          console.log(`No se actualiza 'feedback' para ${firebaseKey} porque no se cumplieron las condiciones.`);
 	        }
 	      } else {
-	        // Si el registro NO está verificado:
-	        // Comenzamos partiendo de lo que ya existe en Firebase...
+	        // Caso 2: El registro NO está verificado
+	        console.log(`El registro ${firebaseKey} NO está verificado. Se fusionarán los datos.`);
+	        // Comenzar con los datos que ya existen en Firebase
 	        updatedData = { ...destData };
 
-	        // ...y sobrescribimos únicamente los campos que vienen en sourceData.
+	        // Fusionar sobrescribiendo (o agregando) los campos que vienen en sourceData
 	        for (const key in sourceData) {
 	          if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
 	            updatedData[key] = sourceData[key];
+	            console.log(`Sobrescribiendo o agregando la clave '${key}' con valor:`, sourceData[key]);
 	          }
 	        }
 
-	        // Se elimina la clave "previous" (si existe) para que no se guarde en Firebase
+	        // Eliminar la clave "previous" si existe
 	        if (updatedData.hasOwnProperty("previous")) {
+	          console.log(`Eliminando la clave "previous" para ${firebaseKey}.`);
 	          delete updatedData.previous;
 	        }
 
-	        // Regla especial para "feedback":
-	        // Si el feedback del source está vacío y ya existe un feedback en Firebase, se conserva el existente.
+	        // Regla especial para "feedback": conservar el feedback existente si el source está vacío
 	        if (
 	          (!sourceData.feedback || sourceData.feedback.trim() === "") &&
 	          destData.feedback && destData.feedback.trim() !== ""
 	        ) {
 	          updatedData.feedback = destData.feedback;
+	          console.log(`Conservando el feedback existente para ${firebaseKey} porque el source está vacío.`);
 	        }
 	      }
 
-	      // Agrega la actualización si hay cambios (para evitar actualizaciones innecesarias)
+	      // Verificar si updatedData difiere de lo que ya existe en Firebase
 	      if (Object.keys(updatedData).length > 0 &&
 	          JSON.stringify(updatedData) !== JSON.stringify(destData)) {
 	        updates[firebaseKey] = updatedData;
+	        console.log(`Datos a actualizar para ${firebaseKey}:`, updatedData);
+	      } else {
+	        console.log(`No hay cambios para ${firebaseKey}.`);
 	      }
 	    }
 
-	    // 4. Realiza un único update en Firebase si hay cambios
+	    // 4. Realizar un único update en Firebase si hay cambios
 	    if (Object.keys(updates).length > 0) {
 	      await update(ref(database, ruta), updates);
-	      console.log("Se han actualizado las siguientes entradas:", updates);
+	      console.log("Se han actualizado las siguientes entradas en Firebase:", updates);
 	    } else {
 	      console.log("No se realizaron actualizaciones, no se cumplieron las condiciones.");
 	    }
