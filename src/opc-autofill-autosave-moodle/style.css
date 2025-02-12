@@ -119,11 +119,29 @@
  /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
 #body-autoquiz-autosave {
     flex-direction: column;
-    font-size: 10px;
+    font-size: 11px;
     overflow-y: auto;
     height: unset;
     height: calc(100% - 30px);
   }
+
+    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
+    #body-autoquiz-autosave::-webkit-scrollbar {
+      width: 0.4em; /* Ancho de la barra de desplazamiento */
+    }
+    
+    #body-autoquiz-autosave::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */
+      border-radius: 10px;
+    }
+    
+    #body-autoquiz-autosave::-webkit-scrollbar-track {
+      background: transparent; /* Fondo transparente */
+    }
+    
+    #body-autoquiz-autosave::-webkit-scrollbar-button {
+      display: none; /* Oculta botones (flechas) */
+    }
   
   /* Reglas para el elemento de la pregunta */
   .preguntaautosave {
