@@ -76,18 +76,20 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    height: 536px; /* Se fija la altura total */
+    height: 580px; /* Se fija la altura total */
     /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */
   }
   
   /* Reglas compartidas para cada subcontenedor */
   .subcontainer-autoquiz-autofill {
-    max-height: 50%;
     background-color: #f4f4f4;
     padding: 5px 5px 5px 10px;
     border-radius: 8px;
     border: 1px solid #dcdcdc;
     margin: 0;
+    flex-grow: 1; 
+    overflow-y: auto;
+    min-height: auto; 
   }
 
 
@@ -96,19 +98,20 @@
     padding: 5px 5px 5px 10px;
     border-radius: 8px;
     border: 1px solid #dcdcdc;
-    min-height: auto; /* Altura mínima ajustable */
     margin-bottom: 20px;
+    flex-grow: 1; 
     overflow-y: auto;
+    min-height: auto; 
 
 }
 
-@media (min-height: 50%) {
+@media (max-height: 580px) {
+    .subcontainer-autoquiz-autofill,
     .subcontainer-autoquiz-autosave {
         flex: 1;
-        height: -webkit-fill-available;
+        max-height: 50%;
     }
 }
-
 
 
   
