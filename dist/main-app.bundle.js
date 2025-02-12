@@ -43367,7 +43367,7 @@
 	          }
 	          // Encierrar el código LaTeX entre \(...\)
 	          content += `\\(${latexCode}\\)`;
-	          console.log('-> Agregando LaTeX al contenido:', latexCode);
+	          //console.log('-> Agregando LaTeX al contenido:', latexCode);
 	        }
 
 	        // ------------------------------------------------------------------------
@@ -45554,6 +45554,29 @@
 
 	}
 
+	async function contenedorAutoFill_js() {
+	    console.log("Ejecutando AutoSave_Firebase...");
+
+	    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
+	    switchRutaDinamica
+	        ? localStorage.getItem('configRutaDinamic')
+	        : localStorage.getItem('configRuta');
+
+	    const dataPage = JSON.parse(sessionStorage.getItem('questions-AutoSave'));
+
+	    const dataPageNormalizada = await normalizarHTML(dataPage);
+	    console.log('DataPageNormalizada:', dataPageNormalizada);
+
+	    const dataFirebaseNormalizada = await idbGet("dataFirebaseNormalizada");
+	    console.log('DataFirebaseNormalizada:', dataFirebaseNormalizada);
+
+	    // 🟢 ESPERAR a que `compararPreguntas` termine antes de seguir
+	    const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
+
+	    console.log("DPN Existentes:", comparedData.dpnExistentes);
+	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
+	}
+
 	function opcion_AutoFillAutoSave_Moodle_html() {
 	    return `
         <div id="autofillautosave_moodle" class="containerOption">
@@ -45705,7 +45728,7 @@
 
 	            if (stateAutoFill === "activado") {
 	                bodyAutoFill.style.display = 'flex';
-	                // contenedorAutoFill_js();
+	                contenedorAutoFill_js();
 	            } else if (stateAutoSave === "activado") {
 	                bodyAutoSave.style.display = 'flex';
 	                contenedorAutoSave_js();

@@ -309,7 +309,7 @@ export async function extractContentInOrder(node) {
           }
           // Encierrar el código LaTeX entre \(...\)
           content += `\\(${latexCode}\\)`;
-          console.log('-> Agregando LaTeX al contenido:', latexCode);
+          //console.log('-> Agregando LaTeX al contenido:', latexCode);
         }
 
         // ------------------------------------------------------------------------

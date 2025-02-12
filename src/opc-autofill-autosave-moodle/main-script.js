@@ -164,7 +164,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
             if (stateAutoFill === "activado") {
                 bodyAutoFill.style.display = 'flex';
-                // contenedorAutoFill_js();
+                contenedorAutoFill_js();
             } else if (stateAutoSave === "activado") {
                 bodyAutoSave.style.display = 'flex';
                 contenedorAutoSave_js();
