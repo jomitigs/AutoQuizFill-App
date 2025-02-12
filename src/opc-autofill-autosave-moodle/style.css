@@ -91,49 +91,22 @@
   }
 
 
-    /* Reglas compartidas para cada subcontenedor */
-   
-    .subcontainer-autoquiz-autosave {
-        background-color: #f4f4f4;
-        padding: 5px 5px 5px 10px;
-        border-radius: 8px;
-        border: 1px solid #dcdcdc;
-        min-height: auto; /* Altura mínima ajustable */
-        margin-bottom: 20px;
-    }
-    
-    @media (min-height: 50%) {
-        .subcontainer-autoquiz-autosave {
-            flex: 1;
-            height: -webkit-fill-available;
-        }
-    }
-    
+  .subcontainer-autoquiz-autosave {
+    background-color: #f4f4f4;
+    padding: 5px 5px 5px 10px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    min-height: auto; /* Altura mínima ajustable */
+    margin-bottom: 20px;
+}
 
-    
-  
-  
-  /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */
-  .subcontainer-autoquiz-autosave::-webkit-scrollbar,
-  .subcontainer-autoquiz-autofill::-webkit-scrollbar {
-    width: 0.4em; /* Ancho de la barra de desplazamiento */
-  }
-  
-  .subcontainer-autoquiz-autosave::-webkit-scrollbar-thumb,
-  .subcontainer-autoquiz-autofill::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */
-    border-radius: 10px;
-  }
-  
-  .subcontainer-autoquiz-autosave::-webkit-scrollbar-track,
-  .subcontainer-autoquiz-autofill::-webkit-scrollbar-track {
-    background: transparent; /* Fondo transparente */
-  }
-  
-  .subcontainer-autoquiz-autosave::-webkit-scrollbar-button,
-  .subcontainer-autoquiz-autofill::-webkit-scrollbar-button {
-    display: none; /* Oculta botones (flechas) */
-  }
+@media (min-height: 256px) {
+    .subcontainer-autoquiz-autosave {
+        flex: 1;
+        height: auto; /* Mantiene la altura dinámica */
+    }
+}
+
   
  /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */
 #body-autoquiz-autosave {
