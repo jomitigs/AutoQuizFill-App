@@ -155,7 +155,7 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
     const destSnapshot = await get(ref(database, ruta));
     const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
 
-    // 3. Preparar el objeto de actualizaciones para realizar un único update
+    // 3. Preparar el objeto de actualizaciones para realizar un único update en Firebase
     const updates = {};
 
     // Itera sobre cada entrada en el objeto "datos"
@@ -164,7 +164,7 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
         // La clave en Firebase destino para esta pregunta (por ejemplo, "question0411")
         const firebaseKey = datos[preguntaKey];
 
-        // Obtiene el dato fuente desde sessionStorage usando la clave "PreguntaX"
+        // Obtiene el dato fuente desde sessionStorage (questions-AutoSave) usando la clave "PreguntaX"
         const sourceData = autoSaveFull[preguntaKey];
         if (!sourceData) {
           console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
@@ -177,8 +177,7 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
         let updatedData = {};
 
         if (destData.estado === "verificado") {
-          // Para registros verificados, no se actualizan otros campos; solo se evalúa el feedback:
-          // Actualiza feedback solo si el source tiene un valor no vacío y el destino está vacío.
+          // Para registros verificados: no se actualizan otros campos, solo se evalúa el feedback.
           if (
             sourceData.feedback && sourceData.feedback.trim() !== "" &&
             (!destData.feedback || destData.feedback.trim() === "")
@@ -186,15 +185,15 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
             updatedData.feedback = sourceData.feedback;
           }
         } else {
-          // Para registros NO verificados, se copian todos los campos del source
-          // (pero se elimina la clave "previous" y se evita actualizar "estado")
+          // Para registros NO verificados: se copian todos los campos del source
           updatedData = { ...sourceData };
 
           // Elimina la clave "previous" si existe, ya que debe borrarse al guardar en Firebase
           if (updatedData.hasOwnProperty("previous")) {
             delete updatedData.previous;
           }
-          // Asegura que no se actualice el campo "estado"
+          // Se elimina cualquier clave "estado" que pudiera venir en sourceData,
+          // para no sobreescribir el valor existente en Firebase.
           if (updatedData.hasOwnProperty("estado")) {
             delete updatedData.estado;
           }
@@ -228,7 +227,6 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
     throw error;
   }
 }
-
 
   
 
