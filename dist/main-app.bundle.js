@@ -44698,7 +44698,7 @@
 
 	async function saveExistingQuestionsToFirebase(ruta, datos) {
 	  try {
-	    // 1. Obtener la información de `questions-AutoSave` desde sessionStorage
+	    // 1. Obtener la información de "questions-AutoSave" desde sessionStorage
 	    const autoSaveString = sessionStorage.getItem("questions-AutoSave");
 	    let autoSaveFull = {};
 	    if (autoSaveString) {
@@ -44711,65 +44711,62 @@
 	      console.warn("No se encontró 'questions-AutoSave' en sessionStorage.");
 	    }
 
-	    // 2. Obtener la copia previa de Firebase desde IndexedDB
-	    const firebaseBackup = await idbGet("dataFirebaseNormalizada") || {};
-
-	    // 3. Leer en bloque el nodo destino en Firebase
+	    // 2. Leer en bloque el nodo destino en Firebase
 	    const destSnapshot = await get(ref(database, ruta));
 	    const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
 
-	    // 4. Preparar el objeto de actualizaciones para hacer un único update en Firebase
+	    // 3. Preparar el objeto de actualizaciones (solo se actualizarán los campos de autosave)
 	    const updates = {};
 
 	    // Itera sobre cada entrada en el objeto "datos"
 	    for (const preguntaKey in datos) {
-	      if (Object.prototype.hasOwnProperty.call(datos, preguntaKey)) {
-	        // La clave en Firebase destino para esta pregunta (ej.: "question0411")
-	        const firebaseKey = datos[preguntaKey];
+	      if (!Object.prototype.hasOwnProperty.call(datos, preguntaKey)) continue;
 
-	        // Obtiene el dato fuente desde sessionStorage (questions-AutoSave)
-	        const sourceData = autoSaveFull[preguntaKey];
-	        if (!sourceData) {
-	          console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
-	          continue; // Si no existe la información fuente, se pasa a la siguiente pregunta.
+	      // La clave en Firebase destino para esta pregunta (ejemplo: "question0411")
+	      const firebaseKey = datos[preguntaKey];
+
+	      // Obtiene los datos fuente desde "questions-AutoSave"
+	      const sourceData = autoSaveFull[preguntaKey];
+	      if (!sourceData) {
+	        console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
+	        continue; // Si no existe la información fuente, se salta a la siguiente pregunta.
+	      }
+
+	      // Obtiene el dato actual en Firebase para la clave firebaseKey
+	      const destData = destFull[firebaseKey] || {};
+
+	      // Comenzamos con una copia de los datos que ya están en Firebase
+	      let updatedData = { ...destData };
+
+	      // Solo se actualizan (o se sobrescriben) los campos que vienen en sourceData.
+	      for (const key in sourceData) {
+	        if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
+	          updatedData[key] = sourceData[key];
 	        }
+	      }
 
-	        // Obtiene el dato actual en Firebase o de la copia de seguridad
-	        const destData = destFull[firebaseKey] || firebaseBackup[firebaseKey] || {};
+	      // Se elimina la clave "previous" si existe, ya que no se debe guardar en Firebase
+	      if (updatedData.hasOwnProperty("previous")) {
+	        delete updatedData.previous;
+	      }
 
-	        // Crea un objeto para almacenar solo las claves que deben actualizarse
-	        let updatedData = { ...destData };
+	      // Regla especial para "feedback":
+	      // Si el feedback del source está vacío y el dato destino ya tiene un feedback no vacío,
+	      // se conserva el feedback que ya existe en Firebase.
+	      if (
+	        (!sourceData.feedback || sourceData.feedback.trim() === "") &&
+	        destData.feedback && destData.feedback.trim() !== ""
+	      ) {
+	        updatedData.feedback = destData.feedback;
+	      }
 
-	        // Fusionar los datos sin eliminar los existentes
-	        for (const key in sourceData) {
-	          if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
-	            updatedData[key] = sourceData[key];
-	          }
-	        }
-
-	        // Elimina la clave "previous" si existe, ya que debe borrarse al guardar en Firebase
-	        if (updatedData.hasOwnProperty("previous")) {
-	          delete updatedData.previous;
-	        }
-
-	        // Regla especial para feedback:
-	        // Si el feedback del source está vacío y el destino ya tiene un feedback no vacío,
-	        // se conserva el feedback del destino.
-	        if (
-	          (!sourceData.feedback || sourceData.feedback.trim() === "") &&
-	          destData.feedback && destData.feedback.trim() !== ""
-	        ) {
-	          updatedData.feedback = destData.feedback;
-	        }
-
-	        // Si hay cambios, agregamos la actualización
-	        if (JSON.stringify(updatedData) !== JSON.stringify(destData)) {
-	          updates[firebaseKey] = updatedData;
-	        }
+	      // Si updatedData es diferente de lo que ya existe en Firebase, se agrega a las actualizaciones.
+	      if (JSON.stringify(updatedData) !== JSON.stringify(destData)) {
+	        updates[firebaseKey] = updatedData;
 	      }
 	    }
 
-	    // 5. Realiza un único update en Firebase si hay cambios
+	    // 4. Realiza un único update en Firebase si hay cambios
 	    if (Object.keys(updates).length > 0) {
 	      await update(ref(database, ruta), updates);
 	      console.log("Se han actualizado las siguientes entradas:", updates);
