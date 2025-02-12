@@ -88,7 +88,7 @@
     max-height: 50%;
     overflow-y: auto;
     background-color: #f4f4f4;
-    padding: 10px;
+    padding: 5px 5px 10px 10px;
     border-radius: 8px;
     border: 1px solid #dcdcdc;
     margin: 0;
@@ -154,8 +154,8 @@
 
 /* Header de AutoFill: título y switch */
 .header-autoquiz {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
