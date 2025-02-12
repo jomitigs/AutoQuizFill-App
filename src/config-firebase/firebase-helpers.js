@@ -135,7 +135,7 @@ export async function getDataFromFirebaseAsync(reset = false) {
       console.error("Error en getDataFromFirebaseAsync:", error);
     }
   }
-  
+
 export async function saveExistingQuestionsToFirebase(ruta, datos) {
   try {
     // 1. Obtener la información de questions-AutoSave desde sessionStorage
@@ -145,7 +145,7 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
       try {
         autoSaveFull = JSON.parse(autoSaveString);
       } catch (err) {
-        console.error("Error al parsear el sessionStorage de questions-AutoSave:", err);
+        console.error("Error al parsear 'questions-AutoSave' desde sessionStorage:", err);
       }
     } else {
       console.warn("No se encontró 'questions-AutoSave' en sessionStorage.");
@@ -155,19 +155,19 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
     const destSnapshot = await get(ref(database, ruta));
     const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
 
-    // 3. Armar el objeto de actualizaciones para hacer un único update en Firebase
+    // 3. Preparar el objeto de actualizaciones para realizar un único update
     const updates = {};
 
     // Itera sobre cada entrada en el objeto "datos"
     for (const preguntaKey in datos) {
       if (Object.prototype.hasOwnProperty.call(datos, preguntaKey)) {
-        // La clave en Firebase destino para esta pregunta (ej. "question0411")
+        // La clave en Firebase destino para esta pregunta (por ejemplo, "question0411")
         const firebaseKey = datos[preguntaKey];
 
-        // Obtiene el dato fuente desde sessionStorage (questions-AutoSave)
+        // Obtiene el dato fuente desde sessionStorage usando la clave "PreguntaX"
         const sourceData = autoSaveFull[preguntaKey];
         if (!sourceData) {
-          console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave (sessionStorage).`);
+          console.warn(`No se encontró información para ${preguntaKey} en questions-AutoSave.`);
           continue; // Si no existe la información fuente, se pasa a la siguiente pregunta.
         }
 
@@ -176,9 +176,9 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
 
         let updatedData = {};
 
-        // Si el registro destino tiene estado "verificado"
         if (destData.estado === "verificado") {
-          // No se actualizan otros campos, solo se evalúa el feedback:
+          // Para registros verificados, no se actualizan otros campos; solo se evalúa el feedback:
+          // Actualiza feedback solo si el source tiene un valor no vacío y el destino está vacío.
           if (
             sourceData.feedback && sourceData.feedback.trim() !== "" &&
             (!destData.feedback || destData.feedback.trim() === "")
@@ -186,11 +186,20 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
             updatedData.feedback = sourceData.feedback;
           }
         } else {
-          // Si el registro NO está verificado, se copian todos los campos del source...
+          // Para registros NO verificados, se copian todos los campos del source
+          // (pero se elimina la clave "previous" y se evita actualizar "estado")
           updatedData = { ...sourceData };
 
-          // ...con la regla especial para feedback:
-          // Si el source tiene feedback vacío y el destino ya tiene un feedback no vacío,
+          // Elimina la clave "previous" si existe, ya que debe borrarse al guardar en Firebase
+          if (updatedData.hasOwnProperty("previous")) {
+            delete updatedData.previous;
+          }
+          // Asegura que no se actualice el campo "estado"
+          if (updatedData.hasOwnProperty("estado")) {
+            delete updatedData.estado;
+          }
+          // Regla especial para feedback:
+          // Si el feedback del source está vacío y el destino ya tiene un feedback no vacío,
           // se conserva el feedback del destino.
           if (
             (!sourceData.feedback || sourceData.feedback.trim() === "") &&
@@ -200,7 +209,7 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
           }
         }
 
-        // Si se determinó actualizar algún campo, se agrega al objeto "updates"
+        // Si se determinó actualizar algún campo, se agrega al objeto de updates
         if (Object.keys(updatedData).length > 0) {
           updates[firebaseKey] = updatedData;
         }
@@ -215,10 +224,11 @@ export async function saveExistingQuestionsToFirebase(ruta, datos) {
       console.log("No se realizaron actualizaciones, no se cumplieron las condiciones.");
     }
   } catch (error) {
-    console.error("Error al actualizar las preguntas en Firebase:", error);
+    console.error("Error al guardar las preguntas en Firebase:", error);
     throw error;
   }
 }
+
 
   
 
