@@ -171,7 +171,9 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
             }else if (stateAutoSave === "desactivado") {
                 bodyAutoSave.style.display = 'none';
             }
-            
+            renderizarPreguntas();
+
+
         } else {
             sessionStorage.removeItem('questions-AutoSave');
         }

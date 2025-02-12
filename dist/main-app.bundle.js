@@ -45714,7 +45714,9 @@
 	            }else if (stateAutoSave === "desactivado") {
 	                bodyAutoSave.style.display = 'none';
 	            }
-	            
+	            renderizarPreguntas();
+
+
 	        } else {
 	            sessionStorage.removeItem('questions-AutoSave');
 	        }
