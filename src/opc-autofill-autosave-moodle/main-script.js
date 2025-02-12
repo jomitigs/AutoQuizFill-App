@@ -167,6 +167,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
             }
 
         } else {
+            sessionStorage.removeItem('questions-AutoSave');
         }
 
         // Registrar los listeners solo una vez.

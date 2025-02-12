@@ -45716,6 +45716,8 @@
 	                contenedorAutoSave_js();
 	            }
 
+	        } else {
+	            sessionStorage.removeItem('questions-AutoSave');
 	        }
 
 	        // Registrar los listeners solo una vez.
