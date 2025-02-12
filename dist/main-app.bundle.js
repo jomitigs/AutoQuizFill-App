@@ -44448,11 +44448,7 @@
 	async function opcion_AutoFillAutoSave_Moodle_js() {
 	    let esMoodle = esPaginaMoodle();
 
-	    const interruptorAutoSave = document.getElementById("switch-autosave");
-	    const interruptorAutoFill = document.getElementById("switch-autofill");
 
-	    const switchAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
-	    const switchAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
 
 	    if (esMoodle) {
 	        console.log("[opc-autofill-autosave-moodle: main]  Esta página está construida con Moodle");
@@ -44484,6 +44480,15 @@
 	    autosaveContainer.style.display = 'block';
 
 	    const autosave_autofill = async () => {
+
+	        const interruptorAutoSave = document.getElementById("switch-autosave");
+	        const interruptorAutoFill = document.getElementById("switch-autofill");
+	    
+	        const switchAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+	        const switchAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
+
+	        interruptorAutoSave.checked = estadoGuardado_switchAutoSave === "activado";
+	        interruptorAutoFill.checked = estadoGuardado_switchAutoFill === "activado";
 
 	        // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
 	        if (esMoodle && (switchAutoSave === "activado" || switchAutoFill === "activado")) {
