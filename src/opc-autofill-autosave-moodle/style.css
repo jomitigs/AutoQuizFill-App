@@ -92,15 +92,23 @@
 
 
     /* Reglas compartidas para cada subcontenedor */
+   
     .subcontainer-autoquiz-autosave {
-        flex: 1;
         background-color: #f4f4f4;
         padding: 5px 5px 5px 10px;
         border-radius: 8px;
         border: 1px solid #dcdcdc;
-        height: -webkit-fill-available;
+        min-height: auto; /* Altura mínima ajustable */
         margin-bottom: 20px;
     }
+    
+    @media (min-height: 50%) {
+        .subcontainer-autoquiz-autosave {
+            flex: 1;
+            height: -webkit-fill-available;
+        }
+    }
+    
 
     
   
