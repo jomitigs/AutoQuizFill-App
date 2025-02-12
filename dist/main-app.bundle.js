@@ -44480,58 +44480,42 @@
 	    autosaveContainer.style.display = 'block';
 
 	    const autosave_autofill = async () => {
-
 	        const interruptorAutoSave = document.getElementById("switch-autosave");
 	        const interruptorAutoFill = document.getElementById("switch-autofill");
-	    
-	        const switchAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
-	        const switchAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
+	        if (!interruptorAutoSave || !interruptorAutoFill) return;
 
-	        interruptorAutoSave.checked = estadoGuardado_switchAutoSave === "activado";
-	        interruptorAutoFill.checked = estadoGuardado_switchAutoFill === "activado";
+	        const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+	        const stateAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
 
-	        // Mostrar contenedores de autofill y autosave si estamos en 'mod/quiz/attempt.php'
-	        if (esMoodle && (switchAutoSave === "activado" || switchAutoFill === "activado")) {
+	        interruptorAutoSave.checked = (stateAutoSave === "activado");
+	        interruptorAutoFill.checked = (stateAutoFill === "activado");
 
-	            // Iniciar la obtención de datos desde Firebase de manera asíncrona
+	        if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado")) {
 	            getDataFromFirebaseAsync();
-
-	            // Seleccionar todos los elementos que contienen las formulaciones originales de las preguntas
-	            const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-	            // Guardar en SessionStorage el estado actual de las preguntas y esperar a que termine el proceso
-	            await AutoSaveQuestions_SessionStorage(originalAllFormulations);
-
-	            // contenedorAutoFill_js();
-	            // contenedorAutoSave_js();
-
-	            // renderizarPreguntas('#barra-lateral-autoquizfillapp');
-	            // renderizarPreguntas();
+	            const originalFormulations = document.querySelectorAll(".formulation.clearfix");
+	            await AutoSaveQuestions_SessionStorage(originalFormulations);
 	        }
 
+	        // Registrar los listeners solo una vez.
+	        if (!autosave_autofill.initted) {
+	            interruptorAutoSave.addEventListener("change", () => {
+	                const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
+	                localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
+	                console.log(`AutoSave: ${nuevoEstado}`);
+	                autosave_autofill();
+	            });
+	            interruptorAutoFill.addEventListener("change", () => {
+	                const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
+	                localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
+	                console.log(`AutoFill: ${nuevoEstado}`);
+	                autosave_autofill();
+	            });
+	            autosave_autofill.initted = true;
+	        }
 	    };
 
 	    // Llamar a la función para actualizar la visibilidad del contenedor sin bloquear la ejecución
 	    autosave_autofill();
-
-	    interruptorAutoSave.addEventListener('change', () => {
-	        // Determinar el nuevo estado basado en si el interruptor está marcado o no
-	        const estadoNuevo = interruptorAutoSave.checked ? "activado" : "desactivado";
-	        // Guardar el nuevo estado en localStorage
-	        localStorage.setItem("autosave-autoquizfillapp", estadoNuevo);
-	        console.log(`AutoSave: ${estadoNuevo}`);
-	        // Actualizar la visibilidad y funcionalidad del contenedor según el nuevo estado (sin await para no bloquear)
-	        autosave_autofill();
-	    });
-
-	    interruptorAutoFill.addEventListener('change', () => {
-	        // Determinar el nuevo estado basado en si el interruptor está marcado o no
-	        const estadoNuevo = interruptorAutoFill.checked ? "activado" : "desactivado";
-	        // Guardar el nuevo estado en localStorage
-	        localStorage.setItem("autofill-autoquizfillapp", estadoNuevo);
-	        console.log(`AutoFill: ${estadoNuevo}`);
-	        // Actualizar la visibilidad y funcionalidad del contenedor según el nuevo estado (sin await para no bloquear)
-	        autosave_autofill();
-	    });
 	}
 
 	// Función para verificar si la página está construida con Moodle
