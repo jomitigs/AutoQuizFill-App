@@ -44820,8 +44820,9 @@
 	    const actualizarVisibilidadBody = async () => {
 	        // Determinar si la URL actual corresponde a la página de intento de quiz
 	        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
+	        const bodyAutoSave = document.getElementById("body-autoquiz-autosave"); 
 
-	        if (esPaginaQuiz && interruptorAutoSave.checked) {
+	        if (esPaginaQuiz) {
 	            // Si estamos en la página de quiz y el AutoSave está activado:
 	            if (bodyAutoSave) {
 	                // Mostrar el contenedor relacionado con el AutoSave
@@ -44837,14 +44838,6 @@
 	                console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
 	            }
 
-	        } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
-	            // Si estamos en la página de quiz pero el AutoSave está desactivado:
-	            if (bodyAutoSave) {
-	                // Ocultar el contenedor del AutoSave
-	                bodyAutoSave.style.display = 'none';
-	                // Eliminar del sessionStorage los datos relacionados con las preguntas auto-guardadas
-	                sessionStorage.removeItem('questions-AutoSave');
-	            }
 	        } else if (!esPaginaQuiz) {
 	            // Si la página actual no es compatible con el AutoSave, se informa por consola
 	            console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
@@ -45706,16 +45699,22 @@
 	        interruptorAutoSave.checked = (stateAutoSave === "activado");
 	        interruptorAutoFill.checked = (stateAutoFill === "activado");
 
+	        const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
+	        const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+
 	        if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado")) {
 	            getDataFromFirebaseAsync();
 	            const originalFormulations = document.querySelectorAll(".formulation.clearfix");
 	            await AutoSaveQuestions_SessionStorage(originalFormulations);
 
-	            if (stateAutoFill === "activado") ;
-	            else if (stateAutoSave === "activado") {
+	            if (stateAutoFill === "activado") ; else if (stateAutoSave === "activado") {
 	                contenedorAutoSave_js();
+	            } else if (stateAutoFill === "desactivado") {
+	                bodyAutoFill.style.display = 'none';
+	            }else if (stateAutoSave === "desactivado") {
+	                bodyAutoSave.style.display = 'none';
 	            }
-
+	            
 	        } else {
 	            sessionStorage.removeItem('questions-AutoSave');
 	        }

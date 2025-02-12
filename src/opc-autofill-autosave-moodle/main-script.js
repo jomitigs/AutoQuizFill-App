@@ -154,6 +154,9 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         interruptorAutoSave.checked = (stateAutoSave === "activado");
         interruptorAutoFill.checked = (stateAutoFill === "activado");
 
+        const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
+        const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+
         if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado")) {
             getDataFromFirebaseAsync();
             const originalFormulations = document.querySelectorAll(".formulation.clearfix");
@@ -161,11 +164,14 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
             if (stateAutoFill === "activado") {
                 // contenedorAutoFill_js();
-            }
-            else if (stateAutoSave === "activado") {
+            } else if (stateAutoSave === "activado") {
                 contenedorAutoSave_js();
+            } else if (stateAutoFill === "desactivado") {
+                bodyAutoFill.style.display = 'none';
+            }else if (stateAutoSave === "desactivado") {
+                bodyAutoSave.style.display = 'none';
             }
-
+            
         } else {
             sessionStorage.removeItem('questions-AutoSave');
         }

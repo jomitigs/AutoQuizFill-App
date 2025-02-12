@@ -20,8 +20,9 @@ export function contenedorAutoSave_js() {
     const actualizarVisibilidadBody = async () => {
         // Determinar si la URL actual corresponde a la página de intento de quiz
         const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
+        const bodyAutoSave = document.getElementById("body-autoquiz-autosave"); 
 
-        if (esPaginaQuiz && interruptorAutoSave.checked) {
+        if (esPaginaQuiz) {
             // Si estamos en la página de quiz y el AutoSave está activado:
             if (bodyAutoSave) {
                 // Mostrar el contenedor relacionado con el AutoSave
@@ -37,14 +38,6 @@ export function contenedorAutoSave_js() {
                 console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
             }
 
-        } else if (esPaginaQuiz && !interruptorAutoSave.checked) {
-            // Si estamos en la página de quiz pero el AutoSave está desactivado:
-            if (bodyAutoSave) {
-                // Ocultar el contenedor del AutoSave
-                bodyAutoSave.style.display = 'none';
-                // Eliminar del sessionStorage los datos relacionados con las preguntas auto-guardadas
-                sessionStorage.removeItem('questions-AutoSave');
-            }
         } else if (!esPaginaQuiz) {
             // Si la página actual no es compatible con el AutoSave, se informa por consola
             console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
