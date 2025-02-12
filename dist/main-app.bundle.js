@@ -44823,9 +44823,6 @@
 	        const bodyAutoSave = document.getElementById("body-autoquiz-autosave"); 
 
 	        if (esPaginaQuiz) {
-	            // Si estamos en la página de quiz y el AutoSave está activado:
-	            if (bodyAutoSave) {
-	                // Mostrar el contenedor relacionado con el AutoSave
 	                bodyAutoSave.style.display = 'flex';
 
 	                console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
@@ -44836,7 +44833,6 @@
 	                // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
 	                detectarCambiosPreguntas();
 	                console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
-	            }
 
 	        } else if (!esPaginaQuiz) {
 	            // Si la página actual no es compatible con el AutoSave, se informa por consola
@@ -45707,7 +45703,11 @@
 	            const originalFormulations = document.querySelectorAll(".formulation.clearfix");
 	            await AutoSaveQuestions_SessionStorage(originalFormulations);
 
-	            if (stateAutoFill === "activado") ; else if (stateAutoSave === "activado") {
+	            if (stateAutoFill === "activado") {
+	                bodyAutoFill.style.display = 'flex';
+	                // contenedorAutoFill_js();
+	            } else if (stateAutoSave === "activado") {
+	                bodyAutoSave.style.display = 'flex';
 	                contenedorAutoSave_js();
 	            } else if (stateAutoFill === "desactivado") {
 	                bodyAutoFill.style.display = 'none';

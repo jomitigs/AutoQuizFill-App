@@ -163,8 +163,10 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
             await AutoSaveQuestions_SessionStorage(originalFormulations);
 
             if (stateAutoFill === "activado") {
+                bodyAutoFill.style.display = 'flex';
                 // contenedorAutoFill_js();
             } else if (stateAutoSave === "activado") {
+                bodyAutoSave.style.display = 'flex';
                 contenedorAutoSave_js();
             } else if (stateAutoFill === "desactivado") {
                 bodyAutoFill.style.display = 'none';
