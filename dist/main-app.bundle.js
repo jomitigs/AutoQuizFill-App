@@ -46037,9 +46037,9 @@
 	}
 
 	async function opcion_AutoFillAutoSave_Moodle_js() {
+
 	    let esMoodle = esPaginaMoodle();
-
-
+	    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
 
 	    if (esMoodle) {
 	        console.log("[opc-autofill-autosave-moodle: main]  Esta página está construida con Moodle");
@@ -46055,8 +46055,6 @@
 	        console.log("[opc-autofill-autosave-moodle: main]  AutoFill Users no ejecutado porque, no es Moodle");
 	    }
 
-	    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
-
 	    if (esMoodle && switchRutaDinamica === 'true') {
 	        console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta Dinamica...');
 	        await contenedorRutaDinamica_js();
@@ -46064,11 +46062,6 @@
 	        console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta...');
 	        contenedorRuta_js$1();
 	    }
-
-	    const autofillContainer = document.getElementById('container-autofill');
-	    const autosaveContainer = document.getElementById('container-autosave');
-	    autofillContainer.style.display = 'block';
-	    autosaveContainer.style.display = 'block';
 
 	    const autosave_autofill = async () => {
 	        const interruptorAutoSave = document.getElementById("switch-autosave");
