@@ -157,15 +157,15 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
         const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 
-        if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado")) {
+        if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
             getDataFromFirebaseAsync();
             const originalFormulations = document.querySelectorAll(".formulation.clearfix");
             await AutoSaveQuestions_SessionStorage(originalFormulations);
 
-            if (stateAutoFill === "activado" && window.location.href.includes('/mod/quiz/attempt.php')) {
+            if (stateAutoFill === "activado") {
                 bodyAutoFill.style.display = 'flex';
                 contenedorAutoFill_js();
-            } else if (stateAutoSave === "activado" && window.location.href.includes('/mod/quiz/attempt.php')) {
+            } else if (stateAutoSave === "activado") {
                 bodyAutoSave.style.display = 'flex';
                 contenedorAutoSave_js();
             } else if (stateAutoFill === "desactivado") {
