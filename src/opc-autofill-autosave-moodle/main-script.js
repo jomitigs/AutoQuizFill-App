@@ -13,6 +13,7 @@ import { idbGet, idbDelete } from '../config-firebase/idbSession.js';
 
 // global.js
 window.eventosPreguntasHabilitados = true;
+window.autoSaveEnEjecucion = false;
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
