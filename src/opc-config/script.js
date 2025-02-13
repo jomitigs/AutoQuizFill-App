@@ -36,7 +36,7 @@ export function opcionConfig_html() {
   </label>
 </div>
 
-<h5 id="titulo-config">AutoSave</h5>
+<span id="subtitle-config">AutoSave</span>
 
 <div id="botonterminaryguardar-autosave-switch" class="opc-config-switch-container" style="display: none">
   <span class="opc-config-switch-label">Mostrar Boton Guardar y Terminar</span>
