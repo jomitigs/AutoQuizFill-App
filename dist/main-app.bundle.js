@@ -43577,7 +43577,14 @@
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
 	      const claveDFN = candidatoCoincidente.clave;
 
-	      dpnExistentes[claveDPN] = { [candidatoCoincidente.clave]: candidatoCoincidente };
+	      // Elimina las propiedades no deseadas si existen
+	      ["clave", "html", "ciclo", "timestamp"].forEach(prop => {
+	        if (candidatoCoincidente.hasOwnProperty(prop)) {
+	          delete candidatoCoincidente[prop];
+	        }
+	      });
+
+	      dpnExistentes[claveDPN] = { [claveDFN]: candidatoCoincidente };
 
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
