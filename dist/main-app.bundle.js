@@ -43577,7 +43577,7 @@
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
 	      const claveDFN = candidatoCoincidente.clave;
 
-	      dpnExistentes[claveDPN] = claveDFN; 
+	      dpnExistentes[claveDPN] = { [candidatoCoincidente.clave]: candidatoCoincidente };
 
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
