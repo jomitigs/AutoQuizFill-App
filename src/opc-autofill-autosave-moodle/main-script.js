@@ -160,7 +160,7 @@ async function contenedorAutoFillAutoSave_js() {
     if ((stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
        
         getDataFromFirebaseAsync();
-        const originalFormulations = document.querySelectorAll(".formulation.clearfix");
+        let originalFormulations = document.querySelectorAll(".formulation.clearfix");
         await AutoSaveQuestions_SessionStorage(originalFormulations);
 
         if (stateAutoFill === "activado") {
@@ -170,7 +170,7 @@ async function contenedorAutoFillAutoSave_js() {
             await contenedorAutoFill_js();
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
-            const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+            let originalFormulations = document.querySelectorAll(".formulation.clearfix");
 
             await AutoSaveQuestions_SessionStorage(originalFormulations);
             
