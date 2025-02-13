@@ -608,25 +608,22 @@ async function normalizarHTMLString(html) {
 
   // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
   tempDiv.querySelectorAll('legend.prompt.h6.font-weight-normal.sr-only')
-         .forEach(el => el.remove());
+    .forEach(el => el.remove());
 
   // Eliminar elementos con la clase "answernumber"
   tempDiv.querySelectorAll('.answernumber')
-         .forEach(el => el.remove());
+    .forEach(el => el.remove());
 
-  // Eliminar el <option> con selected="selected", value="0" y texto "Elegir..."
-  tempDiv.querySelectorAll('option[selected="selected"][value="0"]').forEach(el => {
-    if (el.textContent.trim() === 'Elegir...') {
-      el.remove();
-    }
-  });
+      // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
+  tempDiv.querySelectorAll('option[value="0"]')
+  .forEach(el => el.remove());
 
   // Eliminar <span> que tengan las clases fijas "draghome", "dragplaceholder" y "active"
   // y que además tengan una clase que siga el patrón "choice" (con número variable)
   // y otra que siga el patrón "group" (con número variable).
   tempDiv.querySelectorAll('span.draghome.dragplaceholder.active').forEach(el => {
     const tieneClaseChoice = Array.from(el.classList).some(cls => /^choice\d+$/.test(cls));
-    const tieneClaseGroup  = Array.from(el.classList).some(cls => /^group\d+$/.test(cls));
+    const tieneClaseGroup = Array.from(el.classList).some(cls => /^group\d+$/.test(cls));
     if (tieneClaseChoice && tieneClaseGroup) {
       el.remove();
     }
