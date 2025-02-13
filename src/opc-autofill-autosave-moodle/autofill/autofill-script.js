@@ -5,6 +5,15 @@ import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas, normali
 import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../../config-firebase/firebase-helpers.js';
 import { idbGet, idbDelete } from '../../config-firebase/idbSession.js';
 
+import { response_inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_inputradio_opcionmultiple_verdaderofalso.js';
+import { response_inputchecked_opcionmultiple } from './questions-types/2_inputchecked_opcionmultiple.js';
+import { response_select_emparejamiento } from './questions-types/3_select_emparejamiento.js';
+import { response_inputtext_respuestacorta } from './questions-types/4_inputtext_respuestacorta.js';
+import { response_inputtext_respuestacorta2 } from './questions-types/4_inputtext_respuestacorta2.js';
+import { response_draganddrop_image } from './questions-types/6_draganddrop_image.js';
+import { response_draganddrop_text } from './questions-types/5_draganddrop_text.js';
+
+
 export async function contenedorAutoFill_js() {
     console.log("Ejecutando AutoSave_Firebase...");
 
@@ -36,9 +45,4 @@ export async function contenedorAutoFill_js() {
         'draganddrop_text':  response_draganddrop_text,
         'draganddrop_image':  response_draganddrop_image,
     };
-}
-
-function AutoFill(){
-
-
 }

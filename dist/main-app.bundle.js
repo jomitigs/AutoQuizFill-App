@@ -45565,16 +45565,6 @@
 
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
-
-	    ({
-	        'inputradio_opcionmultiple_verdaderofalso': response_inputradio_opcionmultiple_verdaderofalso,
-	        'inputchecked_opcionmultiple':  response_inputchecked_opcionmultiple,
-	        'select_emparejamiento':  response_select_emparejamiento,
-	        'inputtext_respuestacorta':  response_inputtext_respuestacorta,
-	        'inputtext_respuestacorta2':  response_inputtext_respuestacorta2,
-	        'draganddrop_text':  response_draganddrop_text,
-	        'draganddrop_image':  response_draganddrop_image,
-	    });
 	}
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
