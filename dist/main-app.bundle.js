@@ -43894,7 +43894,7 @@
 	  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
 	}
 
-	function obtenerFormulationClearfix(preguntaStr) {
+	function obtenerFormulationClearfix$1(preguntaStr) {
 	  // Extrae el número de la cadena, por ejemplo: "Pregunta7" → "7"
 	  const match = preguntaStr.match(/Pregunta(\d+)/);
 	  if (!match) {
@@ -45621,7 +45621,7 @@
 	  // console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix(pregunta);
+	  const formulation = obtenerFormulationClearfix$1(pregunta);
 	  // console.log("Formulation:", formulation);
 
 	  // Obtenemos todos los inputs radio dentro de la formulación.
@@ -45683,7 +45683,7 @@
 	  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
 	  // 2. Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix(pregunta);
+	  const formulation = obtenerFormulationClearfix$1(pregunta);
 	  // console.log("Formulation:", formulation);
 
 	  // 3. Obtenemos todos los inputs checkbox dentro de la formulación.
@@ -45749,7 +45749,7 @@
 	  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
 	  // 2. Obtener el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix(pregunta);
+	  const formulation = obtenerFormulationClearfix$1(pregunta);
 	  // console.log("Formulation:", formulation);
 
 	  // 3. Obtener todos los <select> dentro de la formulación.
@@ -45824,7 +45824,7 @@
 	  console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix(pregunta);
+	  const formulation = obtenerFormulationClearfix$1(pregunta);
 	  console.log("Formulation encontrada:", formulation);
 
 	  // Buscamos el input text dentro de la formulación.
@@ -45866,7 +45866,7 @@
 	  console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix(pregunta);
+	  const formulation = obtenerFormulationClearfix$1(pregunta);
 	  console.log("Formulation encontrada:", formulation);
 
 	  // Buscamos el input text dentro de la formulación.
@@ -45899,7 +45899,7 @@
 	async function response_draganddrop_image(pregunta, questionData) {
 	    console.log('Iniciando response_draganddrop_image para la pregunta:', pregunta);
 
-	    // Obtener la formulación (contenedor con clases "formulation clearfix") usando una función auxiliar.
+	    // Se obtiene el contenedor de la formulación usando una función auxiliar (se asume que está definida en tu código)
 	    let formulation = obtenerFormulationClearfix(pregunta);
 	    if (!formulation) {
 	        console.error("No se encontró la formulación para la pregunta", pregunta);
@@ -45961,7 +45961,7 @@
 	        if (hiddenInput) {
 	            const value = getValueForRespuesta$1(choice);
 	            hiddenInput.value = value;
-	            // Desencadenar eventos para que Moodle detecte el cambio
+	            // Disparar eventos para que Moodle detecte el cambio
 	            if (window.jQuery) {
 	                window.jQuery(hiddenInput).trigger('change');
 	                window.jQuery(hiddenInput).trigger('input');
@@ -45975,12 +45975,19 @@
 	            continue;
 	        }
 
-	        // Mostrar la opción ya colocada. Se asume que el elemento visual (span) ya existe dentro del dropzone.
-	        const placedSpan = dropzone.querySelector(`.draghome.choice${getValueForRespuesta$1(choice)}.${groupClass}.placed`);
+	        // Mostrar la opción ya colocada.
+	        // Se intenta buscar el span colocado; si no existe, se crea e inserta en el dropzone.
+	        let placedSpan = dropzone.querySelector(`.draghome.choice${getValueForRespuesta$1(choice)}.${groupClass}.placed`);
+	        if (!placedSpan) {
+	            // Crear el elemento visual que representa la respuesta
+	            const placedElementHTML = `<span class="draghome user-select-none choice${getValueForRespuesta$1(choice)} ${groupClass} placed" tabindex="0">${respuesta}</span>`;
+	            dropzone.insertAdjacentHTML('beforeend', placedElementHTML);
+	            placedSpan = dropzone.querySelector(`.draghome.choice${getValueForRespuesta$1(choice)}.${groupClass}.placed`);
+	        }
 	        if (placedSpan) {
 	            placedSpan.style.display = 'block';
 	        } else {
-	            console.error(`No se encontró el span colocado para "${respuesta}" en el dropzone ${index + 1}`);
+	            console.error(`No se encontró ni se pudo crear el span colocado para "${respuesta}" en el dropzone ${index + 1}`);
 	        }
 
 	        // (Opcional) Ocultar la opción original en la lista de opciones, si se desea:
@@ -46045,6 +46052,7 @@
 	             * @param {number} clientX - Coordenada X.
 	             * @param {number} clientY - Coordenada Y.
 	             * @param {number} buttons - Botones del mouse (por defecto 1).
+	             * @returns {MouseEvent} - El evento creado.
 	             */
 	            function createMouseEvent(type, clientX, clientY, buttons = 1) {
 	                return new MouseEvent(type, {
@@ -46062,6 +46070,7 @@
 	             * @param {string} type - Tipo de evento de drag (e.g., 'dragstart', 'dragover', 'drop').
 	             * @param {number} clientX - Coordenada X.
 	             * @param {number} clientY - Coordenada Y.
+	             * @returns {DragEvent} - El evento creado.
 	             */
 	            function createDragEvent(type, clientX, clientY) {
 	                return new DragEvent(type, {
@@ -46125,7 +46134,7 @@
 	    console.log('Iniciando response_draganddrop_text para la pregunta:', pregunta);
 
 	    // Se obtiene la formulación específica (el contenedor con las clases "formulation clearfix") usando la función auxiliar.
-	    let formulation = obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix$1(pregunta);
 	    if (!formulation) {
 	        console.error("No se encontró la formulación para la pregunta", pregunta);
 	        return;

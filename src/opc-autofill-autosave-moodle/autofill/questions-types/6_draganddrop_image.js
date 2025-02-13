@@ -1,5 +1,3 @@
-import {  obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js';
-
 import interact from 'interactjs';
 
 /**
@@ -11,7 +9,7 @@ import interact from 'interactjs';
 export async function response_draganddrop_image(pregunta, questionData) {
     console.log('Iniciando response_draganddrop_image para la pregunta:', pregunta);
 
-    // Obtener la formulación (contenedor con clases "formulation clearfix") usando una función auxiliar.
+    // Se obtiene el contenedor de la formulación usando una función auxiliar (se asume que está definida en tu código)
     let formulation = obtenerFormulationClearfix(pregunta);
     if (!formulation) {
         console.error("No se encontró la formulación para la pregunta", pregunta);
@@ -73,7 +71,7 @@ export async function response_draganddrop_image(pregunta, questionData) {
         if (hiddenInput) {
             const value = getValueForRespuesta(choice);
             hiddenInput.value = value;
-            // Desencadenar eventos para que Moodle detecte el cambio
+            // Disparar eventos para que Moodle detecte el cambio
             if (window.jQuery) {
                 window.jQuery(hiddenInput).trigger('change');
                 window.jQuery(hiddenInput).trigger('input');
@@ -87,12 +85,19 @@ export async function response_draganddrop_image(pregunta, questionData) {
             continue;
         }
 
-        // Mostrar la opción ya colocada. Se asume que el elemento visual (span) ya existe dentro del dropzone.
-        const placedSpan = dropzone.querySelector(`.draghome.choice${getValueForRespuesta(choice)}.${groupClass}.placed`);
+        // Mostrar la opción ya colocada.
+        // Se intenta buscar el span colocado; si no existe, se crea e inserta en el dropzone.
+        let placedSpan = dropzone.querySelector(`.draghome.choice${getValueForRespuesta(choice)}.${groupClass}.placed`);
+        if (!placedSpan) {
+            // Crear el elemento visual que representa la respuesta
+            const placedElementHTML = `<span class="draghome user-select-none choice${getValueForRespuesta(choice)} ${groupClass} placed" tabindex="0">${respuesta}</span>`;
+            dropzone.insertAdjacentHTML('beforeend', placedElementHTML);
+            placedSpan = dropzone.querySelector(`.draghome.choice${getValueForRespuesta(choice)}.${groupClass}.placed`);
+        }
         if (placedSpan) {
             placedSpan.style.display = 'block';
         } else {
-            console.error(`No se encontró el span colocado para "${respuesta}" en el dropzone ${index + 1}`);
+            console.error(`No se encontró ni se pudo crear el span colocado para "${respuesta}" en el dropzone ${index + 1}`);
         }
 
         // (Opcional) Ocultar la opción original en la lista de opciones, si se desea:
@@ -157,6 +162,7 @@ function simulateDragAndDropMouse(draggableElement, dropZoneElement) {
              * @param {number} clientX - Coordenada X.
              * @param {number} clientY - Coordenada Y.
              * @param {number} buttons - Botones del mouse (por defecto 1).
+             * @returns {MouseEvent} - El evento creado.
              */
             function createMouseEvent(type, clientX, clientY, buttons = 1) {
                 return new MouseEvent(type, {
@@ -174,6 +180,7 @@ function simulateDragAndDropMouse(draggableElement, dropZoneElement) {
              * @param {string} type - Tipo de evento de drag (e.g., 'dragstart', 'dragover', 'drop').
              * @param {number} clientX - Coordenada X.
              * @param {number} clientY - Coordenada Y.
+             * @returns {DragEvent} - El evento creado.
              */
             function createDragEvent(type, clientX, clientY) {
                 return new DragEvent(type, {
@@ -224,4 +231,3 @@ function simulateDragAndDropMouse(draggableElement, dropZoneElement) {
         }
     });
 }
-
