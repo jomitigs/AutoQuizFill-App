@@ -32,15 +32,16 @@ export async function contenedorAutoFill_js() {
     // 🟢 ESPERAR a que `compararPreguntas` termine antes de seguir
     const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
 
-   // console.log("Preguntas a Re:", comparedData.dpnExistentes);
+   console.log("dpnExistentes", comparedData.dpnExistentes);
+   console.log("dpnNuevas", comparedData.dpnNuevas);
 
-    await AutoFill(comparedData.dpnExistentes, dataFirebaseNormalizada);
+    await AutoFill(comparedData.dpnExistentes, comparedData.dpnNuevas, dataFirebaseNormalizada);
 
     console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
 
 }
 
-export async function AutoFill(dpq, dataFirebaseNormalizada) {
+export async function AutoFill(dpnExistentes, dpnNuevas, dataFirebaseNormalizada) {
     try {
       // Mapeo de funciones según el tipo de pregunta
       const funcQuestionType = {
@@ -66,7 +67,7 @@ export async function AutoFill(dpq, dataFirebaseNormalizada) {
   
       // Crear un objeto que almacene las relaciones (omitiendo las que tengan previous true)
       const questionMapping = {};
-      Object.entries(dpq).forEach(([datapageQuestion, datafirebaseQuestionKey]) => {
+      Object.entries(dpnExistentes).forEach(([datapageQuestion, datafirebaseQuestionKey]) => {
         if (
           questionsAutoSave[datapageQuestion] &&
           questionsAutoSave[datapageQuestion].previous === true
