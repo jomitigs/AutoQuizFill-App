@@ -46381,13 +46381,42 @@
 	   console.log("dpnExistentes", comparedData.dpnExistentes);
 	   console.log("dpnNuevas", comparedData.dpnNuevas);
 
-	    await AutoFill(comparedData.dpnExistentes, comparedData.dpnNuevas, dataFirebaseNormalizada);
+	   await AutoFill(comparedData.dpnExistentes, comparedData.dpnNuevas);
+	   AutoFill_ShowResponses(comparedData.dpnExistentes, comparedData.dpnNuevas);
 
 	    console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
 
 	}
 
-	async function AutoFill(dpnExistentes, dpnNuevas, dataFirebaseNormalizada) {
+	async function AutoFill_ShowResponses(dpnExistentes, dpnNuevas) {
+	    // Obtenemos el objeto de sessionStorage (por ejemplo, bajo la clave "questions-AutoSave")
+	    const sessionAutoSave = JSON.parse(sessionStorage.getItem("questions-AutoSave") || "{}");
+	  
+	    // Filtramos dpnExistentes: eliminamos las entradas cuya clave en sessionAutoSave tenga previous === true.
+	    const filteredExistentes = Object.fromEntries(
+	      Object.entries(dpnExistentes).filter(([key, value]) => {
+	        const sessionEntry = sessionAutoSave[key];
+	        return !(sessionEntry && sessionEntry.previous === true);
+	      })
+	    );
+	  
+	    // Filtramos dpnNuevas: revisamos directamente si en el objeto existe la propiedad previous === true.
+	    // Si no es así, asignamos "NO DATA"
+	    const filteredNuevas = Object.fromEntries(
+	      Object.entries(dpnNuevas)
+	        .filter(([key, value]) => !(value && value.previous === true))
+	        .map(([key]) => [key, "NO DATA"])
+	    );
+	  
+	    // Combinamos ambos objetos
+	    const autoFillResponses = { ...filteredExistentes, ...filteredNuevas };
+	  
+	    console.log(autoFillResponses);
+	    // Aquí continúa el procesamiento que necesites…
+	  }
+	  
+
+	async function AutoFill(dpnExistentes, dataFirebaseNormalizada) {
 	    try {
 	      // Mapeo de funciones según el tipo de pregunta
 	      const funcQuestionType = {
