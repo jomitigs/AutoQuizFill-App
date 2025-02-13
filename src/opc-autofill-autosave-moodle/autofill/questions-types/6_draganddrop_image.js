@@ -1,4 +1,5 @@
 import interact from 'interactjs';
+import {  obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js';
 
 /**
  * Función que responde la pregunta de tipo "drag and drop image" utilizando los datos proporcionados.

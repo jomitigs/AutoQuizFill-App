@@ -43894,7 +43894,7 @@
 	  return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
 	}
 
-	function obtenerFormulationClearfix$1(preguntaStr) {
+	function obtenerFormulationClearfix(preguntaStr) {
 	  // Extrae el número de la cadena, por ejemplo: "Pregunta7" → "7"
 	  const match = preguntaStr.match(/Pregunta(\d+)/);
 	  if (!match) {
@@ -45621,7 +45621,7 @@
 	  // console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix$1(pregunta);
+	  const formulation = obtenerFormulationClearfix(pregunta);
 	  // console.log("Formulation:", formulation);
 
 	  // Obtenemos todos los inputs radio dentro de la formulación.
@@ -45683,7 +45683,7 @@
 	  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
 	  // 2. Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix$1(pregunta);
+	  const formulation = obtenerFormulationClearfix(pregunta);
 	  // console.log("Formulation:", formulation);
 
 	  // 3. Obtenemos todos los inputs checkbox dentro de la formulación.
@@ -45749,7 +45749,7 @@
 	  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
 	  // 2. Obtener el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix$1(pregunta);
+	  const formulation = obtenerFormulationClearfix(pregunta);
 	  // console.log("Formulation:", formulation);
 
 	  // 3. Obtener todos los <select> dentro de la formulación.
@@ -45824,7 +45824,7 @@
 	  console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix$1(pregunta);
+	  const formulation = obtenerFormulationClearfix(pregunta);
 	  console.log("Formulation encontrada:", formulation);
 
 	  // Buscamos el input text dentro de la formulación.
@@ -45866,7 +45866,7 @@
 	  console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
-	  const formulation = obtenerFormulationClearfix$1(pregunta);
+	  const formulation = obtenerFormulationClearfix(pregunta);
 	  console.log("Formulation encontrada:", formulation);
 
 	  // Buscamos el input text dentro de la formulación.
@@ -46134,7 +46134,7 @@
 	    console.log('Iniciando response_draganddrop_text para la pregunta:', pregunta);
 
 	    // Se obtiene la formulación específica (el contenedor con las clases "formulation clearfix") usando la función auxiliar.
-	    let formulation = obtenerFormulationClearfix$1(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 	    if (!formulation) {
 	        console.error("No se encontró la formulación para la pregunta", pregunta);
 	        return;
