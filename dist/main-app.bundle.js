@@ -45968,7 +45968,7 @@
                 </div>
 
                 <!-- Contenido de AutoFill-->
-                <div id="body-autoquiz-autofill" class="body-autoquiz">
+                <div id="body-autoquiz-autofill" class="body-autoquiz" style="display: none;">
 
                     <!-- Contenedor dinámico para las preguntas generadas -->
                     <div id="contenedor-preguntas" class="contenedor-preguntas">
@@ -45982,7 +45982,7 @@
 
 
 <!-- Contenedor para AutoSave -->
-<div id="container-autosave" class="subcontainer-autoquiz-autosave" style="display: none;">
+<div id="container-autosave" class="subcontainer-autoquiz-autosave">
 
     <div id="header-autosave" class="header-autoquiz">
 
