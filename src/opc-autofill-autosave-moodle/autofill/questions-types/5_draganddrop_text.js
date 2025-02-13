@@ -112,7 +112,6 @@ export function response_draganddrop_text(pregunta, questionData) {
 
       // Actualizar el input oculto asociado al "place" para que el sistema detecte la respuesta.
       const hiddenInput = formulation.querySelector(`input.place${index + 1}.${groupClass}`);
-
       if (hiddenInput) {
         if (window.jQuery) {
           window.jQuery(hiddenInput).trigger('change');
@@ -121,6 +120,7 @@ export function response_draganddrop_text(pregunta, questionData) {
           hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
           hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
         }
+        console.log(`Input oculto actualizado para place${index + 1} con valor "${value}"`);
       } else {
         console.error(`No se encontró el input oculto para place${index + 1} en el grupo ${groupClass}`);
         return;
@@ -139,4 +139,14 @@ export function response_draganddrop_text(pregunta, questionData) {
   });
 
   console.log('Automatización de drag and drop finalizada.');
+}
+
+function getValueForRespuesta(choiceElement) {
+    const classes = Array.from(choiceElement.classList);
+    const choiceClass = classes.find(cls => cls.startsWith('choice'));
+    if (choiceClass) {
+        const choiceNumber = choiceClass.replace('choice', '');
+        return choiceNumber;
+    }
+    return "0"; // Valor por defecto si no se encuentra la clase "choiceX"
 }
