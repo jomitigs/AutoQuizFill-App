@@ -47,12 +47,12 @@ export async function AutoFill(dpq) {
       // Mapeo de funciones según el tipo de pregunta
       const funcQuestionType = {
         'inputradio_opcionmultiple_verdaderofalso': response_inputradio_opcionmultiple_verdaderofalso,
-        'inputchecked_opcionmultiple':  response_inputchecked_opcionmultiple,
-        'select_emparejamiento':  response_select_emparejamiento,
-        'inputtext_respuestacorta':  response_inputtext_respuestacorta,
-        'inputtext_respuestacorta2':  response_inputtext_respuestacorta2,
-        'draganddrop_text':  response_draganddrop_text,
-        'draganddrop_image':  response_draganddrop_image,
+        'inputchecked_opcionmultiple': response_inputchecked_opcionmultiple,
+        'select_emparejamiento': response_select_emparejamiento,
+        'inputtext_respuestacorta': response_inputtext_respuestacorta,
+        'inputtext_respuestacorta2': response_inputtext_respuestacorta2,
+        'draganddrop_text': response_draganddrop_text,
+        'draganddrop_image': response_draganddrop_image,
       };
   
       // 1. Crear un objeto que almacene todas las relaciones:
@@ -67,11 +67,33 @@ export async function AutoFill(dpq) {
           console.warn(`No se encontraron datos para la clave: ${datafirebaseQuestionKey}`);
         }
       });
-
-      console.log("Preguntas a responder", questionMapping)
+  
+      console.log("Preguntas a responder", questionMapping);
+  
+      // Obtener el estado de "questions-AutoSave" desde sessionStorage
+      const autoSaveData = sessionStorage.getItem("questions-AutoSave");
+      let questionsAutoSave = {};
+      if (autoSaveData) {
+        try {
+          questionsAutoSave = JSON.parse(autoSaveData);
+        } catch (e) {
+          console.error("Error al parsear questions-AutoSave desde sessionStorage", e);
+        }
+      }
   
       // 2. Iterar sobre el objeto creado y ejecutar la función correspondiente
       Object.entries(questionMapping).forEach(([datapageQuestion, questionData]) => {
+        // Verificar el estado en sessionStorage antes de ejecutar la función
+        if (
+          questionsAutoSave[datapageQuestion] &&
+          questionsAutoSave[datapageQuestion].previous === true
+        ) {
+          console.log(
+            `Ignorando ${datapageQuestion} ya que 'previous' es true en questions-AutoSave`
+          );
+          return; // Se omite la ejecución para esta pregunta
+        }
+  
         const questionType = questionData.tipo;
         if (funcQuestionType.hasOwnProperty(questionType)) {
           // Se llama a la función asociada pasando la clave de la pregunta y sus datos
@@ -84,4 +106,5 @@ export async function AutoFill(dpq) {
       console.error("Error en AutoFill:", error);
     }
   }
+  
   
