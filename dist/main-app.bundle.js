@@ -44862,7 +44862,7 @@
 	    // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
 	    AutoSave_ShowResponses();
 
-	    // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
+	    // Iniciar el monitoreo de cambios en las prefzguntas para actualizaciones dinámicas
 	    detectarCambiosPreguntas();
 	    console.log(`[opc-autofill-autosave-moodle: autosave] Finalizando AutoSave...`);
 	}
@@ -45084,6 +45084,8 @@
 	    const elementos = document.querySelectorAll(
 	        'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
 	    );
+
+	    console.log("estado de cambios",window.eventosPreguntasHabilitados);
 
 	    elementos.forEach(el => {
 	        el.addEventListener('change', async (event) => {
