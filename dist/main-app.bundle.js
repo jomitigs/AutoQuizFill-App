@@ -46099,7 +46099,6 @@
 
 	            renderizarPreguntas();
 
-
 	        } else {
 	            sessionStorage.removeItem('questions-AutoSave');
 	            bodyAutoFill.style.display = 'none';
@@ -46123,6 +46122,7 @@
 	                    bodyAutoSave.style.display = 'none';
 	                }
 	            });
+
 	            interruptorAutoFill.addEventListener("change", () => {
 	                
 	                const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
@@ -46130,10 +46130,11 @@
 	                console.log(`AutoFill: ${nuevoEstado}`);
 	                if (nuevoEstado === "activado") {
 	                    autosave_autofill();
-	                  } else {
-	                    bodyAutoFill.style.display = 'none';
-	                  }
+	                } else {
+	                bodyAutoFill.style.display = 'none';
+	                }
 	            });
+	            
 	            autosave_autofill.initted = true;
 	        }
 	    };

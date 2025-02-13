@@ -172,7 +172,6 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
             renderizarPreguntas();
 
-
         } else {
             sessionStorage.removeItem('questions-AutoSave');
             bodyAutoFill.style.display = 'none';
@@ -196,6 +195,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
                     bodyAutoSave.style.display = 'none';
                 }
             });
+
             interruptorAutoFill.addEventListener("change", () => {
                 
                 const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
@@ -203,10 +203,11 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
                 console.log(`AutoFill: ${nuevoEstado}`);
                 if (nuevoEstado === "activado") {
                     autosave_autofill();
-                  } else {
-                    bodyAutoFill.style.display = 'none';
-                  }
+                } else {
+                bodyAutoFill.style.display = 'none';
+                }
             });
+            
             autosave_autofill.initted = true;
         }
     };
