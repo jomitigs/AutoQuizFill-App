@@ -86,7 +86,7 @@ export async function extractOpcionesYRespuesta(originalFormulationClearfix) {
 
         // Si el input está marcado, se asigna su texto como respuesta correcta.
         if (inputRadio.checked) {
-            console.log("Input radio marcado encontrado. Respuesta correcta:", textoOpcion);
+            // console.log("Input radio marcado encontrado. Respuesta correcta:", textoOpcion);
             respuestaCorrecta = textoOpcion;
         }
     }
