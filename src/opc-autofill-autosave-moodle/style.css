@@ -172,6 +172,11 @@
     margin-bottom: 0rem;
   }
   
+  #subopcion-config {
+    margin-bottom: 0rem;
+    font-weight: 500;
+    margin-left: 5px;
+  }
 
 /* --------------------------------------------------------------------------
      5.1. Subcontenedor de AutoFill
