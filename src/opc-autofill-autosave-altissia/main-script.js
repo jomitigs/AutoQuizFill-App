@@ -2,7 +2,7 @@ import './style.css';
 
 import { contenedorRuta_js} from '../opc-autofill-autosave-moodle/ruta/script.js';
 
-import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses } from './autosave/autosave-script.js';
+import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses } from './autosavek/autosave-script.js';
 import { contenedorAutoFill_js } from './autofill/autofill-script.js';
 
 import { getDataFromFirebaseAsync } from '../config-firebase/firebase-helpers.js';
