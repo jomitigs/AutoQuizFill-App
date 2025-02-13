@@ -46039,6 +46039,16 @@
 	  console.log('Automatización de drag and drop finalizada.');
 	}
 
+	function getValueForRespuesta(choiceElement) {
+	    const classes = Array.from(choiceElement.classList);
+	    const choiceClass = classes.find(cls => cls.startsWith('choice'));
+	    if (choiceClass) {
+	        const choiceNumber = choiceClass.replace('choice', '');
+	        return choiceNumber;
+	    }
+	    return "0"; // Valor por defecto si no se encuentra la clase "choiceX"
+	}
+
 	async function contenedorAutoFill_js$1() {
 	    console.log(`[opc-autofill-autosave-moodle: autofill] Iniciando AutoFill...`);
 
