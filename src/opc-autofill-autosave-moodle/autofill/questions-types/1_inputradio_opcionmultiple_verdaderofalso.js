@@ -6,8 +6,8 @@ export async function response_inputradio_opcionmultiple_verdaderofalso(pregunta
     console.log( questionData);
 
   // Aseguramos que questionData.RespuestaCorrecta tenga un valor.
-  const respuestaCorrectaEsperada = (questionData && typeof questionData.RespuestaCorrecta === 'string')
-    ? questionData.RespuestaCorrecta
+  const respuestaCorrectaEsperada = (questionData && typeof questionData.respuestaCorrecta === 'string')
+    ? questionData.respuestaCorrecta
     : '';
   console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
