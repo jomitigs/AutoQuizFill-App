@@ -46095,11 +46095,8 @@
 	            } else if (stateAutoSave === "activado") {
 	                bodyAutoSave.style.display = 'flex';
 	                contenedorAutoSave_js();
-	            } else if (stateAutoFill === "desactivado") {
-	                bodyAutoFill.style.display = 'none';
-	            } else if (stateAutoSave === "desactivado") {
-	                bodyAutoSave.style.display = 'none';
 	            }
+
 	            renderizarPreguntas();
 
 
@@ -46111,17 +46108,31 @@
 
 	        // Registrar los listeners solo una vez.
 	        if (!autosave_autofill.initted) {
+
+	            const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
+	            const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+	            
 	            interruptorAutoSave.addEventListener("change", () => {
+	                
 	                const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
 	                localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
 	                console.log(`AutoSave: ${nuevoEstado}`);
-	                autosave_autofill();
+	                if (nuevoEstado === "activado") {
+	                  autosave_autofill();
+	                } else {
+	                    bodyAutoSave.style.display = 'none';
+	                }
 	            });
 	            interruptorAutoFill.addEventListener("change", () => {
+	                
 	                const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
 	                localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
 	                console.log(`AutoFill: ${nuevoEstado}`);
-	                autosave_autofill();
+	                if (nuevoEstado === "activado") {
+	                    autosave_autofill();
+	                  } else {
+	                    bodyAutoFill.style.display = 'none';
+	                  }
 	            });
 	            autosave_autofill.initted = true;
 	        }
