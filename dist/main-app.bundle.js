@@ -46146,7 +46146,8 @@
 	            await contenedorAutoFill_js();
 	            // Rehabilitar después de finalizar la función
 	            window.eventosPreguntasHabilitados = true;
-	            
+	            document.querySelectorAll('.formulation.clearfix');
+
 	            await AutoSaveQuestions_SessionStorage(originalFormulations);
 	            
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
@@ -46208,7 +46209,7 @@
 	            window.eventosPreguntasHabilitados = true;
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
 	            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
-	            
+	            document.querySelectorAll('.formulation.clearfix');
 	            await AutoSaveQuestions_SessionStorage(originalFormulations);
 
 	            if (stateAutoSave === "activado") {
