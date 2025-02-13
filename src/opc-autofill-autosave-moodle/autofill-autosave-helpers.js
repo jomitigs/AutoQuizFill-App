@@ -604,9 +604,30 @@ async function normalizarHTMLString(html) {
   tempDiv.querySelectorAll('.answernumber')
     .forEach(el => el.remove());
 
-      // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
+  // Eliminar el <legend> con clase "prompt h6 font-weight-normal sr-only"
   tempDiv.querySelectorAll('option[value="0"]')
-  .forEach(el => el.remove());
+    .forEach(el => el.remove());
+
+  tempDiv.querySelectorAll('.draghome.placed').forEach(element => {
+    // Verificamos si el siguiente hermano cumple con las condiciones:
+    const sibling = element.nextElementSibling;
+    if (sibling) {
+      // Comprobamos si tiene alguna clase que coincida con "place" seguido de dígitos
+      const hasPlace = Array.from(sibling.classList).some(cls => /^place\d+$/.test(cls));
+      // Comprobamos si tiene la clase "drop"
+      const hasDrop = sibling.classList.contains('drop');
+      // Comprobamos si tiene alguna clase que coincida con "group" seguido de dígitos
+      const hasGroup = Array.from(sibling.classList).some(cls => /^group\d+$/.test(cls));
+
+      if (hasPlace && hasDrop && hasGroup) {
+        sibling.remove();
+      }
+    }
+
+    // Finalmente, eliminamos el elemento actual
+    element.remove();
+  });
+
 
   tempDiv.querySelectorAll('span.draghome.dragplaceholder.active').forEach(el => {
     const tieneClaseChoice = Array.from(el.classList).some(cls => /^choice\d+$/.test(cls));
@@ -795,22 +816,22 @@ function compararContenidoMedios(medio1, medio2) {
 function compararHTML(htmlDPN, htmlDFN) {
   let contenidoDPN = obtenerContenidoSeparadoYConcatenado(htmlDPN);
   let contenidoDFN = obtenerContenidoSeparadoYConcatenado(htmlDFN);
-  
+
   // Suponiendo que la función retorna, además de 'textoConcatenado', un array de fragmentos,
   // lo llamamos 'textoArray'. Si no está disponible, podemos obtenerlo dividiendo 'textoConcatenado'.
   const textoArrayDPN = contenidoDPN.textoArray || contenidoDPN.textoConcatenado.split(' ');
   const textoArrayDFN = contenidoDFN.textoArray || contenidoDFN.textoConcatenado.split(' ');
-  
+
   // Ordenamos los arrays para que el orden original no influya
   const textoOrdenadoDPN = textoArrayDPN.slice().sort().join(' ');
   const textoOrdenadoDFN = textoArrayDFN.slice().sort().join(' ');
-  
+
   // Si los textos ordenados son idénticos, se omite el cálculo completo
   if (textoOrdenadoDPN === textoOrdenadoDFN) {
     const mediosOk = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
     return { coincide: mediosOk, similitudTexto: 100, mediosCoinciden: mediosOk };
   }
-  
+
   const similitudTexto = calcularSimilitudTexto(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
   const mediosCoinciden = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
   const coincide = (similitudTexto >= 99) && mediosCoinciden;
