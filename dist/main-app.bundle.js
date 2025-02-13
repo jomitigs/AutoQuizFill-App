@@ -46126,9 +46126,12 @@
 	        if (nuevoEstado === "activado") {
 	            bodyAutoFill.style.display = 'flex';
 	            window.eventosPreguntasHabilitados = false;
+	            console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
 	            contenedorAutoFill_js();
 	            // Rehabilitar después de finalizar la función
 	            window.eventosPreguntasHabilitados = true;
+	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
+
 	        } else {
 	            bodyAutoFill.style.display = 'none';
 	        }
