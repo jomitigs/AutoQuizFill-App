@@ -46101,6 +46101,7 @@
 	        console.log(`AutoSave: ${nuevoEstado}`);
 
 	        if (nuevoEstado === "activado") {
+	            bodyAutoSave.style.display = 'flex';
 	            // Deshabilitar los eventos de preguntas
 	            contenedorAutoSave_js();
 	            // Rehabilitar después de finalizar la funció
@@ -46117,6 +46118,7 @@
 	        console.log(`AutoFill: ${nuevoEstado}`);
 
 	        if (nuevoEstado === "activado") {
+	            bodyAutoFill.style.display = 'flex';
 	            window.eventosPreguntasHabilitados = false;
 	            contenedorAutoFill_js();
 	            // Rehabilitar después de finalizar la función

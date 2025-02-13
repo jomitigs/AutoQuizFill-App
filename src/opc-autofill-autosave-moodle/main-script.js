@@ -191,6 +191,7 @@ function detectarCambiosInterruptor() {
         console.log(`AutoSave: ${nuevoEstado}`);
 
         if (nuevoEstado === "activado") {
+            bodyAutoSave.style.display = 'flex';
             // Deshabilitar los eventos de preguntas
             contenedorAutoSave_js();
             // Rehabilitar después de finalizar la funció
@@ -207,6 +208,7 @@ function detectarCambiosInterruptor() {
         console.log(`AutoFill: ${nuevoEstado}`);
 
         if (nuevoEstado === "activado") {
+            bodyAutoFill.style.display = 'flex';
             window.eventosPreguntasHabilitados = false;
             contenedorAutoFill_js();
             // Rehabilitar después de finalizar la función
