@@ -45544,33 +45544,70 @@
 
 	}
 
-	function response_inputradio_opcionmultiple_verdaderofalso(datapageQuestion, questionData) {
+	function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
+
+	    
+
 	    console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
 
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
-	function response_inputchecked_opcionmultiple(datapageQuestion, questionData) {
+	function response_inputchecked_opcionmultiple(pregunta, questionData) {
 	    console.log("Respondiendo preguntas inputchecked_opcionmultiple");
+
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
-	function response_select_emparejamiento(datapageQuestion, questionData) {
+	function response_select_emparejamiento(pregunta, questionData) {
 	    console.log("Respondiendo preguntas select_emparejamiento");
+
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
-	function response_inputtext_respuestacorta(datapageQuestion, questionData) {
+	function response_inputtext_respuestacorta(pregunta, questionData) {
 	    console.log("Respondiendo preguntas inputtext_respuestacorta");
+
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
-	function response_inputtext_respuestacorta2(datapageQuestion, questionData) {
+	function response_inputtext_respuestacorta2(pregunta, questionData) {
 	    console.log("Respondiendo preguntas inputtext_respuestacorta2");
+
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
-	function response_draganddrop_image(datapageQuestion, questionData) {
+	function response_draganddrop_image(pregunta, questionData) {
 	    console.log("Respondiendo preguntas draganddrop_image");
+
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
-	function response_draganddrop_text(datapageQuestion, questionData) {
+	function response_draganddrop_text(pregunta, questionData) {
 	    console.log("Respondiendo preguntas draganddrop_text");
+
+	    obtenerFormulationClearfix(pregunta);
+
+	    console.log(pregunta);
+
 	}
 
 	async function contenedorAutoFill_js() {

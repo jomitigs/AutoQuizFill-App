@@ -1,3 +1,8 @@
-export function response_draganddrop_image(datapageQuestion, questionData) {
+export function response_draganddrop_image(pregunta, questionData) {
     console.log("Respondiendo preguntas draganddrop_image")
+
+    obtenerFormulationClearfix(pregunta)
+
+    console.log(pregunta)
+
 }

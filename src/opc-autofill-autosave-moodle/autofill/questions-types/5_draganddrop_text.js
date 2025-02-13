@@ -1,3 +1,8 @@
-export function response_draganddrop_text(datapageQuestion, questionData) {
+export function response_draganddrop_text(pregunta, questionData) {
     console.log("Respondiendo preguntas draganddrop_text")
+
+    obtenerFormulationClearfix(pregunta)
+
+    console.log(pregunta)
+
 }

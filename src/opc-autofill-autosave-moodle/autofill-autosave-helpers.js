@@ -818,6 +818,50 @@ function compararHTML(htmlDPN, htmlDFN) {
   return { coincide: coincide, similitudTexto: similitudTexto, mediosCoinciden: mediosCoinciden };
 }
 
+export function obtenerFormulationClearfix(preguntaStr) {
+  // Extrae el número de la cadena, por ejemplo: "Pregunta7" → "7"
+  const match = preguntaStr.match(/Pregunta(\d+)/);
+  if (!match) {
+    console.error('El formato de la pregunta no es válido. Usa "PreguntaXX"');
+    return null;
+  }
+  const numeroPregunta = match[1];
+
+  // Busca todos los elementos con class "info"
+  const infoElements = document.querySelectorAll('.info');
+  let infoTarget = null;
+  infoElements.forEach((info) => {
+    // Busca dentro de info un elemento con class "rui-qno" (sin importar si está dentro de un h4 o no)
+    const span = info.querySelector('.rui-qno');
+    if (span && span.textContent.trim() === numeroPregunta) {
+      infoTarget = info;
+    }
+  });
+
+  if (!infoTarget) {
+    console.error(`No se encontró la pregunta número ${numeroPregunta}`);
+    return null;
+  }
+
+  // Encuentra el hermano con class "content"
+  let contentElement = infoTarget.nextElementSibling;
+  while (contentElement && !contentElement.classList.contains('content')) {
+    contentElement = contentElement.nextElementSibling;
+  }
+  if (!contentElement) {
+    console.error('No se encontró el elemento "content" hermano de la pregunta');
+    return null;
+  }
+
+  // Dentro de "content", devuelve el elemento que contiene la formulación (class "formulation clearfix")
+  const formulationElement = contentElement.querySelector('.formulation.clearfix');
+  if (!formulationElement) {
+    console.error('No se encontró el elemento ".formulation.clearfix" dentro de "content"');
+    return null;
+  }
+
+  return formulationElement;
+}
 
 
 
