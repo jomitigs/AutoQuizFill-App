@@ -45564,7 +45564,6 @@
 	    const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
 
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
-	    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 	}
 
 	function opcion_AutoFillAutoSave_Moodle_html() {

@@ -34,7 +34,6 @@ export async function contenedorAutoFill_js() {
     const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
 
     console.log("DPN Existentes:", comparedData.dpnExistentes);
-    console.log("DPN Nuevas:", comparedData.dpnNuevas);
 
     const funcQuestionType = {
         'inputradio_opcionmultiple_verdaderofalso': response_inputradio_opcionmultiple_verdaderofalso,
