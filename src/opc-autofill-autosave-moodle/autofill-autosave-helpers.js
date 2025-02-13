@@ -608,7 +608,7 @@ async function normalizarHTMLString(html) {
   tempDiv.querySelectorAll('option[value="0"]')
     .forEach(el => el.remove());
 
-  tempDiv.querySelectorAll('answercontainer')
+  tempDiv.querySelectorAll('.answercontainer')
     .forEach(el => el.remove());
 
   tempDiv.querySelectorAll('.draghome.placed').forEach(element => {
