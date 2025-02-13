@@ -5,7 +5,7 @@ import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
 import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas, normalizarHTML, compararPreguntas } from './autofill-autosave-helpers.js';
 
-import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage } from './autosave/autosave-script.js';
+import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses } from './autosave/autosave-script.js';
 import { contenedorAutoFill_js } from './autofill/autofill-script.js';
 
 import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../config-firebase/firebase-helpers.js';
@@ -172,12 +172,14 @@ async function contenedorAutoFillAutoSave_js() {
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
             console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
+            if (stateAutoSave === "activado"){
+                AutoSave_ShowResponses();
+            }
         } 
         
         if (stateAutoSave === "activado") {
             bodyAutoSave.style.display = 'flex';
             contenedorAutoSave_js();
-            AutoSave_ShowResponses();
         }
 
         renderizarPreguntas();
@@ -226,7 +228,10 @@ function detectarCambiosInterruptor() {
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
             console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
-            AutoSave_ShowResponses();
+            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+            if (stateAutoSave === "activado"){
+                AutoSave_ShowResponses();
+            }
         } else {
             bodyAutoFill.style.display = 'none';
         }
