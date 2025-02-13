@@ -155,6 +155,7 @@ async function contenedorAutoFillAutoSave_js() {
     const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 
     if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
+       
         getDataFromFirebaseAsync();
         const originalFormulations = document.querySelectorAll(".formulation.clearfix");
         await AutoSaveQuestions_SessionStorage(originalFormulations);
@@ -180,7 +181,7 @@ async function contenedorAutoFillAutoSave_js() {
 function detectarCambiosInterruptor() {
     const interruptorAutoSave = document.getElementById("switch-autosave");
     const interruptorAutoFill = document.getElementById("switch-autofill");
-    
+
     interruptorAutoSave.addEventListener("change", () => {
                 
         const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
@@ -188,7 +189,6 @@ function detectarCambiosInterruptor() {
         localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
         console.log(`AutoSave: ${nuevoEstado}`);
         if (nuevoEstado === "activado") {
-            bodyAutoSave.style.display = 'flex';
             contenedorAutoFillAutoSave_js();
         } else {
             bodyAutoSave.style.display = 'none';
@@ -203,7 +203,6 @@ function detectarCambiosInterruptor() {
         localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
         console.log(`AutoFill: ${nuevoEstado}`);
         if (nuevoEstado === "activado") {
-            bodyAutoFill.style.display = 'flex';
             contenedorAutoFillAutoSave_js();
         } else {
             bodyAutoFill.style.display = 'none';
