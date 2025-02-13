@@ -209,9 +209,7 @@ function detectarCambiosInterruptor() {
         console.log(`AutoFill: ${nuevoEstado}`);
 
         if (nuevoEstado === "activado") {
-            window.eventosPreguntasHabilitados = false;
             await contenedorAutoFillAutoSave_js();
-            window.eventosPreguntasHabilitados = true;
         } else {
             bodyAutoFill.style.display = 'none';
         }
