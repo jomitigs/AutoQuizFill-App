@@ -38,7 +38,7 @@ export async function draganddrop_text(originalFormulationClearfix) {
             respuestas.push(occupantText || '');
 
             // Reemplazamos el propio `place` por un TextNode de la forma `[ texto ]` o `[ ]`
-            const textBracket = occupantText ? `[ ${occupantText} ]` : '[ ]';
+            const textBracket = '[ ]';
             place.replaceWith(document.createTextNode(textBracket));
         });
     } else {
