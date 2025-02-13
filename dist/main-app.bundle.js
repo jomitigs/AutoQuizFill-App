@@ -45076,8 +45076,10 @@
 
 	}
 
-	function detectarCambiosPreguntas() {
+	// global.js
+	window.eventosPreguntasHabilitados = true;
 
+	function detectarCambiosPreguntas() {
 	    // 1. Escucha los cambios en inputs, selects y checkboxes
 	    const elementos = document.querySelectorAll(
 	        'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
@@ -45085,14 +45087,16 @@
 
 	    elementos.forEach(el => {
 	        el.addEventListener('change', async (event) => {
-	            // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora
+	            // Si los eventos están deshabilitados, salimos inmediatamente.
+	            if (!window.eventosPreguntasHabilitados) return;
+
+	            // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora.
 	            if (event.target.closest('#barra-lateral-autoquizfillapp')) {
 	                return;
 	            }
 
 	            console.log('[opc-autofill-autosave-moodle: autosave] Cambio detectado');
-
-	            // Realiza el proceso de autoguardado
+	            // Realiza el proceso de autoguardado.
 	            await procesoAutoSave(event.target);
 	        });
 	    });
@@ -45100,13 +45104,13 @@
 	    // 2. Configura los elementos "draghome" para que sean arrastrables
 	    interact('.draghome').draggable({
 	        inertia: true,
-
 	        onmove: function (event) {
+	            // Si los eventos están deshabilitados, no se ejecuta nada.
+	            if (!window.eventosPreguntasHabilitados) return;
 	            // Lógica durante el arrastre (opcional)
-	            // console.log('Elemento se está arrastrando:', event.target);
 	        },
-
 	        onend: async function (event) {
+	            if (!window.eventosPreguntasHabilitados) return;
 	            console.log('Evento onend disparado para:', event.target);
 
 	            // Obtén la posición de soltado
@@ -45114,35 +45118,31 @@
 	            const dropY = event.pageY;
 	            console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
 
-	            // Esperar a que ocurra algún cambio en el DOM
+	            // Espera a que ocurra algún cambio en el DOM
 	            console.log('Esperando mutación en el DOM...');
 	            await new Promise(resolve => {
 	                const observer = new MutationObserver(() => {
-	                    // Al detectar una mutación, se desconecta el observer
 	                    observer.disconnect();
 	                    console.log('Se ha detectado un cambio en el DOM');
 	                    resolve();
 	                });
-	                // Observa todo el <body> buscando cambios estructurales (nuevos nodos, etc.)
 	                observer.observe(document.body, { childList: true, subtree: true });
 	            });
 
 	            console.log('Ahora llamamos a procesoAutoSave...');
 	            await procesoAutoSave(event.target);
-	            console.log('procesoAutoSave finalizado.2');
+	            console.log('procesoAutoSave finalizado.');
 	        }
 	    });
 
 	    const boton = document.getElementById("upload-autosave");
-
-	    // Verificar que el botón exista en el DOM antes de asignar el evento
 	    if (boton) {
 	        boton.addEventListener("click", AutoSave_Firebase);
 	    } else {
 	        console.error("El botón con ID 'upload-autosave' no fue encontrado.");
 	    }
-
 	}
+
 
 	async function procesoAutoSave(elemento) {
 	    // Verifica si 'questions-AutoSave' existe en sessionStorage
@@ -46093,34 +46093,41 @@
 	    const interruptorAutoSave = document.getElementById("switch-autosave");
 	    const interruptorAutoFill = document.getElementById("switch-autofill");
 
-	    interruptorAutoSave.addEventListener("change", () => {
-	                
+	    // Para el interruptor de AutoSave
+	    interruptorAutoSave.addEventListener("change", async () => {
 	        const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
 	        const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
 	        localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
 	        console.log(`AutoSave: ${nuevoEstado}`);
+
 	        if (nuevoEstado === "activado") {
-	            contenedorAutoFillAutoSave_js();
+	            // Deshabilitar los eventos de preguntas
+	            window.eventosPreguntasHabilitados = false;
+	            await contenedorAutoFillAutoSave_js();
+	            // Rehabilitar después de finalizar la función
+	            window.eventosPreguntasHabilitados = true;
 	        } else {
 	            bodyAutoSave.style.display = 'none';
 	        }
-
 	    });
 
-	    interruptorAutoFill.addEventListener("change", () => {
-	        
+	    // Para el interruptor de AutoFill
+	    interruptorAutoFill.addEventListener("change", async () => {
 	        const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 	        const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
 	        localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
 	        console.log(`AutoFill: ${nuevoEstado}`);
+
 	        if (nuevoEstado === "activado") {
-	            contenedorAutoFillAutoSave_js();
+	            window.eventosPreguntasHabilitados = false;
+	            await contenedorAutoFillAutoSave_js();
+	            window.eventosPreguntasHabilitados = true;
 	        } else {
 	            bodyAutoFill.style.display = 'none';
 	        }
-
 	    });
 	}
+
 
 	// Función para verificar si la página está construida con Moodle
 	function esPaginaMoodle() {

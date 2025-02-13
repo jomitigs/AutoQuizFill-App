@@ -235,8 +235,10 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
 }
 
-function detectarCambiosPreguntas() {
+// global.js
+window.eventosPreguntasHabilitados = true;
 
+function detectarCambiosPreguntas() {
     // 1. Escucha los cambios en inputs, selects y checkboxes
     const elementos = document.querySelectorAll(
         'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
@@ -244,14 +246,16 @@ function detectarCambiosPreguntas() {
 
     elementos.forEach(el => {
         el.addEventListener('change', async (event) => {
-            // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora
+            // Si los eventos están deshabilitados, salimos inmediatamente.
+            if (!window.eventosPreguntasHabilitados) return;
+
+            // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora.
             if (event.target.closest('#barra-lateral-autoquizfillapp')) {
                 return;
             }
 
             console.log('[opc-autofill-autosave-moodle: autosave] Cambio detectado');
-
-            // Realiza el proceso de autoguardado
+            // Realiza el proceso de autoguardado.
             await procesoAutoSave(event.target);
         });
     });
@@ -259,13 +263,13 @@ function detectarCambiosPreguntas() {
     // 2. Configura los elementos "draghome" para que sean arrastrables
     interact('.draghome').draggable({
         inertia: true,
-
         onmove: function (event) {
+            // Si los eventos están deshabilitados, no se ejecuta nada.
+            if (!window.eventosPreguntasHabilitados) return;
             // Lógica durante el arrastre (opcional)
-            // console.log('Elemento se está arrastrando:', event.target);
         },
-
         onend: async function (event) {
+            if (!window.eventosPreguntasHabilitados) return;
             console.log('Evento onend disparado para:', event.target);
 
             // Obtén la posición de soltado
@@ -273,35 +277,31 @@ function detectarCambiosPreguntas() {
             const dropY = event.pageY;
             console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
 
-            // Esperar a que ocurra algún cambio en el DOM
+            // Espera a que ocurra algún cambio en el DOM
             console.log('Esperando mutación en el DOM...');
             await new Promise(resolve => {
                 const observer = new MutationObserver(() => {
-                    // Al detectar una mutación, se desconecta el observer
                     observer.disconnect();
                     console.log('Se ha detectado un cambio en el DOM');
                     resolve();
                 });
-                // Observa todo el <body> buscando cambios estructurales (nuevos nodos, etc.)
                 observer.observe(document.body, { childList: true, subtree: true });
             });
 
             console.log('Ahora llamamos a procesoAutoSave...');
             await procesoAutoSave(event.target);
-            console.log('procesoAutoSave finalizado.2');
+            console.log('procesoAutoSave finalizado.');
         }
     });
 
     const boton = document.getElementById("upload-autosave");
-
-    // Verificar que el botón exista en el DOM antes de asignar el evento
     if (boton) {
         boton.addEventListener("click", AutoSave_Firebase);
     } else {
         console.error("El botón con ID 'upload-autosave' no fue encontrado.");
     }
-
 }
+
 
 async function procesoAutoSave(elemento) {
     // Verifica si 'questions-AutoSave' existe en sessionStorage

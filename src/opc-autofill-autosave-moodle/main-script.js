@@ -183,34 +183,41 @@ function detectarCambiosInterruptor() {
     const interruptorAutoSave = document.getElementById("switch-autosave");
     const interruptorAutoFill = document.getElementById("switch-autofill");
 
-    interruptorAutoSave.addEventListener("change", () => {
-                
+    // Para el interruptor de AutoSave
+    interruptorAutoSave.addEventListener("change", async () => {
         const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
         const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
         localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
         console.log(`AutoSave: ${nuevoEstado}`);
+
         if (nuevoEstado === "activado") {
-            contenedorAutoFillAutoSave_js();
+            // Deshabilitar los eventos de preguntas
+            window.eventosPreguntasHabilitados = false;
+            await contenedorAutoFillAutoSave_js();
+            // Rehabilitar después de finalizar la función
+            window.eventosPreguntasHabilitados = true;
         } else {
             bodyAutoSave.style.display = 'none';
         }
-
     });
 
-    interruptorAutoFill.addEventListener("change", () => {
-        
+    // Para el interruptor de AutoFill
+    interruptorAutoFill.addEventListener("change", async () => {
         const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
         const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
         localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
         console.log(`AutoFill: ${nuevoEstado}`);
+
         if (nuevoEstado === "activado") {
-            contenedorAutoFillAutoSave_js();
+            window.eventosPreguntasHabilitados = false;
+            await contenedorAutoFillAutoSave_js();
+            window.eventosPreguntasHabilitados = true;
         } else {
             bodyAutoFill.style.display = 'none';
         }
-
     });
 }
+
 
 // Función para verificar si la página está construida con Moodle
 function esPaginaMoodle() {
