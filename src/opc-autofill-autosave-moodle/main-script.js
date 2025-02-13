@@ -192,7 +192,7 @@ function detectarCambiosInterruptor() {
 
         if (nuevoEstado === "activado") {
             // Deshabilitar los eventos de preguntas
-            await contenedorAutoFillAutoSave_js();
+            contenedorAutoSave_js();
             // Rehabilitar después de finalizar la funció
         } else {
             bodyAutoSave.style.display = 'none';
@@ -208,7 +208,7 @@ function detectarCambiosInterruptor() {
 
         if (nuevoEstado === "activado") {
             window.eventosPreguntasHabilitados = false;
-            await contenedorAutoFillAutoSave_js();
+            contenedorAutoFill_js();
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
         } else {
