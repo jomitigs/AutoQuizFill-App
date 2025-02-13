@@ -464,19 +464,12 @@ export async function compararPreguntas(dpn, dfn) {
     const preguntaDPN = dpn[claveDPN];
     console.log(`Procesando DPN: ${claveDPN}`, preguntaDPN);
 
-    // Si no existe la propiedad "html", se marca como nueva y se guarda la pregunta completa.
-    if (!preguntaDPN.html) {
-      console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
-      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
-      return;
-    }
-
     const tipoDPN = preguntaDPN.tipo;
     const cantidadDPN = preguntaDPN.html.length;
 
-    // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
-    if (!indiceDFN[tipoDPN]) {
-      console.log(`No existen preguntas DFN del tipo "${tipoDPN}" 2para DPN "${claveDPN}".`);
+    // Si no existe la propiedad "html", se marca como nueva y se guarda la pregunta completa.
+    if (!preguntaDPN.html || !indiceDFN[tipoDPN]) {
+      console.warn(`Elemento DPN "${claveDPN}" no tiene propiedad "html". Se marca como nueva.`);
       dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
       return;
     }
