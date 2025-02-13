@@ -235,8 +235,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
 }
 
-// global.js
-window.eventosPreguntasHabilitados = true;
+
 
 function detectarCambiosPreguntas() {
     // 1. Escucha los cambios en inputs, selects y checkboxes

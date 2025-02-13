@@ -45076,8 +45076,7 @@
 
 	}
 
-	// global.js
-	window.eventosPreguntasHabilitados = true;
+
 
 	function detectarCambiosPreguntas() {
 	    // 1. Escucha los cambios en inputs, selects y checkboxes
@@ -45923,6 +45922,9 @@
 	      console.error("Error en AutoFill:", error);
 	    }
 	  }
+
+	// global.js
+	window.eventosPreguntasHabilitados = true;
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
 	    return `

@@ -11,6 +11,8 @@ import { contenedorAutoFill_js } from './autofill/autofill-script.js';
 import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../config-firebase/firebase-helpers.js';
 import { idbGet, idbDelete } from '../config-firebase/idbSession.js';
 
+// global.js
+window.eventosPreguntasHabilitados = true;
 
 export function opcion_AutoFillAutoSave_Moodle_html() {
     return `
