@@ -45595,63 +45595,62 @@
 
 	    console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
+	    console.log(formulation);
 
 	}
 
 	function response_inputchecked_opcionmultiple(pregunta, questionData) {
 	    console.log("Respondiendo preguntas inputchecked_opcionmultiple");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
+	    console.log(formulation);
 
 	}
 
 	function response_select_emparejamiento(pregunta, questionData) {
 	    console.log("Respondiendo preguntas select_emparejamiento");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
+	    console.log(formulation);
 
 	}
 
 	function response_inputtext_respuestacorta(pregunta, questionData) {
 	    console.log("Respondiendo preguntas inputtext_respuestacorta");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
-
+	    console.log(formulation);
 	}
 
 	function response_inputtext_respuestacorta2(pregunta, questionData) {
 	    console.log("Respondiendo preguntas inputtext_respuestacorta2");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
+	    console.log(formulation);
 
 	}
 
 	function response_draganddrop_image(pregunta, questionData) {
 	    console.log("Respondiendo preguntas draganddrop_image");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
+	    console.log(formulation);
 
 	}
 
 	function response_draganddrop_text(pregunta, questionData) {
 	    console.log("Respondiendo preguntas draganddrop_text");
 
-	    obtenerFormulationClearfix(pregunta);
+	    let formulation = obtenerFormulationClearfix(pregunta);
 
-	    console.log(pregunta);
+	    console.log(formulation);
 
 	}
 

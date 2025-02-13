@@ -3,8 +3,8 @@ import {  obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js'
 export function response_inputchecked_opcionmultiple(pregunta, questionData) {
     console.log("Respondiendo preguntas inputchecked_opcionmultiple")
 
-    obtenerFormulationClearfix(pregunta)
+    let formulation = obtenerFormulationClearfix(pregunta)
 
-    console.log(pregunta)
+    console.log(formulation)
 
 }
