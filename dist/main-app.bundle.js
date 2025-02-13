@@ -44860,7 +44860,7 @@
 	    console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
 	    // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
-	    AutoSave_ShowResponses();
+	    AutoSave_ShowResponses$1();
 
 	    // Iniciar el monitoreo de cambios en las prefzguntas para actualizaciones dinámicas
 	    detectarCambiosPreguntas();
@@ -45172,7 +45172,7 @@
 	        // Si no existe, se guarda todo de una vez
 	        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
 	        await AutoSaveQuestions_SessionStorage(originalAllFormulations);
-	        await AutoSave_ShowResponses();
+	        await AutoSave_ShowResponses$1();
 
 	        // Llamada para renderizar expresiones LaTeX (u otro proceso similar)
 	        renderizarPreguntas();
@@ -45204,7 +45204,7 @@
 	        if (questionsAutoSave[preguntaKey]) {
 	            await AutoSaveQuestions_SessionStorage(formulation, numeroPregunta);
 	            console.log('AutoSave_ShowResponses iniciado');
-	            await AutoSave_ShowResponses(numeroPregunta);
+	            await AutoSave_ShowResponses$1(numeroPregunta);
 
 	            // Llamada para renderizar expresiones LaTeX
 	            renderizarPreguntas();
@@ -45215,7 +45215,7 @@
 	    }
 	}
 
-	function AutoSave_ShowResponses(numeroPregunta) {
+	function AutoSave_ShowResponses$1(numeroPregunta) {
 	    return new Promise((resolve, reject) => {
 	        const container = document.getElementById('respuestasautosave');
 	        if (!container) {
@@ -46105,6 +46105,7 @@
 	        if (stateAutoSave === "activado") {
 	            bodyAutoSave.style.display = 'flex';
 	            contenedorAutoSave_js();
+	            AutoSave_ShowResponses();
 	        }
 
 	        renderizarPreguntas();
@@ -46153,7 +46154,7 @@
 	            // Rehabilitar después de finalizar la función
 	            window.eventosPreguntasHabilitados = true;
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
-
+	            AutoSave_ShowResponses();
 	        } else {
 	            bodyAutoFill.style.display = 'none';
 	        }

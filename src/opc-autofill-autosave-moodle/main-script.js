@@ -177,6 +177,7 @@ async function contenedorAutoFillAutoSave_js() {
         if (stateAutoSave === "activado") {
             bodyAutoSave.style.display = 'flex';
             contenedorAutoSave_js();
+            AutoSave_ShowResponses();
         }
 
         renderizarPreguntas();
@@ -225,7 +226,7 @@ function detectarCambiosInterruptor() {
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
             console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
-
+            AutoSave_ShowResponses();
         } else {
             bodyAutoFill.style.display = 'none';
         }
