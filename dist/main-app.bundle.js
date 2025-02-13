@@ -44931,7 +44931,7 @@
 
 	            // Determinar tipo de pregunta (asumes que ya existe tu función)
 	            const questionType = determinarTipoPregunta(questionHtml);
-	            console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
+	            //console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
 	            // Llamar la función correspondiente
 	            const funcion = funcQuestionType[questionType];
