@@ -46120,7 +46120,7 @@
 	            window.eventosPreguntasHabilitados = true;
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
 	            if (stateAutoSave === "activado") {
-	                AutoSave_ShowResponses();
+	                contenedorAutoSave_js();
 	            }
 	            
 	        } 
@@ -46178,7 +46178,7 @@
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
 	            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
 	            if (stateAutoSave === "activado") {
-	                AutoSave_ShowResponses();
+	                contenedorAutoSave_js();
 	            }
 	            
 	        } else {
