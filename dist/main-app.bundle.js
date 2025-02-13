@@ -44707,14 +44707,11 @@
 	      const currentTabSessionId = getTabSessionId();
 	    
 	      // Si reset es false y existe data que ya corresponde a la pestaña actual, se evita la actualización
-	      if (!reset &&
-	          storedData &&
-	          storedData.tabSessionId === currentTabSessionId &&
-	          storedData.ruta === ruta &&
-	          Object.keys(storedData).length !== 2) {
-	        console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
-	        return;
-	      }
+	      //if (!reset && storedData && storedData.tabSessionId === currentTabSessionId && storedData.ruta === ruta &&
+	          //Object.keys(storedData).length !== 2) {
+	        //console.log("La data ya pertenece a esta pestaña (tabSessionId igual). No se actualiza.");
+	        //return;
+	      //}
 	  
 	      // Se obtienen nuevos datos desde Firebase
 	      const dataFirebase = await getDataFromFirebase(ruta);
