@@ -631,15 +631,6 @@ async function normalizarHTMLString(html) {
     element.remove();
   });
 
-
-  tempDiv.querySelectorAll('span.draghome.dragplaceholder.active').forEach(el => {
-    const tieneClaseChoice = Array.from(el.classList).some(cls => /^choice\d+$/.test(cls));
-    const tieneClaseGroup = Array.from(el.classList).some(cls => /^group\d+$/.test(cls));
-    if (tieneClaseChoice && tieneClaseGroup) {
-      el.remove();
-    }
-  });
-
   // Extraer el contenido utilizando la función extractContent (se asume que devuelve una lista)
   let combinedResults = await extractContent(tempDiv);
 
