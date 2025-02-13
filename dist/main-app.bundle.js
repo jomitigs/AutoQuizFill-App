@@ -45596,7 +45596,9 @@
 	}
 
 	async function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
-	  console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
+	    console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
+
+	    console.log( questionData);
 
 	  // Aseguramos que questionData.RespuestaCorrecta tenga un valor.
 	  const respuestaCorrectaEsperada = (questionData && typeof questionData.RespuestaCorrecta === 'string')
