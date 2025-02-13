@@ -46064,6 +46064,11 @@
 	    }
 
 	    contenedorAutoFillAutoSave_js(); 
+
+	    if (esMoodle) {
+	        contenedorAutoFillAutoSave_js(); 
+	    }
+
 	    detectarCambiosInterruptor();
 	}
 
@@ -46082,7 +46087,7 @@
 	    const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
 	    const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 
-	    if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
+	    if ((stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
 	       
 	        getDataFromFirebaseAsync();
 	        const originalFormulations = document.querySelectorAll(".formulation.clearfix");
