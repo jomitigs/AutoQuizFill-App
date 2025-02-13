@@ -45544,6 +45544,35 @@
 
 	}
 
+	function response_inputradio_opcionmultiple_verdaderofalso(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
+
+	}
+
+	function response_inputchecked_opcionmultiple(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas inputchecked_opcionmultiple");
+	}
+
+	function response_select_emparejamiento(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas select_emparejamiento");
+	}
+
+	function response_inputtext_respuestacorta(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas inputtext_respuestacorta");
+	}
+
+	function response_inputtext_respuestacorta2(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas inputtext_respuestacorta2");
+	}
+
+	function response_draganddrop_image(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas draganddrop_image");
+	}
+
+	function response_draganddrop_text(datapageQuestion, questionData) {
+	    console.log("Respondiendo preguntas draganddrop_text");
+	}
+
 	async function contenedorAutoFill_js() {
 	    console.log("Ejecutando AutoSave_Firebase...");
 
@@ -45564,7 +45593,56 @@
 	    const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
 
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
+
+	    AutoFill(comparedData.dpnExistentes);
+
 	}
+
+	async function AutoFill(dpq) {
+	    try {
+	      // Se obtiene el objeto completo de preguntas desde la base de datos indexada
+	      const dataFirebaseNormalizada = await idbGet("dataFirebaseNormalizada");
+	  
+	      // Mapeo de funciones según el tipo de pregunta
+	      const funcQuestionType = {
+	        'inputradio_opcionmultiple_verdaderofalso': response_inputradio_opcionmultiple_verdaderofalso,
+	        'inputchecked_opcionmultiple':  response_inputchecked_opcionmultiple,
+	        'select_emparejamiento':  response_select_emparejamiento,
+	        'inputtext_respuestacorta':  response_inputtext_respuestacorta,
+	        'inputtext_respuestacorta2':  response_inputtext_respuestacorta2,
+	        'draganddrop_text':  response_draganddrop_text,
+	        'draganddrop_image':  response_draganddrop_image,
+	      };
+	  
+	      // 1. Crear un objeto que almacene todas las relaciones:
+	      // { datapageQuestion: questionData, ... }
+	      const questionMapping = {};
+	  
+	      Object.entries(dpq).forEach(([datapageQuestion, datafirebaseQuestionKey]) => {
+	        const questionData = dataFirebaseNormalizada[datafirebaseQuestionKey];
+	        if (questionData) {
+	          questionMapping[datapageQuestion] = questionData;
+	        } else {
+	          console.warn(`No se encontraron datos para la clave: ${datafirebaseQuestionKey}`);
+	        }
+	      });
+
+	      console.log("Preguntas a responder", questionMapping);
+	  
+	      // 2. Iterar sobre el objeto creado y ejecutar la función correspondiente
+	      Object.entries(questionMapping).forEach(([datapageQuestion, questionData]) => {
+	        const questionType = questionData.tipo;
+	        if (funcQuestionType.hasOwnProperty(questionType)) {
+	          // Se llama a la función asociada pasando la clave de la pregunta y sus datos
+	          funcQuestionType[questionType](datapageQuestion, questionData);
+	        } else {
+	          console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
+	        }
+	      });
+	    } catch (error) {
+	      console.error("Error en AutoFill:", error);
+	    }
+	  }
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
 	    return `
