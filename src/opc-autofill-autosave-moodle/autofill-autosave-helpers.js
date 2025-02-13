@@ -479,7 +479,7 @@ export async function compararPreguntas(dpn, dfn) {
     // Si no hay preguntas en DFN del mismo tipo, se marca la pregunta como nueva.
     if (!indiceDFN[tipoDPN]) {
       console.log(`No existen preguntas DFN del tipo "${tipoDPN}" para DPN "${claveDPN}".`);
-      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
+      dpnNuevas.push({ claveDPN: preguntaDPN });
       return;
     }
 
