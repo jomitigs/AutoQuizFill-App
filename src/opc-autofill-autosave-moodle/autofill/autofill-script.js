@@ -16,7 +16,7 @@ import { response_draganddrop_text } from './questions-types/5_draganddrop_text.
 import { AutoSave_ShowResponses } from '../autosave/autosave-script.js';
 
 export async function contenedorAutoFill_js() {
-    console.log("Ejecutando AutoSave_Firebase...");
+    console.log("Ejecutando contenedorAutoFill_js");
 
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
     const ruta = switchRutaDinamica
