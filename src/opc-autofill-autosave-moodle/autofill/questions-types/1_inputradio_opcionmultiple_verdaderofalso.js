@@ -1,17 +1,17 @@
 import { obtenerFormulationClearfix,  extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
 export async function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
-    console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
+    // console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
 
   // Aseguramos que questionData.RespuestaCorrecta tenga un valor.
   const respuestaCorrectaEsperada = (questionData && typeof questionData.respuestaCorrecta === 'string')
     ? questionData.respuestaCorrecta
     : '';
-  console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
+  // console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
   // Obtenemos el contenedor de la formulación.
   const formulation = obtenerFormulationClearfix(pregunta);
-  console.log("Formulation:", formulation);
+  // console.log("Formulation:", formulation);
 
   // Obtenemos todos los inputs radio dentro de la formulación.
   const allInputRadio = formulation.querySelectorAll('input[type="radio"]');
@@ -47,19 +47,19 @@ export async function response_inputradio_opcionmultiple_verdaderofalso(pregunta
 
     // Si el input ya está marcado, se registra su texto.
     if (inputRadio.checked) {
-      console.log("Input radio marcado encontrado. Respuesta correcta:", textoOpcion);
+      // console.log("Input radio marcado encontrado. Respuesta correcta:", textoOpcion);
       respuestaCorrecta = textoOpcion;
     }
 
     // Solo comparamos si tenemos una respuesta esperada.
     if (respuestaCorrectaEsperada && textoOpcion.trim() === respuestaCorrectaEsperada.trim()) {
-      console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
+      // console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
       inputRadio.checked = true;
       // Disparamos un evento de cambio, si es necesario.
       inputRadio.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
 
-  console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
-  console.log("Respuesta seleccionada:", respuestaCorrecta || respuestaCorrectaEsperada);
+  // console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
+  // console.log("Respuesta seleccionada:", respuestaCorrecta || respuestaCorrectaEsperada);
 }

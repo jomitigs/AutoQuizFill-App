@@ -45597,23 +45597,20 @@
 	}
 
 	async function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
-	    console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
+	    // console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
 
 	  // Aseguramos que questionData.RespuestaCorrecta tenga un valor.
 	  const respuestaCorrectaEsperada = (questionData && typeof questionData.respuestaCorrecta === 'string')
 	    ? questionData.respuestaCorrecta
 	    : '';
-	  console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
+	  // console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
 	  // Obtenemos el contenedor de la formulación.
 	  const formulation = obtenerFormulationClearfix(pregunta);
-	  console.log("Formulation:", formulation);
+	  // console.log("Formulation:", formulation);
 
 	  // Obtenemos todos los inputs radio dentro de la formulación.
 	  const allInputRadio = formulation.querySelectorAll('input[type="radio"]');
-
-	  let opcionesRespuesta = [];
-	  let respuestaCorrecta = null;
 
 	  // Iteramos sobre cada input radio.
 	  for (const inputRadio of allInputRadio) {
@@ -45639,29 +45636,24 @@
 	      console.log("No se encontró label asociado para el input radio:", inputRadio);
 	    }
 
-	    opcionesRespuesta.push(textoOpcion);
-
 	    // Si el input ya está marcado, se registra su texto.
-	    if (inputRadio.checked) {
-	      console.log("Input radio marcado encontrado. Respuesta correcta:", textoOpcion);
-	      respuestaCorrecta = textoOpcion;
-	    }
+	    if (inputRadio.checked) ;
 
 	    // Solo comparamos si tenemos una respuesta esperada.
 	    if (respuestaCorrectaEsperada && textoOpcion.trim() === respuestaCorrectaEsperada.trim()) {
-	      console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
+	      // console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
 	      inputRadio.checked = true;
 	      // Disparamos un evento de cambio, si es necesario.
 	      inputRadio.dispatchEvent(new Event('change', { bubbles: true }));
 	    }
 	  }
 
-	  console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
-	  console.log("Respuesta seleccionada:", respuestaCorrecta || respuestaCorrectaEsperada);
+	  // console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
+	  // console.log("Respuesta seleccionada:", respuestaCorrecta || respuestaCorrectaEsperada);
 	}
 
 	async function response_inputchecked_opcionmultiple(pregunta, questionData) {
-	  console.log("Respondiendo preguntas inputchecked_opcionmultiple");
+	  // console.log("Respondiendo preguntas inputchecked_opcionmultiple");
 
 	  // 1. Obtenemos las respuestas correctas esperadas desde questionData (clave: respuestaCorrecta).
 	  let respuestasCorrectasEsperadas = [];
@@ -45673,17 +45665,14 @@
 	      respuestasCorrectasEsperadas = [respuestasData.trim()];
 	    }
 	  }
-	  console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
+	  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
 	  // 2. Obtenemos el contenedor de la formulación.
 	  const formulation = obtenerFormulationClearfix(pregunta);
-	  console.log("Formulation:", formulation);
+	  // console.log("Formulation:", formulation);
 
 	  // 3. Obtenemos todos los inputs checkbox dentro de la formulación.
 	  const allInputCheckbox = formulation.querySelectorAll('input[type="checkbox"]');
-
-	  let opcionesRespuesta = [];
-	  let respuestaCorrecta = [];
 
 	  // 4. Iteramos sobre cada input checkbox.
 	  for (const inputCheckbox of allInputCheckbox) {
@@ -45708,28 +45697,23 @@
 	      console.log("No se encontró label asociado para el input checkbox con id:", labelId);
 	    }
 
-	    opcionesRespuesta.push(textoOpcion);
-
 	    // Si el checkbox ya está marcado, se añade su texto a las respuestas correctas.
-	    if (inputCheckbox.checked) {
-	      respuestaCorrecta.push(textoOpcion);
-	    }
+	    if (inputCheckbox.checked) ;
 
 	    // Si el texto de la opción coincide con alguna de las respuestas correctas esperadas, se marca el checkbox.
 	    if (respuestasCorrectasEsperadas.some(r => r === textoOpcion)) {
-	      console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
+	      // console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
 	      inputCheckbox.checked = true;
 	      inputCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
 	    }
 	  }
 
-	  console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
-	  console.log("Respuestas seleccionadas:", 
-	    respuestaCorrecta.length > 0 ? respuestaCorrecta : respuestasCorrectasEsperadas);
+	  // console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
+	  // console.log("Respuestas seleccionadas:",  respuestaCorrecta.length > 0 ? respuestaCorrecta : respuestasCorrectasEsperadas);
 	}
 
 	async function response_select_emparejamiento(pregunta, questionData) {
-	  console.log("Respondiendo preguntas select emparejamiento");
+	  // console.log("Respondiendo preguntas select emparejamiento");
 
 	  // 1. Extraer los arrays de enunciados y respuestas correctas de questionData.
 	  let opcionesEnunciadosEsperadas = [];
@@ -45746,19 +45730,15 @@
 	      respuestasCorrectasEsperadas = [questionData.respuestaCorrecta.trim()];
 	    }
 	  }
-	  console.log("Opciones enunciados esperadas:", opcionesEnunciadosEsperadas);
-	  console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
+	  // console.log("Opciones enunciados esperadas:", opcionesEnunciadosEsperadas);
+	  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
 	  // 2. Obtener el contenedor de la formulación.
 	  const formulation = obtenerFormulationClearfix(pregunta);
-	  console.log("Formulation:", formulation);
+	  // console.log("Formulation:", formulation);
 
 	  // 3. Obtener todos los <select> dentro de la formulación.
 	  const allSelects = formulation.querySelectorAll('select');
-
-	  // Variables para almacenar enunciados y respuestas seleccionadas (opcional, para depuración).
-	  let enunciadosEncontrados = [];
-	  let respuestasSeleccionadas = [];
 
 	  // 4. Iterar sobre cada <select>.
 	  for (const selectElement of allSelects) {
@@ -45781,13 +45761,12 @@
 
 	    // Si se obtuvo un enunciado, lo procesamos.
 	    if (textoPregunta) {
-	      enunciadosEncontrados.push(textoPregunta);
 	      // Buscamos la posición de este enunciado en el array de enunciados esperados.
 	      const index = opcionesEnunciadosEsperadas.indexOf(textoPregunta);
 	      if (index !== -1) {
 	        // Si se encontró, la respuesta correcta correspondiente es:
 	        const respuestaEsperada = respuestasCorrectasEsperadas[index];
-	        console.log("Enunciado encontrado:", textoPregunta, " - Respuesta esperada:", respuestaEsperada);
+	        // console.log("Enunciado encontrado:", textoPregunta, " - Respuesta esperada:", respuestaEsperada);
 
 	        // Recorremos las opciones del <select> para encontrar aquella que coincida con la respuesta.
 	        for (const option of selectElement.options) {
@@ -45797,7 +45776,6 @@
 	              // Seleccionamos esta opción.
 	              selectElement.value = option.value;
 	              selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-	              respuestasSeleccionadas.push(respuestaEsperada);
 	              console.log("Seleccionado en select:", respuestaEsperada);
 	              break; // Terminamos de iterar las opciones para este <select>.
 	            }
@@ -45809,8 +45787,8 @@
 	    }
 	  }
 
-	  console.log("Enunciados encontrados:", enunciadosEncontrados);
-	  console.log("Respuestas seleccionadas:", respuestasSeleccionadas);
+	  // console.log("Enunciados encontrados:", enunciadosEncontrados);
+	  // console.log("Respuestas seleccionadas:", respuestasSeleccionadas);
 	}
 
 	function response_inputtext_respuestacorta(pregunta, questionData) {

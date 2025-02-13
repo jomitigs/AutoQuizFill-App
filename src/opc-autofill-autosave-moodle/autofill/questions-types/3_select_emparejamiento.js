@@ -1,7 +1,7 @@
 import { obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js';
 
 export async function response_select_emparejamiento(pregunta, questionData) {
-  console.log("Respondiendo preguntas select emparejamiento");
+  // console.log("Respondiendo preguntas select emparejamiento");
 
   // 1. Extraer los arrays de enunciados y respuestas correctas de questionData.
   let opcionesEnunciadosEsperadas = [];
@@ -18,12 +18,12 @@ export async function response_select_emparejamiento(pregunta, questionData) {
       respuestasCorrectasEsperadas = [questionData.respuestaCorrecta.trim()];
     }
   }
-  console.log("Opciones enunciados esperadas:", opcionesEnunciadosEsperadas);
-  console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
+  // console.log("Opciones enunciados esperadas:", opcionesEnunciadosEsperadas);
+  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
   // 2. Obtener el contenedor de la formulación.
   const formulation = obtenerFormulationClearfix(pregunta);
-  console.log("Formulation:", formulation);
+  // console.log("Formulation:", formulation);
 
   // 3. Obtener todos los <select> dentro de la formulación.
   const allSelects = formulation.querySelectorAll('select');
@@ -59,7 +59,7 @@ export async function response_select_emparejamiento(pregunta, questionData) {
       if (index !== -1) {
         // Si se encontró, la respuesta correcta correspondiente es:
         const respuestaEsperada = respuestasCorrectasEsperadas[index];
-        console.log("Enunciado encontrado:", textoPregunta, " - Respuesta esperada:", respuestaEsperada);
+        // console.log("Enunciado encontrado:", textoPregunta, " - Respuesta esperada:", respuestaEsperada);
 
         // Recorremos las opciones del <select> para encontrar aquella que coincida con la respuesta.
         for (const option of selectElement.options) {
@@ -81,6 +81,6 @@ export async function response_select_emparejamiento(pregunta, questionData) {
     }
   }
 
-  console.log("Enunciados encontrados:", enunciadosEncontrados);
-  console.log("Respuestas seleccionadas:", respuestasSeleccionadas);
+  // console.log("Enunciados encontrados:", enunciadosEncontrados);
+  // console.log("Respuestas seleccionadas:", respuestasSeleccionadas);
 }

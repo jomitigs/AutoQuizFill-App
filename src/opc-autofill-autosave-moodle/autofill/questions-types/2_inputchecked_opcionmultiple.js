@@ -1,7 +1,7 @@
 import { obtenerFormulationClearfix, extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
 export async function response_inputchecked_opcionmultiple(pregunta, questionData) {
-  console.log("Respondiendo preguntas inputchecked_opcionmultiple");
+  // console.log("Respondiendo preguntas inputchecked_opcionmultiple");
 
   // 1. Obtenemos las respuestas correctas esperadas desde questionData (clave: respuestaCorrecta).
   let respuestasCorrectasEsperadas = [];
@@ -13,11 +13,11 @@ export async function response_inputchecked_opcionmultiple(pregunta, questionDat
       respuestasCorrectasEsperadas = [respuestasData.trim()];
     }
   }
-  console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
+  // console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
 
   // 2. Obtenemos el contenedor de la formulación.
   const formulation = obtenerFormulationClearfix(pregunta);
-  console.log("Formulation:", formulation);
+  // console.log("Formulation:", formulation);
 
   // 3. Obtenemos todos los inputs checkbox dentro de la formulación.
   const allInputCheckbox = formulation.querySelectorAll('input[type="checkbox"]');
@@ -57,13 +57,12 @@ export async function response_inputchecked_opcionmultiple(pregunta, questionDat
 
     // Si el texto de la opción coincide con alguna de las respuestas correctas esperadas, se marca el checkbox.
     if (respuestasCorrectasEsperadas.some(r => r === textoOpcion)) {
-      console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
+      // console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
       inputCheckbox.checked = true;
       inputCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
 
-  console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
-  console.log("Respuestas seleccionadas:", 
-    respuestaCorrecta.length > 0 ? respuestaCorrecta : respuestasCorrectasEsperadas);
+  // console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
+  // console.log("Respuestas seleccionadas:",  respuestaCorrecta.length > 0 ? respuestaCorrecta : respuestasCorrectasEsperadas);
 }
