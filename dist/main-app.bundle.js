@@ -47001,7 +47001,7 @@
   </label>
 </div>
 
-<span id="subtitle-config">AutoSave</span>
+<span class="estilo-config-item">AutoSave</span>
 
 <div id="botonterminaryguardar-autosave-switch" class="opc-config-switch-container" style="display: none">
   <span class="opc-config-switch-label">Mostrar Boton Guardar y Terminar</span>
