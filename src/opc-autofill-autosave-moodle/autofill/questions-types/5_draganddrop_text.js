@@ -113,6 +113,8 @@ export function response_draganddrop_text(pregunta, questionData) {
       // Actualizar el input oculto asociado al "place" para que el sistema detecte la respuesta.
       const hiddenInput = formulation.querySelector(`input.place${index + 1}.${groupClass}`);
       if (hiddenInput) {
+        const value = getValueForRespuesta(choice);
+        hiddenInput.value = value;
         if (window.jQuery) {
           window.jQuery(hiddenInput).trigger('change');
           window.jQuery(hiddenInput).trigger('input');
