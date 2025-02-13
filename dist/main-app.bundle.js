@@ -46107,34 +46107,35 @@
 
 	        // Registrar los listeners solo una vez.
 	        if (!autosave_autofill.initted) {
-
-	            const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
-	            const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 	            
 	            interruptorAutoSave.addEventListener("change", () => {
 	                
+	                const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
 	                const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
 	                localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
 	                console.log(`AutoSave: ${nuevoEstado}`);
 	                if (nuevoEstado === "activado") {
-	                  autosave_autofill();
+	                    autosave_autofill();
 	                } else {
 	                    bodyAutoSave.style.display = 'none';
 	                }
+
 	            });
 
 	            interruptorAutoFill.addEventListener("change", () => {
 	                
+	                const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 	                const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
 	                localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
 	                console.log(`AutoFill: ${nuevoEstado}`);
 	                if (nuevoEstado === "activado") {
 	                    autosave_autofill();
 	                } else {
-	                bodyAutoFill.style.display = 'none';
+	                    bodyAutoFill.style.display = 'none';
 	                }
+
 	            });
-	            
+
 	            autosave_autofill.initted = true;
 	        }
 	    };
