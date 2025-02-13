@@ -23,11 +23,15 @@ export async function response_inputtext_respuestacorta2(pregunta, questionData)
   }
   console.log("Input text encontrado:", inputText);
 
-  // Pegamos la respuesta correcta en el input text.
+  // Asignamos el valor al input y actualizamos también el atributo "value"
   inputText.value = respuestaCorrectaEsperada;
-  console.log("Asignado valor al input text:", respuestaCorrectaEsperada);
+  inputText.setAttribute('value', respuestaCorrectaEsperada);
+  console.log("Valor asignado al input text:", inputText.value);
 
-  // Disparamos un evento de cambio para notificar la modificación.
-  inputText.dispatchEvent(new Event('change', { bubbles: true }));
-  console.log("Evento 'change' disparado en input text.");
+  // Disparamos eventos para notificar la modificación.
+  const eventInput = new Event('input', { bubbles: true });
+  const eventChange = new Event('change', { bubbles: true });
+  inputText.dispatchEvent(eventInput);
+  inputText.dispatchEvent(eventChange);
+  console.log("Eventos 'input' y 'change' disparados en input text.");
 }
