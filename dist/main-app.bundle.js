@@ -46102,10 +46102,8 @@
 
 	        if (nuevoEstado === "activado") {
 	            // Deshabilitar los eventos de preguntas
-	            window.eventosPreguntasHabilitados = false;
 	            await contenedorAutoFillAutoSave_js();
-	            // Rehabilitar después de finalizar la función
-	            window.eventosPreguntasHabilitados = true;
+	            // Rehabilitar después de finalizar la funció
 	        } else {
 	            bodyAutoSave.style.display = 'none';
 	        }
@@ -46119,7 +46117,10 @@
 	        console.log(`AutoFill: ${nuevoEstado}`);
 
 	        if (nuevoEstado === "activado") {
+	            window.eventosPreguntasHabilitados = false;
 	            await contenedorAutoFillAutoSave_js();
+	            // Rehabilitar después de finalizar la función
+	            window.eventosPreguntasHabilitados = true;
 	        } else {
 	            bodyAutoFill.style.display = 'none';
 	        }
