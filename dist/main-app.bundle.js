@@ -45084,8 +45084,6 @@
 	        'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
 	    );
 
-	    console.log("estado de cambios",window.eventosPreguntasHabilitados);
-
 	    elementos.forEach(el => {
 	        el.addEventListener('change', async (event) => {
 	            // Si los eventos están deshabilitados, salimos inmediatamente.
