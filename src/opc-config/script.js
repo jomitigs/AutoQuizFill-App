@@ -39,8 +39,8 @@ export function opcionConfig_html() {
           </label>
         </div>
 
-    <span id="subopcion-config" class="estilo-config-item" style="display: none">AutoSave</span>
-      <div id="botonterminaryguardar-autosave-switch" class="opc-config-switch-container" style="display: none">
+    <span id="subopcion-config" class="estilo-config-item" >AutoSave</span>
+      <div id="botonterminaryguardar-autosave-switch" class="opc-config-switch-container" >
         <span class="opc-config-switch-label">Mostrar Botón Guardar y Terminar</span>
         <label class="opc-config-switch">
           <input type="checkbox" id="botonterminaryguardar-autosave-switch-checkbox" class="opc-config-switch-checkbox">
