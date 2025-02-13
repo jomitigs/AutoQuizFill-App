@@ -1,9 +1,6 @@
 import './style.css';
 
-import { contenedorUsers_js } from './users/script.js';
-import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
-
-import { renderizarPreguntas } from './autofill-autosave-helpers.js';
+import { contenedorRuta_js} from '../opc-autofill-autosave-moodle/ruta/script.js';
 
 import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses } from './autosave/autosave-script.js';
 import { contenedorAutoFill_js } from './autofill/autofill-script.js';
@@ -14,11 +11,11 @@ import { getDataFromFirebaseAsync } from '../config-firebase/firebase-helpers.js
 window.eventosPreguntasHabilitados = true;
 window.autoSaveEnEjecucion = false;
 
-export function opcion_AutoFillAutoSave_Moodle_html() {
+export function opcion_AutoFillAutoSave_Altissia_html() {
     return `
-    <div id="autofillautosave_moodle" class="containerOption">
+    <div id="autofillautosave_altissia" class="containerOption">
 
-    <div id="users-autofill-moodle" class="users" style="display: none;">
+    <div id="users-autofill-altissia" class="users" style="display: none;">
 
         <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
         <div class="usuario-actual">
@@ -44,8 +41,6 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
     </div>
 
     <div id="container-autofillautosave">
-
-
 
         <!-- Nuevo contenedor para AutoFill-->
         <div id="container-autofill" class="subcontainer-autoquiz-autofill">
@@ -108,34 +103,31 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
     `;
 }
 
-export async function opcion_AutoFillAutoSave_Moodle_js() {
+export async function opcion_AutoFillAutoSave_Altissia_js() {
 
-    let esMoodle = esPaginaMoodle();
+    let esAltissia = esPaginaAltissia();
     const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica');
 
-    if (esMoodle) {
-        console.log("[opc-autofill-autosave-moodle: main]  Esta página está construida con Moodle");
+    if (esAltissia) {
+        console.log("[opc-autofill-autosave-altissia: main]  Esta página está construida con Altissia");
     } else {
-        console.log("[opc-autofill-autosave-moodle: main]  Esta página no está construida con Moodle");
+        console.log("[opc-autofill-autosave-altissia: main]  Esta página no está construida con Altissia");
     }
 
-    if (localStorage.getItem('configUsersAutofill') === 'true' && esMoodle) {
-        const autofillUsers = document.getElementById('users-autofill-moodle');
-        autofillUsers.style.display = 'flex';
-        contenedorUsers_js();
-    } else {
-        console.log("[opc-autofill-autosave-moodle: main]  AutoFill Users no ejecutado porque, no es Moodle");
-    }
+    //if (localStorage.getItem('configUsersAutofill') === 'true' && esAltissia) {
+        //const autofillUsers = document.getElementById('users-autofill-moodle');
+        //autofillUsers.style.display = 'flex';
+        //contenedorUsers_js();
+    //} else {
+        //console.log("[opc-autofill-autosave-moodle: main]  AutoFill Users no ejecutado porque, no es Moodle");
+    //}
 
-    if (esMoodle && switchRutaDinamica === 'true') {
-        console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta Dinamica...');
-        await contenedorRutaDinamica_js();
-    } else {
-        console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta...');
-        contenedorRuta_js();
-    }
 
-    if (esMoodle) {
+    console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta...');
+    contenedorRuta_js();
+    
+
+    if (esAltissia) {
         contenedorAutoFillAutoSave_js();
     }
 
@@ -210,7 +202,7 @@ function detectarCambiosInterruptor() {
         if (nuevoEstado === "activado") {
             bodyAutoSave.style.display = 'flex';
             // Deshabilitar los eventos de preguntas
-            contenedorAutoSave_js();
+        //  contenedorAutoSave_js();
             // Rehabilitar después de finalizar la funció
         } else {
             bodyAutoSave.style.display = 'none';
@@ -228,16 +220,16 @@ function detectarCambiosInterruptor() {
             bodyAutoFill.style.display = 'flex';
             window.eventosPreguntasHabilitados = false;
             console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
-            await contenedorAutoFill_js();
+        //  await contenedorAutoFill_js();
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
             console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
             const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
-            const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-            await AutoSaveQuestions_SessionStorage(originalFormulations);
+        //  const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
+        //  await AutoSaveQuestions_SessionStorage(originalFormulations);
 
             if (stateAutoSave === "activado") {
-                contenedorAutoSave_js();
+                // contenedorAutoSave_js();
             }
             
         } else {
@@ -247,33 +239,8 @@ function detectarCambiosInterruptor() {
 }
 
 // Función para verificar si la página está construida con Moodle
-function esPaginaMoodle() {
-    // Método 1: Verificar la etiqueta meta "generator"
-    const metaGenerator = document.querySelector('meta[name="generator"]');
-    if (metaGenerator && metaGenerator.getAttribute('content').toLowerCase().includes('moodle')) {
-        return true;
-    }
-
-    // Método 2: Verificar clases específicas en el <body>
-    if (document.body.classList.contains('moodle')) {
-        return true;
-    }
-
-    // Método 3: Verificar contenedores específicos de Moodle
-    const moodleContainer = document.querySelector('.moodle-page');
-    if (moodleContainer) {
-        return true;
-    }
-
-    // Método 4: Verificar URLs o scripts específicos
-    const scripts = document.querySelectorAll('script[src]');
-    for (let script of scripts) {
-        if (script.src.toLowerCase().includes('moodle')) {
-            return true;
-        }
-    }
-
-    // Si ninguno de los métodos anteriores detecta Moodle
-    return false;
+function esPaginaAltissia() {
+    return window.location.href.includes("altissia.org");
 }
+
 

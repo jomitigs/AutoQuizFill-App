@@ -23306,8 +23306,8 @@
 	  }
 	}
 
-	var css_248z$6 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 400px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 15px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  /* overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
-	styleInject(css_248z$6);
+	var css_248z$7 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 400px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 15px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  /* overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
+	styleInject(css_248z$7);
 
 	// Importar el archivo HTML como cadena
 
@@ -23415,14 +23415,14 @@
 	  return barraLateral;
 	})();
 
-	var css_248z$5 = "\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+	var css_248z$6 = "\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+	styleInject(css_248z$6);
+
+	var css_248z$5 = "/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 1.5rem;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        position: relative;\r\n        border-radius: 4px 4px 0 0; /* Redondea solo los bordes superiores */\r\n        height: 70px;\r\n\r\n    }\r\n\r\n    #panel-autofillquizapp {\r\n        display: block;\r\n        border-radius: 4px;\r\n        width: 100%; /* Ocupa todo el ancho del contenedor */\r\n        height: 100vh; /* O ajustado al contenedor padre */\r\n        overflow-y: hidden; /* Deshabilita el desplazamiento vertical */\r\n        box-sizing: border-box;\r\n    }\r\n    \r\n    #contenido-principal {\r\n        width: 100%;\r\n        height: calc(100% - 70px); /* Por ejemplo, ajusta el espacio si hay un header */\r\n        padding: 10px 15px 10px 15px;\r\n        background-color: #ffffff;\r\n        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n        /* overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n        -ms-overflow-style: none; /* Ocultar barra en IE y Edge */\r\n        scrollbar-width: none; /* Ocultar barra en Firefox */\r\n        border-radius: 0 0 8px 8px;\r\n        box-sizing: border-box;\r\n    }\r\n    ";
 	styleInject(css_248z$5);
 
-	var css_248z$4 = "/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 1.5rem;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        position: relative;\r\n        border-radius: 4px 4px 0 0; /* Redondea solo los bordes superiores */\r\n        height: 70px;\r\n\r\n    }\r\n\r\n    #panel-autofillquizapp {\r\n        display: block;\r\n        border-radius: 4px;\r\n        width: 100%; /* Ocupa todo el ancho del contenedor */\r\n        height: 100vh; /* O ajustado al contenedor padre */\r\n        overflow-y: hidden; /* Deshabilita el desplazamiento vertical */\r\n        box-sizing: border-box;\r\n    }\r\n    \r\n    #contenido-principal {\r\n        width: 100%;\r\n        height: calc(100% - 70px); /* Por ejemplo, ajusta el espacio si hay un header */\r\n        padding: 10px 15px 10px 15px;\r\n        background-color: #ffffff;\r\n        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n        /* overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n        -ms-overflow-style: none; /* Ocultar barra en IE y Edge */\r\n        scrollbar-width: none; /* Ocultar barra en Firefox */\r\n        border-radius: 0 0 8px 8px;\r\n        box-sizing: border-box;\r\n    }\r\n    ";
+	var css_248z$4 = "/* ==========================================================================\r\n   1. Contenedor Principal\r\n   ========================================================================== */\r\n#autofillautosave_moodle {\r\n    display: flex;\r\n    flex-direction: column;\r\n\r\n    /* Altura ajustable según se requiera */\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección: Ruta y Ciclo\r\n     ========================================================================== */\r\n\r\n#containerRutaFirebase .title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n}\r\n\r\n#containerRutaFirebase .label {\r\n    font-size: 14px;\r\n    color: #34495e;\r\n}\r\n\r\n/* ==========================================================================\r\n     4. Sección: Ruta Dinámica\r\n     ========================================================================== */\r\n\r\n.select-ruta {\r\n    width: 100%;\r\n    padding: 3px;\r\n    font-size: 15px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.boton-ruta {\r\n    width: 100%;\r\n    padding: 5px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n#containerRutaFirebase {\r\n  display: flex;\r\n  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */\r\n  height: 38px;\r\n  margin-left: 2px;\r\n}\r\n\r\n#containerRutaFirebase div {\r\n  margin-top: -6px;\r\n  padding: 0;\r\n}\r\n\r\n\r\n\r\n/* ==========================================================================\r\n     5. Sección: Wrapper de AutoFill y AutoSave\r\n     ========================================================================== */\r\n/* Contenedor padre */\r\n#container-autofillautosave {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    height: 580px; /* Se fija la altura total */\r\n    /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */\r\n  }\r\n  \r\n  /* Reglas compartidas para cada subcontenedor */\r\n  .subcontainer-autoquiz-autofill {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin: 0;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto;\r\n  }\r\n\r\n\r\n  .subcontainer-autoquiz-autosave {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin-bottom: 20px;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto; \r\n\r\n}\r\n\r\n@media (max-height: 580px) {\r\n    .subcontainer-autoquiz-autofill,\r\n    .subcontainer-autoquiz-autosave {\r\n        flex: 1;\r\n        max-height: 50%;\r\n    }\r\n}\r\n\r\n\r\n  \r\n /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */\r\n#body-autoquiz-autosave,\r\n#body-autoquiz-autofill {\r\n    flex-direction: column;\r\n    font-size: 11px;\r\n    overflow-y: auto;\r\n    height: calc(100% - 30px);\r\n  }\r\n\r\n    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */\r\n    #body-autoquiz-autosave::-webkit-scrollbar,\r\n    #body-autoquiz-autofill::-webkit-scrollbar {\r\n      width: 0.4em; /* Ancho de la barra de desplazamiento */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-thumb,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */\r\n      border-radius: 10px;\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-track,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-track {\r\n      background: transparent; /* Fondo transparente */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-button,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-button {\r\n      display: none; /* Oculta botones (flechas) */\r\n    }\r\n  \r\n  /* Reglas para el elemento de la pregunta */\r\n  .preguntaautosave {\r\n    justify-content: flex-start;\r\n    align-items: center;\r\n    padding: 0;\r\n    color: #34495e;\r\n    flex-wrap: wrap;\r\n    width: 100%;\r\n    word-wrap: break-word;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */\r\n  .respuestasautosave {\r\n    width: 100%;\r\n    min-width: 0;\r\n    overflow-wrap: break-word;\r\n    word-break: break-word;\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n\r\n/* --------------------------------------------------------------------------\r\n     5.1. Subcontenedor de AutoFill\r\n     -------------------------------------------------------------------------- */\r\n\r\n/* Header de AutoFill: título y switch */\r\n.header-autoquiz {\r\n    margin-top: 0px;\r\n    margin-bottom: 0px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    position: relative;\r\n    height: 30px;\r\n}\r\n\r\n.header-autoquiz h2 {\r\n    font-size: 20px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n}\r\n\r\n/* Switch para AutoFill (y AutoSave) */\r\n.switch-autoquiz {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 34px;\r\n    height: 20px;\r\n    margin:0px;\r\n}\r\n\r\n.switch-autoquiz input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n}\r\n\r\n.slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: 0.4s;\r\n    border-radius: 20px;\r\n}\r\n\r\n.slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 12px;\r\n    width: 12px;\r\n    border-radius: 50%;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    transition: 0.4s;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider {\r\n    background-color: #3498db;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider:before {\r\n    transform: translateX(14px);\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección de Usuarios\r\n     ========================================================================== */\r\n\r\n/* Contenedor de usuarios (oculto por defecto) */\r\n.users {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n/* Usuario actual: ícono y nombre */\r\n.usuario-actual {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    flex: 1;\r\n}\r\n\r\n.nombre-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0 5px;\r\n}\r\n\r\n/* Select para el siguiente usuario */\r\n.select-siguiente-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    border: none;\r\n    background-color: transparent;\r\n    outline: none;\r\n    appearance: none;\r\n    cursor: pointer;\r\n    text-align: right;\r\n    padding-right: 0;\r\n    direction: rtl;\r\n    /* Alinea el desplegable a la derecha */\r\n}\r\n\r\n/* Opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;\r\n    padding: 10px;\r\n    text-align: right;\r\n    direction: ltr;\r\n}\r\n\r\n/* Limitación de altura y scroll vertical */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2);\r\n    border-radius: 10px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;\r\n}\r\n\r\n/* Resalta la opción seleccionada */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;\r\n    font-weight: bold;\r\n}\r\n\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;\r\n}\r\n\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;\r\n}\r\n\r\n/* Botón para pasar al siguiente usuario */\r\n.boton-siguiente-usuario {\r\n    margin: 0;\r\n    font-weight: 600;\r\n    border: none;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n    padding: 0 3px;\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;\r\n    color: #34495e;\r\n}\r\n\r\n\r\n.img-overlay {\r\n    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */\r\n    display: inline-block; /* O block según convenga en tu diseño */\r\n}\r\n\r\n.img-overlay::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    /* Fondo MediumBlue con 10% de opacidad */\r\n    background-color: rgba(0, 0, 205, 0.2);\r\n    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */\r\n}\r\n\r\n#upload-autosave {\r\n    position: relative;\r\n    display: inline-block;\r\n    border: none;\r\n    background: none;\r\n    cursor: pointer;\r\n    font-size:0.9em; /* Ajusta el tamaño según necesites */\r\n    color: inherit; /* Mantiene el color del texto */\r\n    transition: color 0.3s ease-in-out;\r\n}\r\n\r\n#upload-autosave:hover {\r\n    color: mediumblue;\r\n}\r\n";
 	styleInject(css_248z$4);
-
-	var css_248z$3 = "/* ==========================================================================\r\n   1. Contenedor Principal\r\n   ========================================================================== */\r\n#autofillautosave_moodle {\r\n    display: flex;\r\n    flex-direction: column;\r\n\r\n    /* Altura ajustable según se requiera */\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección: Ruta y Ciclo\r\n     ========================================================================== */\r\n\r\n#containerRutaFirebase .title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n}\r\n\r\n#containerRutaFirebase .label {\r\n    font-size: 14px;\r\n    color: #34495e;\r\n}\r\n\r\n/* ==========================================================================\r\n     4. Sección: Ruta Dinámica\r\n     ========================================================================== */\r\n\r\n.select-ruta {\r\n    width: 100%;\r\n    padding: 3px;\r\n    font-size: 15px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.boton-ruta {\r\n    width: 100%;\r\n    padding: 5px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n#containerRutaFirebase {\r\n  display: flex;\r\n  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */\r\n  height: 38px;\r\n  margin-left: 2px;\r\n}\r\n\r\n#containerRutaFirebase div {\r\n  margin-top: -6px;\r\n  padding: 0;\r\n}\r\n\r\n\r\n\r\n/* ==========================================================================\r\n     5. Sección: Wrapper de AutoFill y AutoSave\r\n     ========================================================================== */\r\n/* Contenedor padre */\r\n#container-autofillautosave {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    height: 580px; /* Se fija la altura total */\r\n    /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */\r\n  }\r\n  \r\n  /* Reglas compartidas para cada subcontenedor */\r\n  .subcontainer-autoquiz-autofill {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin: 0;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto;\r\n  }\r\n\r\n\r\n  .subcontainer-autoquiz-autosave {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin-bottom: 20px;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto; \r\n\r\n}\r\n\r\n@media (max-height: 580px) {\r\n    .subcontainer-autoquiz-autofill,\r\n    .subcontainer-autoquiz-autosave {\r\n        flex: 1;\r\n        max-height: 50%;\r\n    }\r\n}\r\n\r\n\r\n  \r\n /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */\r\n#body-autoquiz-autosave,\r\n#body-autoquiz-autofill {\r\n    flex-direction: column;\r\n    font-size: 11px;\r\n    overflow-y: auto;\r\n    height: calc(100% - 30px);\r\n  }\r\n\r\n    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */\r\n    #body-autoquiz-autosave::-webkit-scrollbar,\r\n    #body-autoquiz-autofill::-webkit-scrollbar {\r\n      width: 0.4em; /* Ancho de la barra de desplazamiento */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-thumb,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */\r\n      border-radius: 10px;\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-track,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-track {\r\n      background: transparent; /* Fondo transparente */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-button,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-button {\r\n      display: none; /* Oculta botones (flechas) */\r\n    }\r\n  \r\n  /* Reglas para el elemento de la pregunta */\r\n  .preguntaautosave {\r\n    justify-content: flex-start;\r\n    align-items: center;\r\n    padding: 0;\r\n    color: #34495e;\r\n    flex-wrap: wrap;\r\n    width: 100%;\r\n    word-wrap: break-word;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */\r\n  .respuestasautosave {\r\n    width: 100%;\r\n    min-width: 0;\r\n    overflow-wrap: break-word;\r\n    word-break: break-word;\r\n    white-space: normal;\r\n  }\r\n  \r\n  \r\n\r\n/* --------------------------------------------------------------------------\r\n     5.1. Subcontenedor de AutoFill\r\n     -------------------------------------------------------------------------- */\r\n\r\n/* Header de AutoFill: título y switch */\r\n.header-autoquiz {\r\n    margin-top: 0px;\r\n    margin-bottom: 0px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    position: relative;\r\n    height: 30px;\r\n}\r\n\r\n.header-autoquiz h2 {\r\n    font-size: 20px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n}\r\n\r\n/* Switch para AutoFill (y AutoSave) */\r\n.switch-autoquiz {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 34px;\r\n    height: 20px;\r\n    margin:0px;\r\n}\r\n\r\n.switch-autoquiz input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n}\r\n\r\n.slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: 0.4s;\r\n    border-radius: 20px;\r\n}\r\n\r\n.slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 12px;\r\n    width: 12px;\r\n    border-radius: 50%;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    transition: 0.4s;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider {\r\n    background-color: #3498db;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider:before {\r\n    transform: translateX(14px);\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección de Usuarios\r\n     ========================================================================== */\r\n\r\n/* Contenedor de usuarios (oculto por defecto) */\r\n.users {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n/* Usuario actual: ícono y nombre */\r\n.usuario-actual {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    flex: 1;\r\n}\r\n\r\n.nombre-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0 5px;\r\n}\r\n\r\n/* Select para el siguiente usuario */\r\n.select-siguiente-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    border: none;\r\n    background-color: transparent;\r\n    outline: none;\r\n    appearance: none;\r\n    cursor: pointer;\r\n    text-align: right;\r\n    padding-right: 0;\r\n    direction: rtl;\r\n    /* Alinea el desplegable a la derecha */\r\n}\r\n\r\n/* Opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;\r\n    padding: 10px;\r\n    text-align: right;\r\n    direction: ltr;\r\n}\r\n\r\n/* Limitación de altura y scroll vertical */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2);\r\n    border-radius: 10px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;\r\n}\r\n\r\n/* Resalta la opción seleccionada */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;\r\n    font-weight: bold;\r\n}\r\n\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;\r\n}\r\n\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;\r\n}\r\n\r\n/* Botón para pasar al siguiente usuario */\r\n.boton-siguiente-usuario {\r\n    margin: 0;\r\n    font-weight: 600;\r\n    border: none;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n    padding: 0 3px;\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;\r\n    color: #34495e;\r\n}\r\n\r\n\r\n.img-overlay {\r\n    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */\r\n    display: inline-block; /* O block según convenga en tu diseño */\r\n}\r\n\r\n.img-overlay::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    /* Fondo MediumBlue con 10% de opacidad */\r\n    background-color: rgba(0, 0, 205, 0.2);\r\n    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */\r\n}\r\n\r\n#upload-autosave {\r\n    position: relative;\r\n    display: inline-block;\r\n    border: none;\r\n    background: none;\r\n    cursor: pointer;\r\n    font-size:0.9em; /* Ajusta el tamaño según necesites */\r\n    color: inherit; /* Mantiene el color del texto */\r\n    transition: color 0.3s ease-in-out;\r\n}\r\n\r\n#upload-autosave:hover {\r\n    color: mediumblue;\r\n}\r\n";
-	styleInject(css_248z$3);
 
 	function contenedorUsers_js() {
 	    const elementoDesplegableUsuario = document.querySelector('.dropdown-user-nick');
@@ -43431,7 +43431,7 @@
 	  return content;
 	}
 
-	function renderizarPreguntas() {
+	function renderizarPreguntas$1() {
 	  // 1. Verificar si existe la función renderMathInElement en window.
 	  if (typeof window.renderMathInElement !== 'function') {
 	    console.warn('[autofill-autosave-helpers] NO se encontró la función `renderMathInElement`. Asegúrate de cargar KaTeX AutoRender primero.');
@@ -44853,7 +44853,7 @@
 	}
 
 	// Exporta una función llamada contenedorAutoSave_js
-	function contenedorAutoSave_js() {      
+	function contenedorAutoSave_js$1() {      
 	    console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
 	    // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
@@ -44864,7 +44864,7 @@
 	    console.log(`[opc-autofill-autosave-moodle: autosave] Finalizando AutoSave...`);
 	}
 
-	async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
+	async function AutoSaveQuestions_SessionStorage$1(questionsHtml, numeroQuestionUpdate = null) {
 	    // --------------------------------------------------------------------------
 	    // 1) Verificar si "questionsHtml" es una colección (NodeList, HTMLCollection)
 	    //    Si no, convertirlo en array.
@@ -45168,11 +45168,11 @@
 	        console.log("'questions-AutoSave' no existe. Llamando a AutoSaveQuestions_SessionStorage por primera vez.");
 	        // Si no existe, se guarda todo de una vez
 	        const originalAllFormulations = document.querySelectorAll('.formulation.clearfix');
-	        await AutoSaveQuestions_SessionStorage(originalAllFormulations);
+	        await AutoSaveQuestions_SessionStorage$1(originalAllFormulations);
 	        await AutoSave_ShowResponses();
 
 	        // Llamada para renderizar expresiones LaTeX (u otro proceso similar)
-	        renderizarPreguntas();
+	        renderizarPreguntas$1();
 	    } else {
 	        // Se parsea el objeto guardado
 	        const questionsAutoSave = JSON.parse(questionsAutoSaveStr);
@@ -45199,12 +45199,12 @@
 
 	        // Si la pregunta ya existe en el objeto guardado, se actualiza
 	        if (questionsAutoSave[preguntaKey]) {
-	            await AutoSaveQuestions_SessionStorage(formulation, numeroPregunta);
+	            await AutoSaveQuestions_SessionStorage$1(formulation, numeroPregunta);
 	            console.log('AutoSave_ShowResponses iniciado');
 	            await AutoSave_ShowResponses(numeroPregunta);
 
 	            // Llamada para renderizar expresiones LaTeX
-	            renderizarPreguntas();
+	            renderizarPreguntas$1();
 	        } else {
 	            console.log(`La pregunta ${preguntaKey} no existe en questionsAutoSave. Llamando a AutoSaveQuestions_SessionStorage.`);
 	            // Aquí podrías forzar a guardar todo de nuevo o manejar el caso que prefieras.
@@ -45890,7 +45890,7 @@
 
 	}
 
-	async function contenedorAutoFill_js() {
+	async function contenedorAutoFill_js$1() {
 	    console.log(`[opc-autofill-autosave-moodle: autofill] Iniciando AutoFill...`);
 
 	    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
@@ -46109,6 +46109,284 @@
 	    }
 
 	    if (esMoodle) {
+	        contenedorAutoFillAutoSave_js$1();
+	    }
+
+	    detectarCambiosInterruptor$1();
+	}
+
+	async function contenedorAutoFillAutoSave_js$1() {
+	    const interruptorAutoSave = document.getElementById("switch-autosave");
+	    const interruptorAutoFill = document.getElementById("switch-autofill");
+
+	    if (!interruptorAutoSave || !interruptorAutoFill) return;
+
+	    const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+	    const stateAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
+
+	    interruptorAutoSave.checked = (stateAutoSave === "activado");
+	    interruptorAutoFill.checked = (stateAutoFill === "activado");
+
+	    const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
+	    const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+
+	    if ((stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
+	       
+	        getDataFromFirebaseAsync();
+	        const originalFormulations = document.querySelectorAll(".formulation.clearfix");
+	        await AutoSaveQuestions_SessionStorage$1(originalFormulations);
+
+	        if (stateAutoFill === "activado") {
+	            bodyAutoFill.style.display = 'flex';
+	            window.eventosPreguntasHabilitados = false;
+	            console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
+	            await contenedorAutoFill_js$1();
+	            // Rehabilitar después de finalizar la función
+	            window.eventosPreguntasHabilitados = true;
+	            document.querySelectorAll('.formulation.clearfix');
+
+	            await AutoSaveQuestions_SessionStorage$1(originalFormulations);
+	            
+	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
+	            if (stateAutoSave === "activado") {
+	                contenedorAutoSave_js$1();
+	            }
+	            
+	        } 
+	        
+	        if (stateAutoSave === "activado") {
+	            bodyAutoSave.style.display = 'flex';
+	            contenedorAutoSave_js$1();
+	        }
+
+	        renderizarPreguntas$1();
+
+	    } else {
+	        sessionStorage.removeItem('questions-AutoSave');
+	        bodyAutoFill.style.display = 'none';
+	        bodyAutoSave.style.display = 'none';
+	    }
+
+	}
+
+	function detectarCambiosInterruptor$1() {
+	    const interruptorAutoSave = document.getElementById("switch-autosave");
+	    const interruptorAutoFill = document.getElementById("switch-autofill");
+
+	    // Para el interruptor de AutoSave
+	    interruptorAutoSave.addEventListener("change", async () => {
+	        const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
+	        const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
+	        localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
+	        console.log(`AutoSave: ${nuevoEstado}`);
+
+	        if (nuevoEstado === "activado") {
+	            bodyAutoSave.style.display = 'flex';
+	            // Deshabilitar los eventos de preguntas
+	            contenedorAutoSave_js$1();
+	            // Rehabilitar después de finalizar la funció
+	        } else {
+	            bodyAutoSave.style.display = 'none';
+	        }
+	    });
+
+	    // Para el interruptor de AutoFill
+	    interruptorAutoFill.addEventListener("change", async () => {
+	        const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+	        const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
+	        localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
+	        console.log(`AutoFill: ${nuevoEstado}`);
+
+	        if (nuevoEstado === "activado") {
+	            bodyAutoFill.style.display = 'flex';
+	            window.eventosPreguntasHabilitados = false;
+	            console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
+	            await contenedorAutoFill_js$1();
+	            // Rehabilitar después de finalizar la función
+	            window.eventosPreguntasHabilitados = true;
+	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
+	            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+	            document.querySelectorAll('.formulation.clearfix');
+	            await AutoSaveQuestions_SessionStorage$1(originalFormulations);
+
+	            if (stateAutoSave === "activado") {
+	                contenedorAutoSave_js$1();
+	            }
+	            
+	        } else {
+	            bodyAutoFill.style.display = 'none';
+	        }
+	    });
+	}
+
+	// Función para verificar si la página está construida con Moodle
+	function esPaginaMoodle() {
+	    // Método 1: Verificar la etiqueta meta "generator"
+	    const metaGenerator = document.querySelector('meta[name="generator"]');
+	    if (metaGenerator && metaGenerator.getAttribute('content').toLowerCase().includes('moodle')) {
+	        return true;
+	    }
+
+	    // Método 2: Verificar clases específicas en el <body>
+	    if (document.body.classList.contains('moodle')) {
+	        return true;
+	    }
+
+	    // Método 3: Verificar contenedores específicos de Moodle
+	    const moodleContainer = document.querySelector('.moodle-page');
+	    if (moodleContainer) {
+	        return true;
+	    }
+
+	    // Método 4: Verificar URLs o scripts específicos
+	    const scripts = document.querySelectorAll('script[src]');
+	    for (let script of scripts) {
+	        if (script.src.toLowerCase().includes('moodle')) {
+	            return true;
+	        }
+	    }
+
+	    // Si ninguno de los métodos anteriores detecta Moodle
+	    return false;
+	}
+
+	var css_248z$3 = "";
+	styleInject(css_248z$3);
+
+	function contenedorAutoSave_js() {  
+	console.log("1");
+	}
+
+	function AutoSaveQuestions_SessionStorage() {  
+	    console.log("1");
+
+	}
+
+	function contenedorAutoFill_js() {  
+	    console.log("1");
+	    }
+
+	// global.js
+	window.eventosPreguntasHabilitados = true;
+	window.autoSaveEnEjecucion = false;
+
+	function opcion_AutoFillAutoSave_Altissia_html() {
+	    return `
+    <div id="autofillautosave_altissia" class="containerOption">
+
+    <div id="users-autofill-altissia" class="users" style="display: none;">
+
+        <!-- Columna para mostrar el nombre de usuario actual con icono de usuario -->
+        <div class="usuario-actual">
+            <i class="fa-solid fa-user"></i>
+            <span id="nombre-usuario-actual" class="nombre-usuario"></span>
+        </div>
+
+        <select id="siguiente-usuario" class="select-siguiente-usuario">
+        </select>
+
+        <button id="boton-siguiente-usuario" class="boton-siguiente-usuario">
+            <i class="fa-solid fa-angles-right"></i>
+        </button>
+
+    </div>
+
+    <!-- Contenedor para Ruta y Ciclo -->
+    <div id="containerRutaFirebase" style="display: none;">
+    </div>
+
+    <!-- Contenedor para Subject Dinamic -->
+    <div id="containerRutaDinamicaFirebase" style="display: none;">
+    </div>
+
+    <div id="container-autofillautosave">
+
+        <!-- Nuevo contenedor para AutoFill-->
+        <div id="container-autofill" class="subcontainer-autoquiz-autofill">
+
+            <div id="header-autofill" class="header-autoquiz">
+                <h2 id="titulo-autoquiz">AutoFill</h2>
+
+                <label class="switch-autoquiz">
+                    <input type="checkbox" id="switch-autofill">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <!-- Contenido de AutoFill-->
+            <div id="body-autoquiz-autofill" class="body-autoquiz" style="display: none;">
+
+                <!-- Contenedor dinámico para las preguntas generadas -->
+                <div id="contenedor-preguntas" class="contenedor-preguntas">
+                    <!-- Aquí se insertarán dinámicamente los detalles de cada pregunta -->
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <!-- Contenedor para AutoSave -->
+        <div id="container-autosave" class="subcontainer-autoquiz-autosave">
+
+            <div id="header-autosave" class="header-autoquiz">
+
+                <!-- Título y Botón -->
+                <h2 id="titulo-autoquiz">
+                    AutoSave
+
+                    <button id="upload-autosave" class="icon-button">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </button>
+
+                </h2>
+
+                <label class="switch-autoquiz">
+                    <input type="checkbox" id="switch-autosave">
+                    <span class="slider round"></span>
+                </label>
+
+            </div>
+
+            <!-- Contenido de AutoSave -->
+            <div id="body-autoquiz-autosave">
+                <div>
+                    <span id="respuestasautosave"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>   
+    `;
+	}
+
+	async function opcion_AutoFillAutoSave_Altissia_js() {
+
+	    let esAltissia = esPaginaAltissia();
+	    localStorage.getItem('switch-ruta-dinamica');
+
+	    if (esAltissia) {
+	        console.log("[opc-autofill-autosave-altissia: main]  Esta página está construida con Altissia");
+	    } else {
+	        console.log("[opc-autofill-autosave-altissia: main]  Esta página no está construida con Altissia");
+	    }
+
+	    //if (localStorage.getItem('configUsersAutofill') === 'true' && esAltissia) {
+	        //const autofillUsers = document.getElementById('users-autofill-moodle');
+	        //autofillUsers.style.display = 'flex';
+	        //contenedorUsers_js();
+	    //} else {
+	        //console.log("[opc-autofill-autosave-moodle: main]  AutoFill Users no ejecutado porque, no es Moodle");
+	    //}
+
+
+	    console.log('[opc-autofill-autosave-moodle: main]  Cargando Ruta...');
+	    contenedorRuta_js$1();
+	    
+
+	    if (esAltissia) {
 	        contenedorAutoFillAutoSave_js();
 	    }
 
@@ -46133,8 +46411,8 @@
 	    if ((stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
 	       
 	        getDataFromFirebaseAsync();
-	        const originalFormulations = document.querySelectorAll(".formulation.clearfix");
-	        await AutoSaveQuestions_SessionStorage(originalFormulations);
+	        document.querySelectorAll(".formulation.clearfix");
+	        await AutoSaveQuestions_SessionStorage();
 
 	        if (stateAutoFill === "activado") {
 	            bodyAutoFill.style.display = 'flex';
@@ -46145,7 +46423,7 @@
 	            window.eventosPreguntasHabilitados = true;
 	            document.querySelectorAll('.formulation.clearfix');
 
-	            await AutoSaveQuestions_SessionStorage(originalFormulations);
+	            await AutoSaveQuestions_SessionStorage();
 	            
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
 	            if (stateAutoSave === "activado") {
@@ -46183,7 +46461,7 @@
 	        if (nuevoEstado === "activado") {
 	            bodyAutoSave.style.display = 'flex';
 	            // Deshabilitar los eventos de preguntas
-	            contenedorAutoSave_js();
+	        //  contenedorAutoSave_js();
 	            // Rehabilitar después de finalizar la funció
 	        } else {
 	            bodyAutoSave.style.display = 'none';
@@ -46201,17 +46479,11 @@
 	            bodyAutoFill.style.display = 'flex';
 	            window.eventosPreguntasHabilitados = false;
 	            console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
-	            await contenedorAutoFill_js();
+	        //  await contenedorAutoFill_js();
 	            // Rehabilitar después de finalizar la función
 	            window.eventosPreguntasHabilitados = true;
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
-	            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
-	            document.querySelectorAll('.formulation.clearfix');
-	            await AutoSaveQuestions_SessionStorage(originalFormulations);
-
-	            if (stateAutoSave === "activado") {
-	                contenedorAutoSave_js();
-	            }
+	            localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
 	            
 	        } else {
 	            bodyAutoFill.style.display = 'none';
@@ -46219,62 +46491,9 @@
 	    });
 	}
 
-
 	// Función para verificar si la página está construida con Moodle
-	function esPaginaMoodle() {
-	    // Método 1: Verificar la etiqueta meta "generator"
-	    const metaGenerator = document.querySelector('meta[name="generator"]');
-	    if (metaGenerator && metaGenerator.getAttribute('content').toLowerCase().includes('moodle')) {
-	        return true;
-	    }
-
-	    // Método 2: Verificar clases específicas en el <body>
-	    if (document.body.classList.contains('moodle')) {
-	        return true;
-	    }
-
-	    // Método 3: Verificar contenedores específicos de Moodle
-	    const moodleContainer = document.querySelector('.moodle-page');
-	    if (moodleContainer) {
-	        return true;
-	    }
-
-	    // Método 4: Verificar URLs o scripts específicos
-	    const scripts = document.querySelectorAll('script[src]');
-	    for (let script of scripts) {
-	        if (script.src.toLowerCase().includes('moodle')) {
-	            return true;
-	        }
-	    }
-
-	    // Si ninguno de los métodos anteriores detecta Moodle
-	    return false;
-	}
-
-	function opcionAutoFillAltissia_html() {
-	    return `
-     <div class="contenido-config">
-        <h3 id="titulo-config">Altissia HTML</h3>
-
-        <!-- Contenedor Select Dinámico -->
-        <div id="selects-plataforma" class="estilo-config-item">
-            <!-- Aquí se inyectará el select dinámicamente -->
-        </div>
-    </div>
-`;
-	}
-
-	function opcionAutoFillAltissia_js$1() {
-	    return `
-     <div class="contenido-config">
-        <h3 id="titulo-config">Altissia JS</h3>
-
-        <!-- Contenedor Select Dinámico -->
-        <div id="selects-plataforma" class="estilo-config-item">
-            <!-- Aquí se inyectará el select dinámicamente -->
-        </div>
-    </div>
-`;
+	function esPaginaAltissia() {
+	    return window.location.href.includes("altissia.org");
 	}
 
 	var css_248z$2 = "/* Estilo para el Contenedor Principal */\r\n#titulo-config {\r\n    margin-bottom: 5px;\r\n    margin-top: 0;\r\n    display: flex;\r\n    color: #34495e;\r\n    padding: 0; /* Opcional: padding interno */\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 1.4rem; /* Tamaño de fuente de 1rem */\r\n}\r\n\r\n.estilo-config-select {\r\n    width: 100%;\r\n    padding: 12px;\r\n    font-size: 14px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n.estilo-config-item {\r\n        margin-bottom: 10px;\r\n        font-family: 'Poppins', sans-serif;\r\n}\r\n\r\n/* styles.css */\r\n\r\n/* Contenedor que usa Flexbox para alinear elementos */\r\n.opc-config-switch-container {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%; /* Ajusta el ancho según tus necesidades */\r\n    padding: 10px;\r\n    margin: 10px 0; /* Espaciado entre switches */\r\n    border: 1px solid #ddd; /* Opcional: para visualizar el contenedor */\r\n    border-radius: 8px;\r\n    background-color: #f9f9f9; /* Opcional: fondo del contenedor */\r\n  }\r\n  \r\n  /* Estilo para la etiqueta de texto */\r\n  .opc-config-switch-label {\r\n    font-size: 1rem;\r\n    color: #333;\r\n  }\r\n  \r\n  /* El switch - el contenedor alrededor del slider */\r\n  .opc-config-switch {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 40px; /* Tamaño reducido */\r\n    height: 20px; /* Tamaño reducido */\r\n  }\r\n  \r\n  /* Ocultar el checkbox HTML por defecto */\r\n  .opc-config-switch-checkbox {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n  }\r\n  \r\n  /* El slider */\r\n  .opc-config-slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: .4s;\r\n    border-radius: 20px; /* Redondear el slider */\r\n  }\r\n  \r\n  .opc-config-slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 16px; /* Tamaño reducido */\r\n    width: 16px; /* Tamaño reducido */\r\n    left: 2px;\r\n    bottom: 2px;\r\n    background-color: white;\r\n    transition: .4s;\r\n    border-radius: 50%;\r\n  }\r\n  \r\n  /* Cambiar el color del slider cuando el checkbox está marcado */\r\n  .opc-config-switch-checkbox:checked + .opc-config-slider {\r\n    background-color: #2196F3;\r\n  }\r\n  \r\n  /* Añadir sombra al enfocar el checkbox */\r\n  .opc-config-switch-checkbox:focus + .opc-config-slider {\r\n    box-shadow: 0 0 1px #2196F3;\r\n  }\r\n  \r\n  /* Mover el slider cuando el checkbox está marcado */\r\n  .opc-config-switch-checkbox:checked + .opc-config-slider:before {\r\n    transform: translateX(20px); /* Ajusta según el tamaño reducido */\r\n  }\r\n  \r\n  /* Cambiar el color de la etiqueta cuando el switch está activo */\r\n  .opc-config-switch-checkbox:checked ~ .opc-config-switch-label {\r\n    color: #2196F3;\r\n  }\r\n  \r\n  /* Redondear el slider cuando tiene la clase 'round' */\r\n  .opc-config-slider.round {\r\n    border-radius: 20px;\r\n  }\r\n  \r\n  .opc-config-slider.round:before {\r\n    border-radius: 50%;\r\n  }\r\n  ";
@@ -47025,14 +47244,14 @@
 	    const funcionesHtml = {
 	      'opcionConfigRuta_html': opcionConfigRuta_html,
 	      'opcion_AutoFillAutoSave_Moodle_html': opcion_AutoFillAutoSave_Moodle_html, 
-	      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html, 
+	      'opcion_AutoFillAutoSave_Altissia_html': opcion_AutoFillAutoSave_Altissia_html, 
 	      'opcionConfig_html': opcionConfig_html  
 	    };
 
 	    const funcionesJs = {
 	      'opcionConfigRuta_js': opcionConfigRuta_js,
 	      'opcion_AutoFillAutoSave_Moodle_js': opcion_AutoFillAutoSave_Moodle_js, 
-	      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js$1,  
+	      'opcion_AutoFillAutoSave_Altissia_js': opcion_AutoFillAutoSave_Altissia_js,  
 	      'opcionConfig_js': opcionConfig_js 
 	    };
 
@@ -47210,10 +47429,10 @@
 	                        localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');
 	                        localStorage.setItem('ultimoJs', 'opcionAutoFillAltissia_js');
 	                
-	                        contenedorContenido.innerHTML = opcionAutoFillAltissia_html(); // Mostrar contenido de AutoFill para Altissia
+	                        contenedorContenido.innerHTML = opcion_AutoFillAutoSave_Altissia_html(); // Mostrar contenido de AutoFill para Altissia
 	                
 	                        try {
-	                            await opcionAutoFillAltissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
+	                            await opcion_AutoFillAutoSave_Altissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
 	                        } catch (error) {
 	                            console.error('Error al ejecutar opcionAutoFillAltissia_js:', error);
 	                        }

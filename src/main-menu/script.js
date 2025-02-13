@@ -5,7 +5,7 @@ import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js';
 
 import { opcion_AutoFillAutoSave_Moodle_html, opcion_AutoFillAutoSave_Moodle_js } from '../opc-autofill-autosave-moodle/main-script.js';
 
-import { opcionAutoFillAltissia_html } from '../opc-autofill-altissia/script.js';
+import { opcion_AutoFillAutoSave_Altissia_html, opcion_AutoFillAutoSave_Altissia_js } from '../opc-autofill-autosave-altissia/main-script.js';
 
 
 export function menu_AutoFillQuizApp() {
@@ -101,10 +101,10 @@ export function menu_AutoFillQuizApp() {
                         localStorage.setItem('ultimoHtml', 'opcionAutoFillAltissia_html');
                         localStorage.setItem('ultimoJs', 'opcionAutoFillAltissia_js');
                 
-                        contenedorContenido.innerHTML = opcionAutoFillAltissia_html(); // Mostrar contenido de AutoFill para Altissia
+                        contenedorContenido.innerHTML = opcion_AutoFillAutoSave_Altissia_html(); // Mostrar contenido de AutoFill para Altissia
                 
                         try {
-                            await opcionAutoFillAltissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
+                            await opcion_AutoFillAutoSave_Altissia_js(); // Ejecutar el script de AutoFill para Altissia y esperar su finalización
                         } catch (error) {
                             console.error('Error al ejecutar opcionAutoFillAltissia_js:', error);
                         }

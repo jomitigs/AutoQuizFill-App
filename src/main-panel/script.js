@@ -1,7 +1,7 @@
 import './style.css';
 
 import { opcion_AutoFillAutoSave_Moodle_html, opcion_AutoFillAutoSave_Moodle_js } from '../opc-autofill-autosave-moodle/main-script.js';
-import { opcionAutoFillAltissia_html, opcionAutoFillAltissia_js } from '../opc-autofill-altissia/script.js';
+import { opcion_AutoFillAutoSave_Altissia_html, opcion_AutoFillAutoSave_Altissia_js } from '../opc-autofill-autosave-altissia/main-script.js';
 
 import { opcionConfig_html, opcionConfig_js } from '../opc-config/script.js'; // Asegúrate de importar las funciones de configuración
 import { opcionConfigRuta_html, opcionConfigRuta_js } from '../opc-config-ruta/script.js';
@@ -103,14 +103,14 @@ export function panel_AutoFillQuizApp(barraLateral) {
     const funcionesHtml = {
       'opcionConfigRuta_html': opcionConfigRuta_html,
       'opcion_AutoFillAutoSave_Moodle_html': opcion_AutoFillAutoSave_Moodle_html, 
-      'opcionAutoFillAltissia_html': opcionAutoFillAltissia_html, 
+      'opcion_AutoFillAutoSave_Altissia_html': opcion_AutoFillAutoSave_Altissia_html, 
       'opcionConfig_html': opcionConfig_html  
     };
 
     const funcionesJs = {
       'opcionConfigRuta_js': opcionConfigRuta_js,
       'opcion_AutoFillAutoSave_Moodle_js': opcion_AutoFillAutoSave_Moodle_js, 
-      'opcionAutoFillAltissia_js': opcionAutoFillAltissia_js,  
+      'opcion_AutoFillAutoSave_Altissia_js': opcion_AutoFillAutoSave_Altissia_js,  
       'opcionConfig_js': opcionConfig_js 
     };
 
