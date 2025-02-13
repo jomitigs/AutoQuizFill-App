@@ -44967,7 +44967,7 @@
 
 	            // Determinar tipo de pregunta (asumes que ya existe tu función)
 	            const questionType = determinarTipoPregunta(questionHtml);
-	            console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
+	            // console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
 	            // Llamar la función correspondiente
 	            const funcion = funcQuestionType[questionType];
@@ -45920,8 +45920,6 @@
 	    } catch (error) {
 	      console.error("Error en AutoFill:", error);
 	    }
-
-	    AutoSave_ShowResponses();
 	  }
 
 	function opcion_AutoFillAutoSave_Moodle_html() {

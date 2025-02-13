@@ -106,8 +106,6 @@ export async function AutoFill(dpq) {
     } catch (error) {
       console.error("Error en AutoFill:", error);
     }
-
-    AutoSave_ShowResponses();
   }
   
   
