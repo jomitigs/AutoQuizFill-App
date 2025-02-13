@@ -45880,10 +45880,10 @@
 	            const originalFormulations = document.querySelectorAll(".formulation.clearfix");
 	            await AutoSaveQuestions_SessionStorage(originalFormulations);
 
-	            if (stateAutoFill === "activado") {
+	            if (stateAutoFill === "activado" && window.location.href.includes('/mod/quiz/attempt.php')) {
 	                bodyAutoFill.style.display = 'flex';
 	                contenedorAutoFill_js();
-	            } else if (stateAutoSave === "activado") {
+	            } else if (stateAutoSave === "activado" && window.location.href.includes('/mod/quiz/attempt.php')) {
 	                bodyAutoSave.style.display = 'flex';
 	                contenedorAutoSave_js();
 	            } else if (stateAutoFill === "desactivado") {
