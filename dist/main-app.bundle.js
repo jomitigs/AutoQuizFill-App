@@ -47174,6 +47174,7 @@
 	          updatePlatformConfigurationUI();
 	          initSwitch("dynamic-route-switch", "dynamic-route-switch-checkbox", "switch-ruta-dinamica", "Moodle");
 	          initSwitch("users-autofill-switch", "users-autofill-switch-checkbox", "configUsersAutofill", "Moodle");
+	          initSwitch("botonterminaryguardar-autosave-switch", "botonterminaryguardar-autosave-switch-checkbox", "botonAutoSave", "Moodle");
 	          initSwitch("altissia-switch-option", "altissia-switch-checkbox", "configAltissiaOption", "Altissia");
 	        }
 	      });
@@ -47187,6 +47188,7 @@
 	    updatePlatformConfigurationUI();
 	    initSwitch("dynamic-route-switch", "dynamic-route-switch-checkbox", "switch-ruta-dinamica", "Moodle");
 	    initSwitch("users-autofill-switch", "users-autofill-switch-checkbox", "configUsersAutofill", "Moodle");
+	    initSwitch("botonterminaryguardar-autosave-switch", "botonterminaryguardar-autosave-switch-checkbox", "botonAutoSave", "Moodle");
 	    initSwitch("altissia-switch-option", "altissia-switch-checkbox", "configAltissiaOption", "Altissia");
 
 	  } catch (error) {
