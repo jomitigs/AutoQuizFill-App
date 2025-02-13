@@ -45662,14 +45662,14 @@
 	async function response_inputchecked_opcionmultiple(pregunta, questionData) {
 	  console.log("Respondiendo preguntas inputchecked_opcionmultiple");
 
-	  // 1. Obtenemos las respuestas correctas esperadas desde questionData.
-	  // Pueden venir como array o como una sola cadena.
+	  // 1. Obtenemos las respuestas correctas esperadas desde questionData (clave: respuestaCorrecta).
 	  let respuestasCorrectasEsperadas = [];
-	  if (questionData && questionData.RespuestaCorrecta) {
-	    if (Array.isArray(questionData.RespuestaCorrecta)) {
-	      respuestasCorrectasEsperadas = questionData.RespuestaCorrecta.map(r => r.trim());
-	    } else {
-	      respuestasCorrectasEsperadas = [questionData.RespuestaCorrecta.trim()];
+	  const respuestasData = questionData.respuestaCorrecta;
+	  if (respuestasData) {
+	    if (Array.isArray(respuestasData)) {
+	      respuestasCorrectasEsperadas = respuestasData.map(r => r.trim());
+	    } else if (typeof respuestasData === 'string') {
+	      respuestasCorrectasEsperadas = [respuestasData.trim()];
 	    }
 	  }
 	  console.log("Respuestas correctas esperadas:", respuestasCorrectasEsperadas);
@@ -45714,8 +45714,7 @@
 	      respuestaCorrecta.push(textoOpcion);
 	    }
 
-	    // Si el texto de la opción coincide con alguna de las respuestas correctas esperadas,
-	    // se marca el input checkbox.
+	    // Si el texto de la opción coincide con alguna de las respuestas correctas esperadas, se marca el checkbox.
 	    if (respuestasCorrectasEsperadas.some(r => r === textoOpcion)) {
 	      console.log("Respuesta esperada encontrada. Seleccionando la opción:", textoOpcion);
 	      inputCheckbox.checked = true;
@@ -45724,7 +45723,8 @@
 	  }
 
 	  console.log("Opciones de respuesta extraídas:", opcionesRespuesta);
-	  console.log("Respuestas seleccionadas:", respuestaCorrecta.length > 0 ? respuestaCorrecta : respuestasCorrectasEsperadas);
+	  console.log("Respuestas seleccionadas:", 
+	    respuestaCorrecta.length > 0 ? respuestaCorrecta : respuestasCorrectasEsperadas);
 	}
 
 	function response_select_emparejamiento(pregunta, questionData) {
