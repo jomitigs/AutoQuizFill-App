@@ -1,5 +1,6 @@
 // Si lo deseas, puedes importar interactjs para usar funcionalidades avanzadas en el futuro
 import interact from 'interactjs';
+import {  obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js';
 
 /**
  * Función que responde la pregunta de tipo "drag and drop text" utilizando los datos proporcionados.
