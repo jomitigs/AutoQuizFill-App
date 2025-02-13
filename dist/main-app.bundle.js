@@ -45886,7 +45886,6 @@
 
 	async function AutoFill(dpq, dataFirebaseNormalizada) {
 	    try {
-	     
 	      // Mapeo de funciones según el tipo de pregunta
 	      const funcQuestionType = {
 	        'inputradio_opcionmultiple_verdaderofalso': response_inputradio_opcionmultiple_verdaderofalso,
@@ -45909,18 +45908,17 @@
 	        }
 	      }
 	  
-	      // Crear un objeto que almacene todas las relaciones, omitiendo las que tengan previous true
+	      // Crear un objeto que almacene las relaciones (omitiendo las que tengan previous true)
 	      const questionMapping = {};
 	      Object.entries(dpq).forEach(([datapageQuestion, datafirebaseQuestionKey]) => {
-	        // Si la pregunta tiene previous true en questions-AutoSave se omite
 	        if (
 	          questionsAutoSave[datapageQuestion] &&
 	          questionsAutoSave[datapageQuestion].previous === true
 	        ) {
 	          console.log(
-	            `Omitiendo ${datapageQuestion} debido a que 'previous' es true en questions-AutoSave`
+	            `Omitiendo ${datapageQuestion} porque 'previous' es true en questions-AutoSave`
 	          );
-	          return; // Se salta esta pregunta
+	          return;
 	        }
 	  
 	        const questionData = dataFirebaseNormalizada[datafirebaseQuestionKey];
@@ -45933,16 +45931,20 @@
 	  
 	      console.log("Preguntas a responder", questionMapping);
 	  
-	      // Iterar sobre el objeto creado y ejecutar la función correspondiente
-	      Object.entries(questionMapping).forEach(([datapageQuestion, questionData]) => {
+	      // Crear un arreglo de promesas para cada respuesta
+	      const tareas = Object.entries(questionMapping).map(([datapageQuestion, questionData]) => {
 	        const questionType = questionData.tipo;
 	        if (funcQuestionType.hasOwnProperty(questionType)) {
-	          // Se llama a la función asociada pasando la clave de la pregunta y sus datos
-	          funcQuestionType[questionType](datapageQuestion, questionData);
+	          // Llamamos a la función correspondiente y asumimos que retorna una promesa (o bien la envolvemos en Promise.resolve si no es asíncrona)
+	          return Promise.resolve(funcQuestionType[questionType](datapageQuestion, questionData));
 	        } else {
 	          console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
+	          return Promise.resolve(); // Para que no bloquee
 	        }
 	      });
+	  
+	      // Ejecutar todas las tareas en paralelo y esperar a que finalicen
+	      await Promise.all(tareas);
 	    } catch (error) {
 	      console.error("Error en AutoFill:", error);
 	    }
