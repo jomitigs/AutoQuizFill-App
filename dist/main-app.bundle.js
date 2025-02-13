@@ -43476,7 +43476,7 @@
 	    return { dpnExistentes: [], dpnNuevas: dpnOrigin };
 	  }
 
-	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
+	  let dpnExistentes = {};  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
 	  let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
 
 	  // ---------------------------------------------------------------------------
@@ -43577,7 +43577,7 @@
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
 	      const claveDFN = candidatoCoincidente.clave;
 
-	      dpnExistentes.push({ [claveDPN]: claveDFN });
+	      dpnExistentes[claveDPN] = claveDFN; 
 
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
