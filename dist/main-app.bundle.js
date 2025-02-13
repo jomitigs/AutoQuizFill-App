@@ -45443,17 +45443,21 @@
 	                    }
 
 	                    else if (data.tipo === 'draganddrop_text') {
+
+	                        // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
 	                        let enunciado = data.enunciado;
-	                        enunciado = enunciado.replace(/\[(.*?)\]/g, (match, textoDentro) => {
-	                            const contenido = textoDentro.trim();
-	                            if (contenido.length > 0) {
-	                                return `<span style="font-weight:500;">[</span>
-                                        <span style="font-weight:500; color:MediumBlue;">${contenido}</span>
-                                        <span style="font-weight:500;">]</span>`;
-	                            } else {
-	                                return `<span style="font-weight:500;">[ ]</span>`;
-	                            }
+	                        let contador = 0;
+	                        
+	                        // Usamos una expresión regular que sólo coincida con corchetes vacíos (o que tengan solo espacios)
+	                        enunciado = enunciado.replace(/\[\s*\]/g, (match) => {
+	                            // Obtenemos la respuesta correspondiente o un string vacío si no existe
+	                            const respuesta = data.respuestaCorrecta[contador] || "";
+	                            contador++;
+	                            return `<span style="font-weight:500;">[</span>
+                                    <span style="font-weight:500; color:MediumBlue;">${respuesta}</span>
+                                    <span style="font-weight:500;">]</span>`;
 	                        });
+	                        
 	                        enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
 	                        html += `<div class="enunciado">${enunciado}</div>`;
 	                    } else if (data.tipo === 'draganddrop_image') {
