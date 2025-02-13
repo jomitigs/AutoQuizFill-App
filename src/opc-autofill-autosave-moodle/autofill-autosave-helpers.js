@@ -801,16 +801,22 @@ function compararContenidoMedios(medio1, medio2) {
 function compararHTML(htmlDPN, htmlDFN) {
   let contenidoDPN = obtenerContenidoSeparadoYConcatenado(htmlDPN);
   let contenidoDFN = obtenerContenidoSeparadoYConcatenado(htmlDFN);
-
-  // Se pueden almacenar en caché utilizando algún identificador único si se requiere
-  // (en este ejemplo se utiliza directamente el array "html" como parámetro).
-
-  // Si los textos concatenados son idénticos, se omite el cálculo completo.
-  if (contenidoDPN.textoConcatenado === contenidoDFN.textoConcatenado) {
+  
+  // Suponiendo que la función retorna, además de 'textoConcatenado', un array de fragmentos,
+  // lo llamamos 'textoArray'. Si no está disponible, podemos obtenerlo dividiendo 'textoConcatenado'.
+  const textoArrayDPN = contenidoDPN.textoArray || contenidoDPN.textoConcatenado.split(' ');
+  const textoArrayDFN = contenidoDFN.textoArray || contenidoDFN.textoConcatenado.split(' ');
+  
+  // Ordenamos los arrays para que el orden original no influya
+  const textoOrdenadoDPN = textoArrayDPN.slice().sort().join(' ');
+  const textoOrdenadoDFN = textoArrayDFN.slice().sort().join(' ');
+  
+  // Si los textos ordenados son idénticos, se omite el cálculo completo
+  if (textoOrdenadoDPN === textoOrdenadoDFN) {
     const mediosOk = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
     return { coincide: mediosOk, similitudTexto: 100, mediosCoinciden: mediosOk };
   }
-
+  
   const similitudTexto = calcularSimilitudTexto(contenidoDPN.textoConcatenado, contenidoDFN.textoConcatenado);
   const mediosCoinciden = compararMedios(contenidoDPN.medios, contenidoDFN.medios);
   const coincide = (similitudTexto >= 99) && mediosCoinciden;
