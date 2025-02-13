@@ -430,7 +430,7 @@ export async function compararPreguntas(dpn, dfn) {
     // console.log(`Procesando DFN: ${claveDFN}`, preguntaDFN);
 
     if (!preguntaDFN.html) {
-      console.warn(`Elemento DFN "${claveDFN}" no tiene propiedad "html". Se omite.`);
+      // console.warn(`Elemento DFN "${claveDFN}" no tiene propiedad "html". Se omite.`);
       continue;
     }
 
@@ -519,7 +519,7 @@ export async function compararPreguntas(dpn, dfn) {
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
       const claveDFN = candidatoCoincidente.clave;
 
-      dpnExistentes[claveDPN] = claveDFN;
+      dpnExistentes.push({claveDPN: claveDFN});
 
     } catch (e) {
       // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
