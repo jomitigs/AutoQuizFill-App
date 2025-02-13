@@ -45,10 +45,8 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
 
             
 
-
-
             <!-- Nuevo contenedor para AutoFill-->
-            <div id="container-autofill" class="subcontainer-autoquiz-autofill" style="display: none;">
+            <div id="container-autofill" class="subcontainer-autoquiz-autofill">
 
                 <div id="header-autofill" class="header-autoquiz">
                     <h2 id="titulo-autoquiz">AutoFill</h2>
@@ -60,7 +58,7 @@ export function opcion_AutoFillAutoSave_Moodle_html() {
                 </div>
 
                 <!-- Contenido de AutoFill-->
-                <div id="body-autoquiz-autofill" class="body-autoquiz" style="display: none;">
+                <div id="body-autoquiz-autofill" class="body-autoquiz">
 
                     <!-- Contenedor dinámico para las preguntas generadas -->
                     <div id="contenedor-preguntas" class="contenedor-preguntas">
