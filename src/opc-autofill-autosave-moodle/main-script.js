@@ -164,7 +164,9 @@ async function contenedorAutoFillAutoSave_js() {
         if (stateAutoFill === "activado") {
             bodyAutoFill.style.display = 'flex';
             contenedorAutoFill_js();
-        } else if (stateAutoSave === "activado") {
+        } 
+        
+        if (stateAutoSave === "activado") {
             bodyAutoSave.style.display = 'flex';
             contenedorAutoSave_js();
         }
