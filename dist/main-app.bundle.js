@@ -45830,7 +45830,7 @@
 	}
 
 	async function contenedorAutoFill_js() {
-	    console.log("Ejecutando contenedorAutoFill_js");
+	    console.log(`[opc-autofill-autosave-moodle: autofill] Iniciando AutoFill...`);
 
 	    const switchRutaDinamica = localStorage.getItem('switch-ruta-dinamica') === 'true';
 	    switchRutaDinamica
@@ -45851,6 +45851,8 @@
 	    console.log("DPN Existentes:", comparedData.dpnExistentes);
 
 	    AutoFill(comparedData.dpnExistentes);
+
+	    console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
 
 	}
 
