@@ -46146,6 +46146,9 @@
 	            await contenedorAutoFill_js();
 	            // Rehabilitar después de finalizar la función
 	            window.eventosPreguntasHabilitados = true;
+	            
+	            await AutoSaveQuestions_SessionStorage(originalFormulations);
+	            
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
 	            if (stateAutoSave === "activado") {
 	                contenedorAutoSave_js();
