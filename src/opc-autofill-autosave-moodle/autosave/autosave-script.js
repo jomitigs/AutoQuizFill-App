@@ -23,7 +23,7 @@ export function contenedorAutoSave_js() {
 
     // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
     detectarCambiosPreguntas();
-    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
+    console.log(`[opc-autofill-autosave-moodle: autosave] Finalizando AutoSave...`);
 }
 
 export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
