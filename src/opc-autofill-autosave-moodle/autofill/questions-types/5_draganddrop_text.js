@@ -1,4 +1,5 @@
 import interact from 'interactjs';
+import { obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js';
 
 /**
  * Función auxiliar que simula el movimiento de drag and drop usando una animación CSS.
