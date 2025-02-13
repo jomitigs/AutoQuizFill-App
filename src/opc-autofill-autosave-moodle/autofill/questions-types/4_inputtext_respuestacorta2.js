@@ -6,9 +6,15 @@ export async function response_inputtext_respuestacorta2(pregunta, questionData)
   console.log("Question Data:", questionData);
 
   // Aseguramos que questionData.respuestaCorrecta tenga un valor.
-  const respuestaCorrectaEsperada = (questionData && typeof questionData.respuestaCorrecta === 'string')
-    ? questionData.respuestaCorrecta
-    : '';
+  let respuestaCorrectaEsperada = '';
+  if (questionData) {
+    if (typeof questionData.respuestaCorrecta === 'string') {
+      respuestaCorrectaEsperada = questionData.respuestaCorrecta;
+    } else if (Array.isArray(questionData.respuestaCorrecta) && questionData.respuestaCorrecta.length > 0) {
+      respuestaCorrectaEsperada = questionData.respuestaCorrecta[0];
+    }
+  }
+    
   console.log("Respuesta correcta esperada:", respuestaCorrectaEsperada);
 
   // Obtenemos el contenedor de la formulación.
