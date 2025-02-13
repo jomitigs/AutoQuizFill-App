@@ -43666,6 +43666,9 @@
 	  tempDiv.querySelectorAll('option[value="0"]')
 	    .forEach(el => el.remove());
 
+	  tempDiv.querySelectorAll('answercontainer')
+	    .forEach(el => el.remove());
+
 	  tempDiv.querySelectorAll('.draghome.placed').forEach(element => {
 	    // Verificamos si el siguiente hermano cumple con las condiciones:
 	    const sibling = element.nextElementSibling;
