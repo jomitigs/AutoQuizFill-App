@@ -45235,7 +45235,6 @@
 	        const savedData = sessionStorage.getItem('questions-AutoSave');
 	        if (!savedData) {
 	            // Solo si no existe ningún dato, se muestra el mensaje.
-	            container.innerHTML = '<span style="font-weight:500; color:red;">Sin responder</span>';
 	            return resolve();
 	        }
 
