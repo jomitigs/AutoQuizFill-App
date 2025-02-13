@@ -58,7 +58,7 @@
 #containerRutaFirebase {
   display: flex;
   flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */
-  gap: 0; /* Esto asegura que no haya espacio entre ellos */
+  height: 38px;
 }
 
 #containerRutaFirebase div {
