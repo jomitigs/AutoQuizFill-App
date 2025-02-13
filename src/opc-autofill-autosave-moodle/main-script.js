@@ -135,10 +135,8 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         contenedorRuta_js();
     }
 
-    contenedorAutoFillAutoSave_js() 
-
     if (esMoodle) {
-        contenedorAutoFillAutoSave_js() 
+        contenedorAutoFillAutoSave_js();
     }
 
     detectarCambiosInterruptor();

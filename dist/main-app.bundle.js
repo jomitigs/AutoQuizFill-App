@@ -46063,10 +46063,8 @@
 	        contenedorRuta_js$1();
 	    }
 
-	    contenedorAutoFillAutoSave_js(); 
-
 	    if (esMoodle) {
-	        contenedorAutoFillAutoSave_js(); 
+	        contenedorAutoFillAutoSave_js();
 	    }
 
 	    detectarCambiosInterruptor();
