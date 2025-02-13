@@ -43320,7 +43320,7 @@
 	  }
 	}
 
-	async function extractContentInOrder$1(node) {
+	async function extractContentInOrder(node) {
 	  //console.log('Iniciando extracción de contenido para el nodo:', node);
 	  let content = '';
 
@@ -43397,7 +43397,7 @@
 	        // ------------------------------------------------------------------------
 	      } else if (tagName === 'p') {
 	        //console.log('-> Encontrado <p>. Procesando recursivamente su contenido...');
-	        const childContent = await extractContentInOrder$1(child);
+	        const childContent = await extractContentInOrder(child);
 	        if (childContent) {
 	          if (content.length > 0 && !content.endsWith('\n')) {
 	            content += '\n';
@@ -43418,7 +43418,7 @@
 	        // ------------------------------------------------------------------------
 	      } else {
 	        //console.log('-> Nodo de tipo desconocido. Procesando recursivamente...');
-	        const childContent = await extractContentInOrder$1(child);
+	        const childContent = await extractContentInOrder(child);
 	        if (childContent) {
 	          content += childContent;
 	          // console.log('-> Contenido extraído del nodo hijo desconocido:', childContent);
@@ -43947,7 +43947,7 @@
 	    const enunciadoElement = clonFormulation.querySelector('.qtext');
 	    let enunciado = '';
 	    if (enunciadoElement) {
-	        enunciado = await extractContentInOrder$1(enunciadoElement);
+	        enunciado = await extractContentInOrder(enunciadoElement);
 	    } else {
 	        console.warn("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
@@ -44056,7 +44056,7 @@
 	    // extraemos el enunciado en texto plano (o HTML en orden) con `extractContentInOrder`.
 	    let enunciado = '';
 	    if (enunciadoElement) {
-	        enunciado = await extractContentInOrder$1(enunciadoElement);
+	        enunciado = await extractContentInOrder(enunciadoElement);
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
@@ -44150,7 +44150,7 @@
 	    const enunciadoElement = clonFormulation.querySelector('.qtext');
 	    let enunciado = '';
 	    if (enunciadoElement) {
-	        enunciado = await extractContentInOrder$1(enunciadoElement);
+	        enunciado = await extractContentInOrder(enunciadoElement);
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
@@ -44188,7 +44188,7 @@
 	        let textoOpcion = '';
 	        if (labelElement) {
 	            // Se extrae el contenido del label.
-	            textoOpcion = await extractContentInOrder$1(labelElement);
+	            textoOpcion = await extractContentInOrder(labelElement);
 	            // Se eliminan posibles literales iniciales (por ejemplo: "a.", "b.", etc.).
 	            textoOpcion = textoOpcion.replace(/^[a-zA-Z]\.|^[ivxlcdmIVXLCDM]+\./, '').trim();
 	        } else {
@@ -44244,7 +44244,7 @@
 	    const enunciadoElement = clonFormulation.querySelector('.qtext');
 	    let enunciado = '';
 	    if (enunciadoElement) {
-	        enunciado = await extractContentInOrder$1(enunciadoElement);
+	        enunciado = await extractContentInOrder(enunciadoElement);
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
@@ -44271,10 +44271,10 @@
 	            // Si el label contiene un elemento con clase "flex-fill", se extrae desde allí.
 	            const flexFillElement = labelInput.querySelector('.flex-fill');
 	            if (flexFillElement) {
-	                textoOpcion = await extractContentInOrder$1(flexFillElement);
+	                textoOpcion = await extractContentInOrder(flexFillElement);
 	            } else {
 	                // Si no, se extrae directamente del label.
-	                textoOpcion = await extractContentInOrder$1(labelInput);
+	                textoOpcion = await extractContentInOrder(labelInput);
 	            }
 	            // Si no se encuentra un elemento MathJax, se eliminan literales iniciales (como "a.", "b.", etc.).
 	            const mathJaxElement = labelInput.querySelector('.MathJax');
@@ -44330,7 +44330,7 @@
 	        });
 
 	        // Aquí pasamos el nodo, no la cadena HTML
-	        enunciadoProcess = await extractContentInOrder$1(clonedQtext);
+	        enunciadoProcess = await extractContentInOrder(clonedQtext);
 
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
@@ -44375,7 +44375,7 @@
 
 	    if (clonedQtext) {
 	        // Extraemos el contenido de .qtext sin modificaciones
-	        enunciadoProcess = await extractContentInOrder$1(clonedQtext);
+	        enunciadoProcess = await extractContentInOrder(clonedQtext);
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }
@@ -44461,7 +44461,7 @@
 	    const enunciadoElement = clonFormulation.querySelector('.qtext');
 	    let enunciado = '';
 	    if (enunciadoElement) {
-	        enunciado = await extractContentInOrder$1(enunciadoElement);
+	        enunciado = await extractContentInOrder(enunciadoElement);
 	    } else {
 	        console.log("No se encontró el elemento .qtext para extraer el enunciado.");
 	    }

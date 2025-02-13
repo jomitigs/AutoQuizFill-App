@@ -1,4 +1,4 @@
-import { obtenerFormulationClearfix } from '../../autofill-autosave-helpers.js';
+import { obtenerFormulationClearfix,  extractContentInOrder } from '../../autofill-autosave-helpers.js';
 
 export async function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
     console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
