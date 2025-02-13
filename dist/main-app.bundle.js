@@ -43473,13 +43473,11 @@
 	    console.log("dfn está vacío o solo contiene metadatos. Se asignan todas las preguntas de dpnOrigin como nuevas.");
 	    let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
 	    dpnOrigin = JSON.parse(dpnOrigin);
-	    // Se retorna un array con todas las preguntas nuevas
-	    return { dpnExistentes: [], dpnNuevas: Object.values(dpnOrigin) };
+	    return { dpnExistentes: [], dpnNuevas: dpnOrigin };
 	  }
 
-	  // Usaremos arrays para almacenar los resultados.
-	  let dpnExistentes = [];  // Cada elemento será { dpn: claveDPN, dfn: claveDFN }
-	  let dpnNuevas = [];      // Cada elemento será { clave: claveDPN, ...preguntaDPN }
+	  let dpnExistentes = [];  // Almacena coincidencias encontradas: { dpn: { ... }, dfn: { ... } }
+	  let dpnNuevas = [];      // Almacena las preguntas de DPN sin coincidencia (con todos sus datos)
 
 	  // ---------------------------------------------------------------------------
 	  // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
@@ -43487,6 +43485,7 @@
 	  let indiceDFN = {};
 	  for (const claveDFN in dfn) {
 	    const preguntaDFN = dfn[claveDFN];
+	    // console.log(`Procesando DFN: ${claveDFN}`, preguntaDFN);
 
 	    if (!preguntaDFN.html) {
 	      console.warn(`Elemento DFN "${claveDFN}" no tiene propiedad "html". Se omite.`);
@@ -43566,11 +43565,15 @@
 	    // Se usa Promise.any para que se resuelva tan pronto como alguno cumpla la condición.
 	    const promesasCandidatos = candidatos.map(candidato => {
 	      return new Promise((resolve, reject) => {
+	        // console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.clave}"`);
 	        const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.html);
+	        // console.log(`Resultado de comparación:`, resultadoComparacion);
 	        if (resultadoComparacion.coincide) {
-	          console.log(`Comparación exitosa entre DPN "${claveDPN}" y DFN "${candidato.clave}".`);
+	          console.log(`Resultado de comparación:`, resultadoComparacion);
+	          // Si hay coincidencia, se resuelve la promesa con todos los datos del candidato.
 	          resolve(candidato);
 	        } else {
+	          // Si no coincide, se rechaza la promesa.
 	          reject('No coincide');
 	        }
 	      });
@@ -43579,33 +43582,35 @@
 	    try {
 	      // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
-	      // Se agrega el par coincidente al array de dpnExistentes.
-	      dpnExistentes.push({ dpn: claveDPN, dfn: candidatoCoincidente.clave });
+	      const claveDFN = candidatoCoincidente.clave;
+
+	      dpnExistentes[claveDPN] = claveDFN;
+
 	    } catch (e) {
 	      // Si ninguno de los candidatos cumple, se marca la pregunta como nueva.
 	      console.log(`No se encontró coincidencia para DPN "${claveDPN}". Se marca como nueva.`);
-	      dpnNuevas.push({ clave: claveDPN, ...preguntaDPN });
+	      dpnNuevas.push(claveDPN);
 	    }
 	  });
 
 	  // Esperar a que se procesen todas las preguntas de DPN.
 	  await Promise.all(promesasDPN);
 
-	  // Recuperar los datos originales del sessionStorage.
+	  // Recuperar los datos del sessionStorage
 	  let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
 	  dpnOrigin = JSON.parse(dpnOrigin);
 
-	  // Extraer los datos completos de dpnOrigin para las preguntas marcadas como nuevas.
-	  const dpnNuevasData = [];
-	  dpnNuevas.forEach(item => {
-	    if (dpnOrigin[item.clave]) {
-	      dpnNuevasData.push({ clave: item.clave, ...dpnOrigin[item.clave] });
+	  const dpnNuevasData = {};
+
+	  // Iterar sobre dpnNuevas para extraer los datos de questions
+	  dpnNuevas.forEach((clave) => {
+	    if (dpnOrigin[clave]) {
+	      dpnNuevasData[clave] = dpnOrigin[clave]; // Inserta el objeto completo
 	    }
 	  });
 
-	  return { dpnExistentes, dpnNuevas: dpnNuevasData };
+	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 	}
-
 
 	async function normalizarHTML(input) {
 	  // Caso 1: Entrada es un string HTML directo.
