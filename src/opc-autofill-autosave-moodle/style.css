@@ -168,6 +168,9 @@
     white-space: normal;
   }
   
+  #moodle-config label {
+    margin-bottom: 0rem;
+  }
   
 
 /* --------------------------------------------------------------------------
