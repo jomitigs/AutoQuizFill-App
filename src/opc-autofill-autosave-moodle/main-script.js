@@ -175,7 +175,7 @@ async function contenedorAutoFillAutoSave_js() {
             if (stateAutoSave === "activado") {
                 setTimeout(() => {
                     AutoSave_ShowResponses();
-                }, 500);
+                }, 1000);
             }
             
         } 
@@ -235,7 +235,7 @@ function detectarCambiosInterruptor() {
             if (stateAutoSave === "activado") {
                 setTimeout(() => {
                     AutoSave_ShowResponses();
-                }, 500);
+                }, 1000);
             }
             
         } else {

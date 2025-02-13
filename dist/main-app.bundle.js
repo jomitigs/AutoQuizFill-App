@@ -46112,7 +46112,7 @@
 	            if (stateAutoSave === "activado") {
 	                setTimeout(() => {
 	                    AutoSave_ShowResponses();
-	                }, 500);
+	                }, 1000);
 	            }
 	            
 	        } 
@@ -46172,7 +46172,7 @@
 	            if (stateAutoSave === "activado") {
 	                setTimeout(() => {
 	                    AutoSave_ShowResponses();
-	                }, 500);
+	                }, 1000);
 	            }
 	            
 	        } else {
