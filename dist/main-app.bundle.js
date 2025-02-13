@@ -46208,6 +46208,9 @@
 	            window.eventosPreguntasHabilitados = true;
 	            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
 	            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+	            
+	            await AutoSaveQuestions_SessionStorage(originalFormulations);
+
 	            if (stateAutoSave === "activado") {
 	                contenedorAutoSave_js();
 	            }
