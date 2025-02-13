@@ -208,7 +208,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
         const numberQuestion = parseInt(numeroQuestionUpdate, 10);
 
         const questionType = determinarTipoPregunta(questionHtml);
-        console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
+        // console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
         const funcion = funcQuestionType[questionType];
         if (!funcion) {
