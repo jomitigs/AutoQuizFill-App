@@ -35,7 +35,7 @@ export async function contenedorAutoFill_js() {
     console.log("dpnExistentes", comparedData.dpnExistentes);
     console.log("dpnNuevas", comparedData.dpnNuevas);
 
-    await AutoFill(comparedData.dpnExistentes, comparedData.dpnNuevas, dataFirebaseNormalizada);
+    // await AutoFill(comparedData.dpnExistentes, comparedData.dpnNuevas, dataFirebaseNormalizada);
     AutoFill_ShowResponses(comparedData.dpnExistentes, comparedData.dpnNuevas);
 
     console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
