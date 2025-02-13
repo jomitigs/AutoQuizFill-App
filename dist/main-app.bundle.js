@@ -44856,33 +44856,15 @@
 	}
 
 	// Exporta una función llamada contenedorAutoSave_js
-	function contenedorAutoSave_js() {
-	    
-	    const actualizarVisibilidadBody = async () => {
-	        // Determinar si la URL actual corresponde a la página de intento de quiz
-	        const esPaginaQuiz = window.location.href.includes('/mod/quiz/attempt.php');
-	        const bodyAutoSave = document.getElementById("body-autoquiz-autosave"); 
+	function contenedorAutoSave_js() {      
+	    console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
-	        if (esPaginaQuiz) {
-	                bodyAutoSave.style.display = 'flex';
+	    // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
+	    AutoSave_ShowResponses();
 
-	                console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
-
-	                // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
-	                await AutoSave_ShowResponses();
-
-	                // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
-	                detectarCambiosPreguntas();
-	                console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
-
-	        } else if (!esPaginaQuiz) {
-	            // Si la página actual no es compatible con el AutoSave, se informa por consola
-	            console.log(`[opc-autofill-autosave-moodle: autosave] Esta página no soporta AutoSave.`);
-	        }
-	    };
-
-	    // Llamar a la función para actualizar la visibilidad del contenedor sin bloquear la ejecución
-	    actualizarVisibilidadBody();
+	    // Iniciar el monitoreo de cambios en las preguntas para actualizaciones dinámicas
+	    detectarCambiosPreguntas();
+	    console.log(`[opc-autofill-autosave-moodle: autosave] AutoSave completado.`);
 	}
 
 	async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQuestionUpdate = null) {
