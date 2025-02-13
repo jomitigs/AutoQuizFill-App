@@ -188,6 +188,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
                 localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
                 console.log(`AutoSave: ${nuevoEstado}`);
                 if (nuevoEstado === "activado") {
+                    bodyAutoSave.style.display = 'flex';
                     autosave_autofill();
                 } else {
                     bodyAutoSave.style.display = 'none';
@@ -202,6 +203,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
                 localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
                 console.log(`AutoFill: ${nuevoEstado}`);
                 if (nuevoEstado === "activado") {
+                    bodyAutoFill.style.display = 'flex';
                     autosave_autofill();
                 } else {
                     bodyAutoFill.style.display = 'none';
