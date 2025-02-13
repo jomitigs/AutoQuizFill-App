@@ -135,80 +135,81 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         contenedorRuta_js();
     }
 
-    const autosave_autofill = async () => {
-        const interruptorAutoSave = document.getElementById("switch-autosave");
-        const interruptorAutoFill = document.getElementById("switch-autofill");
-        if (!interruptorAutoSave || !interruptorAutoFill) return;
+    contenedorAutoFillAutoSave_js() 
+    detectarCambiosInterruptor();
+}
 
-        const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
-        const stateAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
+async function contenedorAutoFillAutoSave_js() {
+    const interruptorAutoSave = document.getElementById("switch-autosave");
+    const interruptorAutoFill = document.getElementById("switch-autofill");
 
-        interruptorAutoSave.checked = (stateAutoSave === "activado");
-        interruptorAutoFill.checked = (stateAutoFill === "activado");
+    if (!interruptorAutoSave || !interruptorAutoFill) return;
 
+    const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
+    const stateAutoFill = localStorage.getItem("autofill-autoquizfillapp") || "desactivado";
+
+    interruptorAutoSave.checked = (stateAutoSave === "activado");
+    interruptorAutoFill.checked = (stateAutoFill === "activado");
+
+    const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
+    const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+
+    if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
+        getDataFromFirebaseAsync();
+        const originalFormulations = document.querySelectorAll(".formulation.clearfix");
+        await AutoSaveQuestions_SessionStorage(originalFormulations);
+
+        if (stateAutoFill === "activado") {
+            bodyAutoFill.style.display = 'flex';
+            contenedorAutoFill_js();
+        } else if (stateAutoSave === "activado") {
+            bodyAutoSave.style.display = 'flex';
+            contenedorAutoSave_js();
+        }
+
+        renderizarPreguntas();
+
+    } else {
+        sessionStorage.removeItem('questions-AutoSave');
+        bodyAutoFill.style.display = 'none';
+        bodyAutoSave.style.display = 'none';
+    }
+
+}
+
+function detectarCambiosInterruptor() {
+    const interruptorAutoSave = document.getElementById("switch-autosave");
+    const interruptorAutoFill = document.getElementById("switch-autofill");
+    
+    interruptorAutoSave.addEventListener("change", () => {
+                
         const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
-        const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
-
-        if (esMoodle && (stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
-            getDataFromFirebaseAsync();
-            const originalFormulations = document.querySelectorAll(".formulation.clearfix");
-            await AutoSaveQuestions_SessionStorage(originalFormulations);
-
-            if (stateAutoFill === "activado") {
-                bodyAutoFill.style.display = 'flex';
-                contenedorAutoFill_js();
-            } else if (stateAutoSave === "activado") {
-                bodyAutoSave.style.display = 'flex';
-                contenedorAutoSave_js();
-            }
-
-            renderizarPreguntas();
-
+        const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
+        localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
+        console.log(`AutoSave: ${nuevoEstado}`);
+        if (nuevoEstado === "activado") {
+            bodyAutoSave.style.display = 'flex';
+            contenedorAutoFillAutoSave_js();
         } else {
-            sessionStorage.removeItem('questions-AutoSave');
-            bodyAutoFill.style.display = 'none';
             bodyAutoSave.style.display = 'none';
         }
 
-        // Registrar los listeners solo una vez.
-        if (!autosave_autofill.initted) {
-            
-            interruptorAutoSave.addEventListener("change", () => {
-                
-                const bodyAutoSave = document.getElementById("body-autoquiz-autosave");
-                const nuevoEstado = interruptorAutoSave.checked ? "activado" : "desactivado";
-                localStorage.setItem("autosave-autoquizfillapp", nuevoEstado);
-                console.log(`AutoSave: ${nuevoEstado}`);
-                if (nuevoEstado === "activado") {
-                    bodyAutoSave.style.display = 'flex';
-                    autosave_autofill();
-                } else {
-                    bodyAutoSave.style.display = 'none';
-                }
+    });
 
-            });
-
-            interruptorAutoFill.addEventListener("change", () => {
-                
-                const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
-                const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
-                localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
-                console.log(`AutoFill: ${nuevoEstado}`);
-                if (nuevoEstado === "activado") {
-                    bodyAutoFill.style.display = 'flex';
-                    autosave_autofill();
-                } else {
-                    bodyAutoFill.style.display = 'none';
-                }
-
-            });
-
-            autosave_autofill.initted = true;
+    interruptorAutoFill.addEventListener("change", () => {
+        
+        const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
+        const nuevoEstado = interruptorAutoFill.checked ? "activado" : "desactivado";
+        localStorage.setItem("autofill-autoquizfillapp", nuevoEstado);
+        console.log(`AutoFill: ${nuevoEstado}`);
+        if (nuevoEstado === "activado") {
+            bodyAutoFill.style.display = 'flex';
+            contenedorAutoFillAutoSave_js();
+        } else {
+            bodyAutoFill.style.display = 'none';
         }
-    };
 
-    // Llamar a la función para actualizar la visibilidad del contenedor sin bloquear la ejecución
-    autosave_autofill();
+    });
 }
 
 // Función para verificar si la página está construida con Moodle
