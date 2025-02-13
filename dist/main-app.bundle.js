@@ -45869,17 +45869,15 @@
 
 	   // console.log("Preguntas a Re:", comparedData.dpnExistentes);
 
-	    AutoFill(comparedData.dpnExistentes);
+	    await AutoFill(comparedData.dpnExistentes, dataFirebaseNormalizada);
 
 	    console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
 
 	}
 
-	async function AutoFill(dpq) {
+	async function AutoFill(dpq, dataFirebaseNormalizada) {
 	    try {
-	      // Se obtiene el objeto completo de preguntas desde la base de datos indexada
-	      const dataFirebaseNormalizada = await idbGet("dataFirebaseNormalizada");
-	  
+	     
 	      // Mapeo de funciones según el tipo de pregunta
 	      const funcQuestionType = {
 	        'inputradio_opcionmultiple_verdaderofalso': response_inputradio_opcionmultiple_verdaderofalso,
