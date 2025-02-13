@@ -1,0 +1,2 @@
+export function response_inputradio_opcionmultiple_verdaderofalso(originalFormulationClearfix) {
+}
