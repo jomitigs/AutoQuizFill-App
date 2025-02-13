@@ -43656,10 +43656,6 @@
 	  const fragment = document.createRange().createContextualFragment(html);
 	  tempDiv.appendChild(fragment);
 
-	  // Eliminar elementos con las siguientes clases y atributos:
-	  // - .accesshide
-	  // - .custom-watermark
-	  // - .qtype_multichoice_clearchoice.sr-only[aria-hidden="true"]
 	  tempDiv.querySelectorAll(
 	    '.accesshide, .custom-watermark,.validationerror , .sr-only , .qtype_multichoice_clearchoice'
 	  ).forEach(el => el.remove());
@@ -43676,9 +43672,6 @@
 	  tempDiv.querySelectorAll('option[value="0"]')
 	  .forEach(el => el.remove());
 
-	  // Eliminar <span> que tengan las clases fijas "draghome", "dragplaceholder" y "active"
-	  // y que además tengan una clase que siga el patrón "choice" (con número variable)
-	  // y otra que siga el patrón "group" (con número variable).
 	  tempDiv.querySelectorAll('span.draghome.dragplaceholder.active').forEach(el => {
 	    const tieneClaseChoice = Array.from(el.classList).some(cls => /^choice\d+$/.test(cls));
 	    const tieneClaseGroup = Array.from(el.classList).some(cls => /^group\d+$/.test(cls));
