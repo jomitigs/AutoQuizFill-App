@@ -39,7 +39,8 @@ export function opcionConfig_html() {
           </label>
         </div>
 
-    <span id="subopcion-config" class="estilo-config-item" >AutoSave</span>
+      <span id="subopcion-config" class="estilo-config-item" >AutoSave</span>
+
       <div id="botonterminaryguardar-autosave-switch" class="opc-config-switch-container" >
         <span class="opc-config-switch-label">Mostrar Botón Guardar y Terminar</span>
         <label class="opc-config-switch">
