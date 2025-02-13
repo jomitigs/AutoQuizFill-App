@@ -13,6 +13,7 @@ import { response_inputtext_respuestacorta2 } from './questions-types/4_inputtex
 import { response_draganddrop_image } from './questions-types/6_draganddrop_image.js';
 import { response_draganddrop_text } from './questions-types/5_draganddrop_text.js';
 
+import { AutoSave_ShowResponses } from '../autosave/autosave-script.js';
 
 export async function contenedorAutoFill_js() {
     console.log("Ejecutando AutoSave_Firebase...");
@@ -103,6 +104,8 @@ export async function AutoFill(dpq) {
     } catch (error) {
       console.error("Error en AutoFill:", error);
     }
+
+    AutoSave_ShowResponses();
   }
   
   

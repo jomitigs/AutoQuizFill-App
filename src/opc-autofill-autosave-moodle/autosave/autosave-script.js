@@ -373,7 +373,7 @@ async function procesoAutoSave(elemento) {
     }
 }
 
-function AutoSave_ShowResponses(numeroPregunta) {
+export function AutoSave_ShowResponses(numeroPregunta) {
     return new Promise((resolve, reject) => {
         const container = document.getElementById('respuestasautosave');
         if (!container) {

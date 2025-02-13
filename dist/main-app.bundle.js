@@ -45936,6 +45936,8 @@
 	    } catch (error) {
 	      console.error("Error en AutoFill:", error);
 	    }
+
+	    AutoSave_ShowResponses();
 	  }
 
 	function opcion_AutoFillAutoSave_Moodle_html() {
