@@ -34,7 +34,7 @@ export async function contenedorAutoFill_js() {
     // 🟢 ESPERAR a que `compararPreguntas` termine antes de seguir
     const comparedData = await compararPreguntas(dataPageNormalizada, dataFirebaseNormalizada);
 
-    console.log("DPN Existentes:", comparedData.dpnExistentes);
+   // console.log("Preguntas a Re:", comparedData.dpnExistentes);
 
     AutoFill(comparedData.dpnExistentes);
 
