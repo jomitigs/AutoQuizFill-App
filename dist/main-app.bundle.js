@@ -45812,11 +45812,31 @@
 	        'draganddrop_image': response_draganddrop_image,
 	      };
 	  
-	      // 1. Crear un objeto que almacene todas las relaciones:
-	      // { datapageQuestion: questionData, ... }
-	      const questionMapping = {};
+	      // Obtener el estado de "questions-AutoSave" desde sessionStorage
+	      const autoSaveData = sessionStorage.getItem("questions-AutoSave");
+	      let questionsAutoSave = {};
+	      if (autoSaveData) {
+	        try {
+	          questionsAutoSave = JSON.parse(autoSaveData);
+	        } catch (error) {
+	          console.error("Error al parsear questions-AutoSave desde sessionStorage", error);
+	        }
+	      }
 	  
+	      // Crear un objeto que almacene todas las relaciones, omitiendo las que tengan previous true
+	      const questionMapping = {};
 	      Object.entries(dpq).forEach(([datapageQuestion, datafirebaseQuestionKey]) => {
+	        // Si la pregunta tiene previous true en questions-AutoSave se omite
+	        if (
+	          questionsAutoSave[datapageQuestion] &&
+	          questionsAutoSave[datapageQuestion].previous === true
+	        ) {
+	          console.log(
+	            `Omitiendo ${datapageQuestion} debido a que 'previous' es true en questions-AutoSave`
+	          );
+	          return; // Se salta esta pregunta
+	        }
+	  
 	        const questionData = dataFirebaseNormalizada[datafirebaseQuestionKey];
 	        if (questionData) {
 	          questionMapping[datapageQuestion] = questionData;
@@ -45827,30 +45847,8 @@
 	  
 	      console.log("Preguntas a responder", questionMapping);
 	  
-	      // Obtener el estado de "questions-AutoSave" desde sessionStorage
-	      const autoSaveData = sessionStorage.getItem("questions-AutoSave");
-	      let questionsAutoSave = {};
-	      if (autoSaveData) {
-	        try {
-	          questionsAutoSave = JSON.parse(autoSaveData);
-	        } catch (e) {
-	          console.error("Error al parsear questions-AutoSave desde sessionStorage", e);
-	        }
-	      }
-	  
-	      // 2. Iterar sobre el objeto creado y ejecutar la función correspondiente
+	      // Iterar sobre el objeto creado y ejecutar la función correspondiente
 	      Object.entries(questionMapping).forEach(([datapageQuestion, questionData]) => {
-	        // Verificar el estado en sessionStorage antes de ejecutar la función
-	        if (
-	          questionsAutoSave[datapageQuestion] &&
-	          questionsAutoSave[datapageQuestion].previous === true
-	        ) {
-	          console.log(
-	            `Ignorando ${datapageQuestion} ya que 'previous' es true en questions-AutoSave`
-	          );
-	          return; // Se omite la ejecución para esta pregunta
-	        }
-	  
 	        const questionType = questionData.tipo;
 	        if (funcQuestionType.hasOwnProperty(questionType)) {
 	          // Se llama a la función asociada pasando la clave de la pregunta y sus datos
