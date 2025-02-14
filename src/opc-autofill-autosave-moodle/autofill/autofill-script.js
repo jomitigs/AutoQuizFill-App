@@ -282,6 +282,10 @@ function AutoFill_ShowResponses(responseQuestions) {
             // --- PARTE SIEMPRE VISIBLE (enunciado) ---
             const visiblePart = document.createElement('div');
 
+
+             // Dependemos del tipo de pregunta
+             const tipo = infoData.tipo || 'desconocido';
+
             if (tipo !== inputtext_respuestacorta  || tipo !== inputtext_respuestacorta) {
             visiblePart.innerHTML = `
               <div>${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
@@ -291,8 +295,7 @@ function AutoFill_ShowResponses(responseQuestions) {
             // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
             const hiddenPart = document.createElement('div');
   
-            // Dependemos del tipo de pregunta
-            const tipo = infoData.tipo || 'desconocido';
+           
   
             // ----------------------------------------------------------------
             // Aquí adaptamos la lógica de tu snippet original
