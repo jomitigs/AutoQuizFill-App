@@ -46514,8 +46514,10 @@
 	function filterQuestions(dpnExistentes, dpnNuevas) {
 	    // 1. Filtramos dpnExistentes: conservamos aquellas entradas cuyo "previous" sea false.
 	    const filteredExistentes = Object.fromEntries(
-	      Object.entries(dpnExistentes).filter(([key, value]) => value.previous !== true)
-	    );
+	        Object.entries(dpnExistentes).filter(([_, valor]) => {
+	          return !(valor.data && valor.data.previous === true);
+	        })
+	      );   
 	  
 	    // 2. Filtramos dpnNuevas:
 	    //    Se excluyen aquellas entradas donde la propiedad "previous" sea true.
