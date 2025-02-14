@@ -706,7 +706,7 @@ function formatResponseOptions(options, selected) {
     }).join('');
 }
 
-function processContent(content) {
+export function processContent(content) {
     if (!content) return '<span style="font-weight:500; color:red;">Sin responder</span>';
     return content
         .replace(/(https?:\/\/\S+\.(?:png|jpg|jpeg|gif|bmp|webp|svg))/gi, '<img src="$1" alt="Imagen" style="max-width: 200px; max-height: 150px;">')

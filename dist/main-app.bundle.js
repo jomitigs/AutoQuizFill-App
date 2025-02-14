@@ -46748,7 +46748,7 @@
 	            // --- PARTE SIEMPRE VISIBLE (enunciado) ---
 	            const visiblePart = document.createElement('div');
 	            visiblePart.innerHTML = `
-              <div> ${infoData.enunciado || '(Sin enunciado)'}</div>
+              <div> ${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
             `;
 	  
 	            // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
@@ -46759,23 +46759,27 @@
 	  
 	            if (tipo === 'inputradio_opcionmultiple_verdaderofalso' || tipo === 'inputchecked_opcionmultiple') {
 	                hiddenPart.innerHTML = `
-                ${infoData.opcionesRespuesta.map((opc, i) => {
-                  // Generar la letra para cada opción: a, b, c, d, ...
-                  const letter = String.fromCharCode(97 + i);
+                ${processContent(infoData.opcionesRespuesta)
+                  .map((opc, i) => {
+                    // Generar la letra para cada opción: a, b, c, d...
+                    const letter = String.fromCharCode(97 + i);
+                    
+                    // Verificar si la respuesta correcta es un array o un valor único
+                    const isCorrect = Array.isArray(processContent(infoData.respuestaCorrecta))
+                      ? processContent(infoData.respuestaCorrecta).includes(opc)
+                      : opc === processContent(infoData.respuestaCorrecta);
               
-                  // Verificar si la respuesta correcta es un array o un valor único
-                  const isCorrect = Array.isArray(infoData.respuestaCorrecta)
-                    ? infoData.respuestaCorrecta.includes(opc)
-                    : opc === infoData.respuestaCorrecta;
-              
-                  // Siempre aplicar font-weight: 500, y color: mediumblue solo si es la correcta
-                  return `
-                    <div style="font-weight: 500; ${isCorrect ? 'color: mediumblue;' : ''}">
-                      ${letter}. ${opc}
-                    </div>
-                  `;
-                }).join('')}
-              `; 
+                    // Retornar el HTML de cada opción
+                    return `
+                      <div style="font-weight: 500; ${isCorrect ? 'color: mediumblue;' : ''}">
+                        ${letter}. ${opc}
+                      </div>
+                    `;
+                  })
+                  .join('') // Importante para unir todos los divs en un solo string
+                }
+              `;
+	              
 	            } else if (
 	              tipo === 'inputtext_respuestacorta' ||
 	              tipo === 'inputtext_respuestacorta2'
