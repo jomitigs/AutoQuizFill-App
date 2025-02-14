@@ -43573,10 +43573,7 @@
 	  
 	    // Precalcular y almacenar en caché el contenido para DPN, si aún no está en cache.
 	    if (!cacheContenidoDPN[claveDPN]) {
-	      console.log(`Calculando y almacenando en caché el contenido HTML para DPN "${claveDPN}".`);
 	      cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
-	    } else {
-	      console.log(`Contenido HTML para DPN "${claveDPN}" ya está en caché.`);
 	    }
 	  
 	    // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
