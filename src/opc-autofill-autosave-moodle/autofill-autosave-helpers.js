@@ -459,14 +459,15 @@ export async function compararPreguntas(dpn, dfn) {
   // ---------------------------------------------------------------------------
 
   const promesasDPN = Object.keys(dpn).map(async (claveDPN) => {
-   
+
     const preguntaDPN = dpn[claveDPN];
-    const tipoDPN = preguntaDPN.tipo; 
+    const tipoDPN = preguntaDPN.tipo;
     const cantidadDPN = preguntaDPN.html.length;
-  
+    const previousDPN = preguntaDPN.previous;
+
     let cantidadesPermitidas = [cantidadDPN];
     console.log(`Cantidades permitidas para DPN "${claveDPN}":`, cantidadesPermitidas);
-  
+
     // Recolectar candidatos de DFN que cumplan la cantidad en "html".
     let candidatos = [];
     if (indiceDFN[tipoDPN]) {
@@ -488,19 +489,19 @@ export async function compararPreguntas(dpn, dfn) {
       console.log(`No existen preguntas DFN para el tipo "${tipoDPN}"`);
     }
     console.log("Listado de candidatos:", candidatos);
-  
+
     // Si no se encontró ningún candidato, se marca la pregunta DPN como nueva.
     if (candidatos.length === 0) {
       console.log(`No hay candidatos válidos para DPN "${claveDPN}". Se marca como nueva.`);
       dpnNuevas.push(claveDPN);
       return;
     }
-  
+
     // Precalcular y almacenar en caché el contenido para DPN, si aún no está en caché.
     if (!cacheContenidoDPN[claveDPN]) {
       cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
     }
-  
+
     // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
     const promesasCandidatos = candidatos.map(candidato => {
       return new Promise((resolve, reject) => {
@@ -508,7 +509,7 @@ export async function compararPreguntas(dpn, dfn) {
         const candidateKey = Object.keys(candidato)[0];
         const candidateData = candidato[candidateKey];
         const resultadoComparacion = compararHTML(preguntaDPN.html, candidateData.html);
-        
+
         if (resultadoComparacion.coincide) {
           console.log(`Candidato DFN "${candidateKey}" coincide con DPN "${claveDPN}"`);
           // Se resuelve la promesa devolviendo el objeto candidato tal como está.
@@ -519,31 +520,35 @@ export async function compararPreguntas(dpn, dfn) {
         }
       });
     });
-  
+
     try {
       // Promise.any se resuelve tan pronto como un candidato cumpla la condición.
       const candidatoCoincidente = await Promise.any(promesasCandidatos);
-      
+
       // Extraer la clave y los datos del candidato coincidente.
       const claveDFN = Object.keys(candidatoCoincidente)[0];
       const candidateData = candidatoCoincidente[claveDFN];
-  
+
       // Eliminar propiedades no deseadas del candidato.
       ["clave", "html", "ciclo", "timestamp"].forEach(prop => {
         if (candidateData.hasOwnProperty(prop)) {
           delete candidateData[prop];
         }
       });
-  
+
       // Guardar en dpnExistentes la relación entre la pregunta DPN y el candidato DFN.
-      dpnExistentes[claveDPN] = { [claveDFN]: candidateData };
+      const previousDPN = preguntaDPN.previous;
+
+      dpnExistentes[claveDPN] = {[claveDFN]: candidateData, previous: previousDPN};
+
+
     } catch (e) {
       // Si ninguno de los candidatos cumple, se marca la pregunta DPN como nueva.
       dpnNuevas.push(claveDPN);
     }
-    
+
   });
-  
+
   // Esperar a que se procesen todas las preguntas de DPN.
   await Promise.all(promesasDPN);
 
