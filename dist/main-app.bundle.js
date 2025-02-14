@@ -46567,7 +46567,7 @@
 	          // Guardamos data completa (el objeto 'value') y el estado normalizado
 	          acc[key] = {
 	            estado: estadoNormalizado,
-	            data: value
+	            value
 	          };
 	          return acc;
 	        }
