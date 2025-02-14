@@ -39,6 +39,8 @@ export async function contenedorAutoFill_js() {
 
     console.log("Todas las dpnExistentes Filtradas", preguntasFiltradas.dpnExistentesFilter);
 
+    console.log("Todas las dpnExistentes y dpnNuevas Filtradas", preguntasFiltradas.dpnShowResponses);
+
     // await AutoFill(preguntasFiltradas.dpnExistentesFilter);
 
     console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
