@@ -43531,7 +43531,6 @@
 	  
 	    // Se permite siempre la cantidad exacta
 	    let cantidadesPermitidas = [cantidadDPN];
-	    console.log(`Cantidades permitidas para DPN "${claveDPN}":`, cantidadesPermitidas);
 	  
 	    // Recolectar candidatos de DFN que cumplan la cantidad en "html".
 	    let candidatos = [];
@@ -43563,7 +43562,6 @@
 	    } else {
 	      console.log(`No existen preguntas DFN para el tipo "${tipoDPN}"`);
 	    }
-	    console.log(`Total de candidatos recolectados para DPN "${claveDPN}":`, candidatos.length);
 	    console.log("Listado de candidatos:", candidatos);
 	  
 	    // Si no se encontró ningún candidato, se marca la pregunta DPN como nueva.
