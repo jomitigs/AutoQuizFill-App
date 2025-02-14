@@ -44792,135 +44792,187 @@
 	    }
 	  }
 	  
-	  async function saveExistingQuestionsToFirebase(ruta, datos) {
-	    try {
-	      console.log("Iniciando la actualización de preguntas en Firebase.");
-	  
-	      // 1. Leer en bloque el nodo destino en Firebase
-	      const destSnapshot = await get(ref(database, ruta));
-	      const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
-	      console.log(`Datos actuales en Firebase en la ruta '${ruta}':`, destFull);
-	  
-	      // 2. Preparar objeto de actualizaciones
-	      const updates = {};
-	  
-	      // 3. Iterar sobre cada entrada en el objeto "datos"
-	      for (const preguntaKey in datos) {
-	        if (!Object.prototype.hasOwnProperty.call(datos, preguntaKey)) continue;
-	  
-	        const preguntaObj = datos[preguntaKey];
+	/**
+	 * Verifica si "respuestaCorrecta" tiene contenido real:
+	 * - Si es un string no vacío luego de trim().
+	 * - Si es un array con al menos un elemento no vacío.
+	 */
+	function hasRespuestaCorrecta(data) {
+	  const rc = data.respuestaCorrecta;
 
-	        const firebaseKey = Object.keys(preguntaObj).find((key) =>
-	          key.startsWith("question")
-	        );
-	  
-	        if (!firebaseKey) {
-	          console.warn(`No se encontró ninguna clave tipo 'questionXXXX' en ${preguntaKey}`);
-	          continue;
-	        }
-	  
-	        console.log(`\nProcesando ${preguntaKey} con firebaseKey: ${firebaseKey}`);
-	  
-	        // La parte principal (por ejemplo, question0043) que ya tiene enunciado, estado, feedback, etc.
-	        const questionBlock = preguntaObj[firebaseKey];
-	  
-	        // La parte "data", que puede tener html, ciclo, enunciado, etc.
-	        const dataBlock = preguntaObj.data || {};
-	  
-	        const sourceData = {
-	          ...questionBlock,
-	          ...dataBlock,
-	        };
-	  
-	        // 3b. Leemos lo que ya existe en Firebase para esa clave
-	        const destData = destFull[firebaseKey] || {};
-	        console.log(`Datos actuales en Firebase para ${firebaseKey}:`, destData);
-	  
-	        // 3c. Aplicamos la lógica de actualización
-	        let updatedData = {};
-	  
-	        if (destData.estado === "verificado") {
-	          // Caso 1: Registro verificado
-	          console.log(`El registro ${firebaseKey} está verificado.`);
-	          // Únicamente actualizar el feedback si en sourceData viene algo y en destData está vacío
-	          if (
-	            sourceData.feedback &&
-	            sourceData.feedback.trim() !== "" &&
-	            (!destData.feedback || destData.feedback.trim() === "")
-	          ) {
-	            updatedData = {
-	              ...destData, // partimos de lo que ya existe
-	              feedback: sourceData.feedback,
-	            };
-	            console.log(
-	              `Actualizando 'feedback' para ${firebaseKey}:\n` +
-	                `- Nuevo feedback: "${sourceData.feedback}"\n` +
-	                `- Feedback anterior: "${destData.feedback || "(vacío)"}"`
-	            );
-	          } else {
-	            // No hay cambios (o no se cumplen las condiciones para actualizar feedback)
-	            console.log(
-	              `No se actualiza 'feedback' para ${firebaseKey} porque no se cumplieron las condiciones.`
-	            );
-	          }
-	        } else {
-	          // Caso 2: Registro NO verificado
-	          console.log(`El registro ${firebaseKey} NO está verificado. Se fusionarán los datos.`);
-	  
-	          // Partimos de lo que ya hay en Firebase
-	          updatedData = { ...destData };
-	  
-	          // Fusionamos / sobreescribimos con todo lo que nos trae "sourceData"
-	          for (const key in sourceData) {
-	            if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
-	              updatedData[key] = sourceData[key];
-	            }
-	          }
-	  
-	          // Si "previous" existe, lo removemos
-	          if (updatedData.hasOwnProperty("previous")) {
-	            delete updatedData.previous;
-	            console.log(`Eliminando la clave "previous" para ${firebaseKey}.`);
-	          }
-	  
-	          // Regla especial para "feedback": 
-	          // si el nuevo feedback está vacío, conservamos el existente
-	          if (
-	            (!sourceData.feedback || sourceData.feedback.trim() === "") &&
-	            destData.feedback &&
-	            destData.feedback.trim() !== ""
-	          ) {
-	            updatedData.feedback = destData.feedback;
-	            console.log(
-	              `Conservando el feedback existente para ${firebaseKey} porque el nuevo viene vacío.`
-	            );
-	          }
-	        }
-	  
-	        // 3d. Verificamos si hay cambios efectivos
-	        if (
-	          Object.keys(updatedData).length > 0 &&
-	          JSON.stringify(updatedData) !== JSON.stringify(destData)
-	        ) {
-	          updates[firebaseKey] = updatedData;
-	          console.log(`Datos a actualizar para ${firebaseKey}:`, updatedData);
-	        } else {
-	          console.log(`No hay cambios para ${firebaseKey}.`);
-	        }
-	      }
-	  
-	      // 4. Realizamos un único update en Firebase si hay cambios
-	      if (Object.keys(updates).length > 0) {
-	        await update(ref(database, ruta), updates);
-	        console.log("Se han actualizado las siguientes entradas en Firebase:", updates);
-	      } else {
-	        console.log("No se realizaron actualizaciones, no se cumplieron las condiciones.");
-	      }
-	    } catch (error) {
-	      console.error("Error al guardar las preguntas en Firebase:", error);
-	      throw error;
-	    }
+	  // Si no existe o es nulo/undefined, retornamos false
+	  if (rc == null) return false;
+
+	  // Caso: respuestaCorrecta es string
+	  if (typeof rc === "string") {
+	    return rc.trim() !== "";
 	  }
+
+	  // Caso: respuestaCorrecta es array
+	  if (Array.isArray(rc)) {
+	    // Si al menos un elemento es un string no vacío, retornamos true
+	    return rc.some(
+	      (item) => typeof item === "string" && item.trim() !== ""
+	    );
+	  }
+
+	  // Cualquier otro tipo (número, objeto, etc.) se considera "no tiene valor"
+	  return false;
+	}
+
+	async function saveExistingQuestionsToFirebase(ruta, datos) {
+	  try {
+	    console.log("Iniciando la actualización de preguntas en Firebase.");
+
+	    // 1. Leer en bloque el nodo destino en Firebase
+	    const destSnapshot = await get(ref(database, ruta));
+	    const destFull = destSnapshot.exists() ? destSnapshot.val() : {};
+	    console.log(`Datos actuales en Firebase en la ruta '${ruta}':`, destFull);
+
+	    // 2. Preparar objeto de actualizaciones
+	    const updates = {};
+
+	    // 3. Iterar sobre cada entrada en el objeto "datos"
+	    for (const preguntaKey in datos) {
+	      if (!Object.prototype.hasOwnProperty.call(datos, preguntaKey)) continue;
+
+	      const preguntaObj = datos[preguntaKey];
+
+	      // Buscar la clave tipo "questionXXXX"
+	      const firebaseKey = Object.keys(preguntaObj).find((key) =>
+	        key.startsWith("question")
+	      );
+
+	      if (!firebaseKey) {
+	        console.warn(
+	          `No se encontró ninguna clave tipo 'questionXXXX' en ${preguntaKey}`
+	        );
+	        continue;
+	      }
+
+	      console.log(`\nProcesando ${preguntaKey} con firebaseKey: ${firebaseKey}`);
+
+	      // La parte principal (question0043, etc.)
+	      const questionBlock = preguntaObj[firebaseKey];
+
+	      // La parte "data" (puede tener html, ciclo, enunciado, etc.)
+	      const dataBlock = preguntaObj.data || {};
+
+	      // Merge inicial de la data fuente
+	      const sourceData = {
+	        ...questionBlock,
+	        ...dataBlock,
+	      };
+
+	      // 3b. Leemos lo que ya existe en Firebase para esa clave
+	      const destData = destFull[firebaseKey] || {};
+	      console.log(`Datos actuales en Firebase para ${firebaseKey}:`, destData);
+
+	      // 3c. Aplicamos la lógica de actualización
+	      let updatedData = {};
+
+	      // CASO 1: Registro verificado
+	      if (destData.estado === "verificado") {
+	        console.log(`El registro ${firebaseKey} está verificado.`);
+
+	        // Únicamente actualizar feedback si:
+	        // - Viene algo nuevo en sourceData.feedback
+	        // - Y en destData.feedback está vacío
+	        if (
+	          sourceData.feedback &&
+	          sourceData.feedback.trim() !== "" &&
+	          (!destData.feedback || destData.feedback.trim() === "")
+	        ) {
+	          updatedData = {
+	            ...destData, // partimos de lo que ya existe
+	            feedback: sourceData.feedback,
+	          };
+	          console.log(
+	            `Actualizando 'feedback' para ${firebaseKey}:\n` +
+	              `- Nuevo feedback: "${sourceData.feedback}"\n` +
+	              `- Feedback anterior: "${destData.feedback || "(vacío)"}"`
+	          );
+	        } else {
+	          console.log(
+	            `No se actualiza 'feedback' para ${firebaseKey} porque no se cumplieron las condiciones.`
+	          );
+	        }
+
+	        // En caso de que esté verificado, NO cambiamos el estado ni otros campos.
+	      }
+
+	      // CASO 2: Registro NO verificado
+	      else {
+	        console.log(
+	          `El registro ${firebaseKey} NO está verificado. Se fusionarán los datos.`
+	        );
+
+	        // Partimos de lo que ya hay en Firebase
+	        updatedData = { ...destData };
+
+	        // Fusionamos / sobreescribimos con todo lo que nos trae "sourceData"
+	        for (const key in sourceData) {
+	          if (Object.prototype.hasOwnProperty.call(sourceData, key)) {
+	            updatedData[key] = sourceData[key];
+	          }
+	        }
+
+	        // Si "previous" existe, lo removemos
+	        if (updatedData.hasOwnProperty("previous")) {
+	          delete updatedData.previous;
+	          console.log(`Eliminando la clave "previous" para ${firebaseKey}.`);
+	        }
+
+	        // Regla especial para "feedback":
+	        // si el nuevo feedback está vacío, conservamos el existente
+	        if (
+	          (!sourceData.feedback || sourceData.feedback.trim() === "") &&
+	          destData.feedback &&
+	          destData.feedback.trim() !== ""
+	        ) {
+	          updatedData.feedback = destData.feedback;
+	          console.log(
+	            `Conservando el feedback existente para ${firebaseKey} porque el nuevo viene vacío.`
+	          );
+	        }
+
+	        // ================================
+	        // NUEVA LÓGICA: estado según "respuestaCorrecta"
+	        // ================================
+	        if (hasRespuestaCorrecta(updatedData)) {
+	          updatedData.estado = "no verificado";
+	        } else {
+	          updatedData.estado = "sin responder";
+	        }
+	      }
+
+	      // 3d. Verificamos si hay cambios efectivos
+	      if (
+	        Object.keys(updatedData).length > 0 &&
+	        JSON.stringify(updatedData) !== JSON.stringify(destData)
+	      ) {
+	        updates[firebaseKey] = updatedData;
+	        console.log(`Datos a actualizar para ${firebaseKey}:`, updatedData);
+	      } else {
+	        console.log(`No hay cambios para ${firebaseKey}.`);
+	      }
+	    }
+
+	    // 4. Realizamos un único update en Firebase si hay cambios
+	    if (Object.keys(updates).length > 0) {
+	      await update(ref(database, ruta), updates);
+	      console.log(
+	        "Se han actualizado las siguientes entradas en Firebase:",
+	        updates
+	      );
+	    } else {
+	      console.log("No se realizaron actualizaciones, no se cumplieron las condiciones.");
+	    }
+	  } catch (error) {
+	    console.error("Error al guardar las preguntas en Firebase:", error);
+	    throw error;
+	  }
+	}
 
 	// Exporta una función llamada contenedorAutoSave_js
 	function contenedorAutoSave_js$1() {      
