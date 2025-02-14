@@ -45611,7 +45611,7 @@
 
 	    let preguntasFiltradas = filterQuestions(comparedData.dpnExistentes, comparedData.dpnNuevas);
 
-	    console.log("dpnExistentes Filtradas", preguntasFiltradas.dpnExistentesFilter);
+	    console.log("Todas las dpnExistentes Filtradas", preguntasFiltradas.dpnExistentesFilter);
 
 	    // await AutoFill(preguntasFiltradas.dpnExistentesFilter);
 
