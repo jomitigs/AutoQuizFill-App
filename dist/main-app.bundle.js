@@ -44663,7 +44663,7 @@
 
 	async function saveNewQuestionsToFirebase(ruta, datos, lastKey) {
 	  try {
-	    // 1. Extraer el prefijo y la parte numérica de lastKey.
+	    // 1. Obtener prefijo y parte numérica de lastKey
 	    const prefixMatch = lastKey.match(/^[a-zA-Z]+/);
 	    if (!prefixMatch) {
 	      throw new Error("Formato de lastKey inválido");
@@ -44674,50 +44674,65 @@
 	      throw new Error("La parte numérica de lastKey no es válida");
 	    }
 
-	    // 2. Renombrar claves y preparar datos para la actualización.
+	    // 2. Renombrar claves y preparar datos
 	    const newQuestions = {};
 	    let currentNumber = numberPart;
 
 	    for (const key of Object.keys(datos)) {
-	      currentNumber++; // Incrementamos para la nueva pregunta
+	      currentNumber++;
 
-	      // Clave con 4 dígitos (ej. question0005)
 	      const newKey = prefix + String(currentNumber).padStart(4, "0");
-
-	      // Copiamos los datos para no mutar el objeto original
 	      const questionData = { ...datos[key] };
 
-	      // 2.1. Eliminar la propiedad "previous" si existe
+	      // Eliminar "previous"
 	      delete questionData.previous;
 
-	      // 2.2. Comprobar la propiedad "respuestaCorrecta" para determinar el estado
-	      if (
-	        !Array.isArray(questionData.respuestaCorrecta) ||                       // No es un array
-	        questionData.respuestaCorrecta.length === 0 ||                          // Array vacío
-	        questionData.respuestaCorrecta.every(
-	          (respuesta) => typeof respuesta === "string" && respuesta.trim() === ""
-	        ) // Todos los elementos son strings vacíos
-	      ) {
+	      // =============================================
+	      // Determinar el estado según "respuestaCorrecta"
+	      // =============================================
+	      const rc = questionData.respuestaCorrecta; // atajo
+
+	      // si no existe o es null o undefined
+	      if (rc == null) {
 	        questionData.estado = "sin responder";
-	      } else {
-	        questionData.estado = "no verificado";
+	      }
+	      // caso 1: rc es un string
+	      else if (typeof rc === "string") {
+	        questionData.estado = rc.trim() === "" 
+	          ? "sin responder" 
+	          : "no verificado";
+	      }
+	      // caso 2: rc es un array
+	      else if (Array.isArray(rc)) {
+	        if (
+	          rc.length === 0 ||
+	          rc.every(res => typeof res === "string" && res.trim() === "")
+	        ) {
+	          questionData.estado = "sin responder";
+	        } else {
+	          questionData.estado = "no verificado";
+	        }
+	      }
+	      // caso 3: cualquier otra cosa no prevista
+	      else {
+	        questionData.estado = "sin responder";
 	      }
 
-	      // Guardamos en el objeto final con la nueva clave
 	      newQuestions[newKey] = questionData;
 	    }
 
-	    // 3. Usar `update` en lugar de `set` para agregar/mezclar sin reemplazar toda la rama.
+	    // 3. Hacer el update en Firebase
 	    const dbRef = ref(database, ruta);
 	    await update(dbRef, newQuestions);
-
 	    console.log("Preguntas guardadas correctamente en Firebase");
-	    return newQuestions; // Opcional, por si quieres usar el resultado en otro lugar.
+	    return newQuestions;
+
 	  } catch (error) {
 	    console.error("Error al guardar las preguntas en Firebase:", error);
 	    throw error;
 	  }
 	}
+
 
 
 	async function createDataInSessionStorageDB(customKey, data) {
