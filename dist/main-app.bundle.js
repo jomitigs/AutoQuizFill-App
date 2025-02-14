@@ -23421,7 +23421,7 @@
 	var css_248z$5 = "/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 1.5rem;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        position: relative;\r\n        border-radius: 4px 4px 0 0; /* Redondea solo los bordes superiores */\r\n        height: 70px;\r\n\r\n    }\r\n\r\n    #panel-autofillquizapp {\r\n        display: block;\r\n        border-radius: 4px;\r\n        width: 100%; /* Ocupa todo el ancho del contenedor */\r\n        height: 100vh; /* O ajustado al contenedor padre */\r\n        overflow-y: hidden; /* Deshabilita el desplazamiento vertical */\r\n        box-sizing: border-box;\r\n    }\r\n    \r\n    #contenido-principal {\r\n        width: 100%;\r\n        height: calc(100% - 70px); /* Por ejemplo, ajusta el espacio si hay un header */\r\n        padding: 10px 15px 10px 15px;\r\n        background-color: #ffffff;\r\n        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n        /* overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n        -ms-overflow-style: none; /* Ocultar barra en IE y Edge */\r\n        scrollbar-width: none; /* Ocultar barra en Firefox */\r\n        border-radius: 0 0 8px 8px;\r\n        box-sizing: border-box;\r\n    }\r\n    ";
 	styleInject(css_248z$5);
 
-	var css_248z$4 = "/* ==========================================================================\r\n   1. Contenedor Principal\r\n   ========================================================================== */\r\n#autofillautosave_moodle {\r\n    display: flex;\r\n    flex-direction: column;\r\n\r\n    /* Altura ajustable según se requiera */\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección: Ruta y Ciclo\r\n     ========================================================================== */\r\n\r\n#containerRutaFirebase .title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n}\r\n\r\n#containerRutaFirebase .label {\r\n    font-size: 14px;\r\n    color: #34495e;\r\n}\r\n\r\n/* ==========================================================================\r\n     4. Sección: Ruta Dinámica\r\n     ========================================================================== */\r\n\r\n.select-ruta {\r\n    width: 100%;\r\n    padding: 3px;\r\n    font-size: 15px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.boton-ruta {\r\n    width: 100%;\r\n    padding: 5px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n#containerRutaFirebase {\r\n  display: flex;\r\n  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */\r\n  height: 38px;\r\n  margin-left: 2px;\r\n}\r\n\r\n#containerRutaFirebase div {\r\n  margin-top: -6px;\r\n  padding: 0;\r\n}\r\n\r\n\r\n\r\n/* ==========================================================================\r\n     5. Sección: Wrapper de AutoFill y AutoSave\r\n     ========================================================================== */\r\n/* Contenedor padre */\r\n#container-autofillautosave {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    height: 580px; /* Se fija la altura total */\r\n    /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */\r\n  }\r\n  \r\n  /* Reglas compartidas para cada subcontenedor */\r\n  .subcontainer-autoquiz-autofill {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin: 0;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto;\r\n  }\r\n\r\n\r\n  .subcontainer-autoquiz-autosave {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin-bottom: 20px;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto; \r\n\r\n}\r\n\r\n@media (max-height: 580px) {\r\n    .subcontainer-autoquiz-autofill,\r\n    .subcontainer-autoquiz-autosave {\r\n        flex: 1;\r\n        max-height: 50%;\r\n    }\r\n}\r\n\r\n\r\n  \r\n /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */\r\n#body-autoquiz-autosave,\r\n#body-autoquiz-autofill {\r\n    flex-direction: column;\r\n    font-size: 11px;\r\n    overflow-y: auto;\r\n    height: calc(100% - 30px);\r\n  }\r\n\r\n    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */\r\n    #body-autoquiz-autosave::-webkit-scrollbar,\r\n    #body-autoquiz-autofill::-webkit-scrollbar {\r\n      width: 0.4em; /* Ancho de la barra de desplazamiento */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-thumb,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */\r\n      border-radius: 10px;\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-track,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-track {\r\n      background: transparent; /* Fondo transparente */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-button,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-button {\r\n      display: none; /* Oculta botones (flechas) */\r\n    }\r\n  \r\n  /* Reglas para el elemento de la pregunta */\r\n  .preguntaautosave {\r\n    justify-content: flex-start;\r\n    align-items: center;\r\n    padding: 0;\r\n    color: #34495e;\r\n    flex-wrap: wrap;\r\n    width: 100%;\r\n    word-wrap: break-word;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */\r\n  .respuestasautosave {\r\n    width: 100%;\r\n    min-width: 0;\r\n    overflow-wrap: break-word;\r\n    word-break: break-word;\r\n    white-space: normal;\r\n  }\r\n  \r\n  #moodle-config label {\r\n    margin-bottom: 0rem;\r\n  }\r\n  \r\n  #subopcion-config {\r\n    margin-bottom: 0rem;\r\n    font-weight: 500;\r\n    margin-left: 3px;\r\n  }\r\n\r\n/* --------------------------------------------------------------------------\r\n     5.1. Subcontenedor de AutoFill\r\n     -------------------------------------------------------------------------- */\r\n\r\n/* Header de AutoFill: título y switch */\r\n.header-autoquiz {\r\n    margin-top: 0px;\r\n    margin-bottom: 0px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    position: relative;\r\n    height: 30px;\r\n}\r\n\r\n.header-autoquiz h2 {\r\n    font-size: 20px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n}\r\n\r\n/* Switch para AutoFill (y AutoSave) */\r\n.switch-autoquiz {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 34px;\r\n    height: 20px;\r\n    margin:0px;\r\n}\r\n\r\n.switch-autoquiz input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n}\r\n\r\n.slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: 0.4s;\r\n    border-radius: 20px;\r\n}\r\n\r\n.slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 12px;\r\n    width: 12px;\r\n    border-radius: 50%;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    transition: 0.4s;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider {\r\n    background-color: #3498db;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider:before {\r\n    transform: translateX(14px);\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección de Usuarios\r\n     ========================================================================== */\r\n\r\n/* Contenedor de usuarios (oculto por defecto) */\r\n.users {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n/* Usuario actual: ícono y nombre */\r\n.usuario-actual {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    flex: 1;\r\n}\r\n\r\n.nombre-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0 5px;\r\n}\r\n\r\n/* Select para el siguiente usuario */\r\n.select-siguiente-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    border: none;\r\n    background-color: transparent;\r\n    outline: none;\r\n    appearance: none;\r\n    cursor: pointer;\r\n    text-align: right;\r\n    padding-right: 0;\r\n    direction: rtl;\r\n    /* Alinea el desplegable a la derecha */\r\n}\r\n\r\n/* Opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;\r\n    padding: 10px;\r\n    text-align: right;\r\n    direction: ltr;\r\n}\r\n\r\n/* Limitación de altura y scroll vertical */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2);\r\n    border-radius: 10px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;\r\n}\r\n\r\n/* Resalta la opción seleccionada */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;\r\n    font-weight: bold;\r\n}\r\n\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;\r\n}\r\n\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;\r\n}\r\n\r\n/* Botón para pasar al siguiente usuario */\r\n.boton-siguiente-usuario {\r\n    margin: 0;\r\n    font-weight: 600;\r\n    border: none;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n    padding: 0 3px;\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;\r\n    color: #34495e;\r\n}\r\n\r\n\r\n.img-overlay {\r\n    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */\r\n    display: inline-block; /* O block según convenga en tu diseño */\r\n}\r\n\r\n.img-overlay::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    /* Fondo MediumBlue con 10% de opacidad */\r\n    background-color: rgba(0, 0, 205, 0.2);\r\n    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */\r\n}\r\n\r\n#upload-autosave {\r\n    position: relative;\r\n    display: inline-block;\r\n    border: none;\r\n    background: none;\r\n    cursor: pointer;\r\n    font-size:0.9em; /* Ajusta el tamaño según necesites */\r\n    color: inherit; /* Mantiene el color del texto */\r\n    transition: color 0.3s ease-in-out;\r\n}\r\n\r\n#upload-autosave:hover {\r\n    color: mediumblue;\r\n}\r\n";
+	var css_248z$4 = "/* ==========================================================================\r\n   1. Contenedor Principal\r\n   ========================================================================== */\r\n#autofillautosave_moodle {\r\n    display: flex;\r\n    flex-direction: column;\r\n\r\n    /* Altura ajustable según se requiera */\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección: Ruta y Ciclo\r\n     ========================================================================== */\r\n\r\n#containerRutaFirebase .title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n}\r\n\r\n#containerRutaFirebase .label {\r\n    font-size: 14px;\r\n    color: #34495e;\r\n}\r\n\r\n/* ==========================================================================\r\n     4. Sección: Ruta Dinámica\r\n     ========================================================================== */\r\n\r\n.select-ruta {\r\n    width: 100%;\r\n    padding: 3px;\r\n    font-size: 15px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.boton-ruta {\r\n    width: 100%;\r\n    padding: 5px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n#containerRutaFirebase {\r\n  display: flex;\r\n  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */\r\n  height: 38px;\r\n  margin-left: 2px;\r\n}\r\n\r\n#containerRutaFirebase div {\r\n  margin-top: -6px;\r\n  padding: 0;\r\n}\r\n\r\n\r\n\r\n/* ==========================================================================\r\n     5. Sección: Wrapper de AutoFill y AutoSave\r\n     ========================================================================== */\r\n/* Contenedor padre */\r\n#container-autofillautosave {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    height: 580px; /* Se fija la altura total */\r\n    /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */\r\n  }\r\n  \r\n  /* Reglas compartidas para cada subcontenedor */\r\n  .subcontainer-autoquiz-autofill {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin: 0;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto;\r\n  }\r\n\r\n\r\n  .subcontainer-autoquiz-autosave {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin-bottom: 20px;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto; \r\n\r\n}\r\n\r\n@media (max-height: 580px) {\r\n    .subcontainer-autoquiz-autofill,\r\n    .subcontainer-autoquiz-autosave {\r\n        flex: 1;\r\n        max-height: 50%;\r\n    }\r\n}\r\n\r\n\r\n  \r\n /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */\r\n#body-autoquiz-autosave,\r\n#body-autoquiz-autofill {\r\n    flex-direction: column;\r\n    font-size: 11px;\r\n    overflow-y: auto;\r\n    height: calc(100% - 30px);\r\n  }\r\n\r\n    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */\r\n    #body-autoquiz-autosave::-webkit-scrollbar,\r\n    #body-autoquiz-autofill::-webkit-scrollbar {\r\n      width: 0.4em; /* Ancho de la barra de desplazamiento */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-thumb,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */\r\n      border-radius: 10px;\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-track,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-track {\r\n      background: transparent; /* Fondo transparente */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-button,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-button {\r\n      display: none; /* Oculta botones (flechas) */\r\n    }\r\n  \r\n  /* Reglas para el elemento de la pregunta */\r\n  .preguntaautosave {\r\n    justify-content: flex-start;\r\n    align-items: center;\r\n    padding: 0;\r\n    color: #34495e;\r\n    flex-wrap: wrap;\r\n    width: 100%;\r\n    word-wrap: break-word;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */\r\n  .respuestasautosave {\r\n    width: 100%;\r\n    min-width: 0;\r\n    overflow-wrap: break-word;\r\n    word-break: break-word;\r\n    white-space: normal;\r\n  }\r\n  \r\n  #moodle-config label {\r\n    margin-bottom: 0rem;\r\n  }\r\n  \r\n  #subopcion-config {\r\n    margin-bottom: 0rem;\r\n    font-weight: 500;\r\n    margin-left: 3px;\r\n  }\r\n\r\n/* --------------------------------------------------------------------------\r\n     5.1. Subcontenedor de AutoFill\r\n     -------------------------------------------------------------------------- */\r\n\r\n/* Header de AutoFill: título y switch */\r\n.header-autoquiz {\r\n    margin-top: 0px;\r\n    margin-bottom: 0px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    position: relative;\r\n    height: 30px;\r\n}\r\n\r\n.header-autoquiz h2 {\r\n    font-size: 20px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n}\r\n\r\n/* Switch para AutoFill (y AutoSave) */\r\n.switch-autoquiz {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 34px;\r\n    height: 20px;\r\n    margin:0px;\r\n}\r\n\r\n.switch-autoquiz input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n}\r\n\r\n.slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: 0.4s;\r\n    border-radius: 20px;\r\n}\r\n\r\n.slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 12px;\r\n    width: 12px;\r\n    border-radius: 50%;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    transition: 0.4s;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider {\r\n    background-color: #3498db;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider:before {\r\n    transform: translateX(14px);\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección de Usuarios\r\n     ========================================================================== */\r\n\r\n/* Contenedor de usuarios (oculto por defecto) */\r\n.users {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n/* Usuario actual: ícono y nombre */\r\n.usuario-actual {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    flex: 1;\r\n}\r\n\r\n.nombre-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0 5px;\r\n}\r\n\r\n/* Select para el siguiente usuario */\r\n.select-siguiente-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    border: none;\r\n    background-color: transparent;\r\n    outline: none;\r\n    appearance: none;\r\n    cursor: pointer;\r\n    text-align: right;\r\n    padding-right: 0;\r\n    direction: rtl;\r\n    /* Alinea el desplegable a la derecha */\r\n}\r\n\r\n/* Opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;\r\n    padding: 10px;\r\n    text-align: right;\r\n    direction: ltr;\r\n}\r\n\r\n/* Limitación de altura y scroll vertical */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2);\r\n    border-radius: 10px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;\r\n}\r\n\r\n/* Resalta la opción seleccionada */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;\r\n    font-weight: bold;\r\n}\r\n\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;\r\n}\r\n\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;\r\n}\r\n\r\n/* Botón para pasar al siguiente usuario */\r\n.boton-siguiente-usuario {\r\n    margin: 0;\r\n    font-weight: 600;\r\n    border: none;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n    padding: 0 3px;\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;\r\n    color: #34495e;\r\n}\r\n\r\n\r\n.img-overlay {\r\n    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */\r\n    display: inline-block; /* O block según convenga en tu diseño */\r\n}\r\n\r\n.img-overlay::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    /* Fondo MediumBlue con 10% de opacidad */\r\n    background-color: rgba(0, 0, 205, 0.2);\r\n    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */\r\n}\r\n\r\n#upload-autosave {\r\n    position: relative;\r\n    display: inline-block;\r\n    border: none;\r\n    background: none;\r\n    cursor: pointer;\r\n    font-size:0.9em; /* Ajusta el tamaño según necesites */\r\n    color: inherit; /* Mantiene el color del texto */\r\n    transition: color 0.3s ease-in-out;\r\n}\r\n\r\n#upload-autosave:hover {\r\n    color: mediumblue;\r\n}\r\n\r\n\r\n/* Contenedor principal para cada pregunta */\r\n.question-container {\r\n    border: 1px solid #ccc;\r\n    margin: 1rem 0;\r\n    padding: 1rem;\r\n    border-radius: 5px;\r\n  }\r\n  \r\n  /* Encabezado de la pregunta: título y badge de estado */\r\n  .question-header {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n  }\r\n  \r\n  /* Título de la pregunta (si deseas usar una clase específica en lugar de <strong>) */\r\n  .question-title {\r\n    font-weight: bold;\r\n    margin-right: 0.5rem;\r\n  }\r\n  \r\n  /* Badge del estado (color y tipografía) */\r\n  .question-state-badge {\r\n    /* Valores por defecto */\r\n    font-weight: 500;\r\n    padding: 0.3rem 0.6rem;\r\n    border-radius: 4px;\r\n    margin-left: 1rem;\r\n    color: #fff; /* Color de texto por defecto (blanco) */\r\n  }\r\n  \r\n  /* Botón para mostrar/ocultar la información (icono de ojo) */\r\n  .btn-toggle-visibility {\r\n    border: none;\r\n    background: transparent;\r\n    cursor: pointer;\r\n    font-size: 1.1rem;\r\n    margin-right: 0.5rem;\r\n    /* Ajusta si deseas más separación o estilos de hover */\r\n  }\r\n  \r\n  /* Contenedor que mostrará/ocultará el contenido de la pregunta */\r\n  .detail-container {\r\n    display: none; /* oculto por defecto */\r\n    margin-top: 1rem;\r\n  }\r\n  \r\n  /* Estilos de colores de fondo para cada estado, \r\n     si quieres usarlos como clases en lugar de inline-styles */\r\n  .badge-no-data {\r\n    background-color: #e63946; /* Rojo */\r\n    color: #fff;\r\n  }\r\n  \r\n  .badge-no-verificado {\r\n    background-color: #f1c40f; /* Amarillo mostaza */\r\n    color: #000;\r\n  }\r\n  \r\n  .badge-sin-responder {\r\n    background-color: #d3d3d3; /* Gris claro */\r\n    color: #000;\r\n  }\r\n  \r\n  .badge-verificado {\r\n    background-color: #28a745; /* Verde */\r\n    color: #fff;\r\n  }\r\n  \r\n  /* Ejemplo adicional: \r\n     si deseas animaciones suaves al mostrar/ocultar:\r\n     (requiere que cambies en JS de 'display: none' a \r\n     manipular la altura o la opacidad) */\r\n  \r\n  /* .detail-container {\r\n    transition: all 0.3s ease;\r\n  } */\r\n  ";
 	styleInject(css_248z$4);
 
 	function contenedorUsers_js() {
@@ -46648,92 +46648,68 @@
 	    return new Promise((resolve, reject) => {
 	        const container = document.getElementById('respuestasautofill');
 	        if (!container) {
-	            console.error('Elemento "respuestasautosave" no encontrado.');
-	            return reject('Elemento "respuestasautosave" no encontrado.');
+	            console.error('Elemento "respuestasautofill" no encontrado.');
+	            return reject('Elemento "respuestasautofill" no encontrado.');
 	        }
 
-	        // Limpia el contenedor por si tuviera algo.
+	        // Limpia el contenedor por si tuviera contenido anterior
 	        container.innerHTML = '';
 
-	        // Mapeo de colores según estado:
-	        const stateStyles = {
-	            'NO DATA': {
-	                backgroundColor: '#e63946', // Rojo
-	                color: '#ffffff'
-	            },
-	            'NO VERIFICADO': {
-	                backgroundColor: '#f1c40f', // Amarillo mostaza
-	                color: '#000000'
-	            },
-	            'SIN RESPONDER': {
-	                backgroundColor: '#d3d3d3', // Gris claro
-	                color: '#000000'
-	            },
-	            'VERIFICADO': {
-	                backgroundColor: '#28a745', // Verde
-	                color: '#ffffff'
-	            }
+	        // Mapeo de los estados con las clases de badge correspondientes
+	        const stateToBadgeClass = {
+	            'NO DATA': 'badge-no-data',
+	            'NO VERIFICADO': 'badge-no-verificado',
+	            'SIN RESPONDER': 'badge-sin-responder',
+	            'VERIFICADO': 'badge-verificado'
 	        };
 
-	        // Recorremos cada clave en responseQuestions
+	        // Recorremos cada propiedad del objeto 'responseQuestions'
 	        for (let key in responseQuestions) {
 	            if (!responseQuestions.hasOwnProperty(key)) continue;
 
 	            const questionData = responseQuestions[key];
-	            const estado = questionData.estado || 'NO DATA'; // Por si no viene definido
-	            const preguntaNumber = key.replace('Pregunta', '');
+	            const estado = questionData.estado || 'NO DATA';
+	            const preguntaNumber = key.replace('Pregunta', ''); // Para extraer el número
 
-	            // Crear un contenedor principal para cada pregunta
+	            // Creamos el contenedor principal para cada pregunta
 	            const questionContainer = document.createElement('div');
 	            questionContainer.classList.add('question-container');
-	            questionContainer.style.border = '1px solid #ccc';
-	            questionContainer.style.margin = '1rem 0';
-	            questionContainer.style.padding = '1rem';
-	            questionContainer.style.borderRadius = '5px';
 
-	            // Encabezado con título y badge de estado
+	            // Creamos el encabezado (título, badge y botón de mostrar/ocultar si corresponde)
 	            const questionHeader = document.createElement('div');
-	            questionHeader.style.display = 'flex';
-	            questionHeader.style.alignItems = 'center';
-	            questionHeader.style.justifyContent = 'space-between';
+	            questionHeader.classList.add('question-header');
 
 	            // Título de la pregunta
 	            const questionTitle = document.createElement('div');
-	            questionTitle.innerHTML = `
-        <strong>Pregunta ${preguntaNumber}:</strong>
-      `;
+	            questionTitle.classList.add('question-title');
+	            questionTitle.innerHTML = `Pregunta ${preguntaNumber}:`;
 
-	            // Badge con el estado
+	            // Badge de estado
 	            const badge = document.createElement('span');
+	            badge.classList.add(
+	                'question-state-badge',
+	                stateToBadgeClass[estado] || 'badge-no-data' // Si no existe, usa 'NO DATA'
+	            );
 	            badge.textContent = estado.toLowerCase();
-	            badge.style.backgroundColor = stateStyles[estado]?.backgroundColor || '#777';
-	            badge.style.color = stateStyles[estado]?.color || '#fff';
-	            badge.style.fontWeight = '500';
-	            badge.style.padding = '0.3rem 0.6rem';
-	            badge.style.borderRadius = '4px';
-	            badge.style.marginLeft = '1rem';
 
-	            // Agregamos el badge al título
+	            // Insertamos título y badge en el encabezado
 	            questionTitle.appendChild(badge);
 	            questionHeader.appendChild(questionTitle);
 
-	            // Si es NO VERIFICADO o VERIFICADO, añadimos el botón de “ojo” para mostrar/ocultar
-	            let showHideBtn = null;
+	            // Crear contenedor de detalles que se mostrará/ocultará
 	            let detailContainer = null;
+	            let showHideBtn = null;
 
+	            // Solo mostramos el botón y el contenedor de detalles
+	            // en caso de 'NO VERIFICADO' o 'VERIFICADO'
 	            if (estado === 'NO VERIFICADO' || estado === 'VERIFICADO') {
 	                showHideBtn = document.createElement('button');
 	                showHideBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-	                showHideBtn.style.border = 'none';
-	                showHideBtn.style.background = 'transparent';
-	                showHideBtn.style.cursor = 'pointer';
-	                showHideBtn.style.fontSize = '1.1rem';
-	                showHideBtn.style.marginRight = '0.5rem';
+	                showHideBtn.classList.add('btn-toggle-visibility');
 
-	                // Contenedor para la info oculta
+	                // Contenedor con la info a mostrar/ocultar
 	                detailContainer = document.createElement('div');
-	                detailContainer.style.display = 'none';
-	                detailContainer.style.marginTop = '1rem';
+	                detailContainer.classList.add('detail-container'); // inicia con display: none
 
 	                // Lógica de mostrar/ocultar
 	                let isVisible = false;
@@ -46748,106 +46724,85 @@
 	                    }
 	                });
 
-	                // Lo agregamos al header
+	                // Agregamos el botón al header
 	                questionHeader.appendChild(showHideBtn);
 	            }
 
-	            // Agregamos el header al contenedor de la pregunta
+	            // Insertamos el encabezado en el contenedor principal
 	            questionContainer.appendChild(questionHeader);
 
-	            // Para NO DATA o SIN RESPONDER, NO mostramos contenido adicional
-	            // Solo para NO VERIFICADO y VERIFICADO
+	            // Para NO DATA o SIN RESPONDER, no mostramos info extra
 	            if (estado === 'NO VERIFICADO' || estado === 'VERIFICADO') {
-	                // Aquí construyes la parte visible y la parte oculta a tu gusto.
-
-	                // --- Ejemplo de extracción de datos ---
-	                // Suponiendo que `questionData.value` tiene la forma:
-	                // {
-	                //   questionXXXX: {...},  // donde puede estar "tipo"
-	                //   data: {
-	                //     enunciado: "...",
-	                //     opcionesRespuesta: [...],
-	                //     ...
-	                //   }
-	                // }
-
-	                // Intentamos tomar la información principal desde:
-	                //   questionData.value.data
-
-	                const questionValue = questionData.value;
-	                // A veces hay que buscar la primer clave que sea "questionXXXX", etc.
-	                // para simplificar, supongamos que "data" es la parte principal.
-	                let infoData = null;
-	                if (questionValue && questionValue.data) {
-	                    infoData = questionValue.data;
-	                }
-
-	                // Estructura de ejemplo:
-	                // 1) Parte siempre visible: "Enunciado"
-	                // 2) Parte oculta: (opciones de respuesta, respuesta correcta, etc.)
+	                // Obtenemos la info de la pregunta (enunciado, respuestas, etc.)
+	                const questionValue = questionData.value || {};
+	                const infoData = questionValue.data || null;
 
 	                if (infoData) {
-	                    // Parte siempre visible
+	                    // --- PARTE SIEMPRE VISIBLE (enunciado, etc.) ---
 	                    const visiblePart = document.createElement('div');
 	                    visiblePart.style.padding = '0.5rem 0';
 	                    visiblePart.innerHTML = `
-            <div><strong>Enunciado:</strong> ${infoData.enunciado || '(Sin enunciado)'}</div>
-          `;
+              <div><strong>Enunciado:</strong> ${infoData.enunciado || '(Sin enunciado)'}</div>
+            `;
 
-	                    // Parte oculta
+	                    // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
 	                    const hiddenPart = document.createElement('div');
 	                    hiddenPart.style.padding = '0.5rem 0';
 
-	                    // Dependiendo del tipo (inputradio_opcionmultiple_verdaderofalso, etc.), muestras distinta info
+	                    // Dependemos del tipo de pregunta
 	                    const tipo = infoData.tipo || 'desconocido';
 
 	                    if (tipo === 'inputradio_opcionmultiple_verdaderofalso' && infoData.opcionesRespuesta) {
 	                        hiddenPart.innerHTML = `
-              <div><strong>Opciones de respuesta:</strong></div>
-              <ul>
-                ${infoData.opcionesRespuesta.map(opc => `<li>${opc}</li>`).join('')}
-              </ul>
-              <div><strong>Respuesta correcta:</strong> ${infoData.respuestaCorrecta || 'N/A'}</div>
-            `;
-	                    } else if (tipo === 'inputtext_respuestacorta' || tipo === 'inputtext_respuestacorta2') {
+                <div><strong>Opciones de respuesta:</strong></div>
+                <ul>
+                  ${infoData.opcionesRespuesta.map(opc => `<li>${opc}</li>`).join('')}
+                </ul>
+                <div><strong>Respuesta correcta:</strong> ${infoData.respuestaCorrecta || 'N/A'}</div>
+              `;
+	                    } else if (
+	                        tipo === 'inputtext_respuestacorta' ||
+	                        tipo === 'inputtext_respuestacorta2'
+	                    ) {
+	                        // respuestaCorrecta puede ser un string o un array
+	                        const respCorrecta = Array.isArray(infoData.respuestaCorrecta)
+	                            ? infoData.respuestaCorrecta.join(', ')
+	                            : infoData.respuestaCorrecta || 'N/A';
+
 	                        hiddenPart.innerHTML = `
-              <div><strong>Respuesta Correcta (o esperada):</strong> ${Array.isArray(infoData.respuestaCorrecta)
-                                ? infoData.respuestaCorrecta.join(', ')
-                                : infoData.respuestaCorrecta || 'N/A'
-                            }</div>
-            `;
+                <div><strong>Respuesta esperada:</strong> ${respCorrecta}</div>
+              `;
 	                    } else {
-	                        // Caso genérico
+	                        // Caso genérico: mostramos el 'tipo' y un mensaje
 	                        hiddenPart.innerHTML = `
-              <div><em>Tipo de pregunta:</em> ${tipo}</div>
-              <div><em>Aquí puedes personalizar la vista según el tipo…</em></div>
-            `;
+                <div><em>Tipo de pregunta:</em> ${tipo}</div>
+                <div><em>Puedes personalizar la vista según el tipo…</em></div>
+              `;
 	                    }
 
-	                    // Agregar partes visible y oculta al detailContainer
-	                    detailContainer?.appendChild(visiblePart);
-	                    detailContainer?.appendChild(hiddenPart);
-
-	                    // Finalmente, agregamos detailContainer al questionContainer
+	                    // Insertamos la parte visible y la oculta en detailContainer
 	                    if (detailContainer) {
+	                        detailContainer.appendChild(visiblePart);
+	                        detailContainer.appendChild(hiddenPart);
 	                        questionContainer.appendChild(detailContainer);
 	                    }
 	                } else {
-	                    // Si no hay infoData, podríamos poner un mensaje
-	                    const noInfo = document.createElement('div');
-	                    noInfo.style.marginTop = '1rem';
-	                    noInfo.textContent = 'Sin información de la pregunta.';
-	                    detailContainer?.appendChild(noInfo);
-
-	                    questionContainer.appendChild(detailContainer);
+	                    // Si no hay infoData
+	                    if (detailContainer) {
+	                        const noInfo = document.createElement('div');
+	                        noInfo.style.marginTop = '1rem';
+	                        noInfo.textContent = 'Sin información de la pregunta.';
+	                        detailContainer.appendChild(noInfo);
+	                        questionContainer.appendChild(detailContainer);
+	                    }
 	                }
 	            }
 
-	            // Agregar el contenedor de la pregunta al contenedor principal
+	            // Finalmente, añadimos el 'questionContainer' al contenedor principal
 	            container.appendChild(questionContainer);
 	        }
 
-	        // Al final, resolvemos la promesa
+	        // Si todo va bien, resolvemos la Promesa
 	        resolve('HTML generado exitosamente');
 	    });
 	}

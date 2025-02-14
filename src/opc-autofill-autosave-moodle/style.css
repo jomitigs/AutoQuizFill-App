@@ -381,3 +381,83 @@
 #upload-autosave:hover {
     color: mediumblue;
 }
+
+
+/* Contenedor principal para cada pregunta */
+.question-container {
+    border: 1px solid #ccc;
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 5px;
+  }
+  
+  /* Encabezado de la pregunta: título y badge de estado */
+  .question-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  /* Título de la pregunta (si deseas usar una clase específica en lugar de <strong>) */
+  .question-title {
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  /* Badge del estado (color y tipografía) */
+  .question-state-badge {
+    /* Valores por defecto */
+    font-weight: 500;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    margin-left: 1rem;
+    color: #fff; /* Color de texto por defecto (blanco) */
+  }
+  
+  /* Botón para mostrar/ocultar la información (icono de ojo) */
+  .btn-toggle-visibility {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
+    /* Ajusta si deseas más separación o estilos de hover */
+  }
+  
+  /* Contenedor que mostrará/ocultará el contenido de la pregunta */
+  .detail-container {
+    display: none; /* oculto por defecto */
+    margin-top: 1rem;
+  }
+  
+  /* Estilos de colores de fondo para cada estado, 
+     si quieres usarlos como clases en lugar de inline-styles */
+  .badge-no-data {
+    background-color: #e63946; /* Rojo */
+    color: #fff;
+  }
+  
+  .badge-no-verificado {
+    background-color: #f1c40f; /* Amarillo mostaza */
+    color: #000;
+  }
+  
+  .badge-sin-responder {
+    background-color: #d3d3d3; /* Gris claro */
+    color: #000;
+  }
+  
+  .badge-verificado {
+    background-color: #28a745; /* Verde */
+    color: #fff;
+  }
+  
+  /* Ejemplo adicional: 
+     si deseas animaciones suaves al mostrar/ocultar:
+     (requiere que cambies en JS de 'display: none' a 
+     manipular la altura o la opacidad) */
+  
+  /* .detail-container {
+    transition: all 0.3s ease;
+  } */
+  

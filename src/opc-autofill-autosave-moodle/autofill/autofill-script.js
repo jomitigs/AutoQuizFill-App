@@ -181,92 +181,68 @@ function AutoFill_ShowResponses(responseQuestions) {
     return new Promise((resolve, reject) => {
         const container = document.getElementById('respuestasautofill');
         if (!container) {
-            console.error('Elemento "respuestasautosave" no encontrado.');
-            return reject('Elemento "respuestasautosave" no encontrado.');
+            console.error('Elemento "respuestasautofill" no encontrado.');
+            return reject('Elemento "respuestasautofill" no encontrado.');
         }
 
-        // Limpia el contenedor por si tuviera algo.
+        // Limpia el contenedor por si tuviera contenido anterior
         container.innerHTML = '';
 
-        // Mapeo de colores según estado:
-        const stateStyles = {
-            'NO DATA': {
-                backgroundColor: '#e63946', // Rojo
-                color: '#ffffff'
-            },
-            'NO VERIFICADO': {
-                backgroundColor: '#f1c40f', // Amarillo mostaza
-                color: '#000000'
-            },
-            'SIN RESPONDER': {
-                backgroundColor: '#d3d3d3', // Gris claro
-                color: '#000000'
-            },
-            'VERIFICADO': {
-                backgroundColor: '#28a745', // Verde
-                color: '#ffffff'
-            }
+        // Mapeo de los estados con las clases de badge correspondientes
+        const stateToBadgeClass = {
+            'NO DATA': 'badge-no-data',
+            'NO VERIFICADO': 'badge-no-verificado',
+            'SIN RESPONDER': 'badge-sin-responder',
+            'VERIFICADO': 'badge-verificado'
         };
 
-        // Recorremos cada clave en responseQuestions
+        // Recorremos cada propiedad del objeto 'responseQuestions'
         for (let key in responseQuestions) {
             if (!responseQuestions.hasOwnProperty(key)) continue;
 
             const questionData = responseQuestions[key];
-            const estado = questionData.estado || 'NO DATA'; // Por si no viene definido
-            const preguntaNumber = key.replace('Pregunta', '');
+            const estado = questionData.estado || 'NO DATA';
+            const preguntaNumber = key.replace('Pregunta', ''); // Para extraer el número
 
-            // Crear un contenedor principal para cada pregunta
+            // Creamos el contenedor principal para cada pregunta
             const questionContainer = document.createElement('div');
             questionContainer.classList.add('question-container');
-            questionContainer.style.border = '1px solid #ccc';
-            questionContainer.style.margin = '1rem 0';
-            questionContainer.style.padding = '1rem';
-            questionContainer.style.borderRadius = '5px';
 
-            // Encabezado con título y badge de estado
+            // Creamos el encabezado (título, badge y botón de mostrar/ocultar si corresponde)
             const questionHeader = document.createElement('div');
-            questionHeader.style.display = 'flex';
-            questionHeader.style.alignItems = 'center';
-            questionHeader.style.justifyContent = 'space-between';
+            questionHeader.classList.add('question-header');
 
             // Título de la pregunta
             const questionTitle = document.createElement('div');
-            questionTitle.innerHTML = `
-        <strong>Pregunta ${preguntaNumber}:</strong>
-      `;
+            questionTitle.classList.add('question-title');
+            questionTitle.innerHTML = `Pregunta ${preguntaNumber}:`;
 
-            // Badge con el estado
+            // Badge de estado
             const badge = document.createElement('span');
+            badge.classList.add(
+                'question-state-badge',
+                stateToBadgeClass[estado] || 'badge-no-data' // Si no existe, usa 'NO DATA'
+            );
             badge.textContent = estado.toLowerCase();
-            badge.style.backgroundColor = stateStyles[estado]?.backgroundColor || '#777';
-            badge.style.color = stateStyles[estado]?.color || '#fff';
-            badge.style.fontWeight = '500';
-            badge.style.padding = '0.3rem 0.6rem';
-            badge.style.borderRadius = '4px';
-            badge.style.marginLeft = '1rem';
 
-            // Agregamos el badge al título
+            // Insertamos título y badge en el encabezado
             questionTitle.appendChild(badge);
             questionHeader.appendChild(questionTitle);
 
-            // Si es NO VERIFICADO o VERIFICADO, añadimos el botón de “ojo” para mostrar/ocultar
-            let showHideBtn = null;
+            // Crear contenedor de detalles que se mostrará/ocultará
             let detailContainer = null;
+            let showHideBtn = null;
 
+            // Solo mostramos el botón y el contenedor de detalles
+            // en caso de 'NO VERIFICADO' o 'VERIFICADO'
             if (estado === 'NO VERIFICADO' || estado === 'VERIFICADO') {
                 showHideBtn = document.createElement('button');
                 showHideBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-                showHideBtn.style.border = 'none';
-                showHideBtn.style.background = 'transparent';
-                showHideBtn.style.cursor = 'pointer';
-                showHideBtn.style.fontSize = '1.1rem';
-                showHideBtn.style.marginRight = '0.5rem';
+                showHideBtn.classList.add('btn-toggle-visibility');
 
-                // Contenedor para la info oculta
+                // Contenedor con la info a mostrar/ocultar
                 detailContainer = document.createElement('div');
-                detailContainer.style.display = 'none';
-                detailContainer.style.marginTop = '1rem';
+                detailContainer.classList.add('detail-container'); // inicia con display: none
 
                 // Lógica de mostrar/ocultar
                 let isVisible = false;
@@ -281,109 +257,89 @@ function AutoFill_ShowResponses(responseQuestions) {
                     }
                 });
 
-                // Lo agregamos al header
+                // Agregamos el botón al header
                 questionHeader.appendChild(showHideBtn);
             }
 
-            // Agregamos el header al contenedor de la pregunta
+            // Insertamos el encabezado en el contenedor principal
             questionContainer.appendChild(questionHeader);
 
-            // Para NO DATA o SIN RESPONDER, NO mostramos contenido adicional
-            // Solo para NO VERIFICADO y VERIFICADO
+            // Para NO DATA o SIN RESPONDER, no mostramos info extra
             if (estado === 'NO VERIFICADO' || estado === 'VERIFICADO') {
-                // Aquí construyes la parte visible y la parte oculta a tu gusto.
-
-                // --- Ejemplo de extracción de datos ---
-                // Suponiendo que `questionData.value` tiene la forma:
-                // {
-                //   questionXXXX: {...},  // donde puede estar "tipo"
-                //   data: {
-                //     enunciado: "...",
-                //     opcionesRespuesta: [...],
-                //     ...
-                //   }
-                // }
-
-                // Intentamos tomar la información principal desde:
-                //   questionData.value.data
-
-                const questionValue = questionData.value;
-                // A veces hay que buscar la primer clave que sea "questionXXXX", etc.
-                // para simplificar, supongamos que "data" es la parte principal.
-                let infoData = null;
-                if (questionValue && questionValue.data) {
-                    infoData = questionValue.data;
-                }
-
-                // Estructura de ejemplo:
-                // 1) Parte siempre visible: "Enunciado"
-                // 2) Parte oculta: (opciones de respuesta, respuesta correcta, etc.)
+                // Obtenemos la info de la pregunta (enunciado, respuestas, etc.)
+                const questionValue = questionData.value || {};
+                const infoData = questionValue.data || null;
 
                 if (infoData) {
-                    // Parte siempre visible
+                    // --- PARTE SIEMPRE VISIBLE (enunciado, etc.) ---
                     const visiblePart = document.createElement('div');
                     visiblePart.style.padding = '0.5rem 0';
                     visiblePart.innerHTML = `
-            <div><strong>Enunciado:</strong> ${infoData.enunciado || '(Sin enunciado)'}</div>
-          `;
+              <div><strong>Enunciado:</strong> ${infoData.enunciado || '(Sin enunciado)'}</div>
+            `;
 
-                    // Parte oculta
+                    // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
                     const hiddenPart = document.createElement('div');
                     hiddenPart.style.padding = '0.5rem 0';
 
-                    // Dependiendo del tipo (inputradio_opcionmultiple_verdaderofalso, etc.), muestras distinta info
+                    // Dependemos del tipo de pregunta
                     const tipo = infoData.tipo || 'desconocido';
 
                     if (tipo === 'inputradio_opcionmultiple_verdaderofalso' && infoData.opcionesRespuesta) {
                         hiddenPart.innerHTML = `
-              <div><strong>Opciones de respuesta:</strong></div>
-              <ul>
-                ${infoData.opcionesRespuesta.map(opc => `<li>${opc}</li>`).join('')}
-              </ul>
-              <div><strong>Respuesta correcta:</strong> ${infoData.respuestaCorrecta || 'N/A'}</div>
-            `;
-                    } else if (tipo === 'inputtext_respuestacorta' || tipo === 'inputtext_respuestacorta2') {
+                <div><strong>Opciones de respuesta:</strong></div>
+                <ul>
+                  ${infoData.opcionesRespuesta.map(opc => `<li>${opc}</li>`).join('')}
+                </ul>
+                <div><strong>Respuesta correcta:</strong> ${infoData.respuestaCorrecta || 'N/A'}</div>
+              `;
+                    } else if (
+                        tipo === 'inputtext_respuestacorta' ||
+                        tipo === 'inputtext_respuestacorta2'
+                    ) {
+                        // respuestaCorrecta puede ser un string o un array
+                        const respCorrecta = Array.isArray(infoData.respuestaCorrecta)
+                            ? infoData.respuestaCorrecta.join(', ')
+                            : infoData.respuestaCorrecta || 'N/A';
+
                         hiddenPart.innerHTML = `
-              <div><strong>Respuesta Correcta (o esperada):</strong> ${Array.isArray(infoData.respuestaCorrecta)
-                                ? infoData.respuestaCorrecta.join(', ')
-                                : infoData.respuestaCorrecta || 'N/A'
-                            }</div>
-            `;
+                <div><strong>Respuesta esperada:</strong> ${respCorrecta}</div>
+              `;
                     } else {
-                        // Caso genérico
+                        // Caso genérico: mostramos el 'tipo' y un mensaje
                         hiddenPart.innerHTML = `
-              <div><em>Tipo de pregunta:</em> ${tipo}</div>
-              <div><em>Aquí puedes personalizar la vista según el tipo…</em></div>
-            `;
+                <div><em>Tipo de pregunta:</em> ${tipo}</div>
+                <div><em>Puedes personalizar la vista según el tipo…</em></div>
+              `;
                     }
 
-                    // Agregar partes visible y oculta al detailContainer
-                    detailContainer?.appendChild(visiblePart);
-                    detailContainer?.appendChild(hiddenPart);
-
-                    // Finalmente, agregamos detailContainer al questionContainer
+                    // Insertamos la parte visible y la oculta en detailContainer
                     if (detailContainer) {
+                        detailContainer.appendChild(visiblePart);
+                        detailContainer.appendChild(hiddenPart);
                         questionContainer.appendChild(detailContainer);
                     }
                 } else {
-                    // Si no hay infoData, podríamos poner un mensaje
-                    const noInfo = document.createElement('div');
-                    noInfo.style.marginTop = '1rem';
-                    noInfo.textContent = 'Sin información de la pregunta.';
-                    detailContainer?.appendChild(noInfo);
-
-                    questionContainer.appendChild(detailContainer);
+                    // Si no hay infoData
+                    if (detailContainer) {
+                        const noInfo = document.createElement('div');
+                        noInfo.style.marginTop = '1rem';
+                        noInfo.textContent = 'Sin información de la pregunta.';
+                        detailContainer.appendChild(noInfo);
+                        questionContainer.appendChild(detailContainer);
+                    }
                 }
             }
 
-            // Agregar el contenedor de la pregunta al contenedor principal
+            // Finalmente, añadimos el 'questionContainer' al contenedor principal
             container.appendChild(questionContainer);
         }
 
-        // Al final, resolvemos la promesa
+        // Si todo va bien, resolvemos la Promesa
         resolve('HTML generado exitosamente');
     });
 }
+
 
 
 
