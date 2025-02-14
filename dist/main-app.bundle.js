@@ -43597,7 +43597,7 @@
 	      // Guardar en dpnExistentes la relación entre la pregunta DPN y el candidato DFN.
 	      const previousDPN = preguntaDPN.previous;
 
-	      dpnExistentes[claveDPN] = {[claveDFN]: candidateData, previous: previousDPN, data: preguntaDPN};
+	      dpnExistentes[claveDPN] = { [claveDFN]: candidateData, previous: previousDPN, data: preguntaDPN };
 
 
 	    } catch (e) {
@@ -43624,16 +43624,16 @@
 	  });
 
 	  // 2) Iteramos en las claves de dpnExistentes:
-	Object.keys(dpnExistentes).forEach((key) => {
-	  // Chequear que la clave sea algo tipo "Pregunta1", "Pregunta2", etc.
-	  if (key.startsWith("Pregunta")) {
-	    // Verificar que en dpnOrigin exista la misma clave:
-	    if (dpnOrigin[key]) {
-	      // Reemplazamos dpnExistentes[key].data.html con dpnOrigin[key].html
-	      dpnExistentes[key].data.html = dpnOrigin[key].html;
+	  Object.keys(dpnExistentes).forEach((key) => {
+	    // Chequear que la clave sea algo tipo "Pregunta1", "Pregunta2", etc.
+	    if (key.startsWith("Pregunta")) {
+	      // Verificar que en dpnOrigin exista la misma clave:
+	      if (dpnOrigin[key]) {
+	        // Reemplazamos dpnExistentes[key].data.html con dpnOrigin[key].html
+	        dpnExistentes[key].data.html = dpnOrigin[key].html;
+	      }
 	    }
-	  }
-	});
+	  });
 
 	  return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 	}
@@ -46535,7 +46535,7 @@
 	  
 	    // Para cada entrada, generamos un objeto que incluya la clave ("clave") y el valor ("value")
 	    const dpnShowResponses = Object.entries(combined).reduce((acc, [key, value]) => {
-	      acc[key] = { clave: key, value }; // Aquí asignamos la propiedad "clave"
+	      acc[key] = {value}; // Aquí asignamos la propiedad "clave"
 	      return acc;
 	    }, {});
 	  

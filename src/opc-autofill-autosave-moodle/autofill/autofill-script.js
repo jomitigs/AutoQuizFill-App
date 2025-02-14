@@ -64,7 +64,7 @@ function filterQuestions(dpnExistentes, dpnNuevas) {
   
     // Para cada entrada, generamos un objeto que incluya la clave ("clave") y el valor ("value")
     const dpnShowResponses = Object.entries(combined).reduce((acc, [key, value]) => {
-      acc[key] = { clave: key, value }; // Aquí asignamos la propiedad "clave"
+      acc[key] = {value}; // Aquí asignamos la propiedad "clave"
       return acc;
     }, {});
   
