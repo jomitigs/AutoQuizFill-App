@@ -9,7 +9,7 @@ import { response_inputtext_respuestacorta } from './questions-types/4_inputtext
 import { response_inputtext_respuestacorta2 } from './questions-types/4_inputtext_respuestacorta2.js';
 import { response_draganddrop_image } from './questions-types/6_draganddrop_image.js';
 import { response_draganddrop_text } from './questions-types/5_draganddrop_text.js';
-import { processContent} from '../autosave/autosave-script.js';
+import { processContent, formatResponseOptions} from '../autosave/autosave-script.js';
 
 export async function contenedorAutoFill_js() {
     console.log(`[opc-autofill-autosave-moodle: autofill] Iniciando AutoFill...`);
@@ -282,7 +282,7 @@ function AutoFill_ShowResponses(responseQuestions) {
             // --- PARTE SIEMPRE VISIBLE (enunciado) ---
             const visiblePart = document.createElement('div');
             visiblePart.innerHTML = `
-              <div> ${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
+              <div>${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
             `;
   
             // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
@@ -291,46 +291,164 @@ function AutoFill_ShowResponses(responseQuestions) {
             // Dependemos del tipo de pregunta
             const tipo = infoData.tipo || 'desconocido';
   
-            if (tipo === 'inputradio_opcionmultiple_verdaderofalso' || tipo === 'inputchecked_opcionmultiple') {
-                hiddenPart.innerHTML = `
-                ${processContent(infoData.opcionesRespuesta)
-                  .map((opc, i) => {
-                    // Generar la letra para cada opción: a, b, c, d...
-                    const letter = String.fromCharCode(97 + i);
-                    
-                    // Verificar si la respuesta correcta es un array o un valor único
-                    const isCorrect = Array.isArray(processContent(infoData.respuestaCorrecta))
-                      ? processContent(infoData.respuestaCorrecta).includes(opc)
-                      : opc === processContent(infoData.respuestaCorrecta);
-              
-                    // Retornar el HTML de cada opción
-                    return `
-                      <div style="font-weight: 500; ${isCorrect ? 'color: mediumblue;' : ''}">
-                        ${letter}. ${opc}
-                      </div>
-                    `;
-                  })
-                  .join('') // Importante para unir todos los divs en un solo string
-                }
-              `;
-              
-            } else if (
-              tipo === 'inputtext_respuestacorta' ||
-              tipo === 'inputtext_respuestacorta2'
+            // ----------------------------------------------------------------
+            // Aquí adaptamos la lógica de tu snippet original
+            // ----------------------------------------------------------------
+            if (
+              tipo === 'inputradio_opcionmultiple_verdaderofalso' ||
+              tipo === 'inputchecked_opcionmultiple'
             ) {
-              // respuestaCorrecta puede ser un string o un array
-              const respCorrecta = Array.isArray(infoData.respuestaCorrecta)
-                ? infoData.respuestaCorrecta.join(', ')
-                : infoData.respuestaCorrecta || 'N/A';
+              // Se verifica si hay opciones
+              if (
+                Array.isArray(infoData.opcionesRespuesta) &&
+                infoData.opcionesRespuesta.length
+              ) {
+                // Usando tu lógica para formatear (puedes llamar a formatResponseOptions
+                // o bien reproducir la lógica inline).
+                hiddenPart.innerHTML = `
+                  <div class="respuestasautosave">
+                    ${infoData.opcionesRespuesta
+                      .map((opc, i) => {
+                        // Generar la letra para cada opción: a, b, c, d, ...
+                        const letter = String.fromCharCode(97 + i);
+  
+                        // Verificar si la respuesta correcta es un array o un valor único
+                        const isCorrect = Array.isArray(infoData.respuestaCorrecta)
+                          ? infoData.respuestaCorrecta.includes(opc)
+                          : opc === infoData.respuestaCorrecta;
+  
+                        // Resaltar en color mediumblue si es respuesta correcta
+                        return `
+                          <div style="font-weight: 500; ${
+                            isCorrect ? 'color: mediumblue;' : ''
+                          }">
+                            ${letter}. ${processContent(opc)}
+                          </div>
+                        `;
+                      })
+                      .join('')}
+                  </div>
+                `;
+              }
+            } else if (tipo === 'select_emparejamiento') {
+              // select_emparejamiento
+              if (
+                Array.isArray(infoData.opcionesEnunciados) &&
+                Array.isArray(infoData.respuestaCorrecta)
+              ) {
+                hiddenPart.innerHTML = `
+                  <div class="respuestasautosave">
+                    ${infoData.opcionesEnunciados
+                      .map((enunciado, i) => {
+                        const respuesta = infoData.respuestaCorrecta[i]?.trim() || 'Elegir...';
+                        return `
+                          <div>
+                            • ${processContent(enunciado)} - 
+                            <span style="font-weight:500; color:${
+                              respuesta !== 'Elegir...' ? 'MediumBlue' : 'black'
+                            };">${processContent(respuesta)}</span>
+                          </div>
+                        `;
+                      })
+                      .join('')}
+                  </div>
+                `;
+              }
+            } else if (tipo === 'inputtext_respuestacorta') {
+              // Aquí la respuestaCorrecta puede ser un array o un string
+              // Se busca reemplazar corchetes [ ] con las respuestas
+              const respuestas = Array.isArray(infoData.respuestaCorrecta)
+                ? infoData.respuestaCorrecta
+                : [];
+  
+              let respuestaIndex = 0;
+              let enunciadoProcesado = infoData.enunciado.replace(
+                /\[(.*?)\]/g,
+                (match, contenido) => {
+                  let resp =
+                    respuestas[respuestaIndex] !== undefined
+                      ? respuestas[respuestaIndex]
+                      : '';
+                  respuestaIndex++;
+                  return `<strong style="font-weight: 500;">[<span style="color: mediumblue;">${resp}</span>]</strong>`;
+                }
+              );
+  
+              enunciadoProcesado = processContent(enunciadoProcesado);
   
               hiddenPart.innerHTML = `
-                <div><strong>Respuesta esperada:</strong> ${respCorrecta}</div>
+                <div class="respuestasautosave">
+                  <strong>Pregunta ${preguntaNumber}:</strong> ${enunciadoProcesado}
+                </div>
+              `;
+            } else if (tipo === 'inputtext_respuestacorta2') {
+              // Aquí las respuestas suelen listarse al final
+              const respuestas = Array.isArray(infoData.respuestaCorrecta)
+                ? infoData.respuestaCorrecta
+                : [];
+  
+              hiddenPart.innerHTML = `
+                <div class="respuestasautosave">
+                  <strong style="font-weight: 500;">Respuesta:</strong><br>
+                  ${respuestas
+                    .map(
+                      (resp) => `
+                        <strong style="font-weight: 500;">[</strong>
+                        <span style="color: mediumblue; font-weight: 500;">${resp}</span>
+                        <strong style="font-weight: 500;">]</strong> 
+                      `
+                    )
+                    .join('')}
+                </div>
+              `;
+            } else if (tipo === 'draganddrop_text') {
+              // Reemplazar [ ] vacíos con las respuestas
+              let enunciado = infoData.enunciado;
+              let contador = 0;
+  
+              enunciado = enunciado.replace(/\[\s*\]/g, () => {
+                const respuesta = infoData.respuestaCorrecta[contador] || '';
+                contador++;
+                return `
+                  <span style="font-weight:500;">[</span>
+                  <span style="font-weight:500; color:MediumBlue;">${respuesta}</span>
+                  <span style="font-weight:500;">]</span>
+                `;
+              });
+  
+              enunciado = `<strong>Pregunta ${preguntaNumber}:</strong> ` + enunciado;
+              hiddenPart.innerHTML = `
+                <div class="enunciado">${processContent(enunciado)}</div>
+              `;
+            } else if (tipo === 'draganddrop_image') {
+              // Mostramos la imagen y debajo las respuestas correctas
+              const isArray = Array.isArray(infoData.respuestaCorrecta);
+              const respuestaArray = isArray ? infoData.respuestaCorrecta : [infoData.respuestaCorrecta];
+              const imagenDrop = infoData.imagenDrop;
+  
+              const opcionesHTML = respuestaArray
+                .map(
+                  (opc) => `
+                    <strong style="font-weight: 500">[</strong>
+                    <strong style="font-weight: 500; color: mediumblue;">${opc}</strong>
+                    <strong style="font-weight: 500">]</strong>
+                  `
+                )
+                .join(' ');
+  
+              hiddenPart.innerHTML = `
+                <div>
+                  <div style="margin-bottom: 5px;">
+                    ${opcionesHTML}
+                  </div>
+                  <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
+                </div>
               `;
             } else {
               // Caso genérico
               hiddenPart.innerHTML = `
                 <div><em>Tipo de pregunta:</em> ${tipo}</div>
-                <div><em>Aquí podrías personalizar la vista según el tipo…</em></div>
+                <div><em>(Vista sin personalizar para este tipo)</em></div>
               `;
             }
   
@@ -360,6 +478,7 @@ function AutoFill_ShowResponses(responseQuestions) {
       resolve('HTML generado exitosamente');
     });
   }
+  
   
 
 
