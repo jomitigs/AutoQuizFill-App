@@ -292,12 +292,26 @@ function AutoFill_ShowResponses(responseQuestions) {
             const tipo = infoData.tipo || 'desconocido';
   
             if (tipo === 'inputradio_opcionmultiple_verdaderofalso') {
-              hiddenPart.innerHTML = `
+                hiddenPart.innerHTML = `
                 <ul>
-                  ${infoData.opcionesRespuesta.map(opc => `<li>${opc}</li>`).join('')}
+                  ${infoData.opcionesRespuesta.map((opc, i) => {
+                    // Generar la letra para cada opción: a, b, c, d, ...
+                    const letter = String.fromCharCode(97 + i);
+              
+                    // Verificar si la respuesta correcta es un array o un valor único
+                    const isCorrect = Array.isArray(infoData.respuestaCorrecta)
+                      ? infoData.respuestaCorrecta.includes(opc)
+                      : opc === infoData.respuestaCorrecta;
+              
+                    return `
+                      <li style="${isCorrect ? 'font-weight: 500; color: mediumblue;' : ''}">
+                        ${letter}. ${opc}
+                      </li>
+                    `;
+                  }).join('')}
                 </ul>
-                <div><strong>Respuesta correcta:</strong> ${infoData.respuestaCorrecta || 'N/A'}</div>
               `;
+              
             } else if (
               tipo === 'inputtext_respuestacorta' ||
               tipo === 'inputtext_respuestacorta2'
