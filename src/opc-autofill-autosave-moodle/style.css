@@ -393,7 +393,7 @@
   .question-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
   
   /* Título de la pregunta (si deseas usar una clase específica en lugar de <strong>) */
