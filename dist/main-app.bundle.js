@@ -43521,7 +43521,6 @@
 	    const preguntaDPN = dpn[claveDPN];
 	    const tipoDPN = preguntaDPN.tipo;
 	    const cantidadDPN = preguntaDPN.html.length;
-	    preguntaDPN.previous;
 
 	    let cantidadesPermitidas = [cantidadDPN];
 	    console.log(`Cantidades permitidas para DPN "${claveDPN}":`, cantidadesPermitidas);
@@ -43594,10 +43593,7 @@
 	        }
 	      });
 
-	      // Guardar en dpnExistentes la relación entre la pregunta DPN y el candidato DFN.
-	      const previousDPN = preguntaDPN.previous;
-
-	      dpnExistentes[claveDPN] = { [claveDFN]: candidateData, previous: previousDPN, data: preguntaDPN };
+	      dpnExistentes[claveDPN] = { [claveDFN]: candidateData, data: preguntaDPN };
 
 
 	    } catch (e) {
