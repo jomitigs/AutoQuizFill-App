@@ -45609,39 +45609,42 @@
 	    console.log("dpnExistentes", comparedData.dpnExistentes);
 	    console.log("dpnNuevas", comparedData.dpnNuevas);
 
-	    // await AutoFill(comparedData.dpnExistentes, comparedData.dpnNuevas, dataFirebaseNormalizada);
-	    AutoFill_ShowResponses(comparedData.dpnExistentes, comparedData.dpnNuevas);
+	    let preguntasFiltradas = filterQuestions(comparedData.dpnExistentes, comparedData.dpnNuevas);
+
+	    console.log("dpnExistentes Filtradas", preguntasFiltradas.dpnExistentesFilter);
+
+	    // await AutoFill(preguntasFiltradas.dpnExistentesFilter);
 
 	    console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
 
 	}
 
-	async function AutoFill_ShowResponses(dpnExistentes, dpnNuevas) {
-	    // Obtenemos el objeto de sessionStorage (por ejemplo, bajo la clave "questions-AutoSave")
-	    const sessionAutoSave = JSON.parse(sessionStorage.getItem("questions-AutoSave") || "{}");
-
-	    // Filtramos dpnExistentes: eliminamos las entradas cuya clave en sessionAutoSave tenga previous === true.
+	function filterQuestions(dpnExistentes, dpnNuevas) {
+	    // Filtramos dpnExistentes: conservamos aquellas entradas cuyo valor de "previous" sea false.
 	    const filteredExistentes = Object.fromEntries(
-	        Object.entries(dpnExistentes).filter(([key, value]) => {
-	            const sessionEntry = sessionAutoSave[key];
-	            return !(sessionEntry && sessionEntry.previous === true);
-	        })
+	      Object.entries(dpnExistentes).filter(([key, value]) => value.previous !== true)
 	    );
-
-	    // Filtramos dpnNuevas: revisamos directamente si en el objeto existe la propiedad previous === true.
-	    // Si no es así, asignamos "NO DATA"
+	  
+	    // Filtramos dpnNuevas:
+	    // Se excluyen aquellas entradas donde la propiedad previous sea true.
+	    // Para las que queden, se asigna el valor "NO DATA".
 	    const filteredNuevas = Object.fromEntries(
-	        Object.entries(dpnNuevas)
-	            .filter(([key, value]) => !(value && value.previous === true))
-	            .map(([key]) => [key, "NO DATA"])
+	      Object.entries(dpnNuevas)
+	        .filter(([key, value]) => !(value && value.previous === true))
+	        .map(([key]) => [key, "NO DATA"])
 	    );
-
-	    // Combinamos ambos objetos
-	    const autoFillResponses = { ...filteredExistentes, ...filteredNuevas };
-
-	    console.log("autoFillResponses", autoFillResponses);
-	    // Aquí continúa el procesamiento que necesites…
-	}
+	  
+	    // Combinamos ambos objetos.
+	    const combined = { ...filteredExistentes, ...filteredNuevas };
+	  
+	    // Para cada entrada, generamos un objeto que incluya la clave ("clave") y el valor ("value")
+	    const dpnShowResponses = Object.entries(combined).reduce((acc, [key, value]) => {
+	      acc[key] = { clave: key, value }; // Aquí asignamos la propiedad "clave"
+	      return acc;
+	    }, {});
+	  
+	    return { dpnShowResponses, dpnExistentesFilter: filteredExistentes };
+	  }
 
 	// global.js
 	window.eventosPreguntasHabilitados = true;
