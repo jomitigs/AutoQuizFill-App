@@ -281,9 +281,12 @@ function AutoFill_ShowResponses(responseQuestions) {
           if (infoData) {
             // --- PARTE SIEMPRE VISIBLE (enunciado) ---
             const visiblePart = document.createElement('div');
+
+            if (tipo !== inputtext_respuestacorta  || tipo !== inputtext_respuestacorta) {
             visiblePart.innerHTML = `
               <div>${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
             `;
+        }
   
             // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
             const hiddenPart = document.createElement('div');
@@ -378,7 +381,7 @@ function AutoFill_ShowResponses(responseQuestions) {
   
               hiddenPart.innerHTML = `
                 <div class="respuestasautosave">
-                  <strong>Pregunta ${preguntaNumber}:</strong> ${enunciadoProcesado}
+                  ${enunciadoProcesado}
                 </div>
               `;
             } else if (tipo === 'inputtext_respuestacorta2') {
@@ -416,7 +419,6 @@ function AutoFill_ShowResponses(responseQuestions) {
                 `;
               });
   
-              enunciado = `<strong>Pregunta ${preguntaNumber}:</strong> ` + enunciado;
               hiddenPart.innerHTML = `
                 <div class="enunciado">${processContent(enunciado)}</div>
               `;

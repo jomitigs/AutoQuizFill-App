@@ -44338,7 +44338,7 @@
 	    return { opcionesRespuesta, respuestaCorrecta };
 	}
 
-	async function inputtext_respuestacorta(originalFormulationClearfix) {
+	async function inputtext_respuestacorta$1(originalFormulationClearfix) {
 	    const tipo = 'inputtext_respuestacorta';
 
 	    // 1) Clonamos el elemento original para trabajar sobre la copia.
@@ -45021,7 +45021,7 @@
 	        'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
 	        'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
 	        'select_emparejamiento': select_emparejamiento,
-	        'inputtext_respuestacorta': inputtext_respuestacorta,
+	        'inputtext_respuestacorta': inputtext_respuestacorta$1,
 	        'inputtext_respuestacorta2': inputtext_respuestacorta2,
 	        'draganddrop_text': draganddrop_text,
 	        'draganddrop_image': draganddrop_image,
@@ -46747,9 +46747,12 @@
 	          if (infoData) {
 	            // --- PARTE SIEMPRE VISIBLE (enunciado) ---
 	            const visiblePart = document.createElement('div');
+
+	            if (tipo !== inputtext_respuestacorta  || tipo !== inputtext_respuestacorta) {
 	            visiblePart.innerHTML = `
               <div>${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
             `;
+	        }
 	  
 	            // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
 	            const hiddenPart = document.createElement('div');
@@ -46844,7 +46847,7 @@
 	  
 	              hiddenPart.innerHTML = `
                 <div class="respuestasautosave">
-                  <strong>Pregunta ${preguntaNumber}:</strong> ${enunciadoProcesado}
+                  ${enunciadoProcesado}
                 </div>
               `;
 	            } else if (tipo === 'inputtext_respuestacorta2') {
@@ -46882,7 +46885,6 @@
                 `;
 	              });
 	  
-	              enunciado = `<strong>Pregunta ${preguntaNumber}:</strong> ` + enunciado;
 	              hiddenPart.innerHTML = `
                 <div class="enunciado">${processContent(enunciado)}</div>
               `;
