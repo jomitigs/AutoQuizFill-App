@@ -43546,7 +43546,8 @@
 	          // Convertir cada candidato del objeto en un elemento del arreglo, conservando su clave principal.
 	          Object.keys(candidatosEncontrados).forEach(candidateKey => {
 	            const candidateData = candidatosEncontrados[candidateKey];
-	            candidatos.push({ key: candidateKey, data: candidateData });
+	            // Se guarda el candidato como { "questionXXXX": candidateData }
+	            candidatos.push({ [candidateKey]: candidateData });
 	          });
 	        } else {
 	          console.log(`No hay candidatos DFN para cantidad ${cantidad}.`);
@@ -43565,7 +43566,7 @@
 	      return;
 	    }
 	  
-	    // Precalcular y almacenar en caché el contenido para DPN, si aún no está en cache.
+	    // Precalcular y almacenar en caché el contenido para DPN, si aún no está en caché.
 	    if (!cacheContenidoDPN[claveDPN]) {
 	      console.log(`Calculando y almacenando en caché el contenido HTML para DPN "${claveDPN}".`);
 	      cacheContenidoDPN[claveDPN] = obtenerContenidoSeparadoYConcatenado(preguntaDPN.html);
@@ -43576,14 +43577,20 @@
 	    // Crear una promesa para cada candidato que compare la pregunta DPN con el candidato DFN.
 	    const promesasCandidatos = candidatos.map(candidato => {
 	      return new Promise((resolve, reject) => {
-	        console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidato.key}"`);
-	        const resultadoComparacion = compararHTML(preguntaDPN.html, candidato.data.html);
-	        console.log(`Resultado de comparación para candidato "${candidato.key}":`, resultadoComparacion);
+	        // Extraer la clave y los datos del candidato
+	        const candidateKey = Object.keys(candidato)[0];
+	        const candidateData = candidato[candidateKey];
+	        
+	        console.log(`Comparando DPN "${claveDPN}" con candidato DFN "${candidateKey}"`);
+	        const resultadoComparacion = compararHTML(preguntaDPN.html, candidateData.html);
+	        console.log(`Resultado de comparación para candidato "${candidateKey}":`, resultadoComparacion);
+	        
 	        if (resultadoComparacion.coincide) {
-	          console.log(`Candidato DFN "${candidato.key}" coincide con DPN "${claveDPN}"`);
+	          console.log(`Candidato DFN "${candidateKey}" coincide con DPN "${claveDPN}"`);
+	          // Se resuelve la promesa devolviendo el objeto candidato tal como está.
 	          resolve(candidato);
 	        } else {
-	          console.log(`Candidato DFN "${candidato.key}" NO coincide con DPN "${claveDPN}"`);
+	          console.log(`Candidato DFN "${candidateKey}" NO coincide con DPN "${claveDPN}"`);
 	          reject('No coincide');
 	        }
 	      });
@@ -43595,10 +43602,11 @@
 	      const candidatoCoincidente = await Promise.any(promesasCandidatos);
 	      console.log(`Candidato coincidente encontrado para DPN "${claveDPN}":`, candidatoCoincidente);
 	      
-	      const claveDFN = candidatoCoincidente.key;
-	      const candidateData = candidatoCoincidente.data;
+	      // Extraer la clave y los datos del candidato coincidente.
+	      const claveDFN = Object.keys(candidatoCoincidente)[0];
+	      const candidateData = candidatoCoincidente[claveDFN];
 	  
-	      // Se eliminan propiedades no deseadas si existen en el candidato.
+	      // Eliminar propiedades no deseadas del candidato.
 	      ["clave", "html", "ciclo", "timestamp"].forEach(prop => {
 	        if (candidateData.hasOwnProperty(prop)) {
 	          console.log(`Eliminando propiedad "${prop}" del candidato DFN "${claveDFN}"`);
@@ -43606,7 +43614,7 @@
 	        }
 	      });
 	  
-	      // Se guarda en dpnExistentes la relación entre la pregunta DPN y el candidato DFN.
+	      // Guardar en dpnExistentes la relación entre la pregunta DPN y el candidato DFN.
 	      dpnExistentes[claveDPN] = { [claveDFN]: candidateData };
 	      console.log(`DPN "${claveDPN}" se asocia con DFN "${claveDFN}" en dpnExistentes.`);
 	    } catch (e) {
@@ -43618,6 +43626,7 @@
 	    console.log(`Finalizado procesamiento para DPN "${claveDPN}".`);
 	    console.log("----------------------------------------------------\n");
 	  });
+	  
 	  
 	  
 
