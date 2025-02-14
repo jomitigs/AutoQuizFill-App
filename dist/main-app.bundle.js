@@ -44338,7 +44338,7 @@
 	    return { opcionesRespuesta, respuestaCorrecta };
 	}
 
-	async function inputtext_respuestacorta$1(originalFormulationClearfix) {
+	async function inputtext_respuestacorta(originalFormulationClearfix) {
 	    const tipo = 'inputtext_respuestacorta';
 
 	    // 1) Clonamos el elemento original para trabajar sobre la copia.
@@ -45021,7 +45021,7 @@
 	        'inputradio_opcionmultiple_verdaderofalso': inputradio_opcionmultiple_verdaderofalso,
 	        'inputchecked_opcionmultiple': inputchecked_opcionmultiple,
 	        'select_emparejamiento': select_emparejamiento,
-	        'inputtext_respuestacorta': inputtext_respuestacorta$1,
+	        'inputtext_respuestacorta': inputtext_respuestacorta,
 	        'inputtext_respuestacorta2': inputtext_respuestacorta2,
 	        'draganddrop_text': draganddrop_text,
 	        'draganddrop_image': draganddrop_image,
@@ -46752,7 +46752,7 @@
 	             // Dependemos del tipo de pregunta
 	             const tipo = infoData.tipo || 'desconocido';
 
-	            if (tipo !== inputtext_respuestacorta  || tipo !== inputtext_respuestacorta) {
+	            if (tipo !== 'inputtext_respuestacorta'  || tipo !== 'inputtext_respuestacorta') {
 	            visiblePart.innerHTML = `
               <div>${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
             `;

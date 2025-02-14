@@ -286,7 +286,7 @@ function AutoFill_ShowResponses(responseQuestions) {
              // Dependemos del tipo de pregunta
              const tipo = infoData.tipo || 'desconocido';
 
-            if (tipo !== inputtext_respuestacorta  || tipo !== inputtext_respuestacorta) {
+            if (tipo !== 'inputtext_respuestacorta'  || tipo !== 'inputtext_respuestacorta') {
             visiblePart.innerHTML = `
               <div>${processContent(infoData.enunciado) || '(Sin enunciado)'}</div>
             `;
