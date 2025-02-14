@@ -419,6 +419,7 @@ export async function compararPreguntas(dpn, dfn) {
   // ---------------------------------------------------------------------------
   // Pre-indexar DFN: Agrupar por "tipo" y cantidad de elementos en "html"
   // ---------------------------------------------------------------------------
+  
   let indiceDFN = {};
   for (const claveDFN in dfn) {
     const preguntaDFN = dfn[claveDFN];
@@ -432,11 +433,13 @@ export async function compararPreguntas(dpn, dfn) {
     const cantidadHTML = preguntaDFN.html.length;
     const tipoPregunta = preguntaDFN.tipo;
 
+    // Crear grupo por tipo
     if (!indiceDFN[tipoPregunta]) {
       indiceDFN[tipoPregunta] = {};
     }
+    // Crear grupo por cantidad de elementos en html
     if (!indiceDFN[tipoPregunta][cantidadHTML]) {
-      indiceDFN[tipoPregunta][cantidadHTML] = [];
+      indiceDFN[tipoPregunta][cantidadHTML] = {};
     }
 
     // Opcional: Precalcular el contenido de "html" y almacenarlo en caché para DFN.
@@ -444,14 +447,10 @@ export async function compararPreguntas(dpn, dfn) {
       cacheContenidoDFN[claveDFN] = obtenerContenidoSeparadoYConcatenado(preguntaDFN.html);
     }
 
-    // Se guarda la clave dentro del objeto para tenerla disponible
-    indiceDFN[tipoPregunta][cantidadHTML].push({
-      ...preguntaDFN,
-      clave: claveDFN
-    });
-
-    
+    // Se asigna el objeto preguntaDFN a la clave claveDFN
+    indiceDFN[tipoPregunta][cantidadHTML][claveDFN] = preguntaDFN;
   }
+
   console.log("Índice DFN creado:", indiceDFN);
 
   // ---------------------------------------------------------------------------
