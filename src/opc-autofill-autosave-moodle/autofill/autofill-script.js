@@ -45,7 +45,7 @@ export async function contenedorAutoFill_js() {
 }
 
 function filterQuestions(dpnExistentes, dpnNuevas) {
-    // 1. Filtramos dpnExistentes: conservamos aquellas entradas cuyo valor de "previous" sea false.
+    // 1. Filtramos dpnExistentes: conservamos aquellas entradas cuyo "previous" sea false.
     const filteredExistentes = Object.fromEntries(
       Object.entries(dpnExistentes).filter(([key, value]) => value.previous !== true)
     );
@@ -55,34 +55,61 @@ function filterQuestions(dpnExistentes, dpnNuevas) {
     //    Para las que queden, se asigna el valor "NO DATA".
     const filteredNuevas = Object.fromEntries(
       Object.entries(dpnNuevas)
-        .filter(([key, value]) => !(value && value.previous === true))
+        .filter(([_, value]) => !(value && value.previous === true))
         .map(([key]) => [key, "NO DATA"])
     );
   
-    // 3. Combinamos ambos objetos.
+    // 3. Combinamos ambos objetos (dpnExistentes filtrados y dpnNuevas con "NO DATA").
     const combined = { ...filteredExistentes, ...filteredNuevas };
   
-    // 4. Generamos un nuevo objeto "dpnShowResponses":
-    //    - Si la pregunta viene de dpnExistentes y su "estado" es "sin responder", forzamos el value a "SIN RESPONDER".
-    //    - De lo contrario, dejamos el valor combinado tal cual (o "NO DATA" si vino de dpnNuevas).
+    // Función auxiliar para poner en mayúsculas el estado si coincide
+    // con "verificado", "no verificado" o "sin responder".
+    function normalizeEstado(estado) {
+      if (!estado) return "";
+      const lower = estado.toLowerCase();
+      if (["verificado", "no verificado", "sin responder"].includes(lower)) {
+        return lower.toUpperCase();
+      }
+      return estado; // si no coincide, lo devolvemos tal cual
+    }
+  
+    // 4. Construimos el objeto final dpnShowResponses,
+    //    donde cada entrada tendrá la forma:
+    //    { estado: 'ALGÚN_ESTADO_EN_MAYÚSCULA' | 'NO DATA', data: {...} }
     const dpnShowResponses = Object.entries(combined).reduce((acc, [key, value]) => {
-      // Detectamos si el item proviene de dpnExistentes (es un objeto con la estructura "PreguntaX": { questionXXXX: {...}, ...})
-      // y si dentro de ese objeto existe una clave tipo "questionXXXX" con estado="sin responder".
+      // Si "value" es exactamente el string "NO DATA", proviene de dpnNuevas:
+      if (value === "NO DATA") {
+        acc[key] = { estado: "NO DATA" };
+        return acc;
+      }
+  
+      // Caso contrario, es un objeto proveniente de dpnExistentes
+      // y contiene la estructura { questionXXXX: { ... }, previous, data, ... }
+      // Necesitamos leer el "estado" dentro de la parte questionXXXX
       if (typeof value === "object" && value !== null) {
-        // Buscamos la clave que empiece con "question"
+        // Buscamos la clave que empiece por "question"
         const questionKey = Object.keys(value).find(k => k.startsWith("question"));
+        // Si existe, sacamos su estado y lo convertimos con normalizeEstado
         if (questionKey) {
           const questionData = value[questionKey];
-          // Si estado es "sin responder", seteamos "SIN RESPONDER" en lugar del valor completo
-          if (questionData?.estado === "sin responder") {
-            acc[key] = { value: "SIN RESPONDER" };
-            return acc;
-          }
+          const estadoOriginal = questionData?.estado || "";
+          const estadoNormalizado = normalizeEstado(estadoOriginal);
+  
+          // Guardamos data completa (el objeto 'value') y el estado normalizado
+          acc[key] = {
+            estado: estadoNormalizado,
+            data: value
+          };
+          return acc;
         }
       }
   
-      // Si no cumple la condición anterior, guardamos el valor tal como está
-      acc[key] = { value };
+      // Si no coincide con nada anterior, dejamos algo por defecto.
+      // (No debería pasar a menos que haya un formato inesperado)
+      acc[key] = {
+        estado: "SIN ESTADO",
+        data: value
+      };
       return acc;
     }, {});
   
@@ -91,6 +118,7 @@ function filterQuestions(dpnExistentes, dpnNuevas) {
       dpnExistentesFilter: filteredExistentes
     };
   }
+  
   
   
   
