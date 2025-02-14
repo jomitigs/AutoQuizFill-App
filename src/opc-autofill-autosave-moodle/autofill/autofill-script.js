@@ -41,7 +41,7 @@ export async function contenedorAutoFill_js() {
 
     console.log("Todas las dpnExistentes y dpnNuevas Filtradas", preguntasFiltradas.dpnShowResponses);
 
-    // await AutoFill(preguntasFiltradas.dpnExistentesFilter);
+    await AutoFill(preguntasFiltradas.dpnExistentesFilter);
 
     console.log(`[opc-autofill-autosave-moodle: autofill] Finalizando AutoFill...`);
 
@@ -75,7 +75,7 @@ function filterQuestions(dpnExistentes, dpnNuevas) {
   }
   
   
- async function AutoFill(dpnExistentes, dataFirebaseNormalizada) {
+  async function AutoFill(dpnExistentes) {
     try {
         // Mapeo de funciones según el tipo de pregunta
         const funcQuestionType = {
@@ -88,58 +88,56 @@ function filterQuestions(dpnExistentes, dpnNuevas) {
             'draganddrop_image': response_draganddrop_image,
         };
 
-        // Obtener el estado de "questions-AutoSave" desde sessionStorage
-        const autoSaveData = sessionStorage.getItem("questions-AutoSave");
-        let questionsAutoSave = {};
-        if (autoSaveData) {
-            try {
-                questionsAutoSave = JSON.parse(autoSaveData);
-            } catch (error) {
-                console.error("Error al parsear questions-AutoSave desde sessionStorage", error);
-            }
-        }
+        // Se crea un arreglo para almacenar las tareas (promesas) a ejecutar
+        const tareas = [];
 
-        // Crear un objeto que almacene las relaciones (omitiendo las que tengan previous true)
-        const questionMapping = {};
-        Object.entries(dpnExistentes).forEach(([datapageQuestion, datafirebaseQuestionKey]) => {
-            if (
-                questionsAutoSave[datapageQuestion] &&
-                questionsAutoSave[datapageQuestion].previous === true
-            ) {
-                console.log(
-                    `Omitiendo ${datapageQuestion} porque 'previous' es true en questions-AutoSave`
-                );
+        // Se recorre cada entrada de dpnExistentes. Cada entrada tiene la siguiente estructura:
+        // {
+        //     "PreguntaXX": {
+        //         "questionYYYY": { ... datos de la pregunta ... },
+        //         "previous": false
+        //     },
+        //     ...
+        // }
+        Object.entries(dpnExistentes).forEach(([dpnQuestion, questionContainer]) => {
+            // Se verifica si la propiedad 'previous' es true, en cuyo caso se omite la pregunta.
+            if (questionContainer.previous === true) {
+                console.log(`Omitiendo ${dpnQuestion} porque 'previous' es true`);
+                return; // Se omite esta iteración
+            }
+
+            // Se obtiene la clave que contiene los datos de la pregunta (ignorando la propiedad 'previous')
+            const questionDataKey = Object.keys(questionContainer).find(key => key !== "previous");
+
+            if (!questionDataKey) {
+                console.warn(`No se encontró la data de pregunta para ${dpnQuestion}`);
                 return;
             }
 
-            const questionData = dataFirebaseNormalizada[datafirebaseQuestionKey];
-            if (questionData) {
-                questionMapping[datapageQuestion] = questionData;
-            } else {
-                console.warn(`No se encontraron datos para la clave: ${datafirebaseQuestionKey}`);
-            }
-        });
+            // Se obtiene la data de la pregunta
+            const questionData = questionContainer[questionDataKey];
+            console.log(`Procesando ${dpnQuestion}:`, questionData);
 
-        console.log("Preguntas a responder", questionMapping);
-
-        // Crear un arreglo de promesas para cada respuesta
-        const tareas = Object.entries(questionMapping).map(([datapageQuestion, questionData]) => {
+            // Se extrae el tipo de pregunta para determinar la función a ejecutar
             const questionType = questionData.tipo;
+
+            // Se verifica que exista una función mapeada para este tipo de pregunta
             if (funcQuestionType.hasOwnProperty(questionType)) {
-                // Llamamos a la función correspondiente y asumimos que retorna una promesa (o bien la envolvemos en Promise.resolve si no es asíncrona)
-                return Promise.resolve(funcQuestionType[questionType](datapageQuestion, questionData));
+                // Se llama a la función correspondiente pasando la clave de la pregunta y su data.
+                // Se envuelve en Promise.resolve para tratarlo uniformemente como promesa.
+                tareas.push(Promise.resolve(funcQuestionType[questionType](dpnQuestion, questionData)));
             } else {
                 console.warn(`No se encontró función para el tipo de pregunta: ${questionType}`);
-                return Promise.resolve(); // Para que no bloquee
             }
         });
 
-        // Ejecutar todas las tareas en paralelo y esperar a que finalicen
+        // Se ejecutan todas las tareas en paralelo y se espera a que todas finalicen
         await Promise.all(tareas);
     } catch (error) {
         console.error("Error en AutoFill:", error);
     }
 }
+
 
 
 
