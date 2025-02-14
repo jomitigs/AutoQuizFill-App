@@ -45,31 +45,53 @@ export async function contenedorAutoFill_js() {
 }
 
 function filterQuestions(dpnExistentes, dpnNuevas) {
-    // Filtramos dpnExistentes: conservamos aquellas entradas cuyo valor de "previous" sea false.
+    // 1. Filtramos dpnExistentes: conservamos aquellas entradas cuyo valor de "previous" sea false.
     const filteredExistentes = Object.fromEntries(
       Object.entries(dpnExistentes).filter(([key, value]) => value.previous !== true)
     );
   
-    // Filtramos dpnNuevas:
-    // Se excluyen aquellas entradas donde la propiedad previous sea true.
-    // Para las que queden, se asigna el valor "NO DATA".
+    // 2. Filtramos dpnNuevas:
+    //    Se excluyen aquellas entradas donde la propiedad "previous" sea true.
+    //    Para las que queden, se asigna el valor "NO DATA".
     const filteredNuevas = Object.fromEntries(
       Object.entries(dpnNuevas)
         .filter(([key, value]) => !(value && value.previous === true))
         .map(([key]) => [key, "NO DATA"])
     );
   
-    // Combinamos ambos objetos.
+    // 3. Combinamos ambos objetos.
     const combined = { ...filteredExistentes, ...filteredNuevas };
   
-    // Para cada entrada, generamos un objeto que incluya la clave ("clave") y el valor ("value")
+    // 4. Generamos un nuevo objeto "dpnShowResponses":
+    //    - Si la pregunta viene de dpnExistentes y su "estado" es "sin responder", forzamos el value a "SIN RESPONDER".
+    //    - De lo contrario, dejamos el valor combinado tal cual (o "NO DATA" si vino de dpnNuevas).
     const dpnShowResponses = Object.entries(combined).reduce((acc, [key, value]) => {
-      acc[key] = {value}; // Aquí asignamos la propiedad "clave"
+      // Detectamos si el item proviene de dpnExistentes (es un objeto con la estructura "PreguntaX": { questionXXXX: {...}, ...})
+      // y si dentro de ese objeto existe una clave tipo "questionXXXX" con estado="sin responder".
+      if (typeof value === "object" && value !== null) {
+        // Buscamos la clave que empiece con "question"
+        const questionKey = Object.keys(value).find(k => k.startsWith("question"));
+        if (questionKey) {
+          const questionData = value[questionKey];
+          // Si estado es "sin responder", seteamos "SIN RESPONDER" en lugar del valor completo
+          if (questionData?.estado === "sin responder") {
+            acc[key] = { value: "SIN RESPONDER" };
+            return acc;
+          }
+        }
+      }
+  
+      // Si no cumple la condición anterior, guardamos el valor tal como está
+      acc[key] = { value };
       return acc;
     }, {});
   
-    return { dpnShowResponses, dpnExistentesFilter: filteredExistentes };
+    return {
+      dpnShowResponses,
+      dpnExistentesFilter: filteredExistentes
+    };
   }
+  
   
   
   async function AutoFill(dpnExistentes) {
