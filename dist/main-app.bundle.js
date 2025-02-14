@@ -46749,19 +46749,17 @@
 	            const visiblePart = document.createElement('div');
 	            visiblePart.style.padding = '0.5rem 0';
 	            visiblePart.innerHTML = `
-              <div><strong>Enunciado:</strong> ${infoData.enunciado || '(Sin enunciado)'}</div>
+              <div> ${infoData.enunciado || '(Sin enunciado)'}</div>
             `;
 	  
 	            // --- PARTE OCULTA (opciones, respuestas correctas, etc.) ---
 	            const hiddenPart = document.createElement('div');
-	            hiddenPart.style.padding = '0.5rem 0';
 	  
 	            // Dependemos del tipo de pregunta
 	            const tipo = infoData.tipo || 'desconocido';
 	  
-	            if (tipo === 'inputradio_opcionmultiple_verdaderofalso' && infoData.opcionesRespuesta) {
+	            if (tipo === 'inputradio_opcionmultiple_verdaderofalso') {
 	              hiddenPart.innerHTML = `
-                <div><strong>Opciones de respuesta:</strong></div>
                 <ul>
                   ${infoData.opcionesRespuesta.map(opc => `<li>${opc}</li>`).join('')}
                 </ul>
