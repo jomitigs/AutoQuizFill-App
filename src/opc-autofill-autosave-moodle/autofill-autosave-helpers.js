@@ -565,6 +565,18 @@ export async function compararPreguntas(dpn, dfn) {
     }
   });
 
+  // 2) Iteramos en las claves de dpnExistentes:
+Object.keys(dpnExistentes).forEach((key) => {
+  // Chequear que la clave sea algo tipo "Pregunta1", "Pregunta2", etc.
+  if (key.startsWith("Pregunta")) {
+    // Verificar que en dpnOrigin exista la misma clave:
+    if (dpnOrigin[key]) {
+      // Reemplazamos dpnExistentes[key].data.html con dpnOrigin[key].html
+      dpnExistentes[key].data.html = dpnOrigin[key].html;
+    }
+  }
+});
+
   return { dpnExistentes: dpnExistentes, dpnNuevas: dpnNuevasData };
 }
 
