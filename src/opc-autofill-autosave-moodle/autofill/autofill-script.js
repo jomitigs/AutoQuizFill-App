@@ -292,22 +292,23 @@ function AutoFill_ShowResponses(responseQuestions) {
   
             if (tipo === 'inputradio_opcionmultiple_verdaderofalso' || tipo === 'inputchecked_opcionmultiple') {
                 hiddenPart.innerHTML = `
-                  ${infoData.opcionesRespuesta.map((opc, i) => {
-                    // Generar la letra para cada opción: a, b, c, d, ...
-                    const letter = String.fromCharCode(97 + i);
+                ${infoData.opcionesRespuesta.map((opc, i) => {
+                  // Generar la letra para cada opción: a, b, c, d, ...
+                  const letter = String.fromCharCode(97 + i);
               
-                    // Verificar si la respuesta correcta es un array o un valor único
-                    const isCorrect = Array.isArray(infoData.respuestaCorrecta)
-                      ? infoData.respuestaCorrecta.includes(opc)
-                      : opc === infoData.respuestaCorrecta;
+                  // Verificar si la respuesta correcta es un array o un valor único
+                  const isCorrect = Array.isArray(infoData.respuestaCorrecta)
+                    ? infoData.respuestaCorrecta.includes(opc)
+                    : opc === infoData.respuestaCorrecta;
               
-                    return `
-                      <li style="${isCorrect ? 'font-weight: 500; color: mediumblue;' : ''}">
-                        ${letter}. ${opc}
-                      </li>
-                    `;
-                  }).join('')}
+                  return `
+                    <div style="${isCorrect ? 'font-weight: 500; color: mediumblue;' : ''}">
+                      ${letter}. ${opc}
+                    </div>
+                  `;
+                }).join('')}
               `;
+              
               
             } else if (
               tipo === 'inputtext_respuestacorta' ||
