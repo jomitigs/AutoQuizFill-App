@@ -425,7 +425,7 @@
   /* Contenedor que mostrará/ocultará el contenido de la pregunta */
   .detail-container {
     display: none; /* oculto por defecto */
-    margin-top: 1rem;
+    margin-top: 0;
   }
   
   /* Estilos de colores de fondo para cada estado, 
