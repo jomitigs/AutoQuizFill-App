@@ -539,7 +539,7 @@ export async function compararPreguntas(dpn, dfn) {
       // Guardar en dpnExistentes la relación entre la pregunta DPN y el candidato DFN.
       const previousDPN = preguntaDPN.previous;
 
-      dpnExistentes[claveDPN] = {[claveDFN]: candidateData, previous: previousDPN};
+      dpnExistentes[claveDPN] = {[claveDFN]: candidateData, previous: previousDPN, data: preguntaDPN};
 
 
     } catch (e) {
