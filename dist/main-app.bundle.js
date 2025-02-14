@@ -43464,12 +43464,7 @@
 	  // Si dfn es vacío o solo contiene los metadatos ("ruta" y "tabSessionId"),
 	  // se omite la comparación y se consideran todas las preguntas de dpnOrigin como nuevas.
 	  const clavesDFN = Object.keys(dfn);
-	  if (
-	    clavesDFN.length === 0 ||
-	    (clavesDFN.length === 2 &&
-	      dfn.hasOwnProperty("ruta") &&
-	      dfn.hasOwnProperty("tabSessionId"))
-	  ) {
+	  if (clavesDFN.length === 0 || (clavesDFN.length === 2 && dfn.hasOwnProperty("ruta") && dfn.hasOwnProperty("tabSessionId"))) {
 	    console.log("dfn está vacío o solo contiene metadatos. Se asignan todas las preguntas de dpnOrigin como nuevas.");
 	    let dpnOrigin = sessionStorage.getItem("questions-AutoSave");
 	    dpnOrigin = JSON.parse(dpnOrigin);
@@ -43509,9 +43504,11 @@
 
 	    // Se guarda la clave dentro del objeto para tenerla disponible
 	    indiceDFN[tipoPregunta][cantidadHTML].push({
-	      clave: claveDFN,
-	      ...preguntaDFN
+	      ...preguntaDFN,
+	      clave: claveDFN
 	    });
+
+	    
 	  }
 	  console.log("Índice DFN creado:", indiceDFN);
 
