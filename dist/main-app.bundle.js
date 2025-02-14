@@ -46747,7 +46747,6 @@
 	          if (infoData) {
 	            // --- PARTE SIEMPRE VISIBLE (enunciado) ---
 	            const visiblePart = document.createElement('div');
-	            visiblePart.style.padding = '0.5rem 0';
 	            visiblePart.innerHTML = `
               <div> ${infoData.enunciado || '(Sin enunciado)'}</div>
             `;
@@ -46760,7 +46759,6 @@
 	  
 	            if (tipo === 'inputradio_opcionmultiple_verdaderofalso') {
 	                hiddenPart.innerHTML = `
-                <ul>
                   ${infoData.opcionesRespuesta.map((opc, i) => {
                     // Generar la letra para cada opción: a, b, c, d, ...
                     const letter = String.fromCharCode(97 + i);
@@ -46776,7 +46774,6 @@
                       </li>
                     `;
                   }).join('')}
-                </ul>
               `;
 	              
 	            } else if (
