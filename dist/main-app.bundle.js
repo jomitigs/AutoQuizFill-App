@@ -46698,9 +46698,8 @@
             <!-- Contenido de AutoFill-->
             <div id="body-autoquiz-autofill" class="body-autoquiz" style="display: none;">
 
-                <!-- Contenedor dinámico para las preguntas generadas -->
-                <div id="contenedor-preguntas" class="contenedor-preguntas">
-                    <!-- Aquí se insertarán dinámicamente los detalles de cada pregunta -->
+                <div>
+                    <span id="respuestasautofill"></span>
                 </div>
 
             </div>
