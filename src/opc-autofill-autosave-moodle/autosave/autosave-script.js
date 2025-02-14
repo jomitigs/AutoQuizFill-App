@@ -126,7 +126,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
             // Determinar tipo de pregunta (asumes que ya existe tu función)
             const questionType = determinarTipoPregunta(questionHtml);
-            //console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
+            console.log(`[AutoSaveQuestions_SessionStorage] Pregunta ${numberQuestion}, tipo: ${questionType}`);
 
             // Llamar la función correspondiente
             const funcion = funcQuestionType[questionType];
@@ -376,10 +376,10 @@ async function procesoAutoSave(elemento) {
 
 export function AutoSave_ShowResponses(numeroPregunta) {
     return new Promise((resolve, reject) => {
-        const container = document.getElementById('preguntas-autosave');
+        const container = document.getElementById('respuestasautosave');
         if (!container) {
-            console.error('Elemento "preguntas-autosave" no encontrado.');
-            return reject('Elemento "preguntas-autosave" no encontrado.');
+            console.error('Elemento "respuestasautosave" no encontrado.');
+            return reject('Elemento "respuestasautosave" no encontrado.');
         }
 
         const savedData = sessionStorage.getItem('questions-AutoSave');
@@ -399,19 +399,23 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                 // Solo mostramos si esa pregunta tiene 'previous: false'
                 if (data && data.previous === false) {
 
-                    let html = `<div class="pregunta-autosave" id="${key}">`;
+                    let html = `<div class="preguntaautosave" id="${key}">`;
 
                     if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
+
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
+
+
                     }
+
 
                     if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-                            html += `<div class="preguntas-autosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
+                            html += `<div class="respuestasautosave">${formatResponseOptions(data.opcionesRespuesta, data.respuestaCorrecta)}</div>`;
                         }
                     } else if (data.tipo === 'select_emparejamiento') {
                         if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
-                            html += `<div class="preguntas-autosave">` + data.opcionesEnunciados.map((enunciado, i) => {
+                            html += `<div class="respuestasautosave">` + data.opcionesEnunciados.map((enunciado, i) => {
                                 const respuesta = data.respuestaCorrecta[i]?.trim() || "Elegir...";
                                 return `<div>• ${processContent(enunciado)} - <span style="font-weight:500; color:${respuesta !== "Elegir..." ? "MediumBlue" : "black"};">${processContent(respuesta)}</span></div>`;
                             }).join('') + `</div>`;
@@ -431,13 +435,13 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                         // Procesamos el contenido antes de añadirlo a HTML
                         enunciadoProcesado = processContent(enunciadoProcesado);
 
-                        html += `<div class="preguntas-autosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
                     }
 
                     else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 
-                        html += '<div class="preguntas-autosave">';
+                        html += '<div class="respuestasautosave">';
                         html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
 
                         respuestas.forEach((resp) => {
@@ -537,7 +541,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
             container.innerHTML = filteredEntries
                 .map(([key, data], index, array) => {
                     const questionNumber = key.replace(/\D/g, '');
-                    let html = `<div class="pregunta-autosave" id="${key}">`;
+                    let html = `<div class="preguntaautosave" id="${key}">`;
 
                     if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
 
@@ -548,7 +552,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
 
                     if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
-                            html += `<div class="preguntas-autosave">${formatResponseOptions(
+                            html += `<div class="respuestasautosave">${formatResponseOptions(
                                 data.opcionesRespuesta,
                                 data.respuestaCorrecta
                             )}</div>`;
@@ -556,7 +560,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                     } else if (data.tipo === 'select_emparejamiento') {
                         if (Array.isArray(data.opcionesEnunciados) && Array.isArray(data.respuestaCorrecta)) {
                             html +=
-                                `<div class="preguntas-autosave">` +
+                                `<div class="respuestasautosave">` +
                                 data.opcionesEnunciados
                                     .map((enunciado, i) => {
                                         const respuesta = data.respuestaCorrecta[i]?.trim() || 'Elegir...';
@@ -583,7 +587,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
 
                         enunciadoProcesado = processContent(enunciadoProcesado);
 
-                        html += `<div class="preguntas-autosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
+                        html += `<div class="respuestasautosave"><strong>Pregunta ${questionNumber}:</strong> ${enunciadoProcesado}</div>`;
 
 
 
@@ -593,7 +597,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                     else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 
-                        html += '<div class="preguntas-autosave">';
+                        html += '<div class="respuestasautosave">';
                         html += '<strong style="font-weight: 500;">Respuesta:</strong><br>';
 
                         respuestas.forEach((resp) => {

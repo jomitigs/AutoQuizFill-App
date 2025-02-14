@@ -148,7 +148,7 @@
     }
   
   /* Reglas para el elemento de la pregunta */
-  .pregunta-autosave {
+  .preguntaautosave {
     justify-content: flex-start;
     align-items: center;
     padding: 0;
@@ -160,7 +160,7 @@
   }
   
   /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */
-  .preguntas-autosave {
+  .respuestasautosave {
     width: 100%;
     min-width: 0;
     overflow-wrap: break-word;
