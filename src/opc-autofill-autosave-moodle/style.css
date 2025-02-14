@@ -385,8 +385,8 @@
 
 /* Contenedor principal para cada pregunta */
 .question-container {
-    margin: 8px 2px 8px 0px;
-    padding: 5px;
+    margin: 0px 0px 0px 0px;
+    padding: 5px 5px 5px 0px;
   }
   
   /* Encabezado de la pregunta: título y badge de estado */
