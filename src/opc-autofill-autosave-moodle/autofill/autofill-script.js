@@ -1,9 +1,6 @@
 
-import interact from 'interactjs';
-import { getQuestionNumber, determinarTipoPregunta, renderizarPreguntas, normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
-
-import { getDataFromFirebase, getDataFromFirebaseAsync, saveNewQuestionsToFirebase, saveExistingQuestionsToFirebase } from '../../config-firebase/firebase-helpers.js';
-import { idbGet, idbDelete } from '../../config-firebase/idbSession.js';
+import { normalizarHTML, compararPreguntas } from '../autofill-autosave-helpers.js';
+import { idbGet} from '../../config-firebase/idbSession.js';
 
 import { response_inputradio_opcionmultiple_verdaderofalso } from './questions-types/1_inputradio_opcionmultiple_verdaderofalso.js';
 import { response_inputchecked_opcionmultiple } from './questions-types/2_inputchecked_opcionmultiple.js';
@@ -91,14 +88,6 @@ function filterQuestions(dpnExistentes, dpnNuevas) {
         // Se crea un arreglo para almacenar las tareas (promesas) a ejecutar
         const tareas = [];
 
-        // Se recorre cada entrada de dpnExistentes. Cada entrada tiene la siguiente estructura:
-        // {
-        //     "PreguntaXX": {
-        //         "questionYYYY": { ... datos de la pregunta ... },
-        //         "previous": false
-        //     },
-        //     ...
-        // }
         Object.entries(dpnExistentes).forEach(([dpnQuestion, questionContainer]) => {
             // Se verifica si la propiedad 'previous' es true, en cuyo caso se omite la pregunta.
             if (questionContainer.previous === true) {

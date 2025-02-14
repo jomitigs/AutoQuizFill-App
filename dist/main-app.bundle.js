@@ -46458,14 +46458,6 @@
 	        // Se crea un arreglo para almacenar las tareas (promesas) a ejecutar
 	        const tareas = [];
 
-	        // Se recorre cada entrada de dpnExistentes. Cada entrada tiene la siguiente estructura:
-	        // {
-	        //     "PreguntaXX": {
-	        //         "questionYYYY": { ... datos de la pregunta ... },
-	        //         "previous": false
-	        //     },
-	        //     ...
-	        // }
 	        Object.entries(dpnExistentes).forEach(([dpnQuestion, questionContainer]) => {
 	            // Se verifica si la propiedad 'previous' es true, en cuyo caso se omite la pregunta.
 	            if (questionContainer.previous === true) {
