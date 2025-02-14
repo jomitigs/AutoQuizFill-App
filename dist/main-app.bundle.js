@@ -46757,7 +46757,7 @@
 	            // Dependemos del tipo de pregunta
 	            const tipo = infoData.tipo || 'desconocido';
 	  
-	            if (tipo === 'inputradio_opcionmultiple_verdaderofalso') {
+	            if (tipo === 'inputradio_opcionmultiple_verdaderofalso' || tipo === 'inputchecked_opcionmultiple') {
 	                hiddenPart.innerHTML = `
                   ${infoData.opcionesRespuesta.map((opc, i) => {
                     // Generar la letra para cada opción: a, b, c, d, ...
