@@ -166,13 +166,12 @@ async function contenedorAutoFillAutoSave_js() {
         if (stateAutoFill === "activado") {
             bodyAutoFill.style.display = 'flex';
             window.eventosPreguntasHabilitados = false;
-            console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
             await contenedorAutoFill_js();
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
+
             await AutoSaveQuestions_SessionStorage(originalFormulations);
             
-            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
             if (stateAutoSave === "activado") {
                 contenedorAutoSave_js();
             }
@@ -207,9 +206,7 @@ function detectarCambiosInterruptor() {
 
         if (nuevoEstado === "activado") {
             bodyAutoSave.style.display = 'flex';
-            // Deshabilitar los eventos de preguntas
             contenedorAutoSave_js();
-            // Rehabilitar después de finalizar la funció
         } else {
             bodyAutoSave.style.display = 'none';
         }
@@ -225,13 +222,11 @@ function detectarCambiosInterruptor() {
         if (nuevoEstado === "activado") {
             bodyAutoFill.style.display = 'flex';
             window.eventosPreguntasHabilitados = false;
-            console.log("Valor de eventosPreguntasHabilitados (deshabilitado): " + window.eventosPreguntasHabilitados);
             await contenedorAutoFill_js();
             // Rehabilitar después de finalizar la función
             window.eventosPreguntasHabilitados = true;
-            console.log("Valor de eventosPreguntasHabilitados (reactivado): " + window.eventosPreguntasHabilitados);
-            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
 
+            const stateAutoSave = localStorage.getItem("autosave-autoquizfillapp") || "desactivado";
             const originalFormulations = document.querySelectorAll(".formulation.clearfix");
 
             await AutoSaveQuestions_SessionStorage(originalFormulations);
