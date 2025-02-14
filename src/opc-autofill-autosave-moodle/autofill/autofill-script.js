@@ -301,15 +301,14 @@ function AutoFill_ShowResponses(responseQuestions) {
                     ? infoData.respuestaCorrecta.includes(opc)
                     : opc === infoData.respuestaCorrecta;
               
+                  // Siempre aplicar font-weight: 500, y color: mediumblue solo si es la correcta
                   return `
-                    <div style="${isCorrect ? 'font-weight: 500; color: mediumblue;' : ''}">
+                    <div style="font-weight: 500; ${isCorrect ? 'color: mediumblue;' : ''}">
                       ${letter}. ${opc}
                     </div>
                   `;
                 }).join('')}
-              `;
-              
-              
+              `; 
             } else if (
               tipo === 'inputtext_respuestacorta' ||
               tipo === 'inputtext_respuestacorta2'
