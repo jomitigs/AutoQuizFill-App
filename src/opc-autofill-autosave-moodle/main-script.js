@@ -5,7 +5,7 @@ import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
 import { renderizarPreguntas } from './autofill-autosave-helpers.js';
 
-import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses, crearBotonAutoSave } from './autosave/autosave-script.js';
+import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses, crearBotonAutoSave, autoSaveHideApp } from './autosave/autosave-script.js';
 import { contenedorAutoFill_js } from './autofill/autofill-script.js';
 
 import { getDataFromFirebaseAsync } from '../config-firebase/firebase-helpers.js';
@@ -150,6 +150,7 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
         console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
         crearBotonAutoSave();
     } else {
+        autoSaveHideApp();
         console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
     }
     

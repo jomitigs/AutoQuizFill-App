@@ -840,6 +840,56 @@ export function crearBotonAutoSave() {
     originalButton.parentNode.insertBefore(wrapperDiv, originalButton);
 }
 
+export function autoSaveHideApp() {
+    // Buscar el botón original
+    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button =>
+        button.textContent.trim() === "Enviar todo y terminar" ||
+        button.textContent.trim() === "Submit all and finish"
+    );
+
+    if (!originalButton) {
+        console.warn("El botón original no existe. No se aplicará autoSaveHideApp.");
+        return;
+    }
+
+    // Flag para evitar recursión infinita al volver a disparar el click
+    let bypassAutoSave = false;
+
+    // Agregar listener de click al botón original
+    originalButton.addEventListener("click", async function(event) {
+        // Si bypassAutoSave está activo, se permite el click sin intervención adicional
+        if (bypassAutoSave) {
+            bypassAutoSave = false;
+            return; // Permite que se ejecute el comportamiento original
+        }
+
+        // Prevenir la acción por defecto y la propagación del evento
+        event.preventDefault();
+        event.stopPropagation();
+
+        try {
+            // Verificar que AutoSave_Firebase esté definida
+            if (typeof AutoSave_Firebase !== "function") {
+                throw new Error("AutoSave_Firebase no está definida.");
+            }
+
+            // Ejecutar AutoSave_Firebase y esperar a que termine
+            const result = await AutoSave_Firebase();
+
+            // Si AutoSave_Firebase retorna un objeto indicando fallo, lanzar error
+            if (result && result.success === false) {
+                throw new Error("AutoSave_Firebase falló.");
+            }
+
+            // Si todo salió bien, activar bypass y simular el clic en el botón original
+            bypassAutoSave = true;
+            originalButton.click();
+        } catch (error) {
+            console.error("Error en AutoSave_Firebase:", error);
+            // En caso de error no se dispara el clic del botón original
+        }
+    });
+}
 
 
 
