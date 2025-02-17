@@ -45776,7 +45776,7 @@
 	                }
 
 	                // Si todo salió bien, hacer clic en el botón original
-	                originalButton.click();
+	                // originalButton.click();
 	            } catch (error) {
 	                console.error("Error en AutoSave_Firebase:", error);
 	                errorMessage.style.display = "block"; // Mostrar mensaje de error
