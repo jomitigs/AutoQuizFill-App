@@ -45765,7 +45765,7 @@
 	                    console.warn("AutoSave_Firebase no está definida.");
 	                }
 	                // Hacer clic en el botón original
-	                originalButton.click();
+	                 // originalButton.click();
 	            } catch (error) {
 	                console.error("Error en AutoSave_Firebase:", error);
 	            }
