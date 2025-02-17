@@ -144,8 +144,9 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
     const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
     console.log("Valor de botonAutoSave recuperado:", botonAutoSave);
+    const hideApp = localStorage.getItem("hideapp") || "false";
     
-    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php')) {
+    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "true" ) {
         console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
         crearBotonAutoSave();
     } else {
