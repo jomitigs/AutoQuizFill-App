@@ -23415,12 +23415,16 @@
 	  
 	      // Selecciona el elemento que se desea mostrar u ocultar
 	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
+	      const btnAutoSave = document.querySelector('#autoSaveButton');
+
 	  
 	      // Muestra u oculta el elemento según el valor de barraLateralVisible
 	      if (barraLateralVisible) {
 	        btnAutoQuizFillApp.style.display = 'block';
+	        btnAutoSave.style.display = 'block';
 	      } else {
 	        btnAutoQuizFillApp.style.display = 'none';
+	        btnAutoSave.style.display = 'none';
 	      }
 	  
 	      // Guarda en localStorage la variable 'hideapp' con el valor opuesto a barraLateralVisible
