@@ -384,7 +384,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
 
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
-                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
+                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta' && data.tipo !== 'otroscasos') {
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
                     }
 
@@ -464,6 +464,11 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                                 <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
                             </div>
                         `;
+                    } else if (data.tipo === 'otroscasos') {
+                        html += `
+                        <strong>Pregunta ${numeroPregunta}:</strong>
+                        <span style="font-weight: 500; color: red;">${processContent(data.enunciado)}</span>
+                      `;
                     }
 
                     // Agregamos el hr solo si esta pregunta no es la última dentro de las guardadas
