@@ -47332,11 +47332,12 @@
 	        if (nuevoEstado === "activado") {
 	            bodyAutoSave.style.display = 'flex';
 	            contenedorAutoSave_js$1();
+	            renderizarPreguntas$1();
 	        } else {
 	            bodyAutoSave.style.display = 'none';
 	        }
 
-	        renderizarPreguntas$1();
+	        
 	    });
 
 	    // Para el interruptor de AutoFill

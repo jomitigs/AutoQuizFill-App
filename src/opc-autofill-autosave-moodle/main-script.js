@@ -219,11 +219,12 @@ function detectarCambiosInterruptor() {
         if (nuevoEstado === "activado") {
             bodyAutoSave.style.display = 'flex';
             contenedorAutoSave_js();
+            renderizarPreguntas();
         } else {
             bodyAutoSave.style.display = 'none';
         }
 
-        renderizarPreguntas();
+        
     });
 
     // Para el interruptor de AutoFill
