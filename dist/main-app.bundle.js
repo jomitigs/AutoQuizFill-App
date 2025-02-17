@@ -42456,6 +42456,9 @@
 	  const inputCheckboxCount = formulation_clearfix.querySelectorAll('input[type="checkbox"]').length;
 	  const selectCount = formulation_clearfix.querySelectorAll('select').length;
 
+	  const tablaAnswer = formulation_clearfix.querySelector('table.answer').length;
+
+
 	  const blocks = formulation_clearfix.querySelectorAll(".ablock.form-inline");
 	  let containsRespuesta = Array.from(blocks).some(block =>
 	    block.textContent.toLowerCase().includes("respuesta")
@@ -42469,7 +42472,7 @@
 	    if (inputCheckboxCount > 0 && inputRadioCount === 0 && selectCount === 0 && !dropzonesElement && !draghomesElement) {
 	      return 'inputchecked_opcionmultiple';
 	    }
-	    if (selectCount > 0 && inputRadioCount === 0 && inputCheckboxCount === 0 && !dropzonesElement && !draghomesElement) {
+	    if (selectCount > 0 && tablaAnswer > 0 && inputRadioCount === 0 && inputCheckboxCount === 0 && !dropzonesElement && !draghomesElement) {
 	      return 'select_emparejamiento';
 	    }
 
