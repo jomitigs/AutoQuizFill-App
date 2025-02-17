@@ -45750,6 +45750,10 @@
 	        newButton.textContent = "AutoSave y terminar";
 	        newButton.className = "btn btn-primary"; // Misma clase que el original
 	        newButton.id = "autoSaveButton";
+	        
+	        // Asegurar que el botón se coloque en una nueva línea
+	        newButton.style.display = "block"; 
+	        newButton.style.width = "100%"; // Opcional, para que tenga el mismo ancho
 	        newButton.style.marginBottom = "10px"; // Espacio entre botones
 
 	        // Agregar evento de clic al nuevo botón
@@ -45768,8 +45772,13 @@
 	            }
 	        });
 
-	        // Insertar el nuevo botón antes del original (encima)
-	        originalButton.parentNode.insertBefore(newButton, originalButton);
+	        // Crear un div contenedor para forzar la nueva línea
+	        const wrapperDiv = document.createElement("div");
+	        wrapperDiv.style.width = "100%"; // Para mantener el tamaño del botón original
+	        wrapperDiv.appendChild(newButton);
+
+	        // Insertar el nuevo botón dentro del contenedor antes del original
+	        originalButton.parentNode.insertBefore(wrapperDiv, originalButton);
 	    }
 	}
 
