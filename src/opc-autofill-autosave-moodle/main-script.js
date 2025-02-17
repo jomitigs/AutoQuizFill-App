@@ -143,11 +143,15 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
     
 
     const botonAutoSave = localStorage.getItem("botonAutoSavep") || "false";
-
+    console.log("Valor de botonAutoSave recuperado:", botonAutoSave);
+    
     if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php')) {
-        // Llamar a la función para ejecutarla cuando sea necesario
+        console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
         crearBotonAutoSave();
+    } else {
+        console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
     }
+    
 }
 
 async function contenedorAutoFillAutoSave_js() {
