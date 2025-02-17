@@ -45735,27 +45735,27 @@
 	}
 
 	function crearBotonAutoSave() {
-	    // Seleccionar el botón original por su texto
+	    // Buscar el botón original por su texto
 	    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button => 
 	        button.textContent.trim() === "Enviar todo y terminar" || 
 	        button.textContent.trim() === "Submit all and finish"
 	    );
 
 	    if (!originalButton) {
-	        console.warn("Botón original no encontrado.");
+	        console.warn("El botón original no existe. No se creará el botón AutoSave.");
 	        return;
 	    }
 
-	    // Verificar si ya existe el botón adicional para evitar duplicados
+	    // Verificar si ya existe el botón AutoSave para evitar duplicados
 	    if (document.getElementById("autoSaveButton")) return;
 
-	    // Crear el nuevo botón
+	    // Crear el nuevo botón con su propia clase
 	    const newButton = document.createElement("button");
 	    newButton.textContent = "AutoSave y terminar";
-	    newButton.className = "btn btn-primary"; // Misma clase que el original
+	    newButton.className = "btn-auto-save"; // Clase propia para estilos personalizados
 	    newButton.id = "autoSaveButton";
 	    
-	    // Asegurar que el botón se coloque en una nueva línea
+	    // Asegurarse que se muestre en una nueva línea
 	    newButton.style.display = "block"; 
 	    newButton.style.marginBottom = "10px"; // Espacio entre botones
 
@@ -45769,7 +45769,7 @@
 	    // Agregar evento de clic al nuevo botón
 	    newButton.addEventListener("click", async () => {
 	        try {
-	            // Ocultar mensaje de error si existía
+	            // Ocultar mensaje de error anterior
 	            errorMessage.style.display = "none";
 
 	            // Comprobar que la función AutoSave_Firebase esté definida
@@ -45777,32 +45777,31 @@
 	                throw new Error("AutoSave_Firebase no está definida.");
 	            }
 
-	            // Llamar a la función y esperar su resultado
+	            // Llamar a AutoSave_Firebase y esperar su resultado
 	            const result = await AutoSave_Firebase();
 
-	            // Si AutoSave_Firebase retorna un valor indicando fallo, lanzamos un error.
-	            // Por ejemplo, si retorna un objeto { success: false }
+	            // Si AutoSave_Firebase retorna un objeto indicando fallo, se lanza un error.
 	            if (result && result.success === false) {
 	                throw new Error("AutoSave_Firebase falló.");
 	            }
 
-	            // Solo si todo salió bien, se hace clic en el botón original
+	            // Solo si todo salió bien, se simula un clic en el botón original
 	            originalButton.click();
 	        } catch (error) {
 	            console.error("Error en AutoSave_Firebase:", error);
 	            errorMessage.style.display = "block";
-	            // Aquí se detiene la ejecución; no se llama a originalButton.click()
+	            // Se detiene la ejecución sin hacer clic en el botón original
 	            return;
 	        }
 	    });
 
-	    // Crear un div contenedor para forzar la nueva línea
+	    // Crear un contenedor para asegurar la nueva línea y mantener el diseño
 	    const wrapperDiv = document.createElement("div");
 	    wrapperDiv.style.width = "100%"; // Para mantener el tamaño del botón original
 	    wrapperDiv.appendChild(newButton);
-	    wrapperDiv.appendChild(errorMessage); // Agregar el mensaje de error debajo del botón
+	    wrapperDiv.appendChild(errorMessage);
 
-	    // Insertar el nuevo botón dentro del contenedor antes del original
+	    // Insertar el nuevo botón antes del botón original
 	    originalButton.parentNode.insertBefore(wrapperDiv, originalButton);
 	}
 
