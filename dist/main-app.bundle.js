@@ -43852,6 +43852,26 @@
 	    };
 	}
 
+	async function otroscasos(originalFormulationClearfix) {
+	    const tipo = 'otroscasos';
+
+	    // 1) Clonamos el elemento original para trabajar sobre la copia.
+	    const clonFormulation = originalFormulationClearfix.cloneNode(true);
+
+	    // 2) Convertimos a Data URI todas las imágenes del clon.
+	    await File2DataUri(clonFormulation);
+
+	    // 6) Construimos el objeto final questionData
+	    const questionData = {
+	        enunciado: "PREGUNTA NO SOPORTADA",       // Texto con [ ] donde estaban los inputs
+	        html: clonFormulation.outerHTML,   // HTML completo del clon (imágenes en Data URI)
+	        tipo: tipo,
+	        ciclo: localStorage.getItem("ciclo"),
+	    };
+
+	    return questionData;
+	}
+
 	var interact_min$1 = {exports: {}};
 
 	/* interact.js 1.10.27 | https://raw.github.com/taye/interact.js/main/LICENSE */
@@ -44262,7 +44282,7 @@
 	}
 
 	// Exporta una función llamada contenedorAutoSave_js
-	function contenedorAutoSave_js$1() {      
+	function contenedorAutoSave_js$1() {
 	    console.log(`[opc-autofill-autosave-moodle: autosave] Iniciando AutoSave...`);
 
 	    // Mostrar las respuestas auto-guardadas y esperar a que se complete el proceso
@@ -44304,6 +44324,7 @@
 	        'inputtext_respuestacorta2': inputtext_respuestacorta2,
 	        'draganddrop_text': draganddrop_text,
 	        'draganddrop_image': draganddrop_image,
+	        'otroscasos': otroscasos,
 	    };
 
 	    // --------------------------------------------------------------------------
@@ -44384,10 +44405,9 @@
 	        }
 
 	        // ----------------------------------------------------------------------
-	        // LÓGICA PRINCIPAL de "reemplazar" o "mezclar"
+	        // LÓGICA PRINCIPAL de "mezclar"
 	        // ----------------------------------------------------------------------
-	        // Checar si en las nuevas preguntas está la #1 (exacto, no 12, 10, etc.)
-	        
+
 	        // Si NO hay datos en sessionStorage, se crea de cero
 	        if (!existeAlmacenamiento) {
 	            console.log('[AutoSaveQuestions_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
@@ -44404,27 +44424,26 @@
 
 
 	        } else {
+	            // MEZCLAR: old -> previous:true, new -> previous:false
+	            console.log('[AutoSaveQuestions_SessionStorage] No está la #1. Se mezclan datos: antiguos previous:true, nuevos previous:false.');
 
-	                // MEZCLAR: old -> previous:true, new -> previous:false
-	                console.log('[AutoSaveQuestions_SessionStorage] No está la #1. Se mezclan datos: antiguos previous:true, nuevos previous:false.');
-
-	                // a) Marcar existentes
-	                for (const key in datosExistentes) {
-	                    if (Object.hasOwn(datosExistentes, key)) {
-	                        datosExistentes[key].previous = true;
-	                    }
+	            // a) Marcar existentes
+	            for (const key in datosExistentes) {
+	                if (Object.hasOwn(datosExistentes, key)) {
+	                    datosExistentes[key].previous = true;
 	                }
+	            }
 
-	                // b) Insertar/actualizar las nuevas
-	                for (const key in questionsHtmlObject) {
-	                    if (Object.hasOwn(questionsHtmlObject, key)) {
-	                        questionsHtmlObject[key].previous = false;
-	                        datosExistentes[key] = questionsHtmlObject[key];
-	                    }
+	            // b) Insertar/actualizar las nuevas
+	            for (const key in questionsHtmlObject) {
+	                if (Object.hasOwn(questionsHtmlObject, key)) {
+	                    questionsHtmlObject[key].previous = false;
+	                    datosExistentes[key] = questionsHtmlObject[key];
 	                }
+	            }
 
-	                // c) Guardar resultado
-	                sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
+	            // c) Guardar resultado
+	            sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
 	        }
 	    } else {
 	        // =====================================
@@ -44466,87 +44485,87 @@
 	function detectarCambiosPreguntas() {
 	    // 1. Escucha los cambios en inputs, selects y checkboxes
 	    const elementos = document.querySelectorAll(
-	      'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
+	        'input[type="radio"], select, input[type="checkbox"], input[type="text"]'
 	    );
-	  
+
 	    elementos.forEach(el => {
-	      el.addEventListener('change', async (event) => {
-	        // Si los eventos están deshabilitados, se ignora.
-	        if (!window.eventosPreguntasHabilitados) return;
-	  
-	        // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora.
-	        if (event.target.closest('#barra-lateral-autoquizfillapp')) {
-	          return;
-	        }
-	  
-	        // Verificar si ya se está ejecutando el proceso
-	        if (window.autoSaveEnEjecucion) {
-	          console.log("AutoSave en ejecución, ignorando este cambio.");
-	          return;
-	        }
-	  
-	        window.autoSaveEnEjecucion = true;
-	        console.log('[detectarCambiosPreguntas] Cambio detectado en', event.target);
-	        try {
-	          await procesoAutoSave(event.target);
-	        } catch (error) {
-	          console.error("Error en procesoAutoSave:", error);
-	        } finally {
-	          window.autoSaveEnEjecucion = false;
-	        }
-	      });
+	        el.addEventListener('change', async (event) => {
+	            // Si los eventos están deshabilitados, se ignora.
+	            if (!window.eventosPreguntasHabilitados) return;
+
+	            // Si el cambio se produjo dentro del contenedor "barra-lateral-autoquizfillapp", se ignora.
+	            if (event.target.closest('#barra-lateral-autoquizfillapp')) {
+	                return;
+	            }
+
+	            // Verificar si ya se está ejecutando el proceso
+	            if (window.autoSaveEnEjecucion) {
+	                console.log("AutoSave en ejecución, ignorando este cambio.");
+	                return;
+	            }
+
+	            window.autoSaveEnEjecucion = true;
+	            console.log('[detectarCambiosPreguntas] Cambio detectado en', event.target);
+	            try {
+	                await procesoAutoSave(event.target);
+	            } catch (error) {
+	                console.error("Error en procesoAutoSave:", error);
+	            } finally {
+	                window.autoSaveEnEjecucion = false;
+	            }
+	        });
 	    });
-	  
+
 	    // 2. Configura los elementos "draghome" para que sean arrastrables
 	    interact('.draghome').draggable({
-	      inertia: true,
-	      onmove: function (event) {
-	        // Aquí puedes incluir lógica de movimiento si lo requieres.
-	      },
-	      onend: async function (event) {
-	        // Si ya se está ejecutando el proceso, ignorar.
-	        if (window.autoSaveEnEjecucion) {
-	          console.log("AutoSave en ejecución, ignorando evento onend.");
-	          return;
+	        inertia: true,
+	        onmove: function (event) {
+	            // Aquí puedes incluir lógica de movimiento si lo requieres.
+	        },
+	        onend: async function (event) {
+	            // Si ya se está ejecutando el proceso, ignorar.
+	            if (window.autoSaveEnEjecucion) {
+	                console.log("AutoSave en ejecución, ignorando evento onend.");
+	                return;
+	            }
+
+	            window.autoSaveEnEjecucion = true;
+	            console.log('[detectarCambiosPreguntas] Evento onend disparado para:', event.target);
+
+	            // Obtén la posición de soltado (opcional)
+	            const dropX = event.pageX;
+	            const dropY = event.pageY;
+	            console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
+
+	            // Espera a que ocurra algún cambio en el DOM (por ejemplo, animaciones o re-renderizados)
+	            await new Promise(resolve => {
+	                const observer = new MutationObserver(() => {
+	                    observer.disconnect();
+	                    console.log('Se ha detectado un cambio en el DOM');
+	                    resolve();
+	                });
+	                observer.observe(document.body, { childList: true, subtree: true });
+	            });
+
+	            try {
+	                await procesoAutoSave(event.target);
+	            } catch (error) {
+	                console.error("Error en procesoAutoSave:", error);
+	            } finally {
+	                window.autoSaveEnEjecucion = false;
+	            }
 	        }
-	  
-	        window.autoSaveEnEjecucion = true;
-	        console.log('[detectarCambiosPreguntas] Evento onend disparado para:', event.target);
-	  
-	        // Obtén la posición de soltado (opcional)
-	        const dropX = event.pageX;
-	        const dropY = event.pageY;
-	        console.log(`Elemento soltado en X: ${dropX}, Y: ${dropY}`);
-	  
-	        // Espera a que ocurra algún cambio en el DOM (por ejemplo, animaciones o re-renderizados)
-	        await new Promise(resolve => {
-	          const observer = new MutationObserver(() => {
-	            observer.disconnect();
-	            console.log('Se ha detectado un cambio en el DOM');
-	            resolve();
-	          });
-	          observer.observe(document.body, { childList: true, subtree: true });
-	        });
-	  
-	        try {
-	          await procesoAutoSave(event.target);
-	        } catch (error) {
-	          console.error("Error en procesoAutoSave:", error);
-	        } finally {
-	          window.autoSaveEnEjecucion = false;
-	        }
-	      }
 	    });
-	  
+
 	    // 3. Configura el botón de auto-guardado, si existe
 	    const boton = document.getElementById("upload-autosave");
 	    if (boton) {
-	      boton.addEventListener("click", AutoSave_Firebase);
+	        boton.addEventListener("click", AutoSave_Firebase);
 	    } else {
-	      console.error("El botón con ID 'upload-autosave' no fue encontrado.");
+	        console.error("El botón con ID 'upload-autosave' no fue encontrado.");
 	    }
-	  }
-	  
+	}
+
 
 	async function procesoAutoSave(elemento) {
 	    // Verifica si 'questions-AutoSave' existe en sessionStorage
@@ -44675,7 +44694,7 @@
 	                        // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
 	                        let enunciado = data.enunciado;
 	                        let contador = 0;
-	                        
+
 	                        // Usamos una expresión regular que sólo coincida con corchetes vacíos (o que tengan solo espacios)
 	                        enunciado = enunciado.replace(/\[\s*\]/g, (match) => {
 	                            // Obtenemos la respuesta correspondiente o un string vacío si no existe
@@ -44685,10 +44704,10 @@
                                     <span style="font-weight:500; color:MediumBlue;">${respuesta}</span>
                                     <span style="font-weight:500;">]</span>`;
 	                        });
-	                        
+
 	                        enunciado = `<strong>Pregunta ${numeroPregunta}:</strong> ` + enunciado;
 	                        html += `<div class="enunciado">${enunciado}</div>`;
-	                        
+
 
 	                    } else if (data.tipo === 'draganddrop_image') {
 	                        const isArray = Array.isArray(data.respuestaCorrecta);
@@ -44832,7 +44851,7 @@
 	                        // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
 	                        let enunciado = data.enunciado;
 	                        let contador = 0;
-	                        
+
 	                        // Usamos una expresión regular que sólo coincida con corchetes vacíos (o que tengan solo espacios)
 	                        enunciado = enunciado.replace(/\[\s*\]/g, (match) => {
 	                            // Obtenemos la respuesta correspondiente o un string vacío si no existe
@@ -44842,7 +44861,7 @@
                                     <span style="font-weight:500; color:MediumBlue;">${respuesta}</span>
                                     <span style="font-weight:500;">]</span>`;
 	                        });
-	                        
+
 	                        enunciado = `<strong>Pregunta ${questionNumber}:</strong> ` + enunciado;
 	                        html += `<div class="enunciado">${enunciado}</div>`;
 	                    } else if (data.tipo === 'draganddrop_image') {
@@ -44979,15 +44998,15 @@
 
 	    // localStorage.removeItem('questions-AutoSave');
 
-	    
+
 
 
 	}
 
 	function crearBotonAutoSave() {
 	    // Buscar el botón original por su texto
-	    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button => 
-	        button.textContent.trim() === "Enviar todo y terminar" || 
+	    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button =>
+	        button.textContent.trim() === "Enviar todo y terminar" ||
 	        button.textContent.trim() === "Submit all and finish"
 	    );
 
@@ -45074,7 +45093,7 @@
 	    let bypassAutoSave = false;
 
 	    // Agregar listener de click al botón original
-	    originalButton.addEventListener("click", async function(event) {
+	    originalButton.addEventListener("click", async function (event) {
 	        // Si bypassAutoSave está activo, se permite el click sin intervención adicional
 	        if (bypassAutoSave) {
 	            bypassAutoSave = false;
