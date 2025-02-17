@@ -45748,7 +45748,7 @@
 	        // Crear el nuevo botón
 	        const newButton = document.createElement("button");
 	        newButton.textContent = "AutoSave y terminar";
-	        newButton.className = "btn btn-secondary";
+	        newButton.className = "btn btn-primary"; // Misma clase que el original
 	        newButton.id = "autoSaveButton";
 	        newButton.style.marginBottom = "10px"; // Espacio entre botones
 
@@ -45768,7 +45768,7 @@
 	            }
 	        });
 
-	        // Insertar el nuevo botón antes del original
+	        // Insertar el nuevo botón antes del original (encima)
 	        originalButton.parentNode.insertBefore(newButton, originalButton);
 	    }
 	}
