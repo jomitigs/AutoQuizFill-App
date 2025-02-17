@@ -5,7 +5,7 @@ import { contenedorRuta_js, contenedorRutaDinamica_js } from './ruta/script.js';
 
 import { renderizarPreguntas } from './autofill-autosave-helpers.js';
 
-import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses } from './autosave/autosave-script.js';
+import { contenedorAutoSave_js, AutoSaveQuestions_SessionStorage, AutoSave_ShowResponses, crearBotonAutoSave } from './autosave/autosave-script.js';
 import { contenedorAutoFill_js } from './autofill/autofill-script.js';
 
 import { getDataFromFirebaseAsync } from '../config-firebase/firebase-helpers.js';
@@ -139,6 +139,15 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
     }
 
     detectarCambiosInterruptor();
+
+    
+
+    const botonAutoSave = localStorage.getItem("botonAutoSavep") || "false";
+
+    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php')) {
+        // Llamar a la función para ejecutarla cuando sea necesario
+        crearBotonAutoSave();
+    }
 }
 
 async function contenedorAutoFillAutoSave_js() {
@@ -157,7 +166,7 @@ async function contenedorAutoFillAutoSave_js() {
     const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 
     if ((stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
-       
+
         getDataFromFirebaseAsync();
         const originalFormulations = document.querySelectorAll(".formulation.clearfix");
         await AutoSaveQuestions_SessionStorage(originalFormulations);
@@ -170,13 +179,13 @@ async function contenedorAutoFillAutoSave_js() {
             window.eventosPreguntasHabilitados = true;
 
             await AutoSaveQuestions_SessionStorage(originalFormulations);
-            
+
             if (stateAutoSave === "activado") {
                 contenedorAutoSave_js();
             }
-            
-        } 
-        
+
+        }
+
         if (stateAutoSave === "activado") {
             bodyAutoSave.style.display = 'flex';
             contenedorAutoSave_js();
@@ -233,7 +242,7 @@ function detectarCambiosInterruptor() {
             if (stateAutoSave === "activado") {
                 contenedorAutoSave_js();
             }
-            
+
         } else {
             bodyAutoFill.style.display = 'none';
         }

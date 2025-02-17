@@ -761,3 +761,42 @@ export async function AutoSave_Firebase() {
 
 }
 
+export function crearBotonAutoSave() {
+    // Seleccionar el botón original por su texto
+    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button => 
+        button.textContent.trim() === "Enviar todo y terminar" || 
+        button.textContent.trim() === "Submit all and finish"
+    );
+
+    if (originalButton) {
+        // Verificar si ya existe el botón adicional para evitar duplicados
+        if (document.getElementById("autoSaveButton")) return;
+
+        // Crear el nuevo botón
+        const newButton = document.createElement("button");
+        newButton.textContent = "Auto Guardar y Enviar";
+        newButton.className = "btn btn-secondary";
+        newButton.id = "autoSaveButton";
+        newButton.style.marginTop = "10px"; // Espaciado visual
+
+        // Agregar evento de clic al nuevo botón
+        newButton.addEventListener("click", async () => {
+            try {
+                // Llamar a la función AutoSave_Firebase y esperar su finalización
+                if (typeof AutoSave_Firebase === "function") {
+                    await AutoSave_Firebase();
+                } else {
+                    console.warn("AutoSave_Firebase no está definida.");
+                }
+                // Hacer clic en el botón original
+                originalButton.click();
+            } catch (error) {
+                console.error("Error en AutoSave_Firebase:", error);
+            }
+        });
+
+        // Insertar el nuevo botón después del original
+        originalButton.parentNode.insertBefore(newButton, originalButton.nextSibling);
+    }
+}
+

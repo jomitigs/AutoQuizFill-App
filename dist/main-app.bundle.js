@@ -45729,6 +45729,45 @@
 
 	}
 
+	function crearBotonAutoSave() {
+	    // Seleccionar el botón original por su texto
+	    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button => 
+	        button.textContent.trim() === "Enviar todo y terminar" || 
+	        button.textContent.trim() === "Submit all and finish"
+	    );
+
+	    if (originalButton) {
+	        // Verificar si ya existe el botón adicional para evitar duplicados
+	        if (document.getElementById("autoSaveButton")) return;
+
+	        // Crear el nuevo botón
+	        const newButton = document.createElement("button");
+	        newButton.textContent = "Auto Guardar y Enviar";
+	        newButton.className = "btn btn-secondary";
+	        newButton.id = "autoSaveButton";
+	        newButton.style.marginTop = "10px"; // Espaciado visual
+
+	        // Agregar evento de clic al nuevo botón
+	        newButton.addEventListener("click", async () => {
+	            try {
+	                // Llamar a la función AutoSave_Firebase y esperar su finalización
+	                if (typeof AutoSave_Firebase === "function") {
+	                    await AutoSave_Firebase();
+	                } else {
+	                    console.warn("AutoSave_Firebase no está definida.");
+	                }
+	                // Hacer clic en el botón original
+	                originalButton.click();
+	            } catch (error) {
+	                console.error("Error en AutoSave_Firebase:", error);
+	            }
+	        });
+
+	        // Insertar el nuevo botón después del original
+	        originalButton.parentNode.insertBefore(newButton, originalButton.nextSibling);
+	    }
+	}
+
 	async function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
 	    // console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
 
@@ -47079,6 +47118,15 @@
 	    }
 
 	    detectarCambiosInterruptor$1();
+
+	    
+
+	    const botonAutoSave = localStorage.getItem("botonAutoSavep") || "false";
+
+	    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php')) {
+	        // Llamar a la función para ejecutarla cuando sea necesario
+	        crearBotonAutoSave();
+	    }
 	}
 
 	async function contenedorAutoFillAutoSave_js$1() {
@@ -47097,7 +47145,7 @@
 	    const bodyAutoFill = document.getElementById("body-autoquiz-autofill");
 
 	    if ((stateAutoSave === "activado" || stateAutoFill === "activado") && window.location.href.includes('/mod/quiz/attempt.php')) {
-	       
+
 	        getDataFromFirebaseAsync();
 	        const originalFormulations = document.querySelectorAll(".formulation.clearfix");
 	        await AutoSaveQuestions_SessionStorage$1(originalFormulations);
@@ -47110,13 +47158,13 @@
 	            window.eventosPreguntasHabilitados = true;
 
 	            await AutoSaveQuestions_SessionStorage$1(originalFormulations);
-	            
+
 	            if (stateAutoSave === "activado") {
 	                contenedorAutoSave_js$1();
 	            }
-	            
-	        } 
-	        
+
+	        }
+
 	        if (stateAutoSave === "activado") {
 	            bodyAutoSave.style.display = 'flex';
 	            contenedorAutoSave_js$1();
@@ -47173,7 +47221,7 @@
 	            if (stateAutoSave === "activado") {
 	                contenedorAutoSave_js$1();
 	            }
-	            
+
 	        } else {
 	            bodyAutoFill.style.display = 'none';
 	        }
