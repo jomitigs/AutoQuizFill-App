@@ -93,9 +93,29 @@ import './style.css'; // Importa el archivo de estilos CSS
     if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
       event.preventDefault();
       console.log('keydown: Ctrl + Q detectado');
+      
+      // Alterna la visibilidad de la barra lateral
       alternarBarraLateral();
+  
+      // Recupera el valor actualizado de 'barraLateralVisible' del localStorage
+      // Se asume que se guarda como 'true' o 'false' (string)
+      const barraLateralVisible = localStorage.getItem('barraLateralVisible') === 'true';
+  
+      // Selecciona el elemento que se desea mostrar u ocultar
+      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
+  
+      // Muestra u oculta el elemento según el valor de barraLateralVisible
+      if (barraLateralVisible) {
+        btnAutoQuizFillApp.style.display = 'block'; // o el display que corresponda
+      } else {
+        btnAutoQuizFillApp.style.display = 'none';
+      }
+  
+      // Guarda en localStorage la variable 'hideapp' con el mismo valor que 'barraLateralVisible'
+      localStorage.setItem('hideapp', barraLateralVisible);
     }
   });
+  
 
   // Ajusta el contenido de la página inicialmente si la barra está visible
   if (isBarraVisible) {
