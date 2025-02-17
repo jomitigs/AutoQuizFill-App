@@ -47263,7 +47263,7 @@
 	    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "false" ) {
 	        console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
 	        crearBotonAutoSave();
-	    } else {
+	    } else if (window.location.href.includes('mod/quiz/summary.php') && hideApp === "true" ) {
 	        autoSaveHideApp();
 	        console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
 	    }
