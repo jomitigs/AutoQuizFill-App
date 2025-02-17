@@ -88,7 +88,6 @@ import './style.css'; // Importa el archivo de estilos CSS
     alternarBarraLateral();
   });
 
-  // Evento para detectar la combinación de teclas Ctrl + Q
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
       event.preventDefault();
@@ -98,7 +97,6 @@ import './style.css'; // Importa el archivo de estilos CSS
       alternarBarraLateral();
   
       // Recupera el valor actualizado de 'barraLateralVisible' del localStorage
-      // Se asume que se guarda como 'true' o 'false' (string)
       const barraLateralVisible = localStorage.getItem('barraLateralVisible') === 'true';
   
       // Selecciona el elemento que se desea mostrar u ocultar
@@ -106,15 +104,16 @@ import './style.css'; // Importa el archivo de estilos CSS
   
       // Muestra u oculta el elemento según el valor de barraLateralVisible
       if (barraLateralVisible) {
-        btnAutoQuizFillApp.style.display = 'block'; // o el display que corresponda
+        btnAutoQuizFillApp.style.display = 'block';
       } else {
         btnAutoQuizFillApp.style.display = 'none';
       }
   
-      // Guarda en localStorage la variable 'hideapp' con el mismo valor que 'barraLateralVisible'
-      localStorage.setItem('hideapp', barraLateralVisible);
+      // Guarda en localStorage la variable 'hideapp' con el valor opuesto a barraLateralVisible
+      localStorage.setItem('hideapp', (!barraLateralVisible).toString());
     }
   });
+  
   
 
   // Ajusta el contenido de la página inicialmente si la barra está visible
