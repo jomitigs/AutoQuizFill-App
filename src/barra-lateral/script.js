@@ -4,6 +4,10 @@ import html from './index.html'; // Importa el contenido de index.html como una 
 // Importar el CSS (PostCSS lo inyectará en el bundle)
 import './style.css'; // Importa el archivo de estilos CSS
 
+
+import { crearBotonAutoSave } from '../opc-autofill-autosave-moodle/autosave/autosave-script.js';
+
+
 // Encapsular el código dentro de una IIFE
 (function () {
   console.log('[AutoFillQuiz-App] Creando Interfaz.');

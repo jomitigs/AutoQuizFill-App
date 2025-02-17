@@ -23309,768 +23309,6 @@
 	var css_248z$7 = "/* Estilos para la barra lateral de AutoQuizFillApp */\r\n#barra-lateral-autoquizfillapp {\r\n  width: 27.5%; /* Define el ancho de la barra lateral como el 27.5% del ancho total del viewport */\r\n  min-width: 400px; /* Establece un ancho mínimo para asegurar que la barra no sea demasiado estrecha */\r\n  max-width: 500px; /* Establece un ancho máximo para evitar que la barra lateral ocupe demasiado espacio */\r\n  height: 100%; /* Hace que la barra lateral ocupe el 100% de la altura del viewport */\r\n  position: fixed; /* Posiciona la barra lateral de manera fija en la parte superior e izquierda de la ventana */\r\n  top: 0;\r\n  left: 0;\r\n  background-color: #ecf0f1; /* Define un color de fondo claro para la barra lateral */\r\n  padding: 15px; /* Añade un padding interno de 20px para espaciar el contenido */\r\n  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra para darle profundidad y separar visualmente la barra del contenido */\r\n  z-index: 9999; /* Asegura que la barra lateral esté por encima de otros elementos en la página */\r\n  display: flex; /* Configura el layout interno para usar flexbox */\r\n  flex-direction: column;\r\n  align-items: flex-start;\r\n  /* overflow-y: auto; /* Permite el desplazamiento vertical si el contenido excede la altura de la barra */\r\n  scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */\r\n  font-family: 'Poppins', sans-serif; /* Aplica la fuente Poppins a todo el contenido dentro de la barra lateral */\r\n}\r\n\r\n/* Estilos para ocultar la barra de desplazamiento en navegadores basados en WebKit (Chrome, Safari, Edge) */\r\n#barra-lateral-autoquizfillapp::-webkit-scrollbar {\r\n  display: none; /* Oculta la barra de desplazamiento en Chrome, Safari y Edge */\r\n}\r\n\r\n/* Estilos para el botón de mostrar/ocultar la barra lateral */\r\n#boton-mostrar-ocultar-autoquizfillapp {\r\n  position: fixed; /* Posiciona el botón de manera fija en la parte superior izquierda, ajustando según el ancho mínimo de la barra */\r\n  top: 20px;\r\n  left: 375px; /* Ajusta según el ancho mínimo */\r\n  z-index: 10000; /* Asegura que el botón esté por encima de otros elementos */\r\n  width: 40px; /* Define el tamaño del botón */\r\n  height: 40px;\r\n  cursor: pointer; /* Cambia el cursor a un puntero para indicar que es interactivo */\r\n  border: none; /* Elimina el borde predeterminado del botón */\r\n  background-color: #3498db; /* Establece un color de fondo azul para el botón */\r\n  color: #ffffff; /* Define el color del texto/icono dentro del botón */\r\n  border-radius: 5px; /* Aplica bordes redondeados al botón */\r\n  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Añade una sombra para darle profundidad */\r\n  display: flex; /* Configura el layout interno para centrar el contenido (icono) */\r\n  justify-content: center;\r\n  align-items: center;\r\n  font-size: 18px; /* Aumenta el tamaño de la fuente del icono */\r\n}\r\n\r\n/* Estilos para los iconos de FontAwesome */\r\n.fa-classic, .fa-regular, .fa-solid, .far, .fas {\r\n  font-family: \"Font Awesome 6 Free\";\r\n}\r\n\r\n\r\n\r\n/* Estilos Adicionales Opcionales */\r\n\r\n/* Enlaces dentro de la Barra Lateral */\r\n#barra-lateral-autoquizfillapp a {\r\n    color: #0066cc;\r\n    text-decoration: none;\r\n}\r\n\r\n#barra-lateral-autoquizfillapp a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n\r\n/* Sobrescribir estilos para párrafos dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp p {\r\n  margin-top: 0;           /* Restablece el margen superior */\r\n  margin-bottom: 0;        /* Restablece el margen inferior */\r\n  /* Puedes añadir más propiedades para personalizar según tus necesidades */\r\n  /* Por ejemplo: */\r\n  /* font-size: 1rem; */\r\n  /* color: #000; */\r\n}\r\n\r\n/* Sobrescribir el selector universal dentro de #barra-lateral-autoquizfillapp */\r\n#barra-lateral-autoquizfillapp,\r\n#barra-lateral-autoquizfillapp *,\r\n#barra-lateral-autoquizfillapp *::before,\r\n#barra-lateral-autoquizfillapp *::after {\r\n    box-sizing: border-box; /* O el valor que prefieras */\r\n    /* Restablece o define otras propiedades del selector universal si es necesario */\r\n}\r\n\r\n";
 	styleInject(css_248z$7);
 
-	// Importar el archivo HTML como cadena
-
-	// Encapsular el código dentro de una IIFE
-	(function () {
-	  console.log('[AutoFillQuiz-App] Creando Interfaz.');
-
-	  // 1. Insertar el contenido HTML en el DOM
-	  document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
-
-	  // 2. Buscar los elementos en el DOM que acabamos de inyectar
-	  const barraLateral = document.getElementById('barra-lateral-autoquizfillapp'); // Obtiene el elemento de la barra lateral
-	  const botonMostrarOcultar = document.getElementById('boton-mostrar-ocultar-autoquizfillapp'); // Obtiene el botón de mostrar/ocultar
-
-	  // 3. Verificar que existan
-	  if (!barraLateral || !botonMostrarOcultar) { // Verifica si los elementos existen
-	    console.error('initBarraLateral: Error: No se encontraron los elementos necesarios en el DOM.'); // Error si no se encuentran
-	    return; // Sale de la función
-	  }
-
-	  // Define los íconos para el botón
-	  const iconFlecha = '<i class="fa-solid fa-angles-right"></i>'; // Define el icono de flecha
-	  const iconFlechaRotada = '<i class="fa-solid fa-angles-right fa-rotate-180"></i>'; // Define el icono de flecha rotada
-
-	  // Leer el estado de la barra lateral desde localStorage
-	  const estadoBarra = localStorage.getItem('barraLateralVisible'); // Obtiene el estado guardado
-	  let isBarraVisible = estadoBarra === null ? true : estadoBarra === 'true'; // Define la visibilidad inicial
-
-	  const hideApp = localStorage.getItem('hideapp');
-
-	  // Aplicar el estado inicial de la barra lateral
-	  if (isBarraVisible) { // Si la barra está visible
-	    barraLateral.style.display = 'flex'; // Muestra la barra lateral
-	    botonMostrarOcultar.innerHTML = iconFlechaRotada; // Asigna el icono rotado al botón
-	  } else { // Si la barra está oculta
-	    barraLateral.style.display = 'none'; // Oculta la barra lateral
-	    botonMostrarOcultar.innerHTML = iconFlecha; // Asigna el icono normal al botón
-	    botonMostrarOcultar.style.left = '10px'; // Posiciona el botón
-	    document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
-	    document.body.style.width = '100%'; // Resetea el ancho del body
-
-	    if (hideApp === "true") {
-	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
-	      btnAutoQuizFillApp.style.display = 'none';
-	    }
-	  }
-
-	  // Función para reposicionar el botón en función del ancho de la barra lateral
-	  function reposicionarBoton() {
-	    const barraWidth = barraLateral.getBoundingClientRect().width;
-	    botonMostrarOcultar.style.left = `calc(${barraWidth}px + 10px)`;
-	  }
-
-	  // Función para ajustar el contenido de la página según el ancho de la barra lateral
-	  function ajustarContenidoPagina() {
-	    const barraWidth = barraLateral.getBoundingClientRect().width;
-	    const contenido = document.body; // Puedes usar document.body directamente
-	    contenido.style.marginLeft = `${barraWidth}px`;
-	    contenido.style.width = `calc(100% - ${barraWidth}px)`;
-	  }
-
-	  // Función para alternar la visibilidad de la barra lateral
-	  function alternarBarraLateral() {
-	    if (isBarraVisible) {
-	      barraLateral.style.display = 'none';
-	      botonMostrarOcultar.innerHTML = iconFlecha;
-	      botonMostrarOcultar.style.left = '10px';
-	      document.body.style.marginLeft = '0';
-	      document.body.style.width = '100%';
-	      isBarraVisible = false;
-	      localStorage.setItem('barraLateralVisible', 'false');
-	    } else {
-	      barraLateral.style.display = 'flex';
-	      botonMostrarOcultar.innerHTML = iconFlechaRotada;
-	      reposicionarBoton();
-	      ajustarContenidoPagina();
-	      isBarraVisible = true;
-	      localStorage.setItem('barraLateralVisible', 'true');
-	    }
-	  }
-
-	  // Observador de cambios en el tamaño de la barra lateral
-	  const resizeObserver = new ResizeObserver(() => {
-	    reposicionarBoton();
-	    ajustarContenidoPagina();
-	  });
-	  resizeObserver.observe(barraLateral);
-
-	  // Evento al hacer clic en el botón de mostrar/ocultar
-	  botonMostrarOcultar.addEventListener('click', () => {
-	    //console.log('botonMostrarOcultar: click detectado');
-	    alternarBarraLateral();
-	  });
-
-	  document.addEventListener('keydown', (event) => {
-	    if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
-	      event.preventDefault();
-	      console.log('keydown: Ctrl + Q detectado');
-
-	      // Alterna la visibilidad de la barra lateral
-	      alternarBarraLateral();
-
-	      // Recupera el valor actualizado de 'barraLateralVisible' del localStorage
-	      const barraLateralVisible = localStorage.getItem('barraLateralVisible') === 'true';
-
-	      // Guarda en localStorage la variable 'hideapp' con el valor opuesto a barraLateralVisible
-	      localStorage.setItem('hideapp', (!barraLateralVisible).toString());
-
-	      // Selecciona el elemento que se desea mostrar u ocultar
-	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
-
-	      const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
-	      const hideApp = localStorage.getItem("hideapp") || "false";
-
-
-	      // Muestra u oculta el elemento según el valor de barraLateralVisible
-	      if (barraLateralVisible) {
-	        btnAutoQuizFillApp.style.display = 'block';
-
-	        if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "false") {
-	          console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
-	          crearBotonAutoSave();
-	        } else {
-	          console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
-	        }
-
-	      } else {
-	        btnAutoQuizFillApp.style.display = 'none';
-	        btnAutoSave.style.display = 'none';
-	      }
-
-
-	    }
-	  });
-
-
-
-	  // Ajusta el contenido de la página inicialmente si la barra está visible
-	  if (isBarraVisible) {
-	    ajustarContenidoPagina();
-	  }
-
-	  // Retorna la barra lateral si es necesario dentro del IIFE
-	  // Nota: Este valor no estará accesible fuera de la IIFE
-	  // Puedes eliminar esta línea si no la necesitas
-	  return barraLateral;
-	})();
-
-	var css_248z$6 = "\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
-	styleInject(css_248z$6);
-
-	var css_248z$5 = "/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 1.5rem;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        position: relative;\r\n        border-radius: 4px 4px 0 0; /* Redondea solo los bordes superiores */\r\n        height: 70px;\r\n\r\n    }\r\n\r\n    #panel-autofillquizapp {\r\n        display: block;\r\n        border-radius: 4px;\r\n        width: 100%; /* Ocupa todo el ancho del contenedor */\r\n        height: 100vh; /* O ajustado al contenedor padre */\r\n        overflow-y: hidden; /* Deshabilita el desplazamiento vertical */\r\n        box-sizing: border-box;\r\n    }\r\n    \r\n    #contenido-principal {\r\n        width: 100%;\r\n        height: calc(100% - 70px); /* Por ejemplo, ajusta el espacio si hay un header */\r\n        padding: 10px 15px 10px 15px;\r\n        background-color: #ffffff;\r\n        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n        /* overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n        -ms-overflow-style: none; /* Ocultar barra en IE y Edge */\r\n        scrollbar-width: none; /* Ocultar barra en Firefox */\r\n        border-radius: 0 0 8px 8px;\r\n        box-sizing: border-box;\r\n    }\r\n    ";
-	styleInject(css_248z$5);
-
-	var css_248z$4 = "/* ==========================================================================\r\n   1. Contenedor Principal\r\n   ========================================================================== */\r\n#autofillautosave_moodle {\r\n    display: flex;\r\n    flex-direction: column;\r\n\r\n    /* Altura ajustable según se requiera */\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección: Ruta y Ciclo\r\n     ========================================================================== */\r\n\r\n#containerRutaFirebase .title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n}\r\n\r\n#containerRutaFirebase .label {\r\n    font-size: 14px;\r\n    color: #34495e;\r\n}\r\n\r\n/* ==========================================================================\r\n     4. Sección: Ruta Dinámica\r\n     ========================================================================== */\r\n\r\n.select-ruta {\r\n    width: 100%;\r\n    padding: 3px;\r\n    font-size: 15px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.boton-ruta {\r\n    width: 100%;\r\n    padding: 5px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n#containerRutaFirebase {\r\n  display: flex;\r\n  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */\r\n  height: 38px;\r\n  margin-left: 2px;\r\n}\r\n\r\n#containerRutaFirebase div {\r\n  margin-top: -6px;\r\n  padding: 0;\r\n}\r\n\r\n\r\n\r\n/* ==========================================================================\r\n     5. Sección: Wrapper de AutoFill y AutoSave\r\n     ========================================================================== */\r\n/* Contenedor padre */\r\n#container-autofillautosave {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    height: 580px; /* Se fija la altura total */\r\n    /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */\r\n  }\r\n  \r\n  /* Reglas compartidas para cada subcontenedor */\r\n  .subcontainer-autoquiz-autofill {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin: 0;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto;\r\n  }\r\n\r\n\r\n  .subcontainer-autoquiz-autosave {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin-bottom: 20px;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto; \r\n\r\n}\r\n\r\n@media (max-height: 580px) {\r\n    .subcontainer-autoquiz-autofill,\r\n    .subcontainer-autoquiz-autosave {\r\n        flex: 1;\r\n        max-height: 50%;\r\n    }\r\n}\r\n\r\n\r\n  \r\n /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */\r\n#body-autoquiz-autosave,\r\n#body-autoquiz-autofill {\r\n    flex-direction: column;\r\n    font-size: 11px;\r\n    overflow-y: auto;\r\n    height: calc(100% - 30px);\r\n  }\r\n\r\n    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */\r\n    #body-autoquiz-autosave::-webkit-scrollbar,\r\n    #body-autoquiz-autofill::-webkit-scrollbar {\r\n      width: 0.4em; /* Ancho de la barra de desplazamiento */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-thumb,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */\r\n      border-radius: 10px;\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-track,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-track {\r\n      background: transparent; /* Fondo transparente */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-button,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-button {\r\n      display: none; /* Oculta botones (flechas) */\r\n    }\r\n  \r\n  /* Reglas para el elemento de la pregunta */\r\n  .preguntaautosave {\r\n    justify-content: flex-start;\r\n    align-items: center;\r\n    padding: 0;\r\n    color: #34495e;\r\n    flex-wrap: wrap;\r\n    width: 100%;\r\n    word-wrap: break-word;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */\r\n  .respuestasautosave {\r\n    width: 100%;\r\n    min-width: 0;\r\n    overflow-wrap: break-word;\r\n    word-break: break-word;\r\n    white-space: normal;\r\n  }\r\n  \r\n  #moodle-config label {\r\n    margin-bottom: 0rem;\r\n  }\r\n  \r\n  #subopcion-config {\r\n    margin-bottom: 0rem;\r\n    font-weight: 500;\r\n    margin-left: 3px;\r\n  }\r\n\r\n/* --------------------------------------------------------------------------\r\n     5.1. Subcontenedor de AutoFill\r\n     -------------------------------------------------------------------------- */\r\n\r\n/* Header de AutoFill: título y switch */\r\n.header-autoquiz {\r\n    margin-top: 0px;\r\n    margin-bottom: 0px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    position: relative;\r\n    height: 30px;\r\n}\r\n\r\n.header-autoquiz h2 {\r\n    font-size: 20px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n}\r\n\r\n/* Switch para AutoFill (y AutoSave) */\r\n.switch-autoquiz {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 34px;\r\n    height: 20px;\r\n    margin:0px;\r\n}\r\n\r\n.switch-autoquiz input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n}\r\n\r\n.slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: 0.4s;\r\n    border-radius: 20px;\r\n}\r\n\r\n.slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 12px;\r\n    width: 12px;\r\n    border-radius: 50%;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    transition: 0.4s;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider {\r\n    background-color: #3498db;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider:before {\r\n    transform: translateX(14px);\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección de Usuarios\r\n     ========================================================================== */\r\n\r\n/* Contenedor de usuarios (oculto por defecto) */\r\n.users {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n/* Usuario actual: ícono y nombre */\r\n.usuario-actual {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    flex: 1;\r\n}\r\n\r\n.nombre-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0 5px;\r\n}\r\n\r\n/* Select para el siguiente usuario */\r\n.select-siguiente-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    border: none;\r\n    background-color: transparent;\r\n    outline: none;\r\n    appearance: none;\r\n    cursor: pointer;\r\n    text-align: right;\r\n    padding-right: 0;\r\n    direction: rtl;\r\n    /* Alinea el desplegable a la derecha */\r\n}\r\n\r\n/* Opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;\r\n    padding: 10px;\r\n    text-align: right;\r\n    direction: ltr;\r\n}\r\n\r\n/* Limitación de altura y scroll vertical */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2);\r\n    border-radius: 10px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;\r\n}\r\n\r\n/* Resalta la opción seleccionada */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;\r\n    font-weight: bold;\r\n}\r\n\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;\r\n}\r\n\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;\r\n}\r\n\r\n/* Botón para pasar al siguiente usuario */\r\n.boton-siguiente-usuario {\r\n    margin: 0;\r\n    font-weight: 600;\r\n    border: none;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n    padding: 0 3px;\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;\r\n    color: #34495e;\r\n}\r\n\r\n\r\n.img-overlay {\r\n    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */\r\n    display: inline-block; /* O block según convenga en tu diseño */\r\n}\r\n\r\n.img-overlay::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    /* Fondo MediumBlue con 10% de opacidad */\r\n    background-color: rgba(0, 0, 205, 0.2);\r\n    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */\r\n}\r\n\r\n#upload-autosave {\r\n    position: relative;\r\n    display: inline-block;\r\n    border: none;\r\n    background: none;\r\n    cursor: pointer;\r\n    font-size:0.9em; /* Ajusta el tamaño según necesites */\r\n    color: inherit; /* Mantiene el color del texto */\r\n    transition: color 0.3s ease-in-out;\r\n}\r\n\r\n#upload-autosave:hover {\r\n    color: mediumblue;\r\n}\r\n\r\n\r\n/* Contenedor principal para cada pregunta */\r\n.question-container {\r\n    margin: 0px 0px 0px 0px;\r\n    padding: 5px 5px 5px 0px;\r\n  }\r\n  \r\n  /* Encabezado de la pregunta: título y badge de estado */\r\n  .question-header {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n  }\r\n  \r\n  /* Título de la pregunta (si deseas usar una clase específica en lugar de <strong>) */\r\n  .question-title {\r\n    font-weight: bold;\r\n    margin-right: 0.5rem;\r\n  }\r\n  \r\n  /* Badge del estado (color y tipografía) */\r\n  .question-state-badge {\r\n    /* Valores por defecto */\r\n    font-weight: 500;\r\n    padding: 0.2rem 0.4rem;\r\n    border-radius: 4px;\r\n    margin-left: 0.3rem;\r\n    color: #fff; /* Color de texto por defecto (blanco) */\r\n  }\r\n  \r\n  /* Botón para mostrar/ocultar la información (icono de ojo) */\r\n  .btn-toggle-visibility {\r\n    border: none;\r\n    background: transparent;\r\n    cursor: pointer;\r\n    font-size: 0.8rem;\r\n    margin-right: 0.5rem;\r\n    /* Ajusta si deseas más separación o estilos de hover */\r\n  }\r\n  \r\n  /* Contenedor que mostrará/ocultará el contenido de la pregunta */\r\n  .detail-container {\r\n    display: none; /* oculto por defecto */\r\n    margin-top: 0;\r\n  }\r\n  \r\n  /* Estilos de colores de fondo para cada estado, \r\n     si quieres usarlos como clases en lugar de inline-styles */\r\n  .badge-no-data {\r\n    background-color: #e63946; /* Rojo */\r\n    color: #fff;\r\n  }\r\n  \r\n  .badge-no-verificado {\r\n    background-color: #f1c40f; /* Amarillo mostaza */\r\n    color: #000;\r\n  }\r\n  \r\n  .badge-sin-responder {\r\n    background-color: #d3d3d3; /* Gris claro */\r\n    color: #000;\r\n  }\r\n  \r\n  .badge-verificado {\r\n    background-color: #28a745; /* Verde */\r\n    color: #fff;\r\n  }\r\n  \r\n  /* Ejemplo adicional: \r\n     si deseas animaciones suaves al mostrar/ocultar:\r\n     (requiere que cambies en JS de 'display: none' a \r\n     manipular la altura o la opacidad) */\r\n  \r\n  /* .detail-container {\r\n    transition: all 0.3s ease;\r\n  } */\r\n  ";
-	styleInject(css_248z$4);
-
-	function contenedorUsers_js() {
-	    const elementoDesplegableUsuario = document.querySelector('.dropdown-user-nick');
-	    const elementoUsuarioActual = document.getElementById('nombre-usuario-actual');
-	    const selectSiguienteUsuario = document.getElementById('siguiente-usuario');
-	    const botonSiguienteUsuario = document.getElementById('boton-siguiente-usuario');
-
-	    let nombreUsuarioActual = null; // Inicializado como null por defecto
-
-	    if (!elementoDesplegableUsuario) {
-	        console.warn("Elemento .dropdown-user-nick no encontrado. Estableciendo 'No login'.");
-	        nombreUsuarioActual = "No login"; // Asignar 'No login' como usuario actual
-	    } else {
-	        nombreUsuarioActual = elementoDesplegableUsuario.childNodes[1]?.textContent.trim();
-	        if (!nombreUsuarioActual) {
-	            console.error("No se pudo obtener el nombre del usuario actual.");
-	            botonSiguienteUsuario.style.display = 'none';
-	            return;
-	        }
-	    }
-
-	    elementoUsuarioActual.textContent = nombreUsuarioActual;
-
-	    const usuariosGuardados = JSON.parse(localStorage.getItem('listaUsuariosFiltrados'));
-	    if (!usuariosGuardados) {
-	        // console.error("No se encontraron usuarios en localStorage.");
-	        botonSiguienteUsuario.style.display = 'none';
-	        return;
-	    }
-
-	    // console.log("Usuarios encontrados en localStorage:", usuariosGuardados);
-	    const listaUsuarios = Object.values(usuariosGuardados);
-
-	    selectSiguienteUsuario.innerHTML = ""; // Limpia el select
-
-	    // Identifica el índice del usuario actual
-	    const indiceUsuarioActual = listaUsuarios.findIndex(usuario => usuario.usuario === nombreUsuarioActual);
-
-	    let siguienteUsuarioPredeterminado = null;
-
-	    // Si es "No login", selecciona el primer usuario como predeterminado
-	    if (nombreUsuarioActual === "No login") {
-	        siguienteUsuarioPredeterminado = listaUsuarios[0]?.usuario || null; // Primer usuario o null si la lista está vacía
-	    } else if (indiceUsuarioActual !== -1 && indiceUsuarioActual < listaUsuarios.length - 1) {
-	        siguienteUsuarioPredeterminado = listaUsuarios[indiceUsuarioActual + 1].usuario;
-	    }
-
-	    // Crear opciones en el select
-	    listaUsuarios.forEach((usuario) => {
-	        const optionElement = document.createElement("option");
-	        optionElement.value = usuario.usuario;
-	        optionElement.textContent = usuario.usuario;
-
-	        // Marca la opción predeterminada
-	        if (usuario.usuario === siguienteUsuarioPredeterminado) {
-	            optionElement.selected = true;
-	        }
-
-	        selectSiguienteUsuario.appendChild(optionElement);
-	    });
-
-	    if (siguienteUsuarioPredeterminado) ; else if (indiceUsuarioActual === listaUsuarios.length - 1) ; else ;
-
-	    // Agregar evento click al botón
-	    botonSiguienteUsuario.addEventListener('click', procesarUsuarioSeleccionado);
-
-	    contenedorRuta_js();
-	}
-
-	async function procesarUsuarioSeleccionado() {
-	    try {
-	        // Obtiene el valor seleccionado en el select
-	        const select = document.getElementById('siguiente-usuario');
-	        const selectedUser = select.value;
-
-	        if (!selectedUser) {
-	            console.error("No se selecciono ningun usuario.");
-	            return;
-	        }
-
-	        // Obtiene la lista de usuarios desde localStorage
-	        const listaUsuariosFiltrados = JSON.parse(localStorage.getItem('listaUsuariosFiltrados'));
-	        if (!listaUsuariosFiltrados) {
-	            console.error("No se encontro 'listaUsuariosFiltrados' en localStorage.");
-	            return;
-	        }
-
-	        // Busca el usuario en la lista
-	        const usuario = listaUsuariosFiltrados.find(user => user.usuario === selectedUser);
-	        if (!usuario) {
-	            console.error(`El usuario '${selectedUser}' no fue encontrado en 'listaUsuariosFiltrados'.`);
-	            return;
-	        }
-
-	        const { usuario: username, contraseña: password } = usuario;
-
-	        console.log(`Username: ${username}`);
-	        console.log(`Password: ${password}`);
-
-	        // Verifica si hay una sesion activa
-	        const sesionActiva = await verificarAutenticacion();
-	        if (sesionActiva) {
-	            console.log("Hay una sesion activa. Cerrando sesion...");
-	            const logoutExitoso = await autoLogout();
-	            if (!logoutExitoso) {
-	                console.error("Error al cerrar la sesion.");
-	                return;
-	            }
-	        }
-
-	        // Inicia sesion con el usuario seleccionado
-	        console.log(`Iniciando sesion para el usuario: ${username}`);
-	        const loginExitoso = await autoLogin(username, password);
-
-	        if (loginExitoso) {
-	            console.log(`Redirigiendo a la pagina de calificaciones para el usuario: ${username}`);
-	            const dominioActual = new URL(localStorage.getItem("selectedLoginUrl")).origin; // Obtiene solo el dominio
-	            window.location.href = `${dominioActual}/grade/report/overview/index.php`; // Redirige
-	        } else {
-	            console.error("No se pudo iniciar sesion. Verifique las credenciales.");
-	        }
-	    } catch (error) {
-	        console.error("Ocurrio un error durante el proceso:", error);
-	    }
-	}
-
-	function contenedorRuta_js$1() {
-
-	    const contenidoPrincipal = document.getElementById('contenido-principal');
-	    const containerOptionSelect = document.querySelector('.containerOption');
-	    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-	    const ruta = localStorage.getItem('configRuta');
-	    const ciclo = localStorage.getItem('ciclo');
-
-	    // Función para crear y mostrar el mensaje de ruta inválida
-	    const rutaInvalida = () => {
-	        if (!document.getElementById('mensaje-ruta-invalida')) {
-	            const mensaje = document.createElement('div');
-	            mensaje.id = 'ruta-invalida';
-	            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
-	            Object.assign(mensaje.style, {
-	                color: 'red',
-	                fontWeight: '500',
-	                fontSize: '0.95em',
-	                fontStyle: 'italic',
-	                textAlign: 'center'
-	            });
-	            contenidoPrincipal.appendChild(mensaje);
-	            console.log('[opc-autofill-autosave-moodle: ruta]  No ha seleccionado una ruta o ciclo');
-	        }
-	    };
-
-	    if (!ruta || !ciclo) {
-	        if (containerOptionSelect) containerOptionSelect.style.display = 'none';
-	        localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
-	        localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
-	        rutaInvalida();
-	        return; // Salir de la función ya que faltan datos
-	    }
-
-	    // Si se tienen ruta y ciclo definidos, actualizamos los contenedores
-	    if (containerRutaFirebase) {
-	        // Eliminar mensaje de advertencia si existe
-	        const mensajeExistente = document.getElementById('ruta-invalida');
-
-	        if (mensajeExistente) {
-	            mensajeExistente.remove();
-	        }
-
-	        containerRutaFirebase.style.display = 'flex';
-	        containerRutaFirebase.innerHTML = `
-        <div>
-          <span class="title">Ruta:</span> <span class="label">${ruta}</span>
-        </div>
-        <div>
-          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-        </div>
-      `;
-
-	        console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo:${ciclo}`);
-	    } else {
-	        console.error('[opc-autofill-autosave-moodle: ruta] No se encontró el contenedor de la ruta y ciclo.');
-	    }
-
-	}
-
-	// <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
-
-	async function contenedorRutaDinamica_js() {
-	    // Obtiene los valores 'configRuta' y 'ciclo' del almacenamiento local
-	    const ruta = localStorage.getItem('configRuta');
-	    const ciclo = localStorage.getItem('ciclo');
-	    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-	    
-	    // Se declara con let para poder actualizar su valor
-	    let rutaDinamica = sessionStorage.getItem('configRutaDinamic');
-
-	    // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
-	    if (!ruta || !ciclo) {
-	        // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
-	        contenedorRuta_js$1();
-	        return;
-	    } 
-	    
-	    else if (rutaDinamica && rutaDinamica !== "dinámica") {
-	        containerRutaFirebase.style.display = 'flex';
-	        containerRutaFirebase.innerHTML = `
-            <div>
-              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
-            </div>
-            <div>
-              <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-            </div>
-        `;
-	        
-	    } else {
-	        containerRutaFirebase.style.display = 'flex';
-
-	        // Espera a que la función asíncrona obtenga la ruta dinámica
-	        rutaDinamica = await obtenerRutaDinamica(ruta);
-	     
-	        if (rutaDinamica) {
-	            console.log("La nueva ruta dinámica es:", rutaDinamica);
-
-	            sessionStorage.setItem('configRutaDinamic', rutaDinamica);
-	            console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
-
-	            containerRutaFirebase.innerHTML = `
-                <div>
-                  <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
-                </div>
-                <div>
-                  <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-                </div>
-            `;
-	        }
-	    }
-	}
-
-
-
-	async function obtenerRutaDinamica(ruta) {
-	    try {
-	        const universidad = ruta.split('/')[0]; // Universidad
-
-	        // Obtener Materia
-	        const elementosRutaCurso = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
-	        let materiaValor = null;
-
-	        if (elementosRutaCurso.length > 0) {
-	            // Obtener el atributo 'title' del primer elemento de la ruta
-	            const tituloRuta = elementosRutaCurso[0].getAttribute('title');
-
-	            // Extraer las claves entre corchetes del título usando una expresión regular
-	            const coincidencias = tituloRuta.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
-
-	            if (coincidencias && coincidencias.length > 0) {
-	                // Limpiar los corchetes para obtener la clave de búsqueda
-	                const claveBusqueda = coincidencias[0].replace(/[\[\]]/g, '');
-	                const rutaMateria = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
-
-	                try {
-	                    // Obtener los datos de materias desde Firebase
-	                    const snapshotMateria = await get(ref(database, rutaMateria));
-	                    const opcionesMateria = snapshotMateria.val();
-
-	                    if (opcionesMateria) {
-	                        // Buscar la materia utilizando métodos funcionales para evitar bucles anidados
-	                        const entradaEncontrada = Object.entries(opcionesMateria).find(([key, value]) => {
-	                            return value.split(',')
-	                                .map(item => item.trim())
-	                                .some(val => {
-	                                    if (val.includes(':')) {
-	                                        const [parte1, parte2] = val.split(':').map(item => item.trim());
-	                                        return (parte1 === claveBusqueda && tituloRuta.includes(parte2));
-	                                    } else {
-	                                        return val === claveBusqueda;
-	                                    }
-	                                });
-	                        });
-
-	                        if (entradaEncontrada) {
-	                            materiaValor = entradaEncontrada[0];
-	                            console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
-	                        } else {
-	                            console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró ninguna coincidencia para la clave de búsqueda: ${claveBusqueda}`);
-	                        }
-	                    } else {
-	                        console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontraron opciones para materias en la ruta: ${rutaMateria}`);
-	                    }
-	                } catch (errorFirebase) {
-	                    console.error(`Error al obtener datos de Firebase en la ruta ${rutaMateria}:`, errorFirebase);
-	                }
-	            } else {
-	                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontraron coincidencias en el título del breadcrumb.');
-	            }
-	        } else {
-	            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró materia.');
-	        }
-
-	        // Obtener Test 
-	        let testClave = null;
-	        const elementosQuiz = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
-
-	        if (elementosQuiz.length === 0) {
-	            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró test.');
-	        } else {
-	            // Función auxiliar para obtener el número del quiz a partir del texto
-	            const obtenerNumeroQuiz = (texto) => {
-	                // Buscar número en formato numérico
-	                const matchNumero = texto.match(/\d+/);
-	                if (matchNumero) return parseInt(matchNumero[0], 10);
-
-	                // Si no se encuentra número, buscar número escrito en palabras
-	                const numWords = {
-	                    'uno': 1,
-	                    'dos': 2,
-	                    'tres': 3,
-	                    'cuatro': 4,
-	                    'cinco': 5,
-	                    'seis': 6,
-	                    'siete': 7,
-	                    'ocho': 8,
-	                    'nueve': 9,
-	                    'diez': 10
-	                    // Se pueden agregar más si es necesario
-	                };
-
-	                const matchPalabra = texto.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
-	                return matchPalabra ? numWords[matchPalabra[0]] : null;
-	            };
-
-	            // Obtener el elemento que contiene el texto del quiz
-	            const quizTextElement = elementosQuiz[0].querySelector('span.text-truncate');
-	            if (!quizTextElement) {
-	                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró el elemento de texto del quiz.');
-	            } else {
-	                const quizText = quizTextElement.textContent.trim();
-	                const quizNumber = obtenerNumeroQuiz(quizText);
-
-	                if (quizNumber === null) {
-	                    console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró número del test.');
-	                } else {
-	                    const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
-
-	                    try {
-	                        // Obtener los datos de tests desde Firebase
-	                        const testSnapshot = await get(ref(database, testRuta));
-	                        const testOptions = testSnapshot.val();
-
-	                        if (!testOptions) {
-	                            console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
-	                        } else {
-	                            // Buscar la clave que incluya "Test" seguido del número obtenido
-	                            testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
-
-	                            if (testClave) {
-	                                console.log(`[opc-autofill-autosave-moodle: ruta]  Test encontrado: "${testClave}"`);
-	                            } else {
-	                                console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró una clave para Test ${quizNumber}`);
-	                            }
-	                        }
-	                    } catch (firebaseError) {
-	                        console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
-	                    }
-	                }
-	            }
-	        }
-
-	        // Verificar y Actualizar ConfigRutaDinamic
-	        if (materiaValor && testClave) {
-	            console.log("Se tienen valores para materiaValor y testClave:", materiaValor, testClave);
-
-	            // Dividir la configuración de ruta en partes
-	            const rutaSplit = ruta.split('/');
-	            console.log("La ruta se ha dividido en partes:", rutaSplit);
-
-	            // Reemplazar las últimas dos partes con materiaValor y testClave
-	            rutaSplit[rutaSplit.length - 2] = materiaValor;
-	            console.log("Se ha reemplazado la penúltima parte de la ruta con materiaValor:", rutaSplit);
-
-	            rutaSplit[rutaSplit.length - 1] = testClave;
-	            console.log("Se ha reemplazado la última parte de la ruta con testClave:", rutaSplit);
-
-	            // Unir las partes para formar la nueva configuración de ruta
-	            const rutaDinamica = rutaSplit.join('/');
-	            return rutaDinamica;
-	        } else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
-	            return "dinámica";
-	        } else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
-	            // Obtener la configuración de ruta dinámica almacenada en sessionStorage
-	            console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/"');
-	            await crearSelectsDinamicos(materiaValor, testClave);
-	            return null;
-	        }
-
-	    } catch (error) {
-	        // Manejo de errores generales en la función
-	        console.error('Error en actualizaConfigRutaDinamic:', error);
-	        return null;
-	    }
-	}
-
-	async function crearSelectsDinamicos(materiaValor, testClave) {
-	    console.log('Creando Selects Dinamicos.');
-
-	    // Mostrar y configurar el contenedor principal
-	    const ciclo = localStorage.getItem('ciclo');
-	    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
-	    containerRutaFirebase.style.display = 'flex';
-
-	    const rutaDinamica = "dinámica";
-	    containerRutaFirebase.innerHTML = `
-        <div>
-            <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
-        </div>
-        <div>
-            <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
-        </div>`;
-
-	    // Mostrar y limpiar el contenedor donde se agregarán los selects
-	    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
-	    if (!containerRutaDinamicaFirebase) {
-	        console.error('No se encontró el contenedor con id="containerRutaDinamicaFirebase".');
-	        return;
-	    }
-	    containerRutaDinamicaFirebase.style.display = 'block';
-	    containerRutaDinamicaFirebase.innerHTML = '';
-
-	    // Obtener configuración y validar si la ruta contiene "UNEMI"
-	    const configRuta = localStorage.getItem('configRuta') || '';
-	    const rutaLista = configRuta.split('/');
-
-	    if (!rutaLista.includes('UNEMI')) {
-	        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta no incluye UNEMI`);
-	        contenedorRuta_js$1();
-	        return;
-	    }
-
-	    // Verificar si la ruta corresponde a 'niv' o 'adm'
-	    if (rutaLista.includes('niv')) {
-	        // Definir las rutas dinámicas para Materia y Test
-	        const rutasSelectDinamics = [
-	            { 
-	                path: "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
-	                defaultText: "Seleccionar Materia",
-	                id: "select-materia"
-	            },
-	            { 
-	                path: "ConfigRuta/opciones/UNEMI/unemi:niv-test",
-	                defaultText: "Seleccionar Test",
-	                id: "select-test"
-	            }
-	        ];
-
-	        console.log('[opc-autofill-autosave-moodle: ruta]  Generando selects dinámicos para Materia y Test');
-
-	        try {
-	            // Recorrer cada configuración de ruta para obtener las opciones desde Firebase
-	            for (const { path, defaultText, id } of rutasSelectDinamics) {
-	                const optionsSnapshot = await get(ref(database, path));
-	                if (!optionsSnapshot.exists()) {
-	                    console.warn(`No se encontraron datos en la ruta: ${path}`);
-	                    continue;
-	                }
-
-	                const options = optionsSnapshot.val();
-
-	                // Crear el elemento select con la clase común "select-ruta" y un id único
-	                const selectElement = document.createElement('select');
-	                selectElement.classList.add('select-ruta');
-	                selectElement.id = id;
-	                selectElement.style.display = 'block';
-
-	                // Opción por defecto
-	                const defaultOption = document.createElement('option');
-	                defaultOption.value = "";
-	                defaultOption.textContent = defaultText;
-	                defaultOption.disabled = true;
-	                defaultOption.selected = true;
-	                selectElement.appendChild(defaultOption);
-
-	                // Agregar las opciones provenientes de Firebase
-	                Object.entries(options).forEach(([key, value]) => {
-	                    const optionElement = document.createElement('option');
-	                    optionElement.value = key;
-	                    optionElement.textContent = value;
-	                    
-	                    // Seleccionar automáticamente si coincide con el valor pasado
-	                    if (id === "select-materia" && materiaValor !== null && key === materiaValor) {
-	                        optionElement.selected = true;
-	                    }
-	                    if (id === "select-test" && testClave !== null && key === testClave) {
-	                        optionElement.selected = true;
-	                    }
-	                    selectElement.appendChild(optionElement);
-	                });
-
-	                // Agregar el select al contenedor
-	                containerRutaDinamicaFirebase.appendChild(selectElement);
-	            }
-
-	            // Crear y agregar el botón "Guardar Ruta"
-	            const botonGuardarRuta = document.createElement('button');
-	            botonGuardarRuta.textContent = 'Guardar Ruta';
-	            botonGuardarRuta.classList.add('boton-ruta');
-	            // Asignar un id único, por ejemplo, "boton-ruta-guardar"
-	            botonGuardarRuta.id = 'boton-ruta-guardar';
-	            botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
-	            containerRutaDinamicaFirebase.appendChild(botonGuardarRuta);
-
-
-	            // Actualizar la visibilidad de los selects si es necesario
-	            actualizarVisibilidadSelects(true);
-
-	        } catch (error) {
-	            console.error('Error al procesar los selects dinámicos:', error);
-	        }
-	    } else if (rutaLista.includes('adm')) {
-	        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta Dinámica no disponible para ${configRuta}`);
-	        contenedorRuta_js$1();
-	    } else {
-	        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta Dinámica no disponible para ${configRuta}`);
-	        contenedorRuta_js$1();
-	    }
-	}
-
-
-	function guardarRutaDinamica() {
-	    console.log('Guardando ruta dinámica...');
-
-	    // Obtener configRuta desde localStorage
-	    const configRuta = localStorage.getItem('configRuta');
-	    if (!configRuta) {
-	        console.error('No se encontró configRuta en localStorage.');
-	        return;
-	    }
-
-	    // Dividir configRuta por "/" y eliminar los últimos dos elementos
-	    const configRutaParts = configRuta.split('/');
-	    configRutaParts.splice(-2); // Elimina los últimos dos elementos
-	    console.log('Partes de configRuta después de eliminar los últimos dos elementos:', configRutaParts);
-
-	    // Obtener el contenedor que agrupa los selects (y el botón)
-	    const container = document.getElementById('containerRutaDinamicaFirebase');
-	    if (!container) {
-	        console.error('No se encontró el contenedor con id "containerRutaDinamicaFirebase".');
-	        return;
-	    }
-
-	    // Obtener los selects de materia y test
-	    const selectMateria = container.querySelector('#select-materia');
-	    const selectTest = container.querySelector('#select-test');
-
-	    if (!selectMateria || !selectTest) {
-	        console.error('No se encontraron los selects "select-materia" y/o "select-test".');
-	        return;
-	    }
-
-	    // Obtener los valores seleccionados de cada select
-	    const materiaValue = selectMateria.value;
-	    const testValue = selectTest.value;
-	    console.log('Valor de materia:', materiaValue);
-	    console.log('Valor de test:', testValue);
-
-	    // Verificar que ambos selects tengan un valor válido
-	    if (!materiaValue) {
-	        alert('Por favor, selecciona una materia válida.');
-	        return;
-	    }
-	    if (!testValue) {
-	        alert('Por favor, selecciona un test válido.');
-	        return;
-	    }
-
-	    // Combinar las partes de configRuta con los valores seleccionados para formar la nueva ruta
-	    const newRuta = [...configRutaParts, materiaValue, testValue].join('/');
-	    console.log('Nueva ruta construida:', newRuta);
-
-	    // Guardar la nueva ruta en sessionStorage
-	    sessionStorage.setItem('configRutaDinamic', newRuta);
-	    console.log('Ruta dinámica guardada en sessionStorage:', newRuta);
-
-	    // Actualizar el contenido del elemento con id "ruta-configruta"
-	    contenedorRutaDinamica_js();
-
-	    // Ocultar el contenedor de selects, en este caso el id "subject-dinamic", si existe
-	    const contenedorSelects = document.getElementById('containerRutaDinamicaFirebase');
-	    if (contenedorSelects) {
-	        contenedorSelects.style.display = 'none';
-	        console.log('Contenedor "containerRutaDinamicaFirebase" ocultado.');
-	    } else {
-	        console.log('No se encontró el contenedor con id "containerRutaDinamicaFirebase" para ocultar.');
-	    }
-	}
-
-
-
-
-	function actualizarVisibilidadSelects(isVisible) {
-	    const selects = document.querySelectorAll('.dynamic-select');
-	    selects.forEach(select => select.style.display = 'block' );
-	    //console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
-	}
-
-	// <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
-
 	/**
 	 * Lexing or parsing positional information for error reporting.
 	 * This object is immutable.
@@ -45775,7 +45013,7 @@
 
 	}
 
-	function crearBotonAutoSave$1() {
+	function crearBotonAutoSave() {
 	    // Buscar el botón original por su texto
 	    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button => 
 	        button.textContent.trim() === "Enviar todo y terminar" || 
@@ -45848,6 +45086,769 @@
 	    // Insertar el contenedor antes del botón original
 	    originalButton.parentNode.insertBefore(wrapperDiv, originalButton);
 	}
+
+	// Importar el archivo HTML como cadena
+
+
+	// Encapsular el código dentro de una IIFE
+	(function () {
+	  console.log('[AutoFillQuiz-App] Creando Interfaz.');
+
+	  // 1. Insertar el contenido HTML en el DOM
+	  document.body.insertAdjacentHTML('beforeend', html); // Inserta el HTML al final del body
+
+	  // 2. Buscar los elementos en el DOM que acabamos de inyectar
+	  const barraLateral = document.getElementById('barra-lateral-autoquizfillapp'); // Obtiene el elemento de la barra lateral
+	  const botonMostrarOcultar = document.getElementById('boton-mostrar-ocultar-autoquizfillapp'); // Obtiene el botón de mostrar/ocultar
+
+	  // 3. Verificar que existan
+	  if (!barraLateral || !botonMostrarOcultar) { // Verifica si los elementos existen
+	    console.error('initBarraLateral: Error: No se encontraron los elementos necesarios en el DOM.'); // Error si no se encuentran
+	    return; // Sale de la función
+	  }
+
+	  // Define los íconos para el botón
+	  const iconFlecha = '<i class="fa-solid fa-angles-right"></i>'; // Define el icono de flecha
+	  const iconFlechaRotada = '<i class="fa-solid fa-angles-right fa-rotate-180"></i>'; // Define el icono de flecha rotada
+
+	  // Leer el estado de la barra lateral desde localStorage
+	  const estadoBarra = localStorage.getItem('barraLateralVisible'); // Obtiene el estado guardado
+	  let isBarraVisible = estadoBarra === null ? true : estadoBarra === 'true'; // Define la visibilidad inicial
+
+	  const hideApp = localStorage.getItem('hideapp');
+
+	  // Aplicar el estado inicial de la barra lateral
+	  if (isBarraVisible) { // Si la barra está visible
+	    barraLateral.style.display = 'flex'; // Muestra la barra lateral
+	    botonMostrarOcultar.innerHTML = iconFlechaRotada; // Asigna el icono rotado al botón
+	  } else { // Si la barra está oculta
+	    barraLateral.style.display = 'none'; // Oculta la barra lateral
+	    botonMostrarOcultar.innerHTML = iconFlecha; // Asigna el icono normal al botón
+	    botonMostrarOcultar.style.left = '10px'; // Posiciona el botón
+	    document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
+	    document.body.style.width = '100%'; // Resetea el ancho del body
+
+	    if (hideApp === "true") {
+	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
+	      btnAutoQuizFillApp.style.display = 'none';
+	    }
+	  }
+
+	  // Función para reposicionar el botón en función del ancho de la barra lateral
+	  function reposicionarBoton() {
+	    const barraWidth = barraLateral.getBoundingClientRect().width;
+	    botonMostrarOcultar.style.left = `calc(${barraWidth}px + 10px)`;
+	  }
+
+	  // Función para ajustar el contenido de la página según el ancho de la barra lateral
+	  function ajustarContenidoPagina() {
+	    const barraWidth = barraLateral.getBoundingClientRect().width;
+	    const contenido = document.body; // Puedes usar document.body directamente
+	    contenido.style.marginLeft = `${barraWidth}px`;
+	    contenido.style.width = `calc(100% - ${barraWidth}px)`;
+	  }
+
+	  // Función para alternar la visibilidad de la barra lateral
+	  function alternarBarraLateral() {
+	    if (isBarraVisible) {
+	      barraLateral.style.display = 'none';
+	      botonMostrarOcultar.innerHTML = iconFlecha;
+	      botonMostrarOcultar.style.left = '10px';
+	      document.body.style.marginLeft = '0';
+	      document.body.style.width = '100%';
+	      isBarraVisible = false;
+	      localStorage.setItem('barraLateralVisible', 'false');
+	    } else {
+	      barraLateral.style.display = 'flex';
+	      botonMostrarOcultar.innerHTML = iconFlechaRotada;
+	      reposicionarBoton();
+	      ajustarContenidoPagina();
+	      isBarraVisible = true;
+	      localStorage.setItem('barraLateralVisible', 'true');
+	    }
+	  }
+
+	  // Observador de cambios en el tamaño de la barra lateral
+	  const resizeObserver = new ResizeObserver(() => {
+	    reposicionarBoton();
+	    ajustarContenidoPagina();
+	  });
+	  resizeObserver.observe(barraLateral);
+
+	  // Evento al hacer clic en el botón de mostrar/ocultar
+	  botonMostrarOcultar.addEventListener('click', () => {
+	    //console.log('botonMostrarOcultar: click detectado');
+	    alternarBarraLateral();
+	  });
+
+	  document.addEventListener('keydown', (event) => {
+	    if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
+	      event.preventDefault();
+	      console.log('keydown: Ctrl + Q detectado');
+
+	      // Alterna la visibilidad de la barra lateral
+	      alternarBarraLateral();
+
+	      // Recupera el valor actualizado de 'barraLateralVisible' del localStorage
+	      const barraLateralVisible = localStorage.getItem('barraLateralVisible') === 'true';
+
+	      // Guarda en localStorage la variable 'hideapp' con el valor opuesto a barraLateralVisible
+	      localStorage.setItem('hideapp', (!barraLateralVisible).toString());
+
+	      // Selecciona el elemento que se desea mostrar u ocultar
+	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
+
+	      const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
+	      const hideApp = localStorage.getItem("hideapp") || "false";
+
+
+	      // Muestra u oculta el elemento según el valor de barraLateralVisible
+	      if (barraLateralVisible) {
+	        btnAutoQuizFillApp.style.display = 'block';
+
+	        if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "false") {
+	          console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
+	          crearBotonAutoSave();
+	        } else {
+	          console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
+	        }
+
+	      } else {
+	        btnAutoQuizFillApp.style.display = 'none';
+	        btnAutoSave.style.display = 'none';
+	      }
+
+
+	    }
+	  });
+
+
+
+	  // Ajusta el contenido de la página inicialmente si la barra está visible
+	  if (isBarraVisible) {
+	    ajustarContenidoPagina();
+	  }
+
+	  // Retorna la barra lateral si es necesario dentro del IIFE
+	  // Nota: Este valor no estará accesible fuera de la IIFE
+	  // Puedes eliminar esta línea si no la necesitas
+	  return barraLateral;
+	})();
+
+	var css_248z$6 = "\r\n\r\n /* Estilos para el contenedor principal */\r\n .contenedor-login-autoquizfillapp {\r\n    width: 90%;\r\n    max-width: 400px;\r\n    /* Limitar el ancho máximo */\r\n    padding: 20px;\r\n    box-sizing: border-box;\r\n    background-color: #ffffff;\r\n    border-radius: 8px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: center;\r\n    align-items: center;\r\n    position: absolute;\r\n    top: 25%;\r\n    /* Centra verticalmente en la mitad superior */\r\n    left: 50%;\r\n    transform: translate(-50%, -25%);\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins */\r\n}\r\n\r\n/* Estilos para el título */\r\n.contenedor-titulo-autoquizfillapp h2 {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 32px;\r\n    color: #333;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n}\r\n\r\n\r\n#titulo-verified {\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Asegurar que el título también use Poppins */\r\n    font-size: 18px;\r\n    margin-bottom: 20px;\r\n    text-align: center;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n\r\n}\r\n\r\n/* Estilos para los inputs */\r\n.contenedor-inputs-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 15px;\r\n    margin-bottom: 20px;\r\n}\r\n\r\n.login-entrada-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    font-size: 16px;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 5px;\r\n    box-sizing: border-box;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins a los inputs */\r\n}\r\n\r\n.login-entrada-autoquizfillapp:focus {\r\n    border-color: #3498db;\r\n    outline: none;\r\n    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);\r\n}\r\n\r\n/* Estilos para el botón */\r\n.contenedor-boton-autoquizfillapp {\r\n    width: 100%;\r\n    display: flex;\r\n    justify-content: center;\r\n}\r\n\r\n.login-boton-autoquizfillapp {\r\n    width: 100%;\r\n    padding: 10px;\r\n    background-color: #3498db;\r\n    color: white;\r\n    font-size: 16px;\r\n    border: none;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n    font-family: 'Poppins', sans-serif;\r\n    /* Aplicar fuente Poppins al botón */\r\n}\r\n\r\n.login-boton-autoquizfillapp:hover {\r\n    background-color: #2980b9;\r\n}";
+	styleInject(css_248z$6);
+
+	var css_248z$5 = "/* Título centrado */\r\n#titulo-autofillquizapp {\r\n    font-size: 1.5rem;\r\n    /* Tamaño más grande para el título */\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    /* Un color más oscuro y elegante */\r\n    text-align: center;\r\n    flex-grow: 1;\r\n    /* Ocupar el espacio disponible */\r\n}\r\n\r\n/* Ajuste para asegurarse de que el botón tiene el espacio adecuado */\r\n#boton-hamburguesa-autofillquizapp {\r\n    background-color: #0073e6;\r\n    /* Fondo blanco */\r\n    color: #ffffff;\r\n    /* Azul moderno para el icono */\r\n    border: 2px solid #0073e6;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n    border-radius: 5px;\r\n    /* Botón redondo */\r\n    cursor: pointer;\r\n    /* Cambia el cursor a mano */\r\n    font-size: 24px;\r\n    /* Tamaño del icono */\r\n    width: 40px;\r\n    /* Ancho fijo */\r\n    height: 40px;\r\n    /* Alto fijo */\r\n    display: inline-flex;\r\n    /* Usar flexbox para alinear */\r\n    justify-content: center;\r\n    /* Centrar horizontalmente el icono */\r\n    align-items: center;\r\n    /* Centrar verticalmente el icono */\r\n    padding: 0;\r\n    /* Eliminar padding */\r\n    margin: 0;\r\n    /* Eliminar márgenes */\r\n    position: relative;\r\n    /* Mantener la posición en su contenedor */\r\n    z-index: 1000;\r\n    /* Asegura que el botón esté por encima de otros elementos */\r\n    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\r\n    /* Sombra suave para darle profundidad */\r\n    transition: all 0.3s ease;\r\n    /* Transición suave para el hover */\r\n}\r\n\r\n/* Hover para darle efecto */\r\n#boton-hamburguesa-autofillquizapp:hover {\r\n    background-color: #002c67;\r\n    /* Fondo azul al hacer hover */\r\n    color: #ffffff;\r\n    /* Color blanco para el icono en hover */\r\n    border: 2px solid #002c67;\r\n    /* Bordes sutiles con el mismo color que el icono */\r\n\r\n    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);\r\n    /* Aumenta ligeramente la sombra en hover */\r\n    transform: translateY(-2px);\r\n    /* Levanta el botón ligeramente en hover */\r\n}\r\n\r\n/* Icono del botón de hamburguesa */\r\n#boton-hamburguesa-autofillquizapp i {\r\n    pointer-events: none;\r\n    /* Asegura que el icono no interfiera con el clic */\r\n}\r\n\r\n\r\n/* Contenido principal ocupará el resto del espacio */\r\n\r\n\r\n/* Ocultar barra de desplazamiento en navegadores basados en WebKit */\r\n#contenido-principal::-webkit-scrollbar {\r\n    display: none;\r\n    /* Ocultar barra de desplazamiento */\r\n}\r\n\r\n    /* Cabecera del panel: botón a la izquierda, título centrado */\r\n    .panel-header {\r\n        display: flex;\r\n        justify-content: flex-start; /* Alinear el botón y el título */\r\n        align-items: center;\r\n        padding: 15px 20px; /* Mayor espacio para una mejor sensación */\r\n        background-color: #ffffff; /* Fondo blanco limpio para el header */\r\n        border-bottom: 1px solid #e1e4e8; /* Borde inferior suave */\r\n        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra ligera */\r\n        position: relative;\r\n        border-radius: 4px 4px 0 0; /* Redondea solo los bordes superiores */\r\n        height: 70px;\r\n\r\n    }\r\n\r\n    #panel-autofillquizapp {\r\n        display: block;\r\n        border-radius: 4px;\r\n        width: 100%; /* Ocupa todo el ancho del contenedor */\r\n        height: 100vh; /* O ajustado al contenedor padre */\r\n        overflow-y: hidden; /* Deshabilita el desplazamiento vertical */\r\n        box-sizing: border-box;\r\n    }\r\n    \r\n    #contenido-principal {\r\n        width: 100%;\r\n        height: calc(100% - 70px); /* Por ejemplo, ajusta el espacio si hay un header */\r\n        padding: 10px 15px 10px 15px;\r\n        background-color: #ffffff;\r\n        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);\r\n        /* overflow-y: auto; /* Permitir scroll si el contenido es largo */\r\n        -ms-overflow-style: none; /* Ocultar barra en IE y Edge */\r\n        scrollbar-width: none; /* Ocultar barra en Firefox */\r\n        border-radius: 0 0 8px 8px;\r\n        box-sizing: border-box;\r\n    }\r\n    ";
+	styleInject(css_248z$5);
+
+	var css_248z$4 = "/* ==========================================================================\r\n   1. Contenedor Principal\r\n   ========================================================================== */\r\n#autofillautosave_moodle {\r\n    display: flex;\r\n    flex-direction: column;\r\n\r\n    /* Altura ajustable según se requiera */\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección: Ruta y Ciclo\r\n     ========================================================================== */\r\n\r\n#containerRutaFirebase .title {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n}\r\n\r\n#containerRutaFirebase .label {\r\n    font-size: 14px;\r\n    color: #34495e;\r\n}\r\n\r\n/* ==========================================================================\r\n     4. Sección: Ruta Dinámica\r\n     ========================================================================== */\r\n\r\n.select-ruta {\r\n    width: 100%;\r\n    padding: 3px;\r\n    font-size: 15px;\r\n    font-family: 'Poppins', sans-serif;\r\n    border: 1px solid #bdc3c7;\r\n    border-radius: 4px;\r\n    background-color: #ffffff;\r\n    color: #2c3e50;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: border 0.3s ease, box-shadow 0.3s ease;\r\n    margin-bottom: 5px;\r\n}\r\n\r\n.boton-ruta {\r\n    width: 100%;\r\n    padding: 5px;\r\n    background-color: #0072c5;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 16px;\r\n    font-family: 'Poppins', sans-serif;\r\n    cursor: pointer;\r\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\r\n    transition: background-color 0.3s ease, box-shadow 0.3s ease;\r\n}\r\n\r\n\r\n#containerRutaFirebase {\r\n  display: flex;\r\n  flex-direction: column; /* o row, dependiendo de cómo quieras alinear los div */\r\n  height: 38px;\r\n  margin-left: 2px;\r\n}\r\n\r\n#containerRutaFirebase div {\r\n  margin-top: -6px;\r\n  padding: 0;\r\n}\r\n\r\n\r\n\r\n/* ==========================================================================\r\n     5. Sección: Wrapper de AutoFill y AutoSave\r\n     ========================================================================== */\r\n/* Contenedor padre */\r\n#container-autofillautosave {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 5px;\r\n    height: 580px; /* Se fija la altura total */\r\n    /* Si prefieres que sea máximo, podrías usar max-height en lugar de height */\r\n  }\r\n  \r\n  /* Reglas compartidas para cada subcontenedor */\r\n  .subcontainer-autoquiz-autofill {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin: 0;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto;\r\n  }\r\n\r\n\r\n  .subcontainer-autoquiz-autosave {\r\n    background-color: #f4f4f4;\r\n    padding: 5px 5px 5px 10px;\r\n    border-radius: 8px;\r\n    border: 1px solid #dcdcdc;\r\n    margin-bottom: 20px;\r\n    flex: 0 1 auto;        /* Altura basada en el contenido (auto) */\r\n    max-height: 50%;  \r\n    overflow-y: auto; \r\n\r\n}\r\n\r\n@media (max-height: 580px) {\r\n    .subcontainer-autoquiz-autofill,\r\n    .subcontainer-autoquiz-autosave {\r\n        flex: 1;\r\n        max-height: 50%;\r\n    }\r\n}\r\n\r\n\r\n  \r\n /* Asegura que el contenedor del cuerpo pueda usar todo el ancho disponible */\r\n#body-autoquiz-autosave,\r\n#body-autoquiz-autofill {\r\n    flex-direction: column;\r\n    font-size: 11px;\r\n    overflow-y: auto;\r\n    height: calc(100% - 30px);\r\n  }\r\n\r\n    /* Estilos para la barra de desplazamiento vertical en ambos subcontenedores */\r\n    #body-autoquiz-autosave::-webkit-scrollbar,\r\n    #body-autoquiz-autofill::-webkit-scrollbar {\r\n      width: 0.4em; /* Ancho de la barra de desplazamiento */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-thumb,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-thumb {\r\n      background-color: rgba(0, 0, 0, 0.2); /* Color del thumb */\r\n      border-radius: 10px;\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-track,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-track {\r\n      background: transparent; /* Fondo transparente */\r\n    }\r\n    \r\n    #body-autoquiz-autosave::-webkit-scrollbar-button,\r\n    #body-autoquiz-autofill::-webkit-scrollbar-button {\r\n      display: none; /* Oculta botones (flechas) */\r\n    }\r\n  \r\n  /* Reglas para el elemento de la pregunta */\r\n  .preguntaautosave {\r\n    justify-content: flex-start;\r\n    align-items: center;\r\n    padding: 0;\r\n    color: #34495e;\r\n    flex-wrap: wrap;\r\n    width: 100%;\r\n    word-wrap: break-word;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  /* Si es necesario, también se puede aplicar a los elementos internos de respuestas */\r\n  .respuestasautosave {\r\n    width: 100%;\r\n    min-width: 0;\r\n    overflow-wrap: break-word;\r\n    word-break: break-word;\r\n    white-space: normal;\r\n  }\r\n  \r\n  #moodle-config label {\r\n    margin-bottom: 0rem;\r\n  }\r\n  \r\n  #subopcion-config {\r\n    margin-bottom: 0rem;\r\n    font-weight: 500;\r\n    margin-left: 3px;\r\n  }\r\n\r\n/* --------------------------------------------------------------------------\r\n     5.1. Subcontenedor de AutoFill\r\n     -------------------------------------------------------------------------- */\r\n\r\n/* Header de AutoFill: título y switch */\r\n.header-autoquiz {\r\n    margin-top: 0px;\r\n    margin-bottom: 0px;\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    position: relative;\r\n    height: 30px;\r\n}\r\n\r\n.header-autoquiz h2 {\r\n    font-size: 20px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0;\r\n}\r\n\r\n/* Switch para AutoFill (y AutoSave) */\r\n.switch-autoquiz {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 34px;\r\n    height: 20px;\r\n    margin:0px;\r\n}\r\n\r\n.switch-autoquiz input {\r\n    opacity: 0;\r\n    width: 0;\r\n    height: 0;\r\n}\r\n\r\n.slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: #ccc;\r\n    transition: 0.4s;\r\n    border-radius: 20px;\r\n}\r\n\r\n.slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 12px;\r\n    width: 12px;\r\n    border-radius: 50%;\r\n    left: 4px;\r\n    bottom: 4px;\r\n    background-color: white;\r\n    transition: 0.4s;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider {\r\n    background-color: #3498db;\r\n}\r\n\r\n.switch-autoquiz input:checked+.slider:before {\r\n    transform: translateX(14px);\r\n}\r\n\r\n/* ==========================================================================\r\n     2. Sección de Usuarios\r\n     ========================================================================== */\r\n\r\n/* Contenedor de usuarios (oculto por defecto) */\r\n.users {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n/* Usuario actual: ícono y nombre */\r\n.usuario-actual {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n    flex: 1;\r\n}\r\n\r\n.nombre-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    margin: 0 5px;\r\n}\r\n\r\n/* Select para el siguiente usuario */\r\n.select-siguiente-usuario {\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    color: #34495e;\r\n    border: none;\r\n    background-color: transparent;\r\n    outline: none;\r\n    appearance: none;\r\n    cursor: pointer;\r\n    text-align: right;\r\n    padding-right: 0;\r\n    direction: rtl;\r\n    /* Alinea el desplegable a la derecha */\r\n}\r\n\r\n/* Opciones dentro del select */\r\n.select-siguiente-usuario option {\r\n    font-size: 12px;\r\n    padding: 10px;\r\n    text-align: right;\r\n    direction: ltr;\r\n}\r\n\r\n/* Limitación de altura y scroll vertical */\r\n.select-siguiente-usuario {\r\n    max-height: 30px;\r\n    overflow-y: auto;\r\n}\r\n\r\n/* Personalización de la barra de desplazamiento */\r\n.select-siguiente-usuario::-webkit-scrollbar {\r\n    width: 2px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-thumb {\r\n    background-color: rgba(52, 73, 94, 0.2);\r\n    border-radius: 10px;\r\n}\r\n\r\n.select-siguiente-usuario::-webkit-scrollbar-track {\r\n    background-color: transparent;\r\n}\r\n\r\n/* Resalta la opción seleccionada */\r\n.select-siguiente-usuario option:checked {\r\n    background-color: #dcdde1;\r\n    font-weight: bold;\r\n}\r\n\r\n.select-siguiente-usuario option:hover {\r\n    background-color: #f1f2f6;\r\n}\r\n\r\n.select-siguiente-usuario option:hover:checked {\r\n    background-color: #dcdde1;\r\n}\r\n\r\n/* Botón para pasar al siguiente usuario */\r\n.boton-siguiente-usuario {\r\n    margin: 0;\r\n    font-weight: 600;\r\n    border: none;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n    padding: 0 3px;\r\n}\r\n\r\n.boton-siguiente-usuario i {\r\n    font-size: 0.90em;\r\n    color: #34495e;\r\n}\r\n\r\n\r\n.img-overlay {\r\n    position: relative; /* Necesario para que el ::after se posicione relativo a este contenedor */\r\n    display: inline-block; /* O block según convenga en tu diseño */\r\n}\r\n\r\n.img-overlay::after {\r\n    content: \"\";\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    /* Fondo MediumBlue con 10% de opacidad */\r\n    background-color: rgba(0, 0, 205, 0.2);\r\n    pointer-events: none; /* Permite que se hagan clics sobre la imagen si fuera necesario */\r\n}\r\n\r\n#upload-autosave {\r\n    position: relative;\r\n    display: inline-block;\r\n    border: none;\r\n    background: none;\r\n    cursor: pointer;\r\n    font-size:0.9em; /* Ajusta el tamaño según necesites */\r\n    color: inherit; /* Mantiene el color del texto */\r\n    transition: color 0.3s ease-in-out;\r\n}\r\n\r\n#upload-autosave:hover {\r\n    color: mediumblue;\r\n}\r\n\r\n\r\n/* Contenedor principal para cada pregunta */\r\n.question-container {\r\n    margin: 0px 0px 0px 0px;\r\n    padding: 5px 5px 5px 0px;\r\n  }\r\n  \r\n  /* Encabezado de la pregunta: título y badge de estado */\r\n  .question-header {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: flex-start;\r\n  }\r\n  \r\n  /* Título de la pregunta (si deseas usar una clase específica en lugar de <strong>) */\r\n  .question-title {\r\n    font-weight: bold;\r\n    margin-right: 0.5rem;\r\n  }\r\n  \r\n  /* Badge del estado (color y tipografía) */\r\n  .question-state-badge {\r\n    /* Valores por defecto */\r\n    font-weight: 500;\r\n    padding: 0.2rem 0.4rem;\r\n    border-radius: 4px;\r\n    margin-left: 0.3rem;\r\n    color: #fff; /* Color de texto por defecto (blanco) */\r\n  }\r\n  \r\n  /* Botón para mostrar/ocultar la información (icono de ojo) */\r\n  .btn-toggle-visibility {\r\n    border: none;\r\n    background: transparent;\r\n    cursor: pointer;\r\n    font-size: 0.8rem;\r\n    margin-right: 0.5rem;\r\n    /* Ajusta si deseas más separación o estilos de hover */\r\n  }\r\n  \r\n  /* Contenedor que mostrará/ocultará el contenido de la pregunta */\r\n  .detail-container {\r\n    display: none; /* oculto por defecto */\r\n    margin-top: 0;\r\n  }\r\n  \r\n  /* Estilos de colores de fondo para cada estado, \r\n     si quieres usarlos como clases en lugar de inline-styles */\r\n  .badge-no-data {\r\n    background-color: #e63946; /* Rojo */\r\n    color: #fff;\r\n  }\r\n  \r\n  .badge-no-verificado {\r\n    background-color: #f1c40f; /* Amarillo mostaza */\r\n    color: #000;\r\n  }\r\n  \r\n  .badge-sin-responder {\r\n    background-color: #d3d3d3; /* Gris claro */\r\n    color: #000;\r\n  }\r\n  \r\n  .badge-verificado {\r\n    background-color: #28a745; /* Verde */\r\n    color: #fff;\r\n  }\r\n  \r\n  /* Ejemplo adicional: \r\n     si deseas animaciones suaves al mostrar/ocultar:\r\n     (requiere que cambies en JS de 'display: none' a \r\n     manipular la altura o la opacidad) */\r\n  \r\n  /* .detail-container {\r\n    transition: all 0.3s ease;\r\n  } */\r\n  ";
+	styleInject(css_248z$4);
+
+	function contenedorUsers_js() {
+	    const elementoDesplegableUsuario = document.querySelector('.dropdown-user-nick');
+	    const elementoUsuarioActual = document.getElementById('nombre-usuario-actual');
+	    const selectSiguienteUsuario = document.getElementById('siguiente-usuario');
+	    const botonSiguienteUsuario = document.getElementById('boton-siguiente-usuario');
+
+	    let nombreUsuarioActual = null; // Inicializado como null por defecto
+
+	    if (!elementoDesplegableUsuario) {
+	        console.warn("Elemento .dropdown-user-nick no encontrado. Estableciendo 'No login'.");
+	        nombreUsuarioActual = "No login"; // Asignar 'No login' como usuario actual
+	    } else {
+	        nombreUsuarioActual = elementoDesplegableUsuario.childNodes[1]?.textContent.trim();
+	        if (!nombreUsuarioActual) {
+	            console.error("No se pudo obtener el nombre del usuario actual.");
+	            botonSiguienteUsuario.style.display = 'none';
+	            return;
+	        }
+	    }
+
+	    elementoUsuarioActual.textContent = nombreUsuarioActual;
+
+	    const usuariosGuardados = JSON.parse(localStorage.getItem('listaUsuariosFiltrados'));
+	    if (!usuariosGuardados) {
+	        // console.error("No se encontraron usuarios en localStorage.");
+	        botonSiguienteUsuario.style.display = 'none';
+	        return;
+	    }
+
+	    // console.log("Usuarios encontrados en localStorage:", usuariosGuardados);
+	    const listaUsuarios = Object.values(usuariosGuardados);
+
+	    selectSiguienteUsuario.innerHTML = ""; // Limpia el select
+
+	    // Identifica el índice del usuario actual
+	    const indiceUsuarioActual = listaUsuarios.findIndex(usuario => usuario.usuario === nombreUsuarioActual);
+
+	    let siguienteUsuarioPredeterminado = null;
+
+	    // Si es "No login", selecciona el primer usuario como predeterminado
+	    if (nombreUsuarioActual === "No login") {
+	        siguienteUsuarioPredeterminado = listaUsuarios[0]?.usuario || null; // Primer usuario o null si la lista está vacía
+	    } else if (indiceUsuarioActual !== -1 && indiceUsuarioActual < listaUsuarios.length - 1) {
+	        siguienteUsuarioPredeterminado = listaUsuarios[indiceUsuarioActual + 1].usuario;
+	    }
+
+	    // Crear opciones en el select
+	    listaUsuarios.forEach((usuario) => {
+	        const optionElement = document.createElement("option");
+	        optionElement.value = usuario.usuario;
+	        optionElement.textContent = usuario.usuario;
+
+	        // Marca la opción predeterminada
+	        if (usuario.usuario === siguienteUsuarioPredeterminado) {
+	            optionElement.selected = true;
+	        }
+
+	        selectSiguienteUsuario.appendChild(optionElement);
+	    });
+
+	    if (siguienteUsuarioPredeterminado) ; else if (indiceUsuarioActual === listaUsuarios.length - 1) ; else ;
+
+	    // Agregar evento click al botón
+	    botonSiguienteUsuario.addEventListener('click', procesarUsuarioSeleccionado);
+
+	    contenedorRuta_js();
+	}
+
+	async function procesarUsuarioSeleccionado() {
+	    try {
+	        // Obtiene el valor seleccionado en el select
+	        const select = document.getElementById('siguiente-usuario');
+	        const selectedUser = select.value;
+
+	        if (!selectedUser) {
+	            console.error("No se selecciono ningun usuario.");
+	            return;
+	        }
+
+	        // Obtiene la lista de usuarios desde localStorage
+	        const listaUsuariosFiltrados = JSON.parse(localStorage.getItem('listaUsuariosFiltrados'));
+	        if (!listaUsuariosFiltrados) {
+	            console.error("No se encontro 'listaUsuariosFiltrados' en localStorage.");
+	            return;
+	        }
+
+	        // Busca el usuario en la lista
+	        const usuario = listaUsuariosFiltrados.find(user => user.usuario === selectedUser);
+	        if (!usuario) {
+	            console.error(`El usuario '${selectedUser}' no fue encontrado en 'listaUsuariosFiltrados'.`);
+	            return;
+	        }
+
+	        const { usuario: username, contraseña: password } = usuario;
+
+	        console.log(`Username: ${username}`);
+	        console.log(`Password: ${password}`);
+
+	        // Verifica si hay una sesion activa
+	        const sesionActiva = await verificarAutenticacion();
+	        if (sesionActiva) {
+	            console.log("Hay una sesion activa. Cerrando sesion...");
+	            const logoutExitoso = await autoLogout();
+	            if (!logoutExitoso) {
+	                console.error("Error al cerrar la sesion.");
+	                return;
+	            }
+	        }
+
+	        // Inicia sesion con el usuario seleccionado
+	        console.log(`Iniciando sesion para el usuario: ${username}`);
+	        const loginExitoso = await autoLogin(username, password);
+
+	        if (loginExitoso) {
+	            console.log(`Redirigiendo a la pagina de calificaciones para el usuario: ${username}`);
+	            const dominioActual = new URL(localStorage.getItem("selectedLoginUrl")).origin; // Obtiene solo el dominio
+	            window.location.href = `${dominioActual}/grade/report/overview/index.php`; // Redirige
+	        } else {
+	            console.error("No se pudo iniciar sesion. Verifique las credenciales.");
+	        }
+	    } catch (error) {
+	        console.error("Ocurrio un error durante el proceso:", error);
+	    }
+	}
+
+	function contenedorRuta_js$1() {
+
+	    const contenidoPrincipal = document.getElementById('contenido-principal');
+	    const containerOptionSelect = document.querySelector('.containerOption');
+	    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+	    const ruta = localStorage.getItem('configRuta');
+	    const ciclo = localStorage.getItem('ciclo');
+
+	    // Función para crear y mostrar el mensaje de ruta inválida
+	    const rutaInvalida = () => {
+	        if (!document.getElementById('mensaje-ruta-invalida')) {
+	            const mensaje = document.createElement('div');
+	            mensaje.id = 'ruta-invalida';
+	            mensaje.textContent = 'No ha seleccionado una ruta o ciclo';
+	            Object.assign(mensaje.style, {
+	                color: 'red',
+	                fontWeight: '500',
+	                fontSize: '0.95em',
+	                fontStyle: 'italic',
+	                textAlign: 'center'
+	            });
+	            contenidoPrincipal.appendChild(mensaje);
+	            console.log('[opc-autofill-autosave-moodle: ruta]  No ha seleccionado una ruta o ciclo');
+	        }
+	    };
+
+	    if (!ruta || !ciclo) {
+	        if (containerOptionSelect) containerOptionSelect.style.display = 'none';
+	        localStorage.setItem('autofill-autoquizfillapp', 'desactivado');
+	        localStorage.setItem('autosave-autoquizfillapp', 'desactivado');
+	        rutaInvalida();
+	        return; // Salir de la función ya que faltan datos
+	    }
+
+	    // Si se tienen ruta y ciclo definidos, actualizamos los contenedores
+	    if (containerRutaFirebase) {
+	        // Eliminar mensaje de advertencia si existe
+	        const mensajeExistente = document.getElementById('ruta-invalida');
+
+	        if (mensajeExistente) {
+	            mensajeExistente.remove();
+	        }
+
+	        containerRutaFirebase.style.display = 'flex';
+	        containerRutaFirebase.innerHTML = `
+        <div>
+          <span class="title">Ruta:</span> <span class="label">${ruta}</span>
+        </div>
+        <div>
+          <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+        </div>
+      `;
+
+	        console.log(`[opc-autofill-autosave-moodle: ruta]  Valor de ruta: ${ruta}, Valor de ciclo:${ciclo}`);
+	    } else {
+	        console.error('[opc-autofill-autosave-moodle: ruta] No se encontró el contenedor de la ruta y ciclo.');
+	    }
+
+	}
+
+	// <<<<<<<<<<<<<< Ruta Dinamica >>>>>>>>>>>>>>
+
+	async function contenedorRutaDinamica_js() {
+	    // Obtiene los valores 'configRuta' y 'ciclo' del almacenamiento local
+	    const ruta = localStorage.getItem('configRuta');
+	    const ciclo = localStorage.getItem('ciclo');
+	    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+	    
+	    // Se declara con let para poder actualizar su valor
+	    let rutaDinamica = sessionStorage.getItem('configRutaDinamic');
+
+	    // Verifica si 'configRuta' y 'ciclo' están definidos en el almacenamiento local
+	    if (!ruta || !ciclo) {
+	        // Si alguno de los valores no está definido, llama a la función 'contenedorRuta_js' y termina la ejecución
+	        contenedorRuta_js$1();
+	        return;
+	    } 
+	    
+	    else if (rutaDinamica && rutaDinamica !== "dinámica") {
+	        containerRutaFirebase.style.display = 'flex';
+	        containerRutaFirebase.innerHTML = `
+            <div>
+              <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
+            </div>
+            <div>
+              <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+            </div>
+        `;
+	        
+	    } else {
+	        containerRutaFirebase.style.display = 'flex';
+
+	        // Espera a que la función asíncrona obtenga la ruta dinámica
+	        rutaDinamica = await obtenerRutaDinamica(ruta);
+	     
+	        if (rutaDinamica) {
+	            console.log("La nueva ruta dinámica es:", rutaDinamica);
+
+	            sessionStorage.setItem('configRutaDinamic', rutaDinamica);
+	            console.log("Se ha almacenado la ruta dinámica en sessionStorage bajo la key 'configRutaDinamic'");
+
+	            containerRutaFirebase.innerHTML = `
+                <div>
+                  <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
+                </div>
+                <div>
+                  <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+                </div>
+            `;
+	        }
+	    }
+	}
+
+
+
+	async function obtenerRutaDinamica(ruta) {
+	    try {
+	        const universidad = ruta.split('/')[0]; // Universidad
+
+	        // Obtener Materia
+	        const elementosRutaCurso = document.querySelectorAll('.breadcrumb-item a[href*="/course/view.php"]');
+	        let materiaValor = null;
+
+	        if (elementosRutaCurso.length > 0) {
+	            // Obtener el atributo 'title' del primer elemento de la ruta
+	            const tituloRuta = elementosRutaCurso[0].getAttribute('title');
+
+	            // Extraer las claves entre corchetes del título usando una expresión regular
+	            const coincidencias = tituloRuta.match(/\[([A-Za-z]+[^\]]+)\]/g)?.filter(match => /[A-Za-z]/.test(match));
+
+	            if (coincidencias && coincidencias.length > 0) {
+	                // Limpiar los corchetes para obtener la clave de búsqueda
+	                const claveBusqueda = coincidencias[0].replace(/[\[\]]/g, '');
+	                const rutaMateria = `ConfigRuta/opciones/${universidad}/unemi:codigo-materias-de-nivelacion`;
+
+	                try {
+	                    // Obtener los datos de materias desde Firebase
+	                    const snapshotMateria = await get(ref(database, rutaMateria));
+	                    const opcionesMateria = snapshotMateria.val();
+
+	                    if (opcionesMateria) {
+	                        // Buscar la materia utilizando métodos funcionales para evitar bucles anidados
+	                        const entradaEncontrada = Object.entries(opcionesMateria).find(([key, value]) => {
+	                            return value.split(',')
+	                                .map(item => item.trim())
+	                                .some(val => {
+	                                    if (val.includes(':')) {
+	                                        const [parte1, parte2] = val.split(':').map(item => item.trim());
+	                                        return (parte1 === claveBusqueda && tituloRuta.includes(parte2));
+	                                    } else {
+	                                        return val === claveBusqueda;
+	                                    }
+	                                });
+	                        });
+
+	                        if (entradaEncontrada) {
+	                            materiaValor = entradaEncontrada[0];
+	                            console.log(`[opc-autofill-autosave-moodle: ruta]  Materia encontrada: "${materiaValor}"`);
+	                        } else {
+	                            console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró ninguna coincidencia para la clave de búsqueda: ${claveBusqueda}`);
+	                        }
+	                    } else {
+	                        console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontraron opciones para materias en la ruta: ${rutaMateria}`);
+	                    }
+	                } catch (errorFirebase) {
+	                    console.error(`Error al obtener datos de Firebase en la ruta ${rutaMateria}:`, errorFirebase);
+	                }
+	            } else {
+	                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontraron coincidencias en el título del breadcrumb.');
+	            }
+	        } else {
+	            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró materia.');
+	        }
+
+	        // Obtener Test 
+	        let testClave = null;
+	        const elementosQuiz = document.querySelectorAll('.breadcrumb-item a[href*="/mod/quiz/"]');
+
+	        if (elementosQuiz.length === 0) {
+	            console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró test.');
+	        } else {
+	            // Función auxiliar para obtener el número del quiz a partir del texto
+	            const obtenerNumeroQuiz = (texto) => {
+	                // Buscar número en formato numérico
+	                const matchNumero = texto.match(/\d+/);
+	                if (matchNumero) return parseInt(matchNumero[0], 10);
+
+	                // Si no se encuentra número, buscar número escrito en palabras
+	                const numWords = {
+	                    'uno': 1,
+	                    'dos': 2,
+	                    'tres': 3,
+	                    'cuatro': 4,
+	                    'cinco': 5,
+	                    'seis': 6,
+	                    'siete': 7,
+	                    'ocho': 8,
+	                    'nueve': 9,
+	                    'diez': 10
+	                    // Se pueden agregar más si es necesario
+	                };
+
+	                const matchPalabra = texto.toLowerCase().match(/\b(uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)\b/);
+	                return matchPalabra ? numWords[matchPalabra[0]] : null;
+	            };
+
+	            // Obtener el elemento que contiene el texto del quiz
+	            const quizTextElement = elementosQuiz[0].querySelector('span.text-truncate');
+	            if (!quizTextElement) {
+	                console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró el elemento de texto del quiz.');
+	            } else {
+	                const quizText = quizTextElement.textContent.trim();
+	                const quizNumber = obtenerNumeroQuiz(quizText);
+
+	                if (quizNumber === null) {
+	                    console.warn('[opc-autofill-autosave-moodle: ruta]  No se encontró número del test.');
+	                } else {
+	                    const testRuta = `ConfigRuta/opciones/${universidad}/unemi:niv-test`;
+
+	                    try {
+	                        // Obtener los datos de tests desde Firebase
+	                        const testSnapshot = await get(ref(database, testRuta));
+	                        const testOptions = testSnapshot.val();
+
+	                        if (!testOptions) {
+	                            console.warn(`No se encontraron opciones para test en la ruta: ${testRuta}`);
+	                        } else {
+	                            // Buscar la clave que incluya "Test" seguido del número obtenido
+	                            testClave = Object.keys(testOptions).find(key => testOptions[key].includes(`Test ${quizNumber}`));
+
+	                            if (testClave) {
+	                                console.log(`[opc-autofill-autosave-moodle: ruta]  Test encontrado: "${testClave}"`);
+	                            } else {
+	                                console.warn(`[opc-autofill-autosave-moodle: ruta]  No se encontró una clave para Test ${quizNumber}`);
+	                            }
+	                        }
+	                    } catch (firebaseError) {
+	                        console.error(`Error al obtener datos de Firebase en la ruta ${testRuta}:`, firebaseError);
+	                    }
+	                }
+	            }
+	        }
+
+	        // Verificar y Actualizar ConfigRutaDinamic
+	        if (materiaValor && testClave) {
+	            console.log("Se tienen valores para materiaValor y testClave:", materiaValor, testClave);
+
+	            // Dividir la configuración de ruta en partes
+	            const rutaSplit = ruta.split('/');
+	            console.log("La ruta se ha dividido en partes:", rutaSplit);
+
+	            // Reemplazar las últimas dos partes con materiaValor y testClave
+	            rutaSplit[rutaSplit.length - 2] = materiaValor;
+	            console.log("Se ha reemplazado la penúltima parte de la ruta con materiaValor:", rutaSplit);
+
+	            rutaSplit[rutaSplit.length - 1] = testClave;
+	            console.log("Se ha reemplazado la última parte de la ruta con testClave:", rutaSplit);
+
+	            // Unir las partes para formar la nueva configuración de ruta
+	            const rutaDinamica = rutaSplit.join('/');
+	            return rutaDinamica;
+	        } else if ((!testClave || !materiaValor) && !window.location.href.includes("mod/quiz/")) {
+	            return "dinámica";
+	        } else if ((!testClave || !materiaValor) && window.location.href.includes("mod/quiz/")) {
+	            // Obtener la configuración de ruta dinámica almacenada en sessionStorage
+	            console.log('[opc-autofill-autosave-moodle: ruta]  No se pudieron determinar la materia o quiz y el url incluye "mod/quiz/"');
+	            await crearSelectsDinamicos(materiaValor, testClave);
+	            return null;
+	        }
+
+	    } catch (error) {
+	        // Manejo de errores generales en la función
+	        console.error('Error en actualizaConfigRutaDinamic:', error);
+	        return null;
+	    }
+	}
+
+	async function crearSelectsDinamicos(materiaValor, testClave) {
+	    console.log('Creando Selects Dinamicos.');
+
+	    // Mostrar y configurar el contenedor principal
+	    const ciclo = localStorage.getItem('ciclo');
+	    const containerRutaFirebase = document.getElementById('containerRutaFirebase');
+	    containerRutaFirebase.style.display = 'flex';
+
+	    const rutaDinamica = "dinámica";
+	    containerRutaFirebase.innerHTML = `
+        <div>
+            <span class="title">Ruta:</span> <span class="label" style="font-weight: 500; color: green;">${rutaDinamica}</span>
+        </div>
+        <div>
+            <span class="title">Ciclo:</span> <span class="label">${ciclo}</span>
+        </div>`;
+
+	    // Mostrar y limpiar el contenedor donde se agregarán los selects
+	    const containerRutaDinamicaFirebase = document.getElementById('containerRutaDinamicaFirebase');
+	    if (!containerRutaDinamicaFirebase) {
+	        console.error('No se encontró el contenedor con id="containerRutaDinamicaFirebase".');
+	        return;
+	    }
+	    containerRutaDinamicaFirebase.style.display = 'block';
+	    containerRutaDinamicaFirebase.innerHTML = '';
+
+	    // Obtener configuración y validar si la ruta contiene "UNEMI"
+	    const configRuta = localStorage.getItem('configRuta') || '';
+	    const rutaLista = configRuta.split('/');
+
+	    if (!rutaLista.includes('UNEMI')) {
+	        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta no incluye UNEMI`);
+	        contenedorRuta_js$1();
+	        return;
+	    }
+
+	    // Verificar si la ruta corresponde a 'niv' o 'adm'
+	    if (rutaLista.includes('niv')) {
+	        // Definir las rutas dinámicas para Materia y Test
+	        const rutasSelectDinamics = [
+	            { 
+	                path: "ConfigRuta/opciones/UNEMI/unemi:niv-materias-de-nivelacion",
+	                defaultText: "Seleccionar Materia",
+	                id: "select-materia"
+	            },
+	            { 
+	                path: "ConfigRuta/opciones/UNEMI/unemi:niv-test",
+	                defaultText: "Seleccionar Test",
+	                id: "select-test"
+	            }
+	        ];
+
+	        console.log('[opc-autofill-autosave-moodle: ruta]  Generando selects dinámicos para Materia y Test');
+
+	        try {
+	            // Recorrer cada configuración de ruta para obtener las opciones desde Firebase
+	            for (const { path, defaultText, id } of rutasSelectDinamics) {
+	                const optionsSnapshot = await get(ref(database, path));
+	                if (!optionsSnapshot.exists()) {
+	                    console.warn(`No se encontraron datos en la ruta: ${path}`);
+	                    continue;
+	                }
+
+	                const options = optionsSnapshot.val();
+
+	                // Crear el elemento select con la clase común "select-ruta" y un id único
+	                const selectElement = document.createElement('select');
+	                selectElement.classList.add('select-ruta');
+	                selectElement.id = id;
+	                selectElement.style.display = 'block';
+
+	                // Opción por defecto
+	                const defaultOption = document.createElement('option');
+	                defaultOption.value = "";
+	                defaultOption.textContent = defaultText;
+	                defaultOption.disabled = true;
+	                defaultOption.selected = true;
+	                selectElement.appendChild(defaultOption);
+
+	                // Agregar las opciones provenientes de Firebase
+	                Object.entries(options).forEach(([key, value]) => {
+	                    const optionElement = document.createElement('option');
+	                    optionElement.value = key;
+	                    optionElement.textContent = value;
+	                    
+	                    // Seleccionar automáticamente si coincide con el valor pasado
+	                    if (id === "select-materia" && materiaValor !== null && key === materiaValor) {
+	                        optionElement.selected = true;
+	                    }
+	                    if (id === "select-test" && testClave !== null && key === testClave) {
+	                        optionElement.selected = true;
+	                    }
+	                    selectElement.appendChild(optionElement);
+	                });
+
+	                // Agregar el select al contenedor
+	                containerRutaDinamicaFirebase.appendChild(selectElement);
+	            }
+
+	            // Crear y agregar el botón "Guardar Ruta"
+	            const botonGuardarRuta = document.createElement('button');
+	            botonGuardarRuta.textContent = 'Guardar Ruta';
+	            botonGuardarRuta.classList.add('boton-ruta');
+	            // Asignar un id único, por ejemplo, "boton-ruta-guardar"
+	            botonGuardarRuta.id = 'boton-ruta-guardar';
+	            botonGuardarRuta.addEventListener('click', guardarRutaDinamica);
+	            containerRutaDinamicaFirebase.appendChild(botonGuardarRuta);
+
+
+	            // Actualizar la visibilidad de los selects si es necesario
+	            actualizarVisibilidadSelects(true);
+
+	        } catch (error) {
+	            console.error('Error al procesar los selects dinámicos:', error);
+	        }
+	    } else if (rutaLista.includes('adm')) {
+	        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta Dinámica no disponible para ${configRuta}`);
+	        contenedorRuta_js$1();
+	    } else {
+	        console.log(`[opc-autofill-autosave-moodle: ruta]  Ruta Dinámica no disponible para ${configRuta}`);
+	        contenedorRuta_js$1();
+	    }
+	}
+
+
+	function guardarRutaDinamica() {
+	    console.log('Guardando ruta dinámica...');
+
+	    // Obtener configRuta desde localStorage
+	    const configRuta = localStorage.getItem('configRuta');
+	    if (!configRuta) {
+	        console.error('No se encontró configRuta en localStorage.');
+	        return;
+	    }
+
+	    // Dividir configRuta por "/" y eliminar los últimos dos elementos
+	    const configRutaParts = configRuta.split('/');
+	    configRutaParts.splice(-2); // Elimina los últimos dos elementos
+	    console.log('Partes de configRuta después de eliminar los últimos dos elementos:', configRutaParts);
+
+	    // Obtener el contenedor que agrupa los selects (y el botón)
+	    const container = document.getElementById('containerRutaDinamicaFirebase');
+	    if (!container) {
+	        console.error('No se encontró el contenedor con id "containerRutaDinamicaFirebase".');
+	        return;
+	    }
+
+	    // Obtener los selects de materia y test
+	    const selectMateria = container.querySelector('#select-materia');
+	    const selectTest = container.querySelector('#select-test');
+
+	    if (!selectMateria || !selectTest) {
+	        console.error('No se encontraron los selects "select-materia" y/o "select-test".');
+	        return;
+	    }
+
+	    // Obtener los valores seleccionados de cada select
+	    const materiaValue = selectMateria.value;
+	    const testValue = selectTest.value;
+	    console.log('Valor de materia:', materiaValue);
+	    console.log('Valor de test:', testValue);
+
+	    // Verificar que ambos selects tengan un valor válido
+	    if (!materiaValue) {
+	        alert('Por favor, selecciona una materia válida.');
+	        return;
+	    }
+	    if (!testValue) {
+	        alert('Por favor, selecciona un test válido.');
+	        return;
+	    }
+
+	    // Combinar las partes de configRuta con los valores seleccionados para formar la nueva ruta
+	    const newRuta = [...configRutaParts, materiaValue, testValue].join('/');
+	    console.log('Nueva ruta construida:', newRuta);
+
+	    // Guardar la nueva ruta en sessionStorage
+	    sessionStorage.setItem('configRutaDinamic', newRuta);
+	    console.log('Ruta dinámica guardada en sessionStorage:', newRuta);
+
+	    // Actualizar el contenido del elemento con id "ruta-configruta"
+	    contenedorRutaDinamica_js();
+
+	    // Ocultar el contenedor de selects, en este caso el id "subject-dinamic", si existe
+	    const contenedorSelects = document.getElementById('containerRutaDinamicaFirebase');
+	    if (contenedorSelects) {
+	        contenedorSelects.style.display = 'none';
+	        console.log('Contenedor "containerRutaDinamicaFirebase" ocultado.');
+	    } else {
+	        console.log('No se encontró el contenedor con id "containerRutaDinamicaFirebase" para ocultar.');
+	    }
+	}
+
+
+
+
+	function actualizarVisibilidadSelects(isVisible) {
+	    const selects = document.querySelectorAll('.dynamic-select');
+	    selects.forEach(select => select.style.display = 'block' );
+	    //console.log(`Selects ${isVisible ? "mostrados" : "ocultos"}`);
+	}
+
+	// <<<<<<<<<<<<<< Ruta >>>>>>>>>>>>>>
 
 	async function response_inputradio_opcionmultiple_verdaderofalso(pregunta, questionData) {
 	    // console.log("Respondiendo preguntas inputradio_opcionmultiple_verdaderofalso");
@@ -47208,7 +47209,7 @@
 	    
 	    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "false" ) {
 	        console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
-	        crearBotonAutoSave$1();
+	        crearBotonAutoSave();
 	    } else {
 	        console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
 	    }
