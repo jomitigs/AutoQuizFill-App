@@ -784,7 +784,7 @@ export function crearBotonAutoSave() {
     // Crear el nuevo botón con clase personalizada
     const newButton = document.createElement("button");
     newButton.textContent = "AutoSave y terminar";
-    newButton.className = "btn-auto-save"; // Clase propia para estilos personalizados
+    newButton.className = "btn btn-primary"; // Clase propia para estilos personalizados
     newButton.id = "autoSaveButton";
     newButton.type = "button"; // IMPORTANTE: evita comportamiento de submit en formularios
     newButton.style.display = "block";
