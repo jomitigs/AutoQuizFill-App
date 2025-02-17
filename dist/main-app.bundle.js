@@ -23336,6 +23336,8 @@
 	  const estadoBarra = localStorage.getItem('barraLateralVisible'); // Obtiene el estado guardado
 	  let isBarraVisible = estadoBarra === null ? true : estadoBarra === 'true'; // Define la visibilidad inicial
 
+	  const hideApp = localStorage.getItem('hideapp');
+
 	  // Aplicar el estado inicial de la barra lateral
 	  if (isBarraVisible) { // Si la barra está visible
 	    barraLateral.style.display = 'flex'; // Muestra la barra lateral
@@ -23346,6 +23348,11 @@
 	    botonMostrarOcultar.style.left = '10px'; // Posiciona el botón
 	    document.body.style.marginLeft = '0'; // Resetea el margen izquierdo del body
 	    document.body.style.width = '100%'; // Resetea el ancho del body
+
+	    if (hideApp === "true") {
+	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
+	      btnAutoQuizFillApp.style.display = 'none';
+	    }
 	  }
 
 	  // Función para reposicionar el botón en función del ancho de la barra lateral
