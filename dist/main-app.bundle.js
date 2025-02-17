@@ -45747,10 +45747,10 @@
 
 	        // Crear el nuevo botón
 	        const newButton = document.createElement("button");
-	        newButton.textContent = "Auto Guardar y Enviar";
+	        newButton.textContent = "AutoSave y terminar";
 	        newButton.className = "btn btn-secondary";
 	        newButton.id = "autoSaveButton";
-	        newButton.style.marginTop = "10px"; // Espaciado visual
+	        newButton.style.marginBottom = "10px"; // Espacio entre botones
 
 	        // Agregar evento de clic al nuevo botón
 	        newButton.addEventListener("click", async () => {
@@ -45768,8 +45768,8 @@
 	            }
 	        });
 
-	        // Insertar el nuevo botón después del original
-	        originalButton.parentNode.insertBefore(newButton, originalButton.nextSibling);
+	        // Insertar el nuevo botón antes del original
+	        originalButton.parentNode.insertBefore(newButton, originalButton);
 	    }
 	}
 
