@@ -23406,33 +23406,44 @@
 	    if (event.ctrlKey && (event.key === 'q' || event.key === 'Q')) {
 	      event.preventDefault();
 	      console.log('keydown: Ctrl + Q detectado');
-	      
+
 	      // Alterna la visibilidad de la barra lateral
 	      alternarBarraLateral();
-	  
+
 	      // Recupera el valor actualizado de 'barraLateralVisible' del localStorage
 	      const barraLateralVisible = localStorage.getItem('barraLateralVisible') === 'true';
-	  
+
+	      // Guarda en localStorage la variable 'hideapp' con el valor opuesto a barraLateralVisible
+	      localStorage.setItem('hideapp', (!barraLateralVisible).toString());
+
 	      // Selecciona el elemento que se desea mostrar u ocultar
 	      const btnAutoQuizFillApp = document.querySelector('#boton-mostrar-ocultar-autoquizfillapp');
-	      const btnAutoSave = document.querySelector('#autoSaveButton');
 
-	  
+	      const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
+	      const hideApp = localStorage.getItem("hideapp") || "false";
+
+
 	      // Muestra u oculta el elemento según el valor de barraLateralVisible
 	      if (barraLateralVisible) {
 	        btnAutoQuizFillApp.style.display = 'block';
-	        btnAutoSave.style.display = 'block';
+
+	        if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "false") {
+	          console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
+	          crearBotonAutoSave();
+	        } else {
+	          console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
+	        }
+
 	      } else {
 	        btnAutoQuizFillApp.style.display = 'none';
 	        btnAutoSave.style.display = 'none';
 	      }
-	  
-	      // Guarda en localStorage la variable 'hideapp' con el valor opuesto a barraLateralVisible
-	      localStorage.setItem('hideapp', (!barraLateralVisible).toString());
+
+
 	    }
 	  });
-	  
-	  
+
+
 
 	  // Ajusta el contenido de la página inicialmente si la barra está visible
 	  if (isBarraVisible) {
@@ -45764,7 +45775,7 @@
 
 	}
 
-	function crearBotonAutoSave() {
+	function crearBotonAutoSave$1() {
 	    // Buscar el botón original por su texto
 	    const originalButton = [...document.querySelectorAll("button.btn.btn-primary")].find(button => 
 	        button.textContent.trim() === "Enviar todo y terminar" || 
@@ -47197,7 +47208,7 @@
 	    
 	    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php') && hideApp === "false" ) {
 	        console.log("Condición cumplida, ejecutando crearBotonAutoSave()");
-	        crearBotonAutoSave();
+	        crearBotonAutoSave$1();
 	    } else {
 	        console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
 	    }
