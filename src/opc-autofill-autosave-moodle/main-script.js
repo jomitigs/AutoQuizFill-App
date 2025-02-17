@@ -140,8 +140,6 @@ export async function opcion_AutoFillAutoSave_Moodle_js() {
 
     detectarCambiosInterruptor();
 
-    
-
     const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
     console.log("Valor de botonAutoSave recuperado:", botonAutoSave);
     const hideApp = localStorage.getItem("hideapp") || "false";
@@ -224,6 +222,8 @@ function detectarCambiosInterruptor() {
         } else {
             bodyAutoSave.style.display = 'none';
         }
+
+        renderizarPreguntas();
     });
 
     // Para el interruptor de AutoFill

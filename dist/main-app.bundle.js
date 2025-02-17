@@ -47253,8 +47253,6 @@
 
 	    detectarCambiosInterruptor$1();
 
-	    
-
 	    const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
 	    console.log("Valor de botonAutoSave recuperado:", botonAutoSave);
 	    const hideApp = localStorage.getItem("hideapp") || "false";
@@ -47337,6 +47335,8 @@
 	        } else {
 	            bodyAutoSave.style.display = 'none';
 	        }
+
+	        renderizarPreguntas$1();
 	    });
 
 	    // Para el interruptor de AutoFill
