@@ -45201,6 +45201,7 @@
 	      const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
 	      const hideApp = localStorage.getItem("hideapp") || "false";
 
+	      const btnAutoSave = document.querySelector('#autoSaveButton');
 
 	      // Muestra u oculta el elemento según el valor de barraLateralVisible
 	      if (barraLateralVisible) {
@@ -45212,6 +45213,7 @@
 	        } else {
 	          console.log("Condición no cumplida, no se ejecuta crearBotonAutoSave()");
 	        }
+	        btnAutoSave.style.display = 'block';
 
 	      } else {
 	        btnAutoQuizFillApp.style.display = 'none';
