@@ -47216,7 +47216,7 @@
 
 	        renderizarPreguntas$1();
 
-	    } else {
+	    } else if (!window.location.href.includes('/mod/quiz/summary.php')) {
 	        sessionStorage.removeItem('questions-AutoSave');
 	        bodyAutoFill.style.display = 'none';
 	        bodyAutoSave.style.display = 'none';
