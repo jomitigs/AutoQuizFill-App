@@ -44788,12 +44788,11 @@
 	                    const questionNumber = key.replace(/\D/g, '');
 	                    let html = `<div class="preguntaautosave" id="${key}">`;
 
-	                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
+	                    if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta'  && data.tipo !== 'otroscasos') {
 
 	                        html += `<strong>Pregunta ${questionNumber}:</strong> ${processContent(data.enunciado)}`;
 
 	                    }
-
 
 	                    if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
 	                        if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
@@ -44837,9 +44836,7 @@
 
 
 
-	                    }
-
-	                    else if (data.tipo === 'inputtext_respuestacorta2') {
+	                    } else if (data.tipo === 'inputtext_respuestacorta2') {
 	                        const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 
 	                        html += '<div class="respuestasautosave">';
@@ -44852,9 +44849,7 @@
 	                        html += '</div>';
 
 
-	                    }
-
-	                    else if (data.tipo === 'draganddrop_text') {
+	                    } else if (data.tipo === 'draganddrop_text') {
 
 	                        // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
 	                        let enunciado = data.enunciado;
@@ -44892,6 +44887,11 @@
                                 <img src="${imagenDrop}" alt="Imagen de arrastre" class="img-fluid w-100" />
                             </div>
                         `;
+	                    } else if (data.tipo === 'otroscasos') {
+	                        html += `
+                        <strong>Pregunta ${questionNumber}:</strong>
+                        <span style="font-weight: 500; color: red;">${processContent(data.enunciado)}</span>
+                      `;
 	                    }
 
 	                    // Solo agregamos la línea separadora si NO es el último elemento en el nuevo array filtrado
