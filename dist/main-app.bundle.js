@@ -46940,10 +46940,7 @@
 	            // ----------------------------------------------------------------
 	            // Aquí adaptamos la lógica de tu snippet original
 	            // ----------------------------------------------------------------
-	            if (
-	              tipo === 'inputradio_opcionmultiple_verdaderofalso' ||
-	              tipo === 'inputchecked_opcionmultiple'
-	            ) {
+	            if ( tipo === 'inputradio_opcionmultiple_verdaderofalso' || tipo === 'inputchecked_opcionmultiple') {
 	              // Se verifica si hay opciones
 	              if (
 	                Array.isArray(infoData.opcionesRespuesta) &&
@@ -46952,29 +46949,31 @@
 	                // Usando tu lógica para formatear (puedes llamar a formatResponseOptions
 	                // o bien reproducir la lógica inline).
 	                hiddenPart.innerHTML = `
-                  <div class="respuestasautosave">
-                    ${infoData.opcionesRespuesta
-                      .map((opc, i) => {
-                        // Generar la letra para cada opción: a, b, c, d, ...
-                        const letter = String.fromCharCode(97 + i);
-  
-                        // Verificar si la respuesta correcta es un array o un valor único
-                        const isCorrect = Array.isArray(infoData.respuestaCorrecta)
-                          ? infoData.respuestaCorrecta.includes(opc)
-                          : opc === infoData.respuestaCorrecta;
-  
-                        // Resaltar en color mediumblue si es respuesta correcta
-                        return `
-                          <div style="font-weight: 500; ${
-                            isCorrect ? 'color: mediumblue;' : ''
-                          }">
-                            ${letter}. ${processContent(opc)}
-                          </div>
-                        `;
-                      })
-                      .join('')}
-                  </div>
-                `;
+                <div class="respuestasautosave">
+                  ${infoData.opcionesRespuesta
+                    .map((opc, i) => {
+                      // Generar la letra para cada opción: a, b, c, d, ...
+                      const letter = String.fromCharCode(97 + i);
+            
+                      // Normalizar la opción y la respuesta correcta (quitando espacios al inicio y final)
+                      const opcionNormalizada = opc.trim();
+                      const respuestaNormalizada = (infoData.respuestaCorrecta || "").trim();
+            
+                      // Verificar si la respuesta correcta es un array o un valor único
+                      const isCorrect = Array.isArray(infoData.respuestaCorrecta)
+                        ? infoData.respuestaCorrecta.map(r => r.trim()).includes(opcionNormalizada)
+                        : opcionNormalizada === respuestaNormalizada;
+            
+                      // Resaltar en color mediumblue si es respuesta correcta
+                      return `
+                        <div style="font-weight: 500; ${isCorrect ? 'color: mediumblue;' : ''}">
+                          ${letter}. ${processContent(opc)}
+                        </div>
+                      `;
+                    })
+                    .join('')}
+                </div>
+              `;
 	              }
 	            } else if (tipo === 'select_emparejamiento') {
 	              // select_emparejamiento
