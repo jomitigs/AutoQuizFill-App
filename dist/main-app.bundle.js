@@ -42456,7 +42456,7 @@
 	  const inputCheckboxCount = formulation_clearfix.querySelectorAll('input[type="checkbox"]').length;
 	  const selectCount = formulation_clearfix.querySelectorAll('select').length;
 
-	  const tablaAnswer = formulation_clearfix.querySelector('table.answer').length;
+	  const tablaAnswer = formulation_clearfix.querySelectorAll('table.answer').length;
 
 
 	  const blocks = formulation_clearfix.querySelectorAll(".ablock.form-inline");
