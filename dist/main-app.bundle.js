@@ -45753,7 +45753,6 @@
 	        
 	        // Asegurar que el botón se coloque en una nueva línea
 	        newButton.style.display = "block"; 
-	        newButton.style.width = "100%"; // Opcional, para que tenga el mismo ancho
 	        newButton.style.marginBottom = "10px"; // Espacio entre botones
 
 	        // Agregar evento de clic al nuevo botón
