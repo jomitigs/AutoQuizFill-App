@@ -80,8 +80,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
     // 5) Determinar si es Caso A (múltiples preguntas) o Caso B (1 con número).
     // --------------------------------------------------------------------------
     const esCasoA =
-        questionsHtml.length > 1 ||
-        (questionsHtml.length === 1 && numeroQuestionUpdate === null);
+        questionsHtml.length > 1 || (questionsHtml.length === 1 && numeroQuestionUpdate === null);
 
     if (esCasoA) {
         // =======================================================
@@ -145,8 +144,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
         // LÓGICA PRINCIPAL de "reemplazar" o "mezclar"
         // ----------------------------------------------------------------------
         // Checar si en las nuevas preguntas está la #1 (exacto, no 12, 10, etc.)
-        const hayPregunta1 = nuevosNumerosPreguntas.includes(1);
-
+        
         // Si NO hay datos en sessionStorage, se crea de cero
         if (!existeAlmacenamiento) {
             console.log('[AutoSaveQuestions_SessionStorage] No hay datos previos en sessionStorage. Se crea nuevo.');
@@ -163,21 +161,7 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
 
         } else {
-            // Sí hay datos previos
-            if (hayPregunta1) {
-                // REEMPLAZAR todo
-                //console.log('[AutoSaveQuestions_SessionStorage] Se detectó la pregunta #1, se REEMPLAZA todo el contenido.');
 
-                // Insertar/actualizar las nuevas
-                for (const key in questionsHtmlObject) {
-                    if (Object.hasOwn(questionsHtmlObject, key)) {
-                        questionsHtmlObject[key].previous = false;
-                        datosExistentes[key] = questionsHtmlObject[key];
-                    }
-                }
-
-                sessionStorage.setItem('questions-AutoSave', JSON.stringify(questionsHtmlObject));
-            } else {
                 // MEZCLAR: old -> previous:true, new -> previous:false
                 console.log('[AutoSaveQuestions_SessionStorage] No está la #1. Se mezclan datos: antiguos previous:true, nuevos previous:false.');
 
@@ -198,7 +182,6 @@ export async function AutoSaveQuestions_SessionStorage(questionsHtml, numeroQues
 
                 // c) Guardar resultado
                 sessionStorage.setItem('questions-AutoSave', JSON.stringify(datosExistentes));
-            }
         }
     } else {
         // =====================================
@@ -402,12 +385,8 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                     let html = `<div class="preguntaautosave" id="${key}">`;
 
                     if (data.enunciado && data.tipo !== 'draganddrop_text' && data.tipo !== 'inputtext_respuestacorta') {
-
                         html += `<strong>Pregunta ${numeroPregunta}:</strong> ${processContent(data.enunciado)}`;
-
-
                     }
-
 
                     if (data.tipo === 'inputradio_opcionmultiple_verdaderofalso' || data.tipo === 'inputchecked_opcionmultiple') {
                         if (Array.isArray(data.opcionesRespuesta) && data.opcionesRespuesta.length) {
@@ -436,9 +415,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                         enunciadoProcesado = processContent(enunciadoProcesado);
 
                         html += `<div class="respuestasautosave"><strong>Pregunta ${numeroPregunta}:</strong> ${enunciadoProcesado}</div>`;
-                    }
-
-                    else if (data.tipo === 'inputtext_respuestacorta2') {
+                    } else if (data.tipo === 'inputtext_respuestacorta2') {
                         const respuestas = Array.isArray(data.respuestaCorrecta) ? data.respuestaCorrecta : [];
 
                         html += '<div class="respuestasautosave">';
@@ -451,9 +428,7 @@ export function AutoSave_ShowResponses(numeroPregunta) {
                         html += '</div>';
 
 
-                    }
-
-                    else if (data.tipo === 'draganddrop_text') {
+                    } else if (data.tipo === 'draganddrop_text') {
                         // Se asume que 'data.enunciado' contiene el texto con [ ] como marcador
                         let enunciado = data.enunciado;
                         let contador = 0;
