@@ -47126,7 +47126,7 @@
 
 	    
 
-	    const botonAutoSave = localStorage.getItem("botonAutoSavep") || "false";
+	    const botonAutoSave = localStorage.getItem("botonAutoSave") || "false";
 	    console.log("Valor de botonAutoSave recuperado:", botonAutoSave);
 	    
 	    if (botonAutoSave === "true" && window.location.href.includes('mod/quiz/summary.php')) {
